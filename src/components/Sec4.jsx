@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Sec4() {
     return (
-     <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-24 mb-24 select-none font-sans transition-colors duration-200">
+     <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
                 {/* Chap matn qismi */}
