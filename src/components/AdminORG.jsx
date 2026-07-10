@@ -1,4 +1,5 @@
 import React from 'react'
+import Comments from './Comments'
 
 export default function AdminORG() {
     return (
@@ -263,6 +264,7 @@ export default function AdminORG() {
                     </div>
                 </div>
             </div>
+             <Comments/>
         </div>
     )
 }

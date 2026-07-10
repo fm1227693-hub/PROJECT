@@ -36,9 +36,9 @@ export default function Comments(setComment) {
     }, [addModal])
 
     return (
-        <div>
+        <div className=''>
             <div className="flex justify-center text-6xl mb-5">
-                <h1>COMMENTS</h1>
+                <h1 className='dark:text-white'>Add Product</h1>
             </div>
             <div className="text-center gap-6 max-w-5xl mx-auto p-6">
                 {
@@ -47,18 +47,21 @@ export default function Comments(setComment) {
                             // ⬇️ TUZATISH 2: key shu yerga (tashqi divga) ko'chirildi
                             // Chunki React key'ni map qaytargan ENG TASHQI elementdan qidiradi
                             <div key={co.id} className="flex justify-center">
-                                <div className="flex items-center text-center mb-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow w-100 duration-300 p-4 border justify-between border-gray-100">
-                                    <div className="">
-                                        <b className="text-gray-800 line-clamp-1 text-sm md:text-base ">
-                                            {co.title}
-                                        </b>
-                                    </div>
-                                    <div className="flex justify-between gap-x-3">
-                                        <button onClick={() => DeleteData(co.id)} className="px-2 border rounded">delete</button>
-                                        <button onClick={() => {
-                                            setAddModal(true)
-                                            setEditId(co.id)
-                                        }} className="px-2 border rounded">edit</button>
+                                <div className="">
+                                    <div className="flex items-center flex-col text-center mb-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow w-100 duration-300 p-4 border justify-between border-gray-100">
+                                        <div className="">
+                                            <img src={co.image} alt="" />
+                                            <b className="text-gray-800 flex items-start line-clamp-1 text-sm md:text-base ">
+                                                {co.title}
+                                            </b>
+                                        </div>
+                                        <div className="flex justify-between gap-x-3">
+                                            <button onClick={() => DeleteData(co.id)} className="px-2 border rounded">delete</button>
+                                            <button onClick={() => {
+                                                setAddModal(true)
+                                                setEditId(co.id)
+                                            }} className="px-2 border rounded">edit</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +75,7 @@ export default function Comments(setComment) {
                     setAddModal(true)
                     setEditId(false)
                 }}
-                className="w-40 text-center py-1 border rounded text-xl mx-auto mt-5 flex justify-center"
+                className="dark:bg-white w-40 text-center py-1 border rounded text-xl mx-auto mt-5 flex justify-center"
             >
                 +
             </button>

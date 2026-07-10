@@ -21,7 +21,7 @@ export default function Admin() {
     }
 
     return (
-       <div className="min-h-screen bg-gray-100 dark:bg-gray-950 flex items-center justify-center p-4 transition-colors duration-200">
+       <div className="min-h-screen bg-gray-100 flex flex-col dark:bg-gray-950 flex items-center justify-center p-4 transition-colors duration-200">
             <div className="w-full h-full max-w-sm mx-auto">
                 <div className="flex flex-col gap-4 p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-white text-center">
@@ -42,6 +42,8 @@ export default function Admin() {
                     </button>
                 </div>
             </div>
+
+           
 
             <Toaster />
         </div>
