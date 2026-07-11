@@ -14,7 +14,7 @@ export default function Footer() {
                 <div className="flex justify-center md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-200 dark:border-gray-800/80">
 
                     {/* Logo va qisqacha ta'rif */}
-                    <div className="lg:col-span-5 flex flex-col space-y-4">
+                    <div className="lg:col-span-5 flex flex-col justify-center space-y-4">
                         <Link to="/" className="flex justify-center items-center gap-3">
                        
                             <span className="text-xl font-black tracking-wider text-gray-900 dark:text-white">Optimum</span>
