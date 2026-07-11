@@ -3,15 +3,8 @@ import { Link } from 'react-router-dom'
 import { FaFacebookF, FaTelegramPlane, FaInstagram } from 'react-icons/fa'
 
 export default function Footer() {
-    const [email, setEmail] = useState('')
 
-    const handleSubscribe = (e) => {
-        e.preventDefault()
-        if (email) {
-            alert('Obuna bo\'lganingiz uchun rahmat!')
-            setEmail('')
-        }
-    }
+   
 
     return (
         <footer className="bg-slate-50 dark:bg-gray-950 text-gray-600 dark:text-gray-300 font-sans select-none mt-32 border-t border-slate-200/85 dark:border-gray-800/80 transition-colors duration-200 w-full">
@@ -53,7 +46,7 @@ export default function Footer() {
 
                 {/* Pastki qism */}
                 <div className="flex justify-center flex-col sm:flex-row items-center  pt-8 gap-4 text-xs text-gray-500 dark:text-gray-400">
-                    <p>© {new Date().getFullYear()} Optimum school of English. Barcha huquqlar kafolatlangan.</p>
+                    <p>© {new Date().getFullYear()} Optimum School of English. Barcha huquqlar kafolatlangan.</p>
 
                 </div>
 
