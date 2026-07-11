@@ -27,14 +27,7 @@ export default function Home() {
                         Professional o'qituvchilar, jonli speaking klublar va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling.
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
-                        <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md transition-all duration-200 text-xs sm:text-sm">
-                            Kursga yozilish
-                        </button>
-                        <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-xl border border-gray-200/60 dark:border-gray-800 transition-all duration-200 text-xs sm:text-sm">
-                            Batafsil ma'lumot
-                        </button>
-                    </div>
+                 
                 </div>
 
                 {/* Swiper Slayder qismi (Ta'limga oid random rasmlar) */}

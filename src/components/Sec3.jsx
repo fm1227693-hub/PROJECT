@@ -52,7 +52,7 @@ export default function Sec3() {
                                 alt={item.title} 
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                             />
-                            <div className="absolute top-3 right-3 px-2.5 py-1 bg-red-600/90 backdrop-blur-sm text-white rounded-full text-[10px] font-bold shadow-md">
+                            <div className="absolute md:h-2 md:w-2 top-3 right-3 px-2.5 py-1 bg-red-600/90 backdrop-blur-sm text-white rounded-full text-[10px] font-bold shadow-md">
                                 Yutuq
                             </div>
                         </div>
