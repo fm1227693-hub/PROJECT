@@ -53,7 +53,7 @@ export default function Footer() {
 
                 {/* Pastki qism */}
                 <div className="flex justify-center flex-col sm:flex-row items-center  pt-8 gap-4 text-xs text-gray-500 dark:text-gray-400">
-                    <p>© {new Date().getFullYear()} EDUMARKAZ. Barcha huquqlar kafolatlangan.</p>
+                    <p>© {new Date().getFullYear()} Optimum school of English. Barcha huquqlar kafolatlangan.</p>
 
                 </div>
 
