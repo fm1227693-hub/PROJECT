@@ -7,7 +7,7 @@ export default function Admin() {
     const [kirish, setKirish] = useState(false)
 
     const alo = () => {
-        if (cod === '1') {
+        if (cod === 'Ruxillo Asrorov') {
             setKirish(true)
         } else if (cod === '') {
             toast.error('Iltimos yozing')

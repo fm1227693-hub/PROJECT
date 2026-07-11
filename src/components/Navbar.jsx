@@ -42,7 +42,7 @@ export default function Navbar() {
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" className="w-8 h-8 md:w-9 md:h-9 text-white p-2 bg-gray-950 dark:bg-white dark:text-gray-950 rounded-xl" viewBox="0 0 24 24">
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                             </svg>
-                            <span className="ml-2.5 text-lg md:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">EDUMARKAZ<span className="text-blue-500">.</span></span>
+                            <span className="ml-2.5 text-lg md:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">Optimum</span>
                         </Link>
                     </div>
 
@@ -50,7 +50,7 @@ export default function Navbar() {
                     <nav className="hidden md:flex items-center text-sm font-semibold text-gray-500 dark:text-gray-400 gap-6">
                         <Link to="/" className="hover:text-gray-900 dark:hover:text-white transition-colors">Bosh sahifa</Link>
                         <Link to="/stats" className="hover:text-gray-900 dark:hover:text-white transition-colors">Statistika</Link>
-                        <Link to="/products" className="hover:text-gray-900 dark:hover:text-white transition-colors">Kurslar</Link>
+                        <Link to="/products" className="hover:text-gray-900 dark:hover:text-white transition-colors">Yutuqlar</Link>
                         <Link to="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">Biz haqimizda</Link>
                     </nav>
 

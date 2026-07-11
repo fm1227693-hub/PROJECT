@@ -21,7 +21,7 @@ export default function Comments() {
         if (!id) return false
         try {
             await axios.delete(`http://localhost:3000/products/${id}`)
-            toast.success('Muvaffaqiyatli o\'chirildi')
+            toast.success('Muvaffaqiyatli o`chirildi')
             GetData()
         } catch (e) {
             console.log(e)
