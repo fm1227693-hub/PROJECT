@@ -1,12 +1,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import AddComment from './AddComment'
-// ⬇️ TUZATISH 1: ikkita turli kutubxonadan import qilingan edi (react-toastify + react-hot-toast)
-// Faqat react-hot-toast qoldirildi, ikkalasi ham shu yerdan olinadi
 import toast, { Toaster } from 'react-hot-toast'
 
-export default function Comments(setComment) {
-
+export default function Comments() {
     const [data, setData] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [editId, setEditId] = useState(false)
@@ -14,17 +11,17 @@ export default function Comments(setComment) {
     const GetData = async function () {
         try {
             const res = await axios.get('http://localhost:3000/products')
-            console.log(res)
             setData(res.data)
         } catch (e) {
             console.log(e)
         }
     }
+
     const DeleteData = async function (id) {
         if (!id) return false
         try {
             await axios.delete(`http://localhost:3000/products/${id}`)
-            toast.success('Muvaffaqqiyatli ochirildi')
+            toast.success('Muvaffaqiyatli o\'chirildi')
             GetData()
         } catch (e) {
             console.log(e)
@@ -36,32 +33,30 @@ export default function Comments(setComment) {
     }, [addModal])
 
     return (
-        <div className=''>
-            <div className="flex justify-center text-6xl mb-5">
-                <h1 className='dark:text-white'>Add Product</h1>
+        <div className="w-full">
+            <div className="flex justify-center text-4xl sm:text-6xl mb-5">
+                <h1 className="dark:text-white font-bold">Add Product</h1>
             </div>
-            <div className="text-center gap-6 max-w-5xl mx-auto p-6">
+            
+            {/* Kartochkalar uchun grid yoki flex konteyner */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto p-4 sm:p-6">
                 {
-                    data.filter(co => co.title).map((co, i) => {
+                    data.filter(co => co.title).map((co) => {
                         return (
-                            // ⬇️ TUZATISH 2: key shu yerga (tashqi divga) ko'chirildi
-                            // Chunki React key'ni map qaytargan ENG TASHQI elementdan qidiradi
-                            <div key={co.id} className="flex justify-center">
-                                <div className="">
-                                    <div className="flex items-center flex-col text-center mb-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow w-100 duration-300 p-4 border justify-between border-gray-100">
-                                        <div className="">
-                                            <img src={co.image} alt="" />
-                                            <b className="text-gray-800 flex items-start line-clamp-1 text-sm md:text-base ">
-                                                {co.title}
-                                            </b>
-                                        </div>
-                                        <div className="flex justify-between gap-x-3">
-                                            <button onClick={() => DeleteData(co.id)} className="px-2 border rounded">delete</button>
-                                            <button onClick={() => {
-                                                setAddModal(true)
-                                                setEditId(co.id)
-                                            }} className="px-2 border rounded">edit</button>
-                                        </div>
+                            <div key={co.id} className="flex justify-center w-full">
+                                <div className="flex items-center flex-col text-center mb-5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow w-full duration-300 p-4 justify-between">
+                                    <div className="w-full mb-4">
+                                        <img src={co.image} alt={co.title} className="w-full h-40 object-cover rounded-xl mb-3" />
+                                        <b className="text-gray-800 dark:text-gray-100 flex items-start line-clamp-1 text-sm md:text-base">
+                                            {co.title}
+                                        </b>
+                                    </div>
+                                    <div className="flex justify-between gap-x-3 w-full pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <button onClick={() => DeleteData(co.id)} className="px-3 py-1 text-xs border border-rose-300 text-rose-600 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-500/10 transition">delete</button>
+                                        <button onClick={() => {
+                                            setAddModal(true)
+                                            setEditId(co.id)
+                                        }} className="px-3 py-1 text-xs border border-blue-300 text-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10 transition">edit</button>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +70,7 @@ export default function Comments(setComment) {
                     setAddModal(true)
                     setEditId(false)
                 }}
-                className="dark:bg-white w-40 text-center py-1 border rounded text-xl mx-auto mt-5 flex justify-center"
+                className="dark:bg-white bg-gray-900 dark:text-gray-950 text-white w-12 h-12 text-center border rounded-full text-2xl mx-auto mt-5 flex items-center justify-center hover:opacity-95 shadow-md transition"
             >
                 +
             </button>

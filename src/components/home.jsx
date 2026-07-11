@@ -9,36 +9,36 @@ import { Pagination, Autoplay } from 'swiper/modules';
 
 export default function Home() {
     return (
-        <div className='max-w-7xl pt-28 mx-auto px-6 lg:px-8 select-none font-sans transition-colors duration-200'>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white dark:bg-gray-950 p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100/80 dark:border-gray-800 overflow-hidden">
+        <div className='max-w-7xl pt-20 sm:pt-24 lg:pt-28 mx-auto px-4 sm:px-6 lg:px-8 select-none font-sans transition-colors duration-200'>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center bg-white dark:bg-gray-950 p-6 sm:p-8 md:p-12 rounded-3xl shadow-xl border border-red-100/80 dark:border-gray-800 overflow-hidden">
 
                 {/* Matnlar qismi */}
-                <div className="flex flex-col justify-center space-y-6 max-w-xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold w-fit">
-                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
-                        New Dashboard Features Live
+                <div className="flex flex-col justify-center space-y-4 sm:space-y-6 max-w-xl text-left">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
+                        Optimum School of English
                     </div>
 
-                    <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.15]">
-                        Lorem ipsum dolor sit, amet consectetur <span className="text-blue-500">adipisicing elit</span>.
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.15]">
+                        Ingliz tilini noldan boshlab <span className="text-red-600">mukammal o'rganing</span>.
                     </h1>
 
-                    <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                        Aliquid error fugiat, nostrum modi cum in? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt voluptate rerum error distinctio.
+                    <p className="text-sm sm:text-base md:text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                        Professional o'qituvchilar, jonli speaking klublar va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling.
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-4 pt-2">
-                        <button className="px-6 py-3 bg-gray-950 dark:bg-white dark:text-gray-950 hover:bg-gray-800 dark:hover:bg-gray-100 text-white font-bold rounded-xl shadow-md transition-all duration-200 text-sm">
-                            Get Started
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+                        <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-md transition-all duration-200 text-xs sm:text-sm">
+                            Kursga yozilish
                         </button>
-                        <button className="px-6 py-3 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-xl border border-gray-200/60 dark:border-gray-800 transition-all duration-200 text-sm">
-                            Learn More
+                        <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold rounded-xl border border-gray-200/60 dark:border-gray-800 transition-all duration-200 text-xs sm:text-sm">
+                            Batafsil ma'lumot
                         </button>
                     </div>
                 </div>
 
-                {/* Swiper Slayder qismi */}
-                <div className="w-full h-[400px] sm:h-[480px] rounded-2xl overflow-hidden shadow-md border border-gray-100/50 dark:border-gray-800">
+                {/* Swiper Slayder qismi (Ta'limga oid random rasmlar) */}
+                <div className="w-full h-[320px] sm:h-[400px] lg:h-[480px] rounded-2xl overflow-hidden shadow-md border border-gray-100/50 dark:border-gray-800 relative">
                     <Swiper
                         autoplay={{
                             delay: 3000,
@@ -51,33 +51,33 @@ export default function Home() {
                         <SwiperSlide className="h-full w-full">
                             <div className='h-full w-full relative'>
                                 <img
-                                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
-                                    alt="Dashboard Analytics"
+                                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2340&auto=format&fit=crop"
+                                    alt="Students studying English"
                                     className='h-full w-full object-cover'
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                             </div>
                         </SwiperSlide>
 
                         <SwiperSlide className="h-full w-full">
                             <div className='h-full w-full relative'>
                                 <img
-                                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2340&auto=format&fit=crop"
-                                    alt="Data Charts"
+                                    src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=2340&auto=format&fit=crop"
+                                    alt="Interactive classroom"
                                     className='h-full w-full object-cover'
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                             </div>
                         </SwiperSlide>
 
                         <SwiperSlide className="h-full w-full">
                             <div className='h-full w-full relative'>
                                 <img
-                                    src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2340&auto=format&fit=crop"
-                                    alt="Design and Setup"
+                                    src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2340&auto=format&fit=crop"
+                                    alt="Speaking club discussion"
                                     className='h-full w-full object-cover'
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                             </div>
                         </SwiperSlide>
                     </Swiper>

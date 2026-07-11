@@ -2,11 +2,11 @@ import React from 'react'
 
 export default function Footer() {
     return (
-       <footer className="bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 font-sans select-none mt-32 transition-colors duration-200">
+        <footer className="bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 font-sans select-none mt-32 transition-colors duration-200 w-full">
             <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 md:py-16">
                 
                 {/* Yuqori ustunlar qismi */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-10 border-b border-gray-50 dark:border-gray-800/60 pb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 border-b border-gray-50 dark:border-gray-800/60 pb-12">
                     
                     {/* Logotip va tavsif */}
                     <div className="flex flex-col space-y-4 md:col-span-1">
@@ -73,5 +73,6 @@ export default function Footer() {
                 </div>
 
             </div>
-        </footer>)
+        </footer>
+    )
 }

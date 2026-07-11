@@ -3,31 +3,30 @@ import Comments from './Comments'
 
 export default function AdminORG() {
     return (
-<div className="p-8 bg-gray-50/50 dark:bg-gray-950 font-sans text-left flex flex-col min-h-screen transition-colors duration-200">
+        <div className="p-4 sm:p-6 lg:p-8 bg-gray-50/50 dark:bg-gray-950 font-sans text-left flex flex-col min-h-screen transition-colors duration-200">
             {/* Orqaga qaytish tugmasi */}
-            <div className="">
+            <div>
                 <button 
-                    
-                    className="px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                    className="px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                 >
                     back
                 </button>
             </div>
             
             {/* Sarlavha */}
-            <div className="mb-10 text-5xl md:text-7xl font-black text-center text-gray-800 dark:text-white tracking-tight">
+            <div className="my-6 sm:my-8 text-4xl sm:text-5xl md:text-7xl font-black text-center text-gray-800 dark:text-white tracking-tight">
                 ADMIN PANEL
             </div>
 
             {/* Statistika kartochkalari (Visits, Impressions, Conversion, Downloads) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-sm mb-8 select-none">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 sm:p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-sm mb-8 select-none">
                 <div className="flex items-center justify-between">
                     <div>
-                        <span className="text-3xl font-bold text-gray-800 dark:text-white block">32,451</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white block">32,451</span>
                         <span className="text-sm font-semibold text-blue-500 dark:text-blue-400 block mt-0.5">Visits</span>
                         <span className="text-xs font-medium text-gray-400 dark:text-gray-500 block mt-1">+14.00 (+0.50%)</span>
                     </div>
-                    <div className="w-24 h-12">
+                    <div className="w-20 sm:w-24 h-10 sm:h-12">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <path d="M0 30 L10 20 L20 35 L30 15 L40 28 L50 18 L60 32 L70 22 L80 28 L90 20 L100 22" stroke="#5c7cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -36,11 +35,11 @@ export default function AdminORG() {
 
                 <div className="flex items-center justify-between">
                     <div>
-                        <span className="text-3xl font-bold text-gray-800 dark:text-white block">15,236</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white block">15,236</span>
                         <span className="text-sm font-semibold text-blue-500 dark:text-blue-400 block mt-0.5">Impressions</span>
                         <span className="text-xs font-medium text-gray-400 dark:text-gray-500 block mt-1">+138.97 (+0.54%)</span>
                     </div>
-                    <div className="w-24 h-12">
+                    <div className="w-20 sm:w-24 h-10 sm:h-12">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <path d="M0 25 L10 32 L20 18 L30 28 L40 22 L50 30 L60 24 L70 26 L80 15 L90 32 L100 20" stroke="#5c7cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -49,11 +48,11 @@ export default function AdminORG() {
 
                 <div className="flex items-center justify-between">
                     <div>
-                        <span className="text-3xl font-bold text-gray-800 dark:text-white block">7,688</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white block">7,688</span>
                         <span className="text-sm font-semibold text-blue-500 dark:text-blue-400 block mt-0.5">Conversion</span>
                         <span className="text-xs font-medium text-gray-400 dark:text-gray-500 block mt-1">+57.62 (+0.76%)</span>
                     </div>
-                    <div className="w-24 h-12">
+                    <div className="w-20 sm:w-24 h-10 sm:h-12">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <path d="M0 28 L10 20 L20 30 L30 18 L40 15 L50 28 L60 18 L70 24 L80 32 L90 26 L100 30" stroke="#5c7cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -62,11 +61,11 @@ export default function AdminORG() {
 
                 <div className="flex items-center justify-between">
                     <div>
-                        <span className="text-3xl font-bold text-gray-800 dark:text-white block">1,553</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white block">1,553</span>
                         <span className="text-sm font-semibold text-blue-500 dark:text-blue-400 block mt-0.5">Downloads</span>
                         <span className="text-xs font-medium text-gray-400 dark:text-gray-500 block mt-1">+138.97 (+0.54%)</span>
                     </div>
-                    <div className="w-24 h-12">
+                    <div className="w-20 sm:w-24 h-10 sm:h-12">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <path d="M0 25 L10 22 L20 35 L30 20 L40 28 L50 22 L60 18 L70 26 L80 30 L90 15 L100 28" stroke="#5c7cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -75,53 +74,55 @@ export default function AdminORG() {
             </div>
 
             {/* Savdo statistikasi grafigi */}
-            <div className="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm mb-8">
-                <div className="flex justify-between items-start mb-4 shrink-0">
+            <div className="w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-4 sm:p-6 shadow-sm mb-8">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Sales Statistics Overview</h2>
-                        <p className="text-base text-gray-400 dark:text-gray-500 mt-1">Lorem ipsum is placeholder text commonly used</p>
+                        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Sales Statistics Overview</h2>
+                        <p className="text-sm sm:text-base text-gray-400 dark:text-gray-500 mt-1">Lorem ipsum is placeholder text commonly used</p>
                     </div>
-                    <div className="flex gap-6 text-base font-semibold text-gray-500 dark:text-gray-400">
+                    <div className="flex gap-4 sm:gap-6 text-sm sm:text-base font-semibold text-gray-500 dark:text-gray-400">
                         <span className="text-blue-500 dark:text-blue-400 cursor-pointer">1D</span>
                         <span className="hover:text-gray-800 dark:hover:text-white cursor-pointer">5D</span>
                         <span className="hover:text-gray-800 dark:hover:text-white cursor-pointer">1M</span>
                         <span className="hover:text-gray-800 dark:hover:text-white cursor-pointer">1Y</span>
                     </div>
                 </div>
-                <div className="flex flex-wrap justify-between items-center mb-6 gap-4 shrink-0">
-                    <div className="flex gap-16">
+                
+                <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <div className="flex flex-col sm:flex-row gap-6 sm:gap-16">
                         <div>
-                            <p className="text-base text-gray-500 dark:text-gray-400 mb-1">Total Cost</p>
+                            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-1">Total Cost</p>
                             <div className="flex items-baseline gap-3">
-                                <span className="text-4xl font-bold text-gray-800 dark:text-white">15,263</span>
-                                <span className="text-sm font-medium text-gray-400 dark:text-gray-500">
+                                <span className="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">15,263</span>
+                                <span className="text-xs sm:text-sm font-medium text-gray-400 dark:text-gray-500">
                                     <strong className="text-gray-700 dark:text-gray-300 font-bold">89.5%</strong> of 20,000 Total
                                 </span>
                             </div>
                         </div>
                         <div>
-                            <p className="text-base text-gray-500 dark:text-gray-400 mb-1">Total Revenue</p>
+                            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-1">Total Revenue</p>
                             <div className="flex items-baseline gap-3">
-                                <span className="text-4xl font-bold text-gray-800 dark:text-white">$753,098</span>
-                                <span className="text-sm font-medium text-gray-400 dark:text-gray-500">
+                                <span className="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">$753,098</span>
+                                <span className="text-xs sm:text-sm font-medium text-gray-400 dark:text-gray-500">
                                     <strong className="text-gray-700 dark:text-gray-300 font-bold">10.5%</strong> of 20,000 Total
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-8 text-base font-semibold text-gray-600 dark:text-gray-300">
-                        <div className="flex items-center gap-3">
-                            <span className="w-4 h-1.5 bg-purple-500 rounded-full"></span>
+                    <div className="flex gap-6 sm:gap-8 text-sm sm:text-base font-semibold text-gray-600 dark:text-gray-300">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <span className="w-3 sm:w-4 h-1.5 bg-purple-500 rounded-full"></span>
                             <span>Revenue</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <span className="w-4 h-1.5 bg-emerald-400 rounded-full"></span>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <span className="w-3 sm:w-4 h-1.5 bg-emerald-400 rounded-full"></span>
                             <span>Sales</span>
                         </div>
                     </div>
                 </div>
-                <div className="relative w-full flex-1 flex items-stretch min-h-[300px]">
-                    <div className="flex flex-col justify-between text-sm font-medium text-gray-400 dark:text-gray-500 w-14 select-none text-left pr-2 pb-1">
+
+                <div className="relative w-full flex items-stretch min-h-[220px] sm:min-h-[300px]">
+                    <div className="flex flex-col justify-between text-xs sm:text-sm font-medium text-gray-400 dark:text-gray-500 w-10 sm:w-14 select-none text-left pr-2 pb-1">
                         <span>200</span>
                         <span>150</span>
                         <span>100</span>
@@ -151,46 +152,29 @@ export default function AdminORG() {
                             <path d="M 0 100 L 14 87 L 28 90 L 42 80 L 57 65 L 71 74 L 85 75 L 100 55 L 100 100 L 0 100 Z" fill="url(#emeraldGrad)" />
                             <path d="M 0 100 L 14 87 L 28 90 L 42 80 L 57 65 L 71 74 L 85 75 L 100 55" fill="none" stroke="#34d399" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
                         </svg>
-                        {/* Nuqtalar uchun dark mode qismi */}
-                        <div className="absolute left-[0%] bottom-[30%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[14%] bottom-[38%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[28%] bottom-[33%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[42%] bottom-[65%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[57%] bottom-[65%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[71%] bottom-[73%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[85%] bottom-[55%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[100%] bottom-[73%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-purple-500 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[0%] bottom-[0%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[14%] bottom-[13%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[28%] bottom-[10%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[42%] bottom-[20%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[57%] bottom-[35%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[71%] bottom-[26%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[85%] bottom-[25%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-                        <div className="absolute left-[100%] bottom-[45%] w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-emerald-400 rounded-full -translate-x-1/2 translate-y-1/2"></div>
                     </div>
                 </div>
             </div>
 
             {/* Jadval va quyi bloklar */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-8">
+                <div className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-4 sm:p-6 shadow-sm flex flex-col justify-between">
                     <div>
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Recent Transactions</h3>
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white">Recent Transactions</h3>
                             <span className="text-xs font-semibold text-blue-500 dark:text-blue-400 cursor-pointer hover:underline">View All</span>
                         </div>
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
+                            <table className="w-full text-left border-collapse min-w-[500px]">
                                 <thead>
-                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-sm font-semibold text-gray-400">
+                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-xs sm:text-sm font-semibold text-gray-400">
                                         <th className="pb-3">Customer</th>
                                         <th className="pb-3">Product</th>
                                         <th className="pb-3">Amount</th>
                                         <th className="pb-3">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody className="text-sm text-gray-600 dark:text-gray-300">
+                                <tbody className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                                     <tr className="border-b border-gray-50 dark:border-gray-800 hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition">
                                         <td className="py-3.5 font-medium text-gray-800 dark:text-white">Anvar Aliyev</td>
                                         <td className="py-3.5">Premium Dashboard UI</td>
@@ -225,8 +209,8 @@ export default function AdminORG() {
                 </div>
 
                 <div className="flex flex-col gap-6">
-                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm">
-                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Top Products</h3>
+                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-4 sm:p-6 shadow-sm">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-4">Top Products</h3>
                         <div className="space-y-4">
                             <div className="flex justify-between items-center p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                                 <div>
@@ -245,8 +229,8 @@ export default function AdminORG() {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm flex-1">
-                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Live Alerts</h3>
+                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-4 sm:p-6 shadow-sm flex-1">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-4">Live Alerts</h3>
                         <div className="space-y-3">
                             <div className="flex gap-3 items-start text-xs">
                                 <span className="w-2 h-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
@@ -264,7 +248,8 @@ export default function AdminORG() {
                     </div>
                 </div>
             </div>
-             <Comments/>
+            
+            <Comments />
         </div>
     )
 }
