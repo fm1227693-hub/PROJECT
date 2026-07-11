@@ -5,7 +5,6 @@ export default function Sec4() {
    <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200">
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-        {/* Chap matn qismi */}
         <div className="flex flex-col space-y-6 max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit">
                 Biz haqimizda
@@ -20,7 +19,6 @@ export default function Sec4() {
             </p>
 
             <div className="space-y-4 pt-2">
-                {/* Mission */}
                 <div className="flex gap-4">
                     <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm">
                         🎯
@@ -33,7 +31,6 @@ export default function Sec4() {
                     </div>
                 </div>
 
-                {/* Professional Team */}
                 <div className="flex gap-4">
                     <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm">
                         👨‍🏫
@@ -48,7 +45,6 @@ export default function Sec4() {
             </div>
         </div>
 
-        {/* O'ng rasm va tajriba badge qismi - Yangi o'quv jarayoniga mos rasm */}
         <div className="w-full h-[400px] rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 dark:border-gray-800 relative group">
             <img
                 src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2340&auto=format&fit=crop"

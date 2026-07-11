@@ -24,7 +24,6 @@ export default function Products() {
         <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 pt-20 mb-20 select-none font-sans transition-colors duration-200 bg-gray-50 dark:bg-gray-950 min-h-screen">
             <div className="max-w-6xl mx-auto">
                 
-                {/* Sarlavha qismi */}
                 <div className="mb-10 border-b border-gray-200 dark:border-gray-800 pb-5">
                     <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full">
                         Muvaffaqiyat
@@ -34,7 +33,6 @@ export default function Products() {
                     </h2>
                 </div>
 
-                {/* O'quvchilar Grid dizayni */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {data && data.length > 0 ? (
                         data.map((item) => (

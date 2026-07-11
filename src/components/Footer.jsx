@@ -6,17 +6,14 @@ export default function Footer() {
         <footer className="bg-gray-950 text-gray-400 py-12 px-6 border-t border-gray-900 mt-10">
             <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-8">
                 
-                {/* Logo qismi */}
                 <div className="flex items-center gap-2">
                     <span className="text-xl font-black text-white tracking-tight">Optimum</span>
                 </div>
 
-                {/* Matn qismi */}
                 <p className="text-sm max-w-sm leading-relaxed">
                     Kelajagingizni biz bilan birga quring. Zamonaviy kasblar va sifatli ta'lim olib, o'z yo'lingizni toping.
                 </p>
 
-                {/* Ijtimoiy tarmoqlar */}
                 <div className="flex gap-4">
                     <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-blue-600 hover:text-white transition-all text-xl">
                         <FaTelegramPlane />
@@ -29,7 +26,6 @@ export default function Footer() {
                     </a>
                 </div>
 
-                {/* Copyright */}
                 <div className="pt-4 border-t border-gray-900 w-full text-xs opacity-60">
                     © {new Date().getFullYear()} Optimum School of English. Barcha huquqlar kafolatlangan.
                 </div>

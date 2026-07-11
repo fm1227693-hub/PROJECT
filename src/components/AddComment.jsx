@@ -55,7 +55,6 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                 </h2>
                 <button onClick={() => setAddModal(false)} className='absolute w-8 h-8 sm:w-9 sm:h-9 top-3.5 right-3.5 sm:top-4 sm:right-4 rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-white transition-colors flex items-center justify-center text-xl sm:text-2xl leading-none'>&times;</button>
 
-                {/* Rasm URL uchun input */}
                 <div className="mb-3.5 sm:mb-4">
                     <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">Rasm tanlash</label>
                     <label className="flex items-center w-full border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl text-sm sm:text-base text-gray-400 dark:text-gray-500 cursor-pointer hover:border-red-500 transition-colors">
@@ -69,7 +68,6 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                     </label>
                 </div>
 
-                {/* O'quvchi F.I.O. uchun input */}
                 <div className="mb-3.5 sm:mb-4">
                     <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">O'quvchining ismi</label>
                     <input
@@ -81,7 +79,6 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                     />
                 </div>
 
-                {/* Yutuq / Ball uchun input */}
                 <div className="mb-3.5 sm:mb-4">
                     <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">Erishgan yutug'i</label>
                     <input

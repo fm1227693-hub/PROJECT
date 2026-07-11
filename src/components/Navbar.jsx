@@ -28,7 +28,6 @@ export default function Navbar() {
             <header className="bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm transition-colors duration-200">
                 <div className="container mx-auto px-4 py-3 flex items-center justify-between">
                     
-                    {/* Chap qism: Burger menyu (Mobil) va Logo */}
                     <div className="flex items-center gap-3">
                         <button 
                             onClick={() => setMenuOpen(!menuOpen)} 
@@ -46,7 +45,6 @@ export default function Navbar() {
                         </Link>
                     </div>
 
-                    {/* Navigatsiya linklari (Desktop) */}
                     <nav className="hidden md:flex items-center text-sm font-semibold text-gray-500 dark:text-gray-400 gap-6">
                         <Link to="/" className="hover:text-gray-900 dark:hover:text-white transition-colors">Bosh sahifa</Link>
                         <Link to="/stats" className="hover:text-gray-900 dark:hover:text-white transition-colors">Statistika</Link>
@@ -54,14 +52,11 @@ export default function Navbar() {
                         <Link to="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">Biz haqimizda</Link>
                     </nav>
 
-                    {/* O'ng tarafdagi tugmalar */}
                     <div className="flex items-center gap-2 md:gap-3">
-                        {/* Theme almashtirish */}
                         <div onClick={Theme} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-yellow-400 cursor-pointer hover:opacity-85 transition-all shadow-sm">
                             {dark ? <FaRegSun className="w-4 h-4" title="Light mode" /> : <FaRegMoon className="w-4 h-4 text-gray-900" title="Dark mode" />}
                         </div>
 
-                        {/* Management tugmasi */}
                         <Link to="/enter" className="inline-flex items-center bg-gray-950 dark:bg-white dark:text-gray-950 hover:bg-gray-800 dark:hover:bg-gray-100 text-white text-xs font-bold py-2 px-3 md:py-2.5 md:px-4 rounded-xl shadow-sm transition-all gap-1.5 border border-transparent">
                             <span>Boshqaruv</span>
                             <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" className="w-3.5 h-3.5" viewBox="0 0 24 24">
@@ -72,7 +67,6 @@ export default function Navbar() {
 
                 </div>
 
-                {/* Mobil menyu (Burger bosilganda pastga ochiladi) */}
                 {menuOpen && (
                     <nav className="md:hidden flex flex-col px-4 pt-2 pb-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 gap-3 font-semibold text-sm text-gray-600 dark:text-gray-300">
                         <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Bosh sahifa</Link>

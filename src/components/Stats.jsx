@@ -41,7 +41,6 @@ export default function Stats() {
     return (
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 mb-24 select-none font-sans transition-colors duration-200">
                     
-            {/* Yuqori qism: Sarlavha va Kichik tushuntirish */}
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
                 <div className="max-w-xl">
                     <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full">
@@ -56,10 +55,8 @@ export default function Stats() {
                 </p>
             </div>
 
-            {/* Asosiy bloklar: Ikki ustunli chuqur tahlil */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                 
-                {/* 1. Chap tomon (7 ta ustun): Katta vizual trend va umumiy tahlil */}
                 <div className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 shadow-xl lg:col-span-7 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-6">
@@ -67,7 +64,6 @@ export default function Stats() {
                                 <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">O'sish dinamikasi</span>
                                 <h3 className="text-2xl font-black text-gray-950 dark:text-white mt-1">Natijalar tahlili</h3>
                             </div>
-                            {/* Vaqtni filtrlash tugmalari */}
                             <div className="flex gap-1.5 bg-gray-50 dark:bg-gray-900 p-1 rounded-xl border border-gray-100 dark:border-gray-800">
                                 <button 
                                     onClick={() => setActiveTab('1m')}
@@ -90,7 +86,6 @@ export default function Stats() {
                             </div>
                         </div>
 
-                        {/* Katta dinamik SVG Grafik simulationi */}
                         <div className="w-full h-56 bg-gradient-to-b from-red-50/20 dark:from-red-500/10 to-transparent rounded-2xl p-4 flex items-end relative border border-dashed border-gray-100/70 dark:border-gray-800 mb-6 overflow-hidden">
                             <svg className="w-full h-full transition-all duration-500" viewBox="0 0 400 150" preserveAspectRatio="none">
                                 <defs>
@@ -110,7 +105,6 @@ export default function Stats() {
                         </div>
                     </div>
 
-                    {/* Pastki oylik ko'rsatkichlar solishtiruvi (Faol tab qaysi biri bo'lsa shunga mos yorqinroq ko'rsatiladi) */}
                     <div className="grid grid-cols-3 gap-3 border-t border-gray-50 dark:border-gray-800/60 pt-6 text-center">
                         <div onClick={() => setActiveTab('1m')} className={`p-3 rounded-2xl border transition-all cursor-pointer ${activeTab === '1m' ? 'bg-red-50/50 dark:bg-red-500/10 border-red-200 dark:border-red-900/50' : 'bg-gray-50/50 dark:bg-gray-900/50 border-gray-100 dark:border-gray-800'}`}>
                             <span className="text-[10px] font-bold text-red-600 dark:text-red-400 block uppercase tracking-wider">1-Oy</span>
@@ -130,15 +124,12 @@ export default function Stats() {
                     </div>
                 </div>
 
-                {/* 2. O'ng tomon (5 ta ustun): O'quv yo'nalishlari bo'yicha taqsimot */}
                 <div className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 shadow-xl lg:col-span-5 flex flex-col justify-between">
                     <div>
                         <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Mashg'ulot turlari</span>
                         <h3 className="text-2xl font-black text-gray-950 dark:text-white mt-1 mb-6">Kurs yo'nalishlari</h3>
                         
-                        {/* Progress-barlar ro'yxati */}
                         <div className="space-y-5">
-                            {/* Manba 1: General English */}
                             <div className="space-y-1.5">
                                 <div className="flex justify-between text-xs font-bold">
                                     <span className="text-gray-700 dark:text-gray-300">General English</span>
@@ -149,7 +140,6 @@ export default function Stats() {
                                 </div>
                             </div>
 
-                            {/* Manba 2: IELTS Preparation */}
                             <div className="space-y-1.5">
                                 <div className="flex justify-between text-xs font-bold">
                                     <span className="text-gray-700 dark:text-gray-300">IELTS Preparation</span>
@@ -160,7 +150,6 @@ export default function Stats() {
                                 </div>
                             </div>
 
-                            {/* Manba 3: Speaking Club */}
                             <div className="space-y-1.5">
                                 <div className="flex justify-between text-xs font-bold">
                                     <span className="text-gray-700 dark:text-gray-300">Speaking Club</span>
@@ -171,7 +160,6 @@ export default function Stats() {
                                 </div>
                             </div>
 
-                            {/* Manba 4: Grammar Intensive */}
                             <div className="space-y-1.5">
                                 <div className="flex justify-between text-xs font-bold">
                                     <span className="text-gray-700 dark:text-gray-300">Grammar Intensive</span>
@@ -184,7 +172,6 @@ export default function Stats() {
                         </div>
                     </div>
 
-                    {/* O'quv markazi shiori yoki qo'shimcha kichik eslatma */}
                     <div className="w-full mt-8 py-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold rounded-xl border border-red-100 dark:border-red-900/30 text-xs flex items-center justify-center gap-2">
                         ✨ Har bir qadamda mukammallik sari
                     </div>

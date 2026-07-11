@@ -24,7 +24,6 @@ export default function Sec3() {
     return (
 <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 pt-24 mb-24 select-none font-sans transition-colors duration-200 bg-gray-50 dark:bg-gray-950 min-h-screen">
     <div className="max-w-5xl mx-auto p-4 sm:p-6">
-        {/* Sarlavha qismi */}
         <div className="flex justify-between items-center mb-8 border-b border-gray-200/60 dark:border-gray-800 pb-4">
             <div className="flex items-center gap-3">
                 <span className="w-3 h-3 bg-red-600 rounded-full animate-ping"></span>
@@ -37,7 +36,6 @@ export default function Sec3() {
             </span>
         </div>
 
-        {/* Ro'yxat qismi - Rasmlar uchun yetarlicha katta joy ajratilgan */}
         {data && data.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.map((item) => (
@@ -45,7 +43,6 @@ export default function Sec3() {
                         key={item.id} 
                         className="group bg-white dark:bg-gray-900 rounded-2xl shadow-md hover:shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col transition-all duration-200 hover:border-red-500/40"
                     >
-                        {/* Rasm uchun kattaroq va keng joy */}
                         <div className="w-full h-52 sm:h-56 relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                             <img 
                                 src={item.image} 
@@ -57,7 +54,6 @@ export default function Sec3() {
                             </div>
                         </div>
 
-                        {/* Ma'lumotlar qismi */}
                         <div className="p-5 flex flex-col justify-between flex-1">
                             <h3 className="font-bold text-gray-900 dark:text-white text-base group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-1">
                                 {item.title}
