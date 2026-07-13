@@ -27,10 +27,10 @@ export default function Navbar() {
         <div className='fixed top-0 left-0 w-full z-50 font-sans select-none'>
             <header className="bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm transition-colors duration-200">
                 <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-                    
+
                     <div className="flex items-center gap-3">
-                        <button 
-                            onClick={() => setMenuOpen(!menuOpen)} 
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
                             className="md:hidden p-2 rounded-xl bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:opacity-85 transition"
                             title="Menu"
                         >
@@ -38,10 +38,14 @@ export default function Navbar() {
                         </button>
 
                         <Link to="/" className="flex items-center text-gray-900 dark:text-white cursor-pointer">
-                            <svg xmlns="public/Снимок экрана 2026-07-13 125121.png" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" className="w-8 h-8 md:w-9 md:h-9 text-white p-2 bg-gray-950 dark:bg-white dark:text-gray-950 rounded-xl" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                            </svg>
-                            <span className="ml-2.5 text-lg md:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">Optimum</span>
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src="/Снимок экрана 2026-07-13 125121.png"
+                                    alt="Optimum Logo"
+                                    className="w-8 h-8 md:w-9 md:h-9 rounded-xl object-contain"
+                                />
+                                <span className="text-black dark:text-white font-bold text-xl">Optimum</span>
+                            </div>
                         </Link>
                     </div>
 

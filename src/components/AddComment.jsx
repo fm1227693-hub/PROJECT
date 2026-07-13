@@ -53,19 +53,17 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                 <h2 className='text-xl sm:text-2xl dark:text-white mb-4 sm:mb-5 font-black text-gray-900'>
                     {editId ? 'O\'quvchini tahrirlash' : 'Yangi o\'quvchi qo\'shish'}
                 </h2>
-                <button onClick={() => setAddModal(false)} className='absolute w-8 h-8 sm:w-9 sm:h-9 top-3.5 right-3.5 sm:top-4 sm:right-4 rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-white transition-colors flex items-center justify-center text-xl sm:text-2xl leading-none'>&times;</button>
+                <button onClick={() => setAddModal(false)} className='absolute w-8 h-8 sm:w-9 sm:h-9 top-3.5 right-3.5 sm:top-4 sm:right-4 rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-white transition-colors flex items-center justify-center text-xl sm:text-2xl leading-none cursor-pointer'>&times;</button>
 
                 <div className="mb-3.5 sm:mb-4">
-                    <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">Rasm tanlash</label>
-                    <label className="flex items-center w-full border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl text-sm sm:text-base text-gray-400 dark:text-gray-500 cursor-pointer hover:border-red-500 transition-colors">
-                        <span>{imageUrl ? "Rasm tanlandi" : "Faylni tanlang..."}</span>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => e.target.files[0] && setImageUrl(URL.createObjectURL(e.target.files[0]))}
-                            className="hidden"
-                        />
-                    </label>
+                    <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">Rasm ssilkasi (URL)</label>
+                    <input
+                        type="text"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        placeholder='https://i.ibb.co/.../image.png'
+                        className='w-full border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950 focus:border-red-500 focus:outline-none px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl text-sm sm:text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 transition-colors'
+                    />
                 </div>
 
                 <div className="mb-3.5 sm:mb-4">
