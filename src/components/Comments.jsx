@@ -10,7 +10,7 @@ export default function Comments() {
 
     const GetData = async function () {
         try {
-            const res = await axios.get('http://localhost:3000/products')
+            const res = await axios.get('http://localhost:3001/products')
             setData(res.data)
         } catch (e) {
             console.log(e)
@@ -20,7 +20,7 @@ export default function Comments() {
     const DeleteData = async function (id) {
         if (!id) return false
         try {
-            await axios.delete(`http://localhost:3000/products/${id}`)
+            await axios.delete(`http://localhost:3001/products/${id}`)
             toast.success('Muvaffaqiyatli o`chirildi')
             GetData()
         } catch (e) {

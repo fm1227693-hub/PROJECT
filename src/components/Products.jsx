@@ -7,7 +7,7 @@ export default function Products() {
 
     const GetData = async function () {
         try {
-            const res = await axios.get('http://localhost:3000/products')
+            const res = await axios.get('http://localhost:3001/products')
             console.log(res)
             setData(res.data)
         } catch (e) {
