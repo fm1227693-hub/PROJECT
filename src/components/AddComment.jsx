@@ -10,7 +10,7 @@ export default function AddComment({ getdata, setAddModal, editId }) {
     const getDetailData = async function () {
         try {
             if (!editId) return;
-            const res = await axios.get(`http://localhost:3001/products/${editId}`)
+            const res = await axios.get(`https://project-3gpc.onrender.com/products/${editId}`)
             setImageUrl(res.data.image || '')
             setTitle(res.data.title || '')
             setAchievement(res.data.achievement || '')
@@ -32,10 +32,10 @@ export default function AddComment({ getdata, setAddModal, editId }) {
             };
 
             if (editId) {
-                await axios.put(`http://localhost:3001/products/${editId}`, payload);
+                await axios.put(`https://project-3gpc.onrender.com/products/${editId}`, payload);
                 toast.success('Muvaffaqiyatli tahrirlandi');
             } else {
-                await axios.post('http://localhost:3001/products', payload);
+                await axios.post('https://project-3gpc.onrender.com/products', payload);
                 toast.success('Muvaffaqiyatli qo\'shildi');
             }
 

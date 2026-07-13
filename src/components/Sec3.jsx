@@ -8,7 +8,7 @@ export default function Sec3() {
 
     const GetData = async function () {
         try {
-            const res = await axios.get('http://localhost:3001/products')
+            const res = await axios.get('https://project-3gpc.onrender.com/products')
             console.log(res)
             setData(res.data)
         } catch (e) {
