@@ -38,7 +38,7 @@ export default function Navbar() {
                         </button>
 
                         <Link to="/" className="flex items-center text-gray-900 dark:text-white cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" className="w-8 h-8 md:w-9 md:h-9 text-white p-2 bg-gray-950 dark:bg-white dark:text-gray-950 rounded-xl" viewBox="0 0 24 24">
+                            <svg xmlns="public/Снимок экрана 2026-07-13 125121.png" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" className="w-8 h-8 md:w-9 md:h-9 text-white p-2 bg-gray-950 dark:bg-white dark:text-gray-950 rounded-xl" viewBox="0 0 24 24">
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                             </svg>
                             <span className="ml-2.5 text-lg md:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white">Optimum</span>
