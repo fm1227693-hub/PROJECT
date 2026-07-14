@@ -71,14 +71,17 @@ export default function Navbar() {
 
                 </div>
 
-                {menuOpen && (
-                    <nav className="md:hidden flex flex-col px-4 pt-2 pb-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 gap-3 font-semibold text-sm text-gray-600 dark:text-gray-300">
-                        <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Bosh sahifa</Link>
-                        <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Statistika</Link>
-                        <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Kurslar</Link>
-                        <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Biz haqimizda</Link>
-                    </nav>
-                )}
+                {/* Silliq ochiluvchi mobil menyu */}
+                <div className={`md:hidden grid transition-discrete duration-300 ease-in-out ${menuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                    <div className="overflow-hidden">
+                        <nav className="flex flex-col px-4 pt-2 pb-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 gap-3 font-semibold text-sm text-gray-600 dark:text-gray-300">
+                            <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Bosh sahifa</Link>
+                            <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Statistika</Link>
+                            <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Kurslar</Link>
+                            <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Biz haqimizda</Link>
+                        </nav>
+                    </div>
+                </div>
             </header>
         </div>
     )

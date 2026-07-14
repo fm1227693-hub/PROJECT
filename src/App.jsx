@@ -6,11 +6,13 @@ import Stats from "./components/Stats";
 import Products from "./components/Products";
 import AboutUs from "./components/AboutUs";
 import Admin from "./components/Admin";
+import Register from "./components/Register";
 
 export default function App() {
   return (
     <div className="dark:bg-[#090623]">
       <Navbar />
+      <Register/>
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path='/stats' element={<Stats />} />
