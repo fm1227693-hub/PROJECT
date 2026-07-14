@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaFacebookF, FaTelegramPlane, FaInstagram } from 'react-icons/fa'
+import { FaFacebookF, FaTelegramPlane, FaInstagram, FaYoutube } from 'react-icons/fa'
 
 export default function Footer() {
     return (
@@ -15,14 +15,14 @@ export default function Footer() {
                 </p>
 
                 <div className="flex gap-4">
-                    <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-blue-600 hover:text-white transition-all text-xl">
+                    <a href="https://telegram.me/optimumenglishscape" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-blue-600 hover:text-white transition-all text-xl">
                         <FaTelegramPlane />
                     </a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-pink-600 hover:text-white transition-all text-xl">
+                    <a href="https://www.instagram.com/optimum_english_9/profilecard/?igsh=MTZmc2JvMmhvNHpjdw==" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-pink-600 hover:text-white transition-all text-xl">
                         <FaInstagram />
                     </a>
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-blue-700 hover:text-white transition-all text-xl">
-                        <FaFacebookF />
+                    <a href="https://youtube.com/@optimumschoolofenglish?si=3swxgqQR7g884fnu" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-blue-700 hover:text-white transition-all text-xl">
+                        <FaYoutube />
                     </a>
                 </div>
 
