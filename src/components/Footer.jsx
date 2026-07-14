@@ -21,7 +21,7 @@ export default function Footer() {
                     <a href="https://www.instagram.com/optimum_english_9/profilecard/?igsh=MTZmc2JvMmhvNHpjdw==" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-pink-600 hover:text-white transition-all text-xl">
                         <FaInstagram />
                     </a>
-                    <a href="https://youtube.com/@optimumschoolofenglish?si=3swxgqQR7g884fnu" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-blue-700 hover:text-white transition-all text-xl">
+                    <a href="https://youtube.com/@optimumschoolofenglish?si=3swxgqQR7g884fnu" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-900 hover:bg-red-700 hover:text-white transition-all text-xl">
                         <FaYoutube />
                     </a>
                 </div>
