@@ -23,7 +23,7 @@ export default function Sec3() {
     }, [addModal])
     return (
         <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 pt-24 mb-24 select-none font-sans transition-colors duration-200 bg-gray-50 dark:bg-gray-950 min-h-screen">
-            {/* <div className="max-w-5xl mx-auto p-4 sm:p-6">
+            <div className="max-w-5xl mx-auto p-4 sm:p-6">
                 <div className="flex justify-between items-center mb-8 border-b border-gray-200/60 dark:border-gray-800 pb-4">
                     <div className="flex items-center gap-3">
                         <span className="w-4 h-[9px] md:w-3 md:h-3 bg-red-600 rounded-full animate-ping"></span>
@@ -71,7 +71,7 @@ export default function Sec3() {
                         <p className="text-gray-400 dark:text-gray-500 text-sm font-medium">Hozircha yutuqqa erishgan o'quvchilar qo'shilmagan</p>
                     </div>
                 )}
-            </div> */}
+            </div>
 
 
 
