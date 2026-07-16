@@ -14,7 +14,7 @@ export default function Sec3() {
         } catch (e) {
             console.log(e)
         }
-    }
+    }   
 
 
 
@@ -490,7 +490,7 @@ export default function Sec3() {
                             </p>
                         </div>
                         <div className="flex items-center justify-between">
-                            <p className="text-xl font-bold text-gray-900 dark:text-gray-100">OBS: 7.%</p>
+                            <p className="text-xl font-bold text-gray-900 dark:text-gray-100">OBS: 7.5  </p>
                             <span className="text-xs font-medium text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
                                 View →
                             </span>
