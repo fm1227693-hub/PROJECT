@@ -28,15 +28,15 @@ export default function Sec3() {
                     <div className="flex items-center gap-3">
                         <span className="w-4 h-[9px] md:w-3 md:h-3 bg-red-600 rounded-full animate-ping"></span>
                         <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-955 dark:text-white tracking-tight">
-                            Yutuqqa erishgan o'quvchilar
+                            Yuqori yutuqqa erishgan o'quvchilar
                         </h2>
                     </div>
-                    <span className="text-xs font-semibold px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full">
-                        Optimum Pride
-                    </span>
+                        <span className="text-xs font-semibold px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full">
+                            Optimum Pride
+                        </span>
                 </div>
 
-                {data && data.length > 0 ? (
+                {/* {data && data.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {data.map((item) => (
                             <div
@@ -70,7 +70,7 @@ export default function Sec3() {
                     <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
                         <p className="text-gray-400 dark:text-gray-500 text-sm font-medium">Hozircha yutuqqa erishgan o'quvchilar qo'shilmagan</p>
                     </div>
-                )}
+                )} */}
             </div>
 
 
@@ -147,7 +147,7 @@ export default function Sec3() {
                         </div>
                     </div>
                 </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-09.jpg"
@@ -181,8 +181,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-11.jpg"
@@ -216,8 +216,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-13.jpg"
@@ -251,8 +251,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-15.jpg"
@@ -286,8 +286,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-17.jpg"
@@ -321,8 +321,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-19.jpg"
@@ -356,8 +356,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-21.jpg"
@@ -391,8 +391,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-23.jpg"
@@ -426,8 +426,8 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
+                </div> */}
+                {/* <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img
                             src="public/photo_2026-07-14_23-35-25.jpg"
@@ -461,7 +461,7 @@ export default function Sec3() {
                             </span>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="group border dark:border-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl dark:hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-2 bg-white dark:bg-gray-900">
                     <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800">
                         <img

@@ -11,11 +11,11 @@ import Mentors from "./components/Mentors";
 import { useState } from "react";
 
 export default function App() {
-  const [modal, setModal] = useState(false)
+ 
   return (
     <div className="dark:bg-[#090623]">
       <Navbar />
-      {/* <Mentors/> */}
+      <Mentors />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path='/stats' element={<Stats />} />
@@ -27,13 +27,7 @@ export default function App() {
 
       <Footer />
 
-      <button
-        onClick={() => setModal(!modal)} className="text-7xl">alo</button>
-      {
-        modal && (
-          <div className="fixed top-50 left-50 text-9xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem omnis necessitatibus architecto deserunt. Magnam voluptate adipisci animi, alias optio pariatur esse perferendis obcaecati est itaque commodi omnis tenetur expedita consequuntur.</div>
-        )
-      }
+     
     </div>
   )
 }

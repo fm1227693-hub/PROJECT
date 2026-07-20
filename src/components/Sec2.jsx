@@ -4,7 +4,7 @@ export default function Sec2() {
   return (
 <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-24 mb-24 select-none font-sans transition-colors duration-200">
             
-    <div className="text-center max-w-2xl mx-auto mb-16">
+     <div className="text-center max-w-2xl mx-auto mb-16">
         <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full">
             O'qish jarayoni
         </span>
