@@ -25,7 +25,7 @@ export default function Navbar() {
 
     return (
         <div className='fixed top-0 left-0 w-full z-50 font-sans select-none'>
-            <header className="bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm transition-colors duration-200">
+            <header className="bg-white/90 dark:bg-gray-950/30 backdrop-blur-md border-b border-gray-300/10 dark:border-gray-800 shadow-sm transition-colors duration-200">
                 <div className="container mx-auto px-4 py-3 flex items-center justify-between">
 
                     <div className="flex items-center gap-3">
@@ -54,6 +54,7 @@ export default function Navbar() {
                         <Link to="/stats" className="hover:text-gray-900 dark:hover:text-white transition-colors">Statistika</Link>
                         <Link to="/products" className="hover:text-gray-900 dark:hover:text-white transition-colors">Yutuqlar</Link>
                         <Link to="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">Biz haqimizda</Link>
+                        <Link to="/register" className="hover:text-gray-900 dark:hover:text-white transition-colors">Ro`yxatdan o`tish</Link>
                     </nav>
 
                     <div className="flex items-center gap-2 md:gap-3">
@@ -71,7 +72,6 @@ export default function Navbar() {
 
                 </div>
 
-                {/* Silliq ochiluvchi mobil menyu */}
                 <div className={`md:hidden grid transition-discrete duration-300 ease-in-out ${menuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                     <div className="overflow-hidden">
                         <nav className="flex flex-col px-4 pt-2 pb-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 gap-3 font-semibold text-sm text-gray-600 dark:text-gray-300">
@@ -79,6 +79,7 @@ export default function Navbar() {
                             <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Statistika</Link>
                             <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Kurslar</Link>
                             <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Biz haqimizda</Link>
+                            <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition" >Ro`yxatdan o`tish</Link>
                         </nav>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
+import "../baza/jhygg.json"
 
 export default function AddComment({ getdata, setAddModal, editId }) {
     const [imageUrl, setImageUrl] = useState('')
