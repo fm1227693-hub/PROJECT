@@ -150,7 +150,7 @@ export default function Mentors() {
         </div>
       )}
 
-      {toast     && (
+      {toast && (
         <div className="fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-3 animate-bounce">
           <span>✅ Ma'lumot muvaffaqiyatli yuborildi!</span>
         </div>
