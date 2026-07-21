@@ -6,7 +6,7 @@ export default function Sec3() {
     const [data, setData] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [modal, setModal] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState(null); // Qaysi o'quvchi tanlanganini saqlash uchun
+    const [selectedStudent, setSelectedStudent] = useState(null);
 
     const GetData = async function () {
         try {
@@ -22,7 +22,7 @@ export default function Sec3() {
         GetData()
     }, [addModal])
 
-    // O'quvchilar ma'lumotlari massivi
+    // Rasmlar yo'li Vercel'da ishlashi uchun to'g'irlandi (boshidagi "public/" olib tashlandi)
     const students = [
         {
             id: 1,
@@ -32,7 +32,7 @@ export default function Sec3() {
             prepTime: "6 months",
             teacher: "Mehrangiz",
             obs: "7.5",
-            image: "public/photo_2026-07-14_23-35-27.jpg"
+            image: "/photo_2026-07-14_23-35-27.jpg"
         },
         {
             id: 2,
@@ -42,7 +42,7 @@ export default function Sec3() {
             prepTime: "13 months",
             teacher: "Ruhillo Asrorov",
             obs: "7.0",
-            image: "public/photo_2026-07-14_23-35-01.jpg"
+            image: "/photo_2026-07-14_23-35-01.jpg"
         },
         {
             id: 3,
@@ -52,7 +52,7 @@ export default function Sec3() {
             prepTime: "9 months",
             teacher: "Ruhillo Asrorov",
             obs: "7.0",
-            image: "public/photo_2026-07-14_23-35-06.jpg"
+            image: "/photo_2026-07-14_23-35-06.jpg"
         }
     ];
 
@@ -117,7 +117,6 @@ export default function Sec3() {
                 ))}
             </div>
 
-            {/* Modal endi tanlangan o'quvchi ma'lumotlarini dinamik chiqaradi */}
             {modal && selectedStudent && (
                 <div className="fixed inset-0 w-screen h-screen z-50 bg-white dark:bg-gray-950 flex flex-col overflow-y-auto">
                     <div className="flex justify-between items-center px-8 py-5 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-10 shadow-sm">
