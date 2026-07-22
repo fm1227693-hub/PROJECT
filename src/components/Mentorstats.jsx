@@ -116,15 +116,17 @@ export default function Mentorstats() {
                 data-aos-duration="300"
                 className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-8 w-full max-w-lg relative text-gray-900 dark:text-white shadow-2xl"
             >
+                {/* ✕ Yopish tugmasi juda ko'rininarli qilindi */}
                 <button
                     type="button"
                     onClick={() => setModal(false)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl font-bold cursor-pointer"
+                    className="absolute top-5 right-5 w-10 h-10 bg-gray-100 hover:bg-red-600 text-gray-700 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-red-600 dark:hover:text-white rounded-2xl flex items-center justify-center text-lg font-bold cursor-pointer transition-all shadow-sm hover:rotate-90"
+                    title="Yopish"
                 >
                     ✕
                 </button>
 
-                <h3 className="text-2xl font-bold mb-2">{t('aboutMentors.modalTitle') || "Mentor bilan bog'lanish"}</h3>
+                <h3 className="text-2xl font-bold mb-2 pr-10">{t('aboutMentors.modalTitle') || "Mentor bilan bog'lanish"}</h3>
                 <p className="text-gray-600 dark:text-slate-400 text-sm mb-6">
                     {t('aboutMentors.selectedTeacher') || "Tanlangan ustoz:"} <span className="text-red-600 dark:text-red-400 font-medium">{selectedMentor}</span>
                 </p>
@@ -171,11 +173,12 @@ export default function Mentorstats() {
         return (
             <div className="bg-white dark:bg-[#090623] min-h-screen py-16 px-4 md:px-12 text-gray-900 dark:text-white transition-colors duration-200">
                 <div className="max-w-5xl mx-auto">
+                    {/* Orqaga qaytish tugmasi (Chiroyli badge/button dizayniga o'tkazildi) */}
                     <button
                         onClick={() => setActiveMentorDetail(null)}
-                        className="mb-8 flex items-center gap-2 text-base font-medium text-red-600 dark:text-red-400 hover:underline cursor-pointer"
+                        className="mb-8 inline-flex items-center gap-2.5 bg-gray-100 hover:bg-red-600 hover:text-white dark:bg-slate-900 dark:border dark:border-slate-800 dark:hover:bg-red-600 text-gray-800 dark:text-slate-200 px-5 py-2.5 rounded-2xl text-sm font-bold transition-all shadow-sm cursor-pointer group"
                     >
-                        ← {t('aboutMentors.backBtn') || "Orqaga qaytish"}
+                        <span className="transition-transform group-hover:-translate-x-1">←</span> {t('aboutMentors.backBtn') || "Orqaga qaytish"}
                     </button>
 
                     <div
@@ -306,7 +309,7 @@ export default function Mentorstats() {
                                         {mentor.experience}
                                     </span>
                                 </div>
-                                <p className="text-red-600 dark:text-red-400 text-base font-semibold mb-3">{mentor.role}    </p>
+                                <p className="text-red-600 dark:text-red-400 text-base font-semibold mb-3">{mentor.role}</p>
                                 <p className="text-gray-600 dark:text-slate-300 text-base mb-5 line-clamp-2">{mentor.bio}</p>
 
                                 <div className="flex flex-wrap justify-center sm:justify-start gap-2.5 mb-6">

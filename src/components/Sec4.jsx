@@ -23,7 +23,7 @@ export default function Sec4() {
                     data-aos-duration="800"
                     className="flex flex-col space-y-6 max-w-xl"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit animate-pulse">
                         {t('about.badge')}
                     </div>
 
@@ -38,24 +38,30 @@ export default function Sec4() {
                     </p>
 
                     <div className="space-y-4 pt-2">
-                        <div className="flex gap-4">
-                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm">
+                        {/* 1-blok */}
+                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
+                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
                                 🎯
                             </div>
                             <div>
-                                <h4 className="text-base font-bold text-gray-950 dark:text-white">{t('about.goalTitle')}</h4>
+                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
+                                    {t('about.goalTitle')}
+                                </h4>
                                 <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
                                     {t('about.goalDesc')}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex gap-4">
-                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm">
+                        {/* 2-blok */}
+                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
+                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
                                 👨‍🏫
                             </div>
                             <div>
-                                <h4 className="text-base font-bold text-gray-950 dark:text-white">{t('about.teacherTitle')}</h4>
+                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
+                                    {t('about.teacherTitle')}
+                                </h4>
                                 <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
                                     {t('about.teacherDesc')}
                                 </p>
@@ -73,11 +79,11 @@ export default function Sec4() {
                     <img
                         src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2340&auto=format&fit=crop"
                         alt="Students studying English"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/30 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent"></div>
 
-                    <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-white/20 dark:border-gray-800 flex items-center gap-3">
+                    <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-white/20 dark:border-gray-800 flex items-center gap-3 transition-transform duration-300 group-hover:-translate-y-1">
                         <span className="text-2xl font-black text-red-600 dark:text-red-400">5+</span>
                         <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 leading-tight block whitespace-pre-line">
                             {t('about.experience')}

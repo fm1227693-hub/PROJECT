@@ -50,24 +50,24 @@ export default function AddComment({ getdata, setAddModal, editId }) {
     }
 
     return (
-        <div className='fixed left-0 top-0 bg-black/60 backdrop-blur-md h-screen w-full flex items-center justify-center z-50 p-4 transition-opacity duration-300'>
-            {/* Modal oynaning o'zi (Scale va Fade animatsiyasi bilan) */}
-            <div className="max-w-lg w-full p-6 sm:p-8 rounded-3xl dark:bg-gray-900 bg-white shadow-2xl relative transform transition-all animate-in fade-in zoom-in-95 duration-200 border border-gray-100 dark:border-gray-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 dark:bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+            {/* Modal oynaning o'zi */}
+            <div className="relative w-full max-w-lg p-6 sm:p-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl transform transition-all">
 
-                <h2 className='text-xl sm:text-2xl dark:text-white mb-5 font-black text-gray-950 tracking-tight'>
+                <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white mb-6 tracking-tight pr-8">
                     {editId ? t('addComment.editTitle') : t('addComment.addTitle')}
                 </h2>
 
                 <button
                     onClick={() => setAddModal(false)}
-                    className='absolute w-9 h-9 top-4 right-4 rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-white transition-colors flex items-center justify-center text-2xl leading-none cursor-pointer'
+                    className="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors text-xl leading-none cursor-pointer"
                 >
                     &times;
                 </button>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                     <div>
-                        <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                             {t('addComment.imageLabel')}
                         </label>
                         <input
@@ -75,12 +75,12 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                             value={imageUrl}
                             onChange={(e) => setImageUrl(e.target.value)}
                             placeholder={t('addComment.imagePlaceholder')}
-                            className='w-full border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950 focus:border-red-500 dark:focus:border-red-500 focus:outline-none px-4 py-3 rounded-xl text-sm sm:text-base text-gray-800 dark:text-gray-200 placeholder-gray-400 transition-colors'
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/50 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-600 focus:border-red-500 dark:focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none transition-all text-sm sm:text-base"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                             {t('addComment.nameLabel')}
                         </label>
                         <input
@@ -88,12 +88,12 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder={t('addComment.namePlaceholder')}
-                            className='w-full border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950 focus:border-red-500 dark:focus:border-red-500 focus:outline-none px-4 py-3 rounded-xl text-sm sm:text-base text-gray-800 dark:text-gray-200 placeholder-gray-400 transition-colors'
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/50 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-600 focus:border-red-500 dark:focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none transition-all text-sm sm:text-base"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">
+                        <label className="block text-[11px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                             {t('addComment.achievementLabel')}
                         </label>
                         <input
@@ -101,25 +101,26 @@ export default function AddComment({ getdata, setAddModal, editId }) {
                             value={achievement}
                             onChange={(e) => setAchievement(e.target.value)}
                             placeholder={t('addComment.achievementPlaceholder')}
-                            className='w-full border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950 focus:border-red-500 dark:focus:border-red-500 focus:outline-none px-4 py-3 rounded-xl text-sm sm:text-base text-gray-800 dark:text-gray-200 placeholder-gray-400 transition-colors'
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950/50 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-600 focus:border-red-500 dark:focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none transition-all text-sm sm:text-base"
                         />
                     </div>
                 </div>
 
-                <div className="flex justify-end w-full mt-6 gap-3">
+                <div className="flex flex-col-reverse sm:flex-row justify-end items-center gap-3 mt-8">
                     <button
                         onClick={() => setAddModal(false)}
-                        className='px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-800 text-sm sm:text-base text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors font-semibold cursor-pointer'
+                        className="w-full sm:w-auto px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold text-sm sm:text-base transition-colors cursor-pointer active:scale-95"
                     >
                         {t('addComment.cancelBtn')}
                     </button>
                     <button
                         onClick={PostData}
-                        className='px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-sm sm:text-base text-white transition-colors font-bold cursor-pointer shadow-lg shadow-red-500/20'
+                        className="w-full sm:w-auto px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-red-500/30 transition-colors cursor-pointer active:scale-95"
                     >
                         {editId ? t('addComment.saveBtn') : t('addComment.addBtn')}
                     </button>
                 </div>
+
             </div>
         </div>
     )

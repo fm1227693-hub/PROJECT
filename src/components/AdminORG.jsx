@@ -7,7 +7,7 @@ export default function AdminORG() {
     useEffect(() => {
         AOS.init({
             once: true,
-            offset: 100,
+            offset: 80,
         })
     }, [])
 
@@ -15,7 +15,7 @@ export default function AdminORG() {
         <div
             data-aos="fade-in"
             data-aos-duration="600"
-            className="p-4 sm:p-6 lg:p-8 bg-gray-50/50 dark:bg-gray-950 font-sans text-left flex flex-col min-h-screen transition-colors duration-200"
+            className="p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-950 font-sans text-left flex flex-col min-h-screen transition-colors duration-200"
         >
             <Comments />
         </div>

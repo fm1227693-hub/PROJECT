@@ -22,13 +22,13 @@ export default function Sec1() {
             >
 
                 {/* 1-element */}
-                <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6">
+                <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/50 group">
                     <div className="flex flex-col">
-                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">32,451</span>
+                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">32,451</span>
                         <span className="text-sm font-bold text-red-500 dark:text-red-400 block mt-0.5">{t('stats.studentsTitle')}</span>
                         <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 block mt-1">+14.00 (+0.50%)</span>
                     </div>
-                    <div className="w-24 h-12 flex items-center">
+                    <div className="w-24 h-12 flex items-center transform group-hover:scale-105 transition-transform duration-300">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <defs>
                                 <linearGradient id="sparklineGradRed1" x1="0" y1="0" x2="0" y2="1">
@@ -43,13 +43,13 @@ export default function Sec1() {
                 </div>
 
                 {/* 2-element */}
-                <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6">
+                <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/50 group">
                     <div className="flex flex-col">
-                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">15,236</span>
+                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">15,236</span>
                         <span className="text-sm font-bold text-red-500 dark:text-red-400 block mt-0.5">{t('stats.lessonsTitle')}</span>
                         <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 block mt-1">+138.97 (+0.54%)</span>
                     </div>
-                    <div className="w-24 h-12 flex items-center">
+                    <div className="w-24 h-12 flex items-center transform group-hover:scale-105 transition-transform duration-300">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <defs>
                                 <linearGradient id="sparklineGradRed2" x1="0" y1="0" x2="0" y2="1">
@@ -64,13 +64,13 @@ export default function Sec1() {
                 </div>
 
                 {/* 3-element */}
-                <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6">
+                <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/50 group">
                     <div className="flex flex-col">
-                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">7,688</span>
+                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">7,688</span>
                         <span className="text-sm font-bold text-red-500 dark:text-red-400 block mt-0.5">{t('stats.speakingTitle')}</span>
                         <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 block mt-1">+57.62 (+0.76%)</span>
                     </div>
-                    <div className="w-24 h-12 flex items-center">
+                    <div className="w-24 h-12 flex items-center transform group-hover:scale-105 transition-transform duration-300">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <defs>
                                 <linearGradient id="sparklineGradRed3" x1="0" y1="0" x2="0" y2="1">
@@ -85,13 +85,13 @@ export default function Sec1() {
                 </div>
 
                 {/* 4-element */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/50 group">
                     <div className="flex flex-col">
-                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">1,553</span>
+                        <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">1,553</span>
                         <span className="text-sm font-bold text-red-500 dark:text-red-400 block mt-0.5">{t('stats.certificatesTitle')}</span>
                         <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 block mt-1">+138.97 (+0.54%)</span>
                     </div>
-                    <div className="w-24 h-12 flex items-center">
+                    <div className="w-24 h-12 flex items-center transform group-hover:scale-105 transition-transform duration-300">
                         <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                             <defs>
                                 <linearGradient id="sparklineGradRed4" x1="0" y1="0" x2="0" y2="1">
