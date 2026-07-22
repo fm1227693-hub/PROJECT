@@ -1,8 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 export default function Sec3() {
+    const { t } = useTranslation()
     const [data, setData] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [modal, setModal] = useState(false);
@@ -67,7 +69,7 @@ export default function Sec3() {
                         </h2>
                     </div>
                     <span className="text-xs font-semibold px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full">
-                        Optimum Pride
+                        {t('students.badge')}
                     </span>
                 </div>
             </div>
@@ -89,16 +91,16 @@ export default function Sec3() {
                             </h3>
                             <div className="space-y-1.5 text-sm mb-4">
                                 <p className="text-gray-600 dark:text-gray-400">
-                                    <span className="font-medium text-gray-900 dark:text-gray-200">Age:</span> {student.age}
+                                    <span className="font-medium text-gray-900 dark:text-gray-200">{t('students.ageLabel')}:</span> {student.age}
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-400">
-                                    <span className="font-medium text-gray-900 dark:text-gray-200">Starting level:</span> {student.startingLevel}
+                                    <span className="font-medium text-gray-900 dark:text-gray-200">{t('students.levelLabel')}:</span> {student.startingLevel}
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-400">
-                                    <span className="font-medium text-gray-900 dark:text-gray-200">Preparation time:</span> {student.prepTime}
+                                    <span className="font-medium text-gray-900 dark:text-gray-200">{t('students.timeLabel')}:</span> {student.prepTime}
                                 </p>
                                 <p className="text-gray-600 dark:text-gray-400">
-                                    <span className="font-medium text-gray-900 dark:text-gray-200">Teacher:</span> {student.teacher}
+                                    <span className="font-medium text-gray-900 dark:text-gray-200">{t('students.teacherLabel')}:</span> {student.teacher}
                                 </p>
                             </div>
                             <div className="flex items-center justify-between">
@@ -109,7 +111,7 @@ export default function Sec3() {
                                         setModal(true);
                                     }}
                                     className="text-xs font-medium text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300 cursor-pointer">
-                                    View →
+                                    {t('students.viewBtn')}
                                 </span>
                             </div>
                         </div>
@@ -130,7 +132,7 @@ export default function Sec3() {
                             }}
                             className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-colors cursor-pointer shadow-md"
                         >
-                            ✕ Yopish
+                            {t('students.closeBtn')}
                         </button>
                     </div>
                     <div className="flex-1 max-w-7xl w-full mx-auto p-8 lg:p-12">
@@ -146,16 +148,16 @@ export default function Sec3() {
                                 <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">{selectedStudent.name}</h1>
                                 <div className="space-y-4 text-lg text-gray-600 dark:text-gray-300">
                                     <p className="border-b border-gray-200 dark:border-gray-800 pb-3">
-                                        <strong className="text-gray-900 dark:text-white">Age:</strong> {selectedStudent.age}
+                                        <strong className="text-gray-900 dark:text-white">{t('students.ageLabel')}:</strong> {selectedStudent.age}
                                     </p>
                                     <p className="border-b border-gray-200 dark:border-gray-800 pb-3">
-                                        <strong className="text-gray-900 dark:text-white">Starting level:</strong> {selectedStudent.startingLevel}
+                                        <strong className="text-gray-900 dark:text-white">{t('students.levelLabel')}:</strong> {selectedStudent.startingLevel}
                                     </p>
                                     <p className="border-b border-gray-200 dark:border-gray-800 pb-3">
-                                        <strong className="text-gray-900 dark:text-white">Preparation time:</strong> {selectedStudent.prepTime}
+                                        <strong className="text-gray-900 dark:text-white">{t('students.timeLabel')}:</strong> {selectedStudent.prepTime}
                                     </p>
                                     <p className="border-b border-gray-200 dark:border-gray-800 pb-3">
-                                        <strong className="text-gray-900 dark:text-white">Teacher:</strong> {selectedStudent.teacher}
+                                        <strong className="text-gray-900 dark:text-white">{t('students.teacherLabel')}:</strong> {selectedStudent.teacher}
                                     </p>
                                 </div>
                                 <div className="pt-4">

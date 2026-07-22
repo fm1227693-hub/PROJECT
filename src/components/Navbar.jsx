@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaGlobe } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 export default function Navbar() {
+    const { t, i18n } = useTranslation()
+
     const [dark, isDark] = useState(true)
     const [menuOpen, setMenuOpen] = useState(false)
 
@@ -22,6 +25,45 @@ export default function Navbar() {
             document.querySelector('body').classList.remove('dark')
         }
     }, [])
+
+    // Tilni o'zgartiruvchi takrorlanuvchi qism (Kod qisqaroq bo'lishi uchun)
+    const LanguageSelector = () => (
+        <div className="flex items-center gap-1.5 bg-gray-100/80 dark:bg-gray-900/80 backdrop-blur-sm p-1.5 rounded-full border border-gray-200/60 dark:border-gray-800 shadow-inner">
+            <div className="pl-2 pr-1 text-gray-400 dark:text-gray-500 flex items-center">
+                <FaGlobe className="w-3.5 h-3.5" />
+            </div>
+            <button 
+                onClick={() => { i18n.changeLanguage('en') }} 
+                className={`w-7 h-7 text-[11px] font-extrabold rounded-full transition-all flex items-center justify-center ${
+                    i18n.language === 'en' 
+                        ? 'bg-red-600 text-white shadow-md scale-105' 
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'
+                }`}
+            >
+                EN
+            </button>
+            <button 
+                onClick={() => { i18n.changeLanguage('uz') }} 
+                className={`w-7 h-7 text-[11px] font-extrabold rounded-full transition-all flex items-center justify-center ${
+                    i18n.language === 'uz' 
+                        ? 'bg-red-600 text-white shadow-md scale-105' 
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'
+                }`}
+            >
+                UZ
+            </button>
+            <button 
+                onClick={() => { i18n.changeLanguage('ru') }} 
+                className={`w-7 h-7 text-[11px] font-extrabold rounded-full transition-all flex items-center justify-center ${
+                    i18n.language === 'ru' 
+                        ? 'bg-red-600 text-white shadow-md scale-105' 
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'
+                }`}
+            >
+                RU
+            </button>
+        </div>
+    )
 
     return (
         <div className='fixed top-0 left-0 w-full z-50 font-sans select-none'>
@@ -49,13 +91,19 @@ export default function Navbar() {
                         </Link>
                     </div>
 
+                    {/* Kompyuter uchun menyu */}
                     <nav className="hidden md:flex items-center text-sm font-semibold text-gray-500 dark:text-gray-400 gap-6">
-                        <Link to="/" className="hover:text-gray-900 dark:hover:text-white transition-colors">Bosh sahifa</Link>
-                        <Link to="/stats" className="hover:text-gray-900 dark:hover:text-white transition-colors">Statistika</Link>
-                        <Link to="/products" className="hover:text-gray-900 dark:hover:text-white transition-colors">Yutuqlar</Link>
-                        <Link to="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">Biz haqimizda</Link>
-                        <Link to="/register" className="hover:text-gray-900 dark:hover:text-white transition-colors">Ro`yxatdan o`tish</Link>
+                        <Link to="/" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('Bosh sahifa')}</Link>
+                        <Link to="/stats" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('Statistika')}</Link>
+                        <Link to="/products" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('Yutuqlar')}</Link>
+                        <Link to="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('Biz haqimizda')} </Link>
+                        <Link to="/register" className="hover:text-gray-900 dark:hover:text-white transition-colors">{t('Ro`yxatdan o`tish')}</Link>
                     </nav>
+
+                    {/* Kompyuter uchun zamonaviy til tanlagich */}
+                    <div className="hidden md:block">
+                        <LanguageSelector />
+                    </div>
 
                     <div className="flex items-center gap-2 md:gap-3">
                         <div onClick={Theme} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-yellow-400 cursor-pointer hover:opacity-85 transition-all shadow-sm">
@@ -72,14 +120,21 @@ export default function Navbar() {
 
                 </div>
 
+                {/* Telefonda ochiladigan menyu va uning ichidagi til tanlagich */}
                 <div className={`md:hidden grid transition-discrete duration-300 ease-in-out ${menuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                     <div className="overflow-hidden">
                         <nav className="flex flex-col px-4 pt-2 pb-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 gap-3 font-semibold text-sm text-gray-600 dark:text-gray-300">
-                            <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Bosh sahifa</Link>
-                            <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Statistika</Link>
-                            <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Kurslar</Link>
-                            <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">Biz haqimizda</Link>
-                            <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition" >Ro`yxatdan o`tish</Link>
+                            <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">{t('Bosh sahifa')}</Link>
+                            <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">{t('Statistika')}</Link>
+                            <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">{t('Yutuqlar')}</Link>
+                            <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">{t('Biz haqimizda')}</Link>
+                            <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900 transition">{t('Ro`yxatdan o`tish')}</Link>
+                            
+                            {/* Telefonda menyu ochilganda pastki qismda chiqadigan til tanlash qismi */}
+                            <div className="pt-2 mt-1 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between">
+                                <span className="text-xs text-gray-400">Tilni tanlang:</span>
+                                <LanguageSelector />
+                            </div>
                         </nav>
                     </div>
                 </div>

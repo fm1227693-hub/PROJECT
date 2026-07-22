@@ -1,0 +1,204 @@
+{
+    "Welcome to React": "Welcome to React and react-i18next",
+    "greating": "hi everyone",
+    "Bosh sahifa": "Main page",
+    "Statistika": "Statistics",
+    "Yutuqlar": "Achievements",
+    "Biz haqimizda": "About us",
+    "Ro`yxatdan o`tish": "To register",
+    "Boshqaruv": "Managemant",
+    "aboutStudents": {
+        "backButton": "← Back",
+        "title": "About Students (2-Window)",
+        "description": "Detailed information about the student will be displayed here."
+    },
+    "aboutUs": {
+        "badge": "About Us",
+        "title": "Building the next-generation education platform together.",
+        "description1": "We started from a simple observation: most language learning centers and platforms are either boring or too limited for speaking practice. We built our center to completely eliminate this gap.",
+        "description2": "Our approach combines advanced teaching methodology with a student-centered comfortable environment, allowing real-time fluent communication rather than boring memorization.",
+        "card1Title": "Fast Results",
+        "card1Desc": "Specially designed intensive programs ensure achieving significant language scores in a short time.",
+        "card1Tag": "Core Principle I",
+        "card2Title": "Practical Approach",
+        "card2Desc": "The main part of classes focuses on live communication and speaking, helping to overcome the language barrier in a short time.",
+        "card2Tag": "Core Principle II",
+        "card3Title": "Towards Excellence",
+        "card3Desc": "Individual work is carried out on each student's personal mistakes and shortcomings to lead to high results.",
+        "card3Tag": "Core Principle III",
+        "locationBadge": "Our Location",
+        "locationTitle": "Find us here",
+        "locationDesc": "We are located in Uzbekistan, Bukhara city, near the \"Bukhara State Medical College\" complex. Our modern and cozy training center is always open for you. Come and get closely acquainted with our educational processes!",
+        "address": "Bukhara, Uzbekistan",
+        "imageAlt": "Our office and training center",
+        "footerTitle": "Together towards the goal, with confidence.",
+        "footerDesc": "Our team of experienced mentors provides constant support to students, ensuring they achieve high certificates and a level of fluent communication.",
+        "stat1Label": "Uncompromising Quality",
+        "stat2Label": "Support"
+    },
+    "addComment": {
+        "editTitle": "Edit Student",
+        "addTitle": "Add New Student",
+        "imageLabel": "Image URL (Link)",
+        "imagePlaceholder": "https://.../image.png",
+        "nameLabel": "Student Name",
+        "namePlaceholder": "Example: Alisher Vahobov",
+        "achievementLabel": "Achievement",
+        "achievementPlaceholder": "Example: IELTS 8.0 / CEFR B2",
+        "cancelBtn": "Cancel",
+        "saveBtn": "Save",
+        "addBtn": "Add",
+        "editSuccess": "Successfully edited",
+        "addSuccess": "Successfully added",
+        "errorOccurred": "An error occurred"
+    },
+    "admin": {
+        "title": "Enter to admin panel",
+        "placeholder": "Write your password",
+        "enterBtn": "Enter",
+        "emptyError": "Please type something",
+        "wrongPassword": "Wrong password!"
+    },
+    "comments": {
+        "title": "Manage Courses",
+        "deleteBtn": "Delete",
+        "editBtn": "Edit",
+        "addBtnTitle": "Add new course",
+        "deleteSuccess": "Successfully deleted"
+    },
+    "footer": {
+        "description": "Build your future with us. Get modern professions and quality education to find your path.",
+        "rights": "All rights reserved."
+    },
+    "home": {
+        "badge": "Optimum School of English",
+        "titlePrefix": "Learn English from scratch to",
+        "titleHighlight": "perfection",
+        "description": "Join our intensive courses based on professional teachers, live speaking clubs, and international standards right now."
+    },
+    "mentors": {
+        "sectionTitle": "Our Experienced Mentors",
+        "sectionDesc": "Professionals who will help you master English and achieve great results.",
+        "contactBtn": "Contact",
+        "modalTitle": "Contact Mentor",
+        "selectedTeacher": "Selected teacher:",
+        "nameLabel": "Your Name",
+        "namePlaceholder": "Enter your name",
+        "phoneLabel": "Phone Number",
+        "submitBtn": "Submit",
+        "successToast": "Your request has been successfully sent!",
+        "list": [
+            {
+                "name": "Madina Hakimova",
+                "role": "Senior English Instructor (IELTS 8.5)",
+                "experience": "6+ years experience",
+                "bio": "Teaches students starting from Zero to speak fluently in a short time. Prepared 200+ IELTS 7+ holders.",
+                "skills": [
+                    "General English",
+                    "IELTS",
+                    "Speaking"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ years experience",
+                "bio": "Specialist in accent reduction and overcoming the language barrier. Conducts interactive lessons.",
+                "skills": [
+                    "Grammar",
+                    "Listening",
+                    "Vocabulary"
+                ]
+            }
+        ]
+    },
+    "products": {
+        "badge": "Success",
+        "title": "Our Successful Students",
+        "defaultAchievement": "IELTS 7.5 / High Score",
+        "certified": "Certified",
+        "emptyMessage": "No student results uploaded yet",
+        "errorMessage": "Error loading data!"
+    },
+    "register": {
+        "phoneError": "Please type numbers only!",
+        "title": "Register for the course",
+        "nameLabel": "Your Name",
+        "namePlaceholder": "Example: Alisher",
+        "phoneLabel": "Your Phone Number",
+        "phonePlaceholder": "+998 90 123 45 67",
+        "submitBtn": "Register"
+    },
+    "stats": {
+        "studentsTitle": "Active Students",
+        "lessonsTitle": "Total Lessons",
+        "speakingTitle": "Speaking Clubs",
+        "certificatesTitle": "Certificates"
+    },
+    "steps": {
+        "badge": "Learning Process",
+        "title": "Start English in 3 easy steps",
+        "description": "The path to an international level with Optimum School of English is so easy.",
+        "step1Title": "Registration",
+        "step1Desc": "Choose a convenient course, leave your details, and register.",
+        "step2Title": "Level Assessment",
+        "step2Desc": "Determine your knowledge level through a special test and join the matching group.",
+        "step3Title": "Start Result",
+        "step3Desc": "Unlock fluent communication in a short time with live classes and speaking clubs."
+    },
+    "students": {
+        "title": "High-achieving students",
+        "badge": "Optimum Pride",
+        "ageLabel": "Age",
+        "levelLabel": "Starting level",
+        "timeLabel": "Preparation time",
+        "teacherLabel": "Teacher",
+        "viewBtn": "View →",
+        "modalTitle": "Detailed student information",
+        "closeBtn": "✕ Close"
+    },
+    "about": {
+        "badge": "About Us",
+        "titlePart1": "Learn English with modern and ",
+        "highlight": "easy methods",
+        "titlePart2": ".",
+        "description": "The Optimum School of English team provides an engaging environment based on real communication, free from boring memorization.",
+        "goalTitle": "Our Goal",
+        "goalDesc": "Provide quality education to every student and lay the foundation for their future success.",
+        "teacherTitle": "Qualified Teachers",
+        "teacherDesc": "A team of professional teachers with international certificates and years of experience.",
+        "experience": "Years of\nExperience"
+    },
+    "statistic": {
+        "badge": "Learning Results",
+        "title": "Our Students' Success Indicators",
+        "description": "We analyze lesson activity, vocabulary growth, and comfortable communication levels every month.",
+        "dynamicsTitle": "Growth Dynamics",
+        "analysisTitle": "Results Analysis",
+        "tab1": "1 Month",
+        "tab3": "3 Months",
+        "tabEnd": "End of Course",
+        "coursesTitle": "Course Directions",
+        "courseTypeTitle": "Lesson Types",
+        "studentsText": "(Students)",
+        "footerText": "✨ Excellence in every step",
+        "tab1Min": "25 min",
+        "tab1Errors": "Errors: 42%",
+        "tab1Trend": "Beginner: +15% Speaking",
+        "tab3Min": "45 min",
+        "tab3Errors": "Errors: 24.8% ↓",
+        "tab3Trend": "Stable: +30% Speaking",
+        "endMin": "80 min",
+        "endErrors": "Errors: 8.5% ↓",
+        "endTrend": "Highest: +45% Speaking"
+    },
+    "navbar": {
+        "home": "Home",
+        "statistic": "Statistics",
+        "achievements": "Achievements",
+        "about": "About Us",
+        "register": "Register",
+        "dashboard": "Dashboard",
+        "selectLang": "Select language:"
+    }
+}

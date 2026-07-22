@@ -1,31 +1,35 @@
 import React, { useState } from "react";
-const mentorsData = [
+import { useTranslation } from "react-i18next";
+
+const staticMentorsData = [
   {
     id: 1,
-    name: "Madina Hakimova",
-    role: "Senior English Instructor (IELTS 8.5)",
-    experience: "6+ yil tajriba",
-    skills: ["General English", "IELTS", "Speaking"],
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
-    bio: "Ingliz tilini Zero dan boshlagan o'quvchilarga tez fursatda erkin gapirishni o'rgatadi. 200+ dan ortiq IELTS 7+ egalarini tayyorlagan.",
     telegram: "https://t.me/username",
   },
   {
     id: 2,
-    name: "Jasurbek Sobirov",
-    role: "ESL & Speaking Coach",
-    experience: "4+ yil tajriba",
-    skills: ["Grammar", "Listening", "Vocabulary"],
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
-    bio: "Aksent ustida ishlash va til to'sig'ini (tili chiqishini) yengish bo'yicha mutaxassis. Darslarni interaktiv tarzda olib boradi.",
     telegram: "https://t.me/username",
   },
 ];
 
 export default function Mentors() {
+  const { t } = useTranslation();
   const [modal, setModal] = useState(false);
   const [selectedMentor, setSelectedMentor] = useState("");
   const [toast, setToast] = useState(false);
+
+  // JSON dan tarjima qilingan mentorlar massivini olish
+  const translatedMentors = t('mentors.list', { returnObjects: true }) || [];
+
+  // Rasmlar va tarjima ma'lumotlarini birlashtiramiz
+  const mentorsData = translatedMentors.map((mentor, index) => ({
+    ...mentor,
+    id: staticMentorsData[index]?.id || index + 1,
+    image: staticMentorsData[index]?.image || "",
+    telegram: staticMentorsData[index]?.telegram || "",
+  }));
 
   // Formani yuborish funksiyasi
   const handleSubmit = (e) => {
@@ -44,9 +48,9 @@ export default function Mentors() {
       <div className="max-w-6xl mx-auto">
         {/* Sarlavha qismi */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Bizning Ingliz Tili Mentorlarimiz</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">{t('mentors.sectionTitle')}</h2>
           <p className="text-slate-400 max-w-xl mx-auto">
-            Xalqaro sertifikatlarga ega tajribali ustozlar yordamida ingliz tilini mukammal o'rganing.
+            {t('mentors.sectionDesc')}
           </p>
         </div>
 
@@ -77,7 +81,7 @@ export default function Mentors() {
 
                 {/* Yo'nalishlar (Skills) */}
                 <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-5">
-                  {mentor.skills.map((skill, index) => (
+                  {mentor.skills && mentor.skills.map((skill, index) => (
                     <span key={index} className="bg-slate-800 text-slate-300 text-xs px-2.5 py-1 rounded-md">
                       {skill}
                     </span>
@@ -92,7 +96,7 @@ export default function Mentors() {
                   }}
                   className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition w-full sm:w-auto text-center cursor-pointer"
                 >
-                  Bog'lanish
+                  {t('mentors.contactBtn')}
                 </button>
               </div>
             </div>
@@ -112,25 +116,25 @@ export default function Mentors() {
               ✕
             </button>
 
-            <h3 className="text-2xl font-bold mb-2">Mentor bilan bog'lanish</h3>
+            <h3 className="text-2xl font-bold mb-2">{t('mentors.modalTitle')}</h3>
             <p className="text-slate-400 text-sm mb-4">
-              Tanlangan ustoz: <span className="text-red-400 font-medium">{selectedMentor}</span>
+              {t('mentors.selectedTeacher')} <span className="text-red-400 font-medium">{selectedMentor}</span>
             </p>
 
             {/* Forma */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm text-slate-300 mb-1">Ismingiz</label>
+                <label className="block text-sm text-slate-300 mb-1">{t('mentors.nameLabel')}</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ismingizni kiriting"
+                  placeholder={t('mentors.namePlaceholder')}
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-red-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm text-slate-300 mb-1">Telefon raqamingiz</label>
+                <label className="block text-sm text-slate-300 mb-1">{t('mentors.phoneLabel')}</label>
                 <input
                   type="tel"
                   required
@@ -143,7 +147,7 @@ export default function Mentors() {
                 type="submit"
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-xl transition cursor-pointer"
               >
-                Yuborish
+                {t('mentors.submitBtn')}
               </button>
             </form>
           </div>
@@ -152,7 +156,7 @@ export default function Mentors() {
 
       {toast && (
         <div className="fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-3 animate-bounce">
-          <span>✅ Ma'lumot muvaffaqiyatli yuborildi!</span>
+          <span>✅ {t('mentors.successToast')}</span>
         </div>
       )}
     </section>

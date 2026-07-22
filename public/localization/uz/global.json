@@ -1,0 +1,205 @@
+{
+    "Welcome to React": "Xush kelibsiz React va react-i18next",
+    "greating": "salom hammaga",
+    "Bosh sahifa": "Bosh sahifa",
+    "Statistika": "Statistika",
+    "Yutuqlar": "Yutuqlar",
+    "Biz haqimizda": "Biz haqimizda",
+    "Ro`yxatdan o`tish": "Ro`yxatdan o`tish",
+    "Boshqaruv": "Boshqaruv",
+    "aboutStudents": {
+        "backButton": "← Orqaga",
+        "title": "O'quvchilar haqida (2-Oyna)",
+        "description": "Bu yerda o'quvchi haqida batafsil ma'lumotlar chiqadi."
+    },
+    "aboutUs": {
+        "badge": "Biz haqimizda",
+        "title": "Kelajak avlod ta'lim platformasini birgalikda quramiz.",
+        "description1": "Oddiy kuzatuvdan boshladik: ko'pchilik til o'rganish markazlari va platformalari yoki zerikarli, yoki so'zlashuv amaliyoti uchun juda cheklangan. Biz bu bo'shliqni butunlay yo'q qilish uchun markazimizni barpo etdik.",
+        "description2": "Bizning yondashuvimiz ilg'or dars metodikasini o'quvchiga yo'naltirilgan qulay muhit bilan birlashtirib, zerikarli yodlashlarga emas, balki real vaqtda ravon muloqot qilishga imkon beradi.",
+        "card1Title": "Tezkor natija",
+        "card1Desc": "Maxsus ishlab chiqilgan intensiv dasturlar qisqa fursatda sezilarli til ko'rsatkichlariga erishishni ta'minlaydi.",
+        "card1Tag": "Asosiy tamoyil I",
+        "card2Title": "Amaliy yondashuv",
+        "card2Desc": "Darslarning asosiy qismi jonli muloqot va so'zlashuvga qaratilgan bo'lib, til to'sig'ini qisqa vaqtda yengishga yordam beradi.",
+        "card2Tag": "Asosiy tamoyil II",
+        "card3Title": "Mukammallik sari",
+        "card3Desc": "Har bir o'quvchining shaxsiy xatolari va kamchiliklari ustida alohida ishlanib, yuqori natijalarga olib chiqiladi.",
+        "card3Tag": "Asosiy tamoyil III",
+        "locationBadge": "Bizning Manzil",
+        "locationTitle": "Bizni shu yerda topasiz",
+        "locationDesc": "O'zbekiston, Buxoro shahri, \"Buxoro davlat tibbiyot bilim yurti\" majmuasi yaqinida joylashganmiz. Bizning zamonaviy va shinam o'quv markazimiz siz uchun har doim ochiq. Kelib, o'quv jarayonlarimiz bilan yaqindan tanishing!",
+        "address": "Buxoro, O'zbekiston",
+        "imageAlt": "Bizning ofisimiz va o'quv markazimiz",
+        "footerTitle": "Maqsad sari birgalikda, ishonch bilan.",
+        "footerDesc": "Bizning tajribali ustozlar jamoamiz o'quvchilarga doimiy ko'mak berib, yuqori sertifikatlar va erkin muloqot darajasiga erishishlarini ta'minlaydi.",
+        "stat1Label": "Murosasiz sifat",
+        "stat2Label": "Qo'llab-quvvatlash"
+    },
+    "addComment": {
+        "editTitle": "O'quvchini tahrirlash",
+        "addTitle": "Yangi o'quvchi qo'shish",
+        "imageLabel": "Rasm ssilkasi (URL)",
+        "imagePlaceholder": "https://.../image.png",
+        "nameLabel": "O'quvchining ismi",
+        "namePlaceholder": "Masalan: Alisher Vahobov",
+        "achievementLabel": "Erishgan yutug'i",
+        "achievementPlaceholder": "Masalan: IELTS 8.0 / CEFR B2",
+        "cancelBtn": "Bekor qilish",
+        "saveBtn": "Saqlash",
+        "addBtn": "Qo'shish",
+        "editSuccess": "Muvaffaqiyatli tahrirlandi",
+        "addSuccess": "Muvaffaqiyatli qo'shildi",
+        "errorOccurred": "Xatolik yuz berdi"
+    },
+    "admin": {
+        "title": "Admin panelga kirish",
+        "placeholder": "Parolingizni yozing",
+        "enterBtn": "Kirish",
+        "emptyError": "Iltimos yozing",
+        "wrongPassword": "Parol xato!"
+    },
+    "comments": {
+        "title": "Kurslarni boshqarish",
+        "deleteBtn": "O'chirish",
+        "editBtn": "Tahrirlash",
+        "addBtnTitle": "Yangi kurs qo'shish",
+        "deleteSuccess": "Muvaffaqiyatli o'chirildi"
+    },
+    "footer": {
+        "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblar va sifatli ta'lim olib, o'z yo'lingizni toping.",
+        "rights": "Barcha huquqlar kafolatlangan."
+    },
+    "home": {
+        "badge": "Optimum School of English",
+        "titlePrefix": "Ingliz tilini noldan boshlab",
+        "titleHighlight": "mukammal o'rganing",
+        "description": "Professional o'qituvchilar, jonli speaking klublar va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling."
+    },
+    "mentors": {
+        "sectionTitle": "Bizning tajribali mentorlarimiz",
+        "sectionDesc": "Sizga ingliz tilini mukammal o'rganishda va natijaga chiqishda yordam beradigan mutaxassislar.",
+        "contactBtn": "Bog'lanish",
+        "modalTitle": "Mentor bilan bog'lanish",
+        "selectedTeacher": "Tanlangan o'qituvchi:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "Yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
+        "list": [
+            {
+                "name": "Madina Hakimova",
+                "role": "Senior English Instructor (IELTS 8.5)",
+                "experience": "6+ yil tajriba",
+                "bio": "Ingliz tilini Zero dan boshlagan o'quvchilarga tez fursatda erkin gapirishni o'rgatadi. 200+ dan ortiq IELTS 7+ egalarini tayyorlagan.",
+                "skills": [
+                    "General English",
+                    "IELTS",
+                    "Speaking"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ yil tajriba",
+                "bio": "Aksent ustida ishlash va til to'sig'ini (tili chiqishini) yengish bo'yicha mutaxassis. Darslarni interaktiv tarzda olib boradi.",
+                "skills": [
+                    "Grammar",
+                    "Listening",
+                    "Vocabulary"
+                ]
+            }
+        ]
+    },
+    "products": {
+        "badge": "Muvaffaqiyat",
+        "title": "Yutuqqa erishgan o'quvchilarimiz",
+        "defaultAchievement": "IELTS 7.5 / Yuqori natija",
+        "certified": "Sertifikat olgan",
+        "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
+        "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
+    },
+    "register": {
+        "phoneError": "Faqat raqam yozing!",
+        "title": "Kursga ro'yxatdan o'tish",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Masalan: Alisher",
+        "phoneLabel": "Telefon raqamingiz",
+        "phonePlaceholder": "+998 90 123 45 67",
+        "submitBtn": "Ro'yxatdan o'tish"
+    },
+    "stats": {
+        "studentsTitle": "Faol O`quvchilar",
+        "lessonsTitle": "Jami Darslar",
+        "speakingTitle": "Muloqot Klublari",
+        "certificatesTitle": "Sertifikatlar"
+    },
+    "steps": {
+        "badge": "O'qish jarayoni",
+        "title": "3 ta oson qadamda ingliz tilini boshlang",
+        "description": "Optimum School of English bilan xalqaro darajaga erishish yo'li shunchalik oson.",
+        "step1Title": "Ro'yxatdan o'tish",
+        "step1Desc": "O'zingizga qulay kursni tanlang va ma'lumotlaringizni qoldirib, ro'yxatdan o'ting.",
+        "step2Title": "Darajani aniqlash",
+        "step2Desc": "Bilim darajangizni maxsus test orqali aniqlab, mos keluvchi guruhga biriktrilasiz.",
+        "step3Title": "Natijani boshlash",
+        "step3Desc": "Jonli darslar va so'zlashuv klublari yordamida qisqa fursatda erkin muloqotni oching."
+    },
+    "students": {
+        "title": "Yuqori yutuqqa erishgan o'quvchilar",
+        "badge": "Optimum Pride",
+        "ageLabel": "Age",
+        "levelLabel": "Starting level",
+        "timeLabel": "Preparation time",
+        "teacherLabel": "Teacher",
+        "viewBtn": "View →",
+        "modalTitle": "O'quvchi haqida to'liq ma'lumot",
+        "closeBtn": "✕ Yopish"
+    },
+    "about": {
+        "badge": "Biz haqimizda",
+        "titleStart": "Ingliz tilini zamonaviy va",
+        "titleHighlight": "oson usullar",
+        "titleEnd": "bilan o'rgatamiz.",
+        "description": "Optimum School of English jamoasi til o'rganish jarayonini zerikarli yod olishlardan xoli qilib, real muloqotga asoslangan qiziqarli muhitni taqdim etadi.",
+        "goalTitle": "Bizning Maqsadimiz",
+        "goalDesc": "Har bir o'quvchiga sifatli ta'lim berib, ularning kelajakdagi muvaffaqiyatiga poydevor qo'yish.",
+        "teacherTitle": "Malakali Ustozlar",
+        "teacherDesc": "Xalqaro sertifikatlar va ko'p yillik tajribaga ega professional o'qituvchilar jamoasi.",
+        "experienceText1": "Yillik",
+        "experienceText2": "Tajriba"
+    },
+    "statistic": {
+        "badge": "O'quv natijalari",
+        "title": "O'quvchilarimizning muvaffaqiyat ko'rsatkichi",
+        "description": "Darsdagi faollik, so'z boyligi oshishi va qulay muloqot darajasini har oy tahlil qilib boramiz.",
+        "dynamicsTitle": "O'sish dinamikasi",
+        "analysisTitle": "Natijalar tahlili",
+        "tab1": "1-oy",
+        "tab3": "3-oy",
+        "tabEnd": "Kurs yakuni",
+        "coursesTitle": "Kurs yo'nalishlari",
+        "courseTypeTitle": "Mashg'ulot turlari",
+        "studentsText": "(O'quvchilar)",
+        "footerText": "✨ Har bir qadamda mukammallik sari",
+        "tab1Min": "25 min",
+        "tab1Errors": "Xatolar: 42%",
+        "tab1Trend": "Boshlang'ich: +15% Speaking",
+        "tab3Min": "45 min",
+        "tab3Errors": "Xatolar: 24.8% ↓",
+        "tab3Trend": "Barqaror: +30% Speaking",
+        "endMin": "80 min",
+        "endErrors": "Xatolar: 8.5% ↓",
+        "endTrend": "Eng yuqori: +45% Speaking"
+    },
+    "navbar": {
+        "home": "Bosh sahifa",
+        "statistic": "Statistika",
+        "achievements": "Yutuqlar",
+        "about": "Biz haqimizda",
+        "register": "Ro'yxatdan o'tish",
+        "dashboard": "Boshqaruv",
+        "selectLang": "Tilni tanlang:"
+    }
+}

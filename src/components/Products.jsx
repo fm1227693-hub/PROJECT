@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react"
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import { useTranslation } from "react-i18next"
 
 export default function Products() {
+    const { t } = useTranslation()
     const [data, setData] = useState([])
 
     const GetData = async function () {
@@ -12,7 +14,7 @@ export default function Products() {
             setData(res.data)
         } catch (e) {
             console.log(e)
-            toast.error("Ma'lumotlarni yuklashda xatolik yuz berdi!")
+            toast.error(t('products.errorMessage'))
         }
     }
 
@@ -23,13 +25,13 @@ export default function Products() {
     return (
         <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 pt-20 mb-20 select-none font-sans transition-colors duration-200 bg-gray-50 dark:bg-gray-950 min-h-screen">
             <div className="max-w-6xl mx-auto">
-                
+
                 <div className="mb-10 border-b border-gray-200 dark:border-gray-800 pb-5">
                     <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full">
-                        Muvaffaqiyat
+                        {t('products.badge')}
                     </span>
                     <h2 className="text-3xl font-black text-gray-900 dark:text-white mt-3 tracking-tight">
-                        Yutuqqa erishgan o'quvchilarimiz
+                        {t('products.title')}
                     </h2>
                 </div>
 
@@ -45,19 +47,19 @@ export default function Products() {
                                         {item.title}
                                     </h3>
                                     <p className="text-xs font-semibold text-red-600 dark:text-red-400 mb-4">
-                                        {item.achievement || "IELTS 7.5 / Yuqori natija"}
+                                        {item.achievement || t('products.defaultAchievement')}
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-center pt-4 mt-auto border-t border-gray-50 dark:border-gray-800/60">
                                     <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/15 px-3 py-1.5 rounded-lg w-full text-center">
-                                        Sertifikat olgan
+                                        {t('products.certified')}
                                     </span>
                                 </div>
                             </div>
                         ))
                     ) : (
                         <div className="col-span-full py-16 text-center bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
-                            <p className="text-gray-400 dark:text-gray-500 font-medium">Hozircha o'quvchilar natijalari yuklanmagan</p>
+                            <p className="text-gray-400 dark:text-gray-500 font-medium">{t('products.emptyMessage')}</p>
                         </div>
                     )}
                 </div>
