@@ -44,12 +44,12 @@ export default function Mentors() {
   };
 
   return (
-    <section className="bg-slate-950 py-16 px-4 md:px-8 text-white relative">
+    <section className="bg-white dark:bg-[#090623] py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200">
       <div className="max-w-6xl mx-auto">
         {/* Sarlavha qismi */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-3">{t('mentors.sectionTitle')}</h2>
-          <p className="text-slate-400 max-w-xl mx-auto">
+          <p className="text-gray-600 dark:text-slate-400 max-w-xl mx-auto">
             {t('mentors.sectionDesc')}
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function Mentors() {
           {mentorsData.slice(0, 2).map((mentor) => (
             <div
               key={mentor.id}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col sm:flex-row gap-6 items-center hover:border-slate-700 transition"
+              className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col sm:flex-row gap-6 items-center hover:border-gray-300 dark:hover:border-slate-700 transition shadow-sm dark:shadow-none"
             >
               {/* Rasm qismi */}
               <img
@@ -72,17 +72,17 @@ export default function Mentors() {
               <div className="flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
                   <h3 className="text-xl font-semibold">{mentor.name}</h3>
-                  <span className="text-xs bg-red-500/10 text-red-400 px-3 py-1 rounded-full font-medium w-fit mx-auto sm:mx-0">
+                  <span className="text-xs bg-red-500/10 text-red-500 dark:text-red-400 px-3 py-1 rounded-full font-medium w-fit mx-auto sm:mx-0">
                     {mentor.experience}
                   </span>
                 </div>
-                <p className="text-red-400 text-sm font-medium mb-3">{mentor.role}</p>
-                <p className="text-slate-300 text-sm mb-4">{mentor.bio}</p>
+                <p className="text-red-600 dark:text-red-400 text-sm font-medium mb-3">{mentor.role}</p>
+                <p className="text-gray-600 dark:text-slate-300 text-sm mb-4">{mentor.bio}</p>
 
                 {/* Yo'nalishlar (Skills) */}
                 <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-5">
                   {mentor.skills && mentor.skills.map((skill, index) => (
-                    <span key={index} className="bg-slate-800 text-slate-300 text-xs px-2.5 py-1 rounded-md">
+                    <span key={index} className="bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-300 text-xs px-2.5 py-1 rounded-md">
                       {skill}
                     </span>
                   ))}
@@ -94,7 +94,7 @@ export default function Mentors() {
                     setSelectedMentor(mentor.name);
                     setModal(true);
                   }}
-                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition w-full sm:w-auto text-center cursor-pointer"
+                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-xl transition w-full sm:w-auto text-center cursor-pointer shadow-sm"
                 >
                   {t('mentors.contactBtn')}
                 </button>
@@ -107,45 +107,45 @@ export default function Mentors() {
       {/* Modal Oyna */}
       {modal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-md relative text-white shadow-2xl">
+          <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 w-full max-w-md relative text-gray-900 dark:text-white shadow-2xl">
             {/* Yopish tugmasi (X) */}
             <button
               onClick={() => setModal(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold cursor-pointer"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl font-bold cursor-pointer"
             >
               ✕
             </button>
 
             <h3 className="text-2xl font-bold mb-2">{t('mentors.modalTitle')}</h3>
-            <p className="text-slate-400 text-sm mb-4">
-              {t('mentors.selectedTeacher')} <span className="text-red-400 font-medium">{selectedMentor}</span>
+            <p className="text-gray-600 dark:text-slate-400 text-sm mb-4">
+              {t('mentors.selectedTeacher')} <span className="text-red-600 dark:text-red-400 font-medium">{selectedMentor}</span>
             </p>
 
             {/* Forma */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm text-slate-300 mb-1">{t('mentors.nameLabel')}</label>
+                <label className="block text-sm text-gray-700 dark:text-slate-300 mb-1">{t('mentors.nameLabel')}</label>
                 <input
                   type="text"
                   required
                   placeholder={t('mentors.namePlaceholder')}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-red-500"
+                  className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-gray-900 dark:text-white focus:outline-none focus:border-red-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm text-slate-300 mb-1">{t('mentors.phoneLabel')}</label>
+                <label className="block text-sm text-gray-700 dark:text-slate-300 mb-1">{t('mentors.phoneLabel')}</label>
                 <input
                   type="tel"
                   required
                   placeholder="+998 90 123 45 67"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-red-500"
+                  className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-2.5 text-gray-900 dark:text-white focus:outline-none focus:border-red-500"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-xl transition cursor-pointer"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-xl transition cursor-pointer shadow-sm"
               >
                 {t('mentors.submitBtn')}
               </button>

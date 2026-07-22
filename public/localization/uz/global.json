@@ -7,6 +7,7 @@
     "Biz haqimizda": "Biz haqimizda",
     "Ro`yxatdan o`tish": "Ro`yxatdan o`tish",
     "Boshqaruv": "Boshqaruv",
+    "Mentorlar": "Mentorlar",
     "aboutStudents": {
         "backButton": "← Orqaga",
         "title": "O'quvchilar haqida (2-Oyna)",
@@ -200,6 +201,71 @@
         "about": "Biz haqimizda",
         "register": "Ro'yxatdan o'tish",
         "dashboard": "Boshqaruv",
-        "selectLang": "Tilni tanlang:"
+        "selectLang": "Tilni tanlang:",
+        "Mentorlar": "Mentorlar:"
+    },
+    "mentorsPage": {
+        "badge": "Professional jamoa",
+        "title": "Bizning tajribali mentorlarimiz",
+        "description": "Har bir o'quvchiga individual yondashib, ularni noldan boshlab professional darajaga olib chiqadigan mutaxassislar bilan tanishing.",
+        "experienceLabel": "Tajriba:",
+        "studentsLabel": "Bitiruvchilar:",
+        "achievementsTitle": "Asosiy yutuqlari va ko'nikmalari:",
+        "connectBtn": "Mentor bilan bog'lanish",
+        "modalTitle": "Mentor bilan bog'lanish",
+        "selectedTeacher": "Tanlangan ustoz:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "So'rovni yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
+        "list": [
+            {
+                "name": "Madina Hakimova",
+                "role": "Senior English Instructor & IELTS Expert",
+                "experience": "6+ yil",
+                "students": "200+ o'quvchi",
+                "bio": "Ingliz tilini Zero darajasidan boshlaganlarga tez fursatda erkin muloqot qilishni o'rgatadi. Xalqaro CELTA sertifikati egasi va 200 dan ortiq IELTS 7+ egalarini tayyorlagan.",
+                "skills": [
+                    "General English",
+                    "IELTS 8.5",
+                    "Speaking Coaching",
+                    "CELTA"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ yil",
+                "students": "150+ o'quvchi",
+                "bio": "Til to'sig'ini (fear of speaking) yengish va ingliz tilida mukammal aksent bilan gapirishni shakllantirish bo'yicha mutaxassis. Darslarni qiziqarli interaktiv metodika asosida olib boradi.",
+                "skills": [
+                    "Grammar",
+                    "Interactive Speaking",
+                    "Vocabulary",
+                    "Listening"
+                ]
+            }
+        ]
+    },
+    "aboutMentors": {
+        "sectionTitle": "Bizning Mentorlar",
+        "sectionDesc": "Professional va tajribali ustozlarimizdan ta'lim oling",
+        "contactBtn": "Bog'lanish",
+        "modalTitle": "Mentor bilan bog'lanish",
+        "selectedTeacher": "Tanlangan mentor:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "Yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
+        "backBtn": "← Orqaga qaytish",
+        "telegramBtn": "Telegram orqali bog'lanish",
+        "birthYearLabel": "Tug'ilgan yil:",
+        "ageLabel": "Yoshi:",
+        "yearsOld": "yosh",
+        "specialtyLabel": "Mutaxassisligi:",
+        "certificatesTitle": "Olingan Sertifikatlar",
+        "detailsBtn": "Batafsil"
     }
 }

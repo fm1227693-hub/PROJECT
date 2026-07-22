@@ -7,6 +7,7 @@
     "Biz haqimizda": "About us",
     "Ro`yxatdan o`tish": "To register",
     "Boshqaruv": "Managemant",
+    "Mentorlar": "Mentors",
     "aboutStudents": {
         "backButton": "← Back",
         "title": "About Students (2-Window)",
@@ -112,6 +113,50 @@
             }
         ]
     },
+    "mentorsPage": {
+        "badge": "Professional Team",
+        "title": "Our Experienced Mentors",
+        "description": "Meet our specialists who provide individual attention and guide students from absolute zero to professional fluency.",
+        "experienceLabel": "Experience:",
+        "studentsLabel": "Students:",
+        "achievementsTitle": "Key achievements & skills:",
+        "connectBtn": "Contact Mentor",
+        "modalTitle": "Contact Mentor",
+        "selectedTeacher": "Selected teacher:",
+        "nameLabel": "Your Name",
+        "namePlaceholder": "Enter your name",
+        "phoneLabel": "Phone Number",
+        "submitBtn": "Submit Request",
+        "successToast": "Your request has been successfully sent!",
+        "list": [
+            {
+                "name": "Madina Hakimova",
+                "role": "Senior English Instructor & IELTS Expert",
+                "experience": "6+ years",
+                "students": "200+ students",
+                "bio": "Helps students starting from Zero speak fluently in a short period. CELTA certified instructor who has trained 200+ IELTS 7+ holders.",
+                "skills": [
+                    "General English",
+                    "IELTS 8.5",
+                    "Speaking Coaching",
+                    "CELTA"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ years",
+                "students": "150+ students",
+                "bio": "Specialist in overcoming the language barrier and building a natural accent. Conducts lessons using engaging interactive methods.",
+                "skills": [
+                    "Grammar",
+                    "Interactive Speaking",
+                    "Vocabulary",
+                    "Listening"
+                ]
+            }
+        ]
+    },
     "products": {
         "badge": "Success",
         "title": "Our Successful Students",
@@ -199,6 +244,27 @@
         "about": "About Us",
         "register": "Register",
         "dashboard": "Dashboard",
-        "selectLang": "Select language:"
+        "selectLang": "Select language:",
+        "Mentorlar": "Mentors:"
+    },
+    "aboutMentors": {
+        "sectionTitle": "Our Mentors",
+        "sectionDesc": "Learn from our professional and experienced teachers",
+        "contactBtn": "Contact",
+        "modalTitle": "Contact Mentor",
+        "selectedTeacher": "Selected mentor:",
+        "nameLabel": "Your Name",
+        "namePlaceholder": "Enter your name",
+        "phoneLabel": "Your Phone Number",
+        "submitBtn": "Submit",
+        "successToast": "Your request has been successfully sent!",
+        "backBtn": "← Back",
+        "telegramBtn": "Contact via Telegram",
+        "birthYearLabel": "Birth Year:",
+        "ageLabel": "Age:",
+        "yearsOld": "years old",
+        "specialtyLabel": "Specialty:",
+        "certificatesTitle": "Received Certificates",
+        "detailsBtn": "In detail"
     }
 }

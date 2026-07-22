@@ -7,6 +7,7 @@
     "Biz haqimizda": "О нас",
     "Ro`yxatdan o`tish": "Регистрация",
     "Boshqaruv": "Управление",
+    "Mentorlar": "Менторы",
     "aboutStudents": {
         "backButton": "← Назад",
         "title": "Об учениках (2-Окно)",
@@ -199,6 +200,71 @@
         "about": "О нас",
         "register": "Регистрация",
         "dashboard": "Панель управления",
-        "selectLang": "Выберите язык:"
+        "selectLang": "Выберите язык:",
+        "Mentorlar": "Менторы:"
+    },
+    "mentorsPage": {
+        "badge": "Профессиональная команда",
+        "title": "Наши опытные менторы",
+        "description": "Познакомьтесь со специалистами, которые найдут индивидуальный подход к каждому ученику и доведут до профессионального уровня.",
+        "experienceLabel": "Опыт:",
+        "studentsLabel": "Ученики:",
+        "achievementsTitle": "Основные достижения и навыки:",
+        "connectBtn": "Связаться с ментором",
+        "modalTitle": "Связаться с ментором",
+        "selectedTeacher": "Выбранный преподаватель:",
+        "nameLabel": "Ваше имя",
+        "namePlaceholder": "Введите ваше имя",
+        "phoneLabel": "Номер телефона",
+        "submitBtn": "Отправить заявку",
+        "successToast": "Ваша заявка успешно отправлена!",
+        "list": [
+            {
+                "name": "Madina Hakimova",
+                "role": "Senior English Instructor & IELTS Expert",
+                "experience": "6+ лет",
+                "students": "200+ учеников",
+                "bio": "Обучает свободному общению с нуля в кратчайшие сроки. Обладатель международного сертификата CELTA, подготовила более 200 обладателей IELTS 7+.",
+                "skills": [
+                    "General English",
+                    "IELTS 8.5",
+                    "Speaking Coaching",
+                    "CELTA"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ года",
+                "students": "150+ учеников",
+                "bio": "Специалист по преодолению языкового барьера и постановке правильного акцента. Ведет занятия на основе интерактивных методик.",
+                "skills": [
+                    "Grammar",
+                    "Interactive Speaking",
+                    "Vocabulary",
+                    "Listening"
+                ]
+            }
+        ]
+    },
+    "aboutMentors": {
+        "sectionTitle": "Наши наставники",
+        "sectionDesc": "Учитесь у наших профессиональных и опытных преподавателей",
+        "contactBtn": "Связаться",
+        "modalTitle": "Связаться с наставником",
+        "selectedTeacher": "Выбранный наставник:",
+        "nameLabel": "Ваше имя",
+        "namePlaceholder": "Введите ваше имя",
+        "phoneLabel": "Ваш номер телефона",
+        "submitBtn": "Отправить",
+        "successToast": "Ваша заявка успешно отправлена!",
+        "backBtn": "← Назад",
+        "telegramBtn": "Связаться через Telegram",
+        "birthYearLabel": "Год рождения:",
+        "ageLabel": "Возраст:",
+        "yearsOld": "лет",
+        "specialtyLabel": "Специальность:",
+        "certificatesTitle": "Полученные сертификаты",
+        "detailsBtn": "подробно"
     }
 }
