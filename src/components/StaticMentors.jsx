@@ -286,7 +286,7 @@ export default function StaticMentors() {
                                         {mentor.experience}
                                     </span>
                                 </div>
-                                <p className="text-red-600 dark:text-red-400 text-base font-semibold mb-3">{mentor.role}</p>
+                                <p className="text-red-600 dark:text-red-400 text-base font-semibold mb-3">{mentor.role} </p>
                                 <p className="text-gray-600 dark:text-slate-300 text-base mb-5 line-clamp-2">{mentor.bio}</p>
 
                                 <div className="flex flex-wrap justify-center sm:justify-start gap-2.5 mb-6">
