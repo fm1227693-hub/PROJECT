@@ -72,7 +72,7 @@ const staticMentorsData = [
     }
 ];
 
-export default function StaticMentors() {
+export default function Mentorstats() {
     const { t } = useTranslation();
     const [modal, setModal] = useState(false);
     const [selectedMentor, setSelectedMentor] = useState("");

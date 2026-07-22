@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import StaticMentors from './staticMentors'
+import StaticMentors from './Mentorstats'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
