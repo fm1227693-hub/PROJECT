@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const staticMentorsData = [
     {
@@ -77,6 +79,13 @@ export default function StaticMentors() {
     const [toast, setToast] = useState(false);
     const [activeMentorDetail, setActiveMentorDetail] = useState(null);
 
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            offset: 100,
+        });
+    }, []);
+
     const translatedMentors = t('mentorsPage.list', { returnObjects: true }) || [];
 
     const mentorsData = staticMentorsData.map((staticMentor, index) => {
@@ -102,7 +111,11 @@ export default function StaticMentors() {
 
     const renderModal = () => (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-8 w-full max-w-lg relative text-gray-900 dark:text-white shadow-2xl">
+            <div
+                data-aos="zoom-in"
+                data-aos-duration="300"
+                className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-8 w-full max-w-lg relative text-gray-900 dark:text-white shadow-2xl"
+            >
                 <button
                     type="button"
                     onClick={() => setModal(false)}
@@ -165,9 +178,13 @@ export default function StaticMentors() {
                         ← {t('aboutMentors.backBtn') || "Orqaga qaytish"}
                     </button>
 
-                    <div className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-8 sm:p-10 shadow-2xl">
+                    <div
+                        data-aos="fade-up"
+                        data-aos-duration="600"
+                        className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-8 sm:p-10 shadow-2xl"
+                    >
                         <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
-                            <div className="w-full md:w-1/3 flex flex-col items-center">
+                            <div className="w-full md:w-1/3 flex flex-col items-center" data-aos="fade-right" data-aos-duration="700">
                                 <img
                                     src={activeMentorDetail.image}
                                     alt={activeMentorDetail.name}
@@ -183,7 +200,7 @@ export default function StaticMentors() {
                                 </a>
                             </div>
 
-                            <div className="flex-1 text-center md:text-left">
+                            <div className="flex-1 text-center md:text-left" data-aos="fade-left" data-aos-duration="700">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                                     <h1 className="text-3xl sm:text-4xl font-bold">{activeMentorDetail.name}</h1>
                                     <span className="text-sm bg-red-500/10 text-red-500 dark:text-red-400 px-4 py-1.5 rounded-full font-medium w-fit mx-auto md:mx-0">
@@ -216,7 +233,7 @@ export default function StaticMentors() {
                             </div>
                         </div>
 
-                        <div className="mt-10 pt-10 border-t border-gray-200 dark:border-slate-800">
+                        <div className="mt-10 pt-10 border-t border-gray-200 dark:border-slate-800" data-aos="fade-up" data-aos-duration="600">
                             <h3 className="text-2xl font-bold mb-6 text-center md:text-left">{t('aboutMentors.certificatesTitle') || "Sertifikatlar va yutuqlar"}</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 {activeMentorDetail.certificates.map((cert, index) => (
@@ -254,7 +271,7 @@ export default function StaticMentors() {
     return (
         <section className="bg-white dark:bg-[#090623] py-20 px-4 md:px-12 text-gray-900 dark:text-white relative transition-colors duration-200">
             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
+                <div className="text-center mb-16" data-aos="fade-down" data-aos-duration="600">
                     <h2 className="text-4xl md:text-5xl font-extrabold mb-4">{t('aboutMentors.sectionTitle') || "Bizning Mentorlar"}</h2>
                     <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto text-lg">
                         {t('aboutMentors.sectionDesc') || "Tajribali mutaxassislardan zamonaviy kasblarni o'rganing."}
@@ -262,9 +279,12 @@ export default function StaticMentors() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    {mentorsData.map((mentor) => (
+                    {mentorsData.map((mentor, index) => (
                         <div
                             key={mentor.id}
+                            data-aos="fade-up"
+                            data-aos-duration="600"
+                            data-aos-delay={index * 100}
                             className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-8 flex flex-col sm:flex-row gap-8 items-center hover:border-gray-300 dark:hover:border-slate-700 transition shadow-md dark:shadow-none"
                         >
                             <img
@@ -290,8 +310,8 @@ export default function StaticMentors() {
                                 <p className="text-gray-600 dark:text-slate-300 text-base mb-5 line-clamp-2">{mentor.bio}</p>
 
                                 <div className="flex flex-wrap justify-center sm:justify-start gap-2.5 mb-6">
-                                    {mentor.skills && mentor.skills.map((skill, index) => (
-                                        <span key={index} className="bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-300 text-xs px-3 py-1.5 rounded-lg">
+                                    {mentor.skills && mentor.skills.map((skill, i) => (
+                                        <span key={i} className="bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-300 text-xs px-3 py-1.5 rounded-lg">
                                             {skill}
                                         </span>
                                     ))}

@@ -1,13 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 export default function Sec1() {
     const { t } = useTranslation()
 
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            offset: 100,
+        })
+    }, [])
+
     return (
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 mb-12 select-none font-sans transition-colors duration-200">
-            <div className="bg-white dark:bg-gray-950 border border-gray-100/80 dark:border-gray-800 rounded-3xl p-8 shadow-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-center">
+            <div
+                data-aos="fade-up"
+                data-aos-duration="800"
+                className="bg-white dark:bg-gray-950 border border-gray-100/80 dark:border-gray-800 rounded-3xl p-8 shadow-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-center"
+            >
 
+                {/* 1-element */}
                 <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6">
                     <div className="flex flex-col">
                         <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">32,451</span>
@@ -28,6 +42,7 @@ export default function Sec1() {
                     </div>
                 </div>
 
+                {/* 2-element */}
                 <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6">
                     <div className="flex flex-col">
                         <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">15,236</span>
@@ -48,6 +63,7 @@ export default function Sec1() {
                     </div>
                 </div>
 
+                {/* 3-element */}
                 <div className="flex items-center justify-between lg:border-r lg:border-gray-100 dark:lg:border-gray-800 last:border-0 lg:pr-6">
                     <div className="flex flex-col">
                         <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">7,688</span>
@@ -68,6 +84,7 @@ export default function Sec1() {
                     </div>
                 </div>
 
+                {/* 4-element */}
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                         <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block">1,553</span>

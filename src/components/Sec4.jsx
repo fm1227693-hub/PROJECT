@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 export default function Sec4() {
     const { t } = useTranslation()
+
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            offset: 100,
+        })
+    }, [])
 
     return (
         <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-                <div className="flex flex-col space-y-6 max-w-xl">
+                {/* Chap tomon: Matnlar va ma'lumotlar */}
+                <div
+                    data-aos="fade-right"
+                    data-aos-duration="800"
+                    className="flex flex-col space-y-6 max-w-xl"
+                >
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit">
                         {t('about.badge')}
                     </div>
@@ -50,7 +64,12 @@ export default function Sec4() {
                     </div>
                 </div>
 
-                <div className="w-full h-[400px] rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 dark:border-gray-800 relative group">
+                {/* O'ng tomon: Rasm va tajriba bloki */}
+                <div
+                    data-aos="fade-left"
+                    data-aos-duration="800"
+                    className="w-full h-[400px] rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 dark:border-gray-800 relative group"
+                >
                     <img
                         src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2340&auto=format&fit=crop"
                         alt="Students studying English"

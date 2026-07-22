@@ -59,6 +59,7 @@ export default function Stats() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
+                {/* Left Card: Chart & Dynamics */}
                 <div className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 shadow-xl lg:col-span-7 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-6">
@@ -126,6 +127,7 @@ export default function Stats() {
                     </div>
                 </div>
 
+                {/* Right Card: Course Types & Progress Bars */}
                 <div className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 shadow-xl lg:col-span-5 flex flex-col justify-between">
                     <div>
                         <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.courseTypeTitle')}</span>

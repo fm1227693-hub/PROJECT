@@ -23,18 +23,34 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
+        // Bu yerda API ga yuborish logikasini yozishingiz mumkin
+        // Misol uchun:
+        // try {
+        //     await axios.post('...', formData)
+        //     toast.success(t('register.successMessage'))
+        // } catch (error) {
+        //     toast.error(t('register.errorMessage'))
+        // } finally {
+        //     setLoading(false)
+        // }
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 pt-16">
-            <Toaster />
-            <div className="max-w-md w-full bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-md border border-gray-100 dark:border-gray-800">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                    {t('register.title')}
-                </h2>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 pt-16 transition-colors duration-200 select-none">
+            <Toaster position="bottom-right" />
+            <div className="max-w-md w-full bg-white dark:bg-gray-900 p-8 sm:p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800/80">
+                <div className="text-center mb-8">
+                    <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full">
+                        {t('register.badge') || 'Optimum'}
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mt-3 tracking-tight">
+                        {t('register.title')}
+                    </h2>
+                </div>
+
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                     <div>
-                        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                        <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
                             {t('register.nameLabel')}
                         </label>
                         <input
@@ -43,11 +59,11 @@ export default function Register() {
                             required
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-sm text-gray-900 dark:text-white focus:outline-none focus:border-red-600"
+                            className="w-full px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition-colors shadow-sm"
                         />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                        <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
                             {t('register.phoneLabel')}
                         </label>
                         <input
@@ -56,15 +72,15 @@ export default function Register() {
                             required
                             value={formData.phone}
                             onChange={handlePhoneChange}
-                            className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-sm text-gray-900 dark:text-white focus:outline-none focus:border-red-600"
+                            className="w-full px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-red-600 transition-colors shadow-sm"
                         />
                     </div>
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full mt-2 bg-red-700 hover:bg-red-500 disabled:opacity-50 text-white font-bold py-2.5 rounded-xl transition text-sm shadow-sm cursor-pointer"
+                        className="w-full mt-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold py-3.5 rounded-2xl transition-all text-sm shadow-lg shadow-red-500/20 cursor-pointer"
                     >
-                        {t('register.submitBtn')}
+                        {loading ? t('register.loadingBtn') || 'Yuklanmoqda...' : t('register.submitBtn')}
                     </button>
                 </form>
             </div>
