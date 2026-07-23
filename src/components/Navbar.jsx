@@ -27,7 +27,6 @@ export default function Navbar() {
             document.querySelector('body').classList.remove('dark')
         }
 
-        // Tashqariga bosilganda uch nuqta menyusini yopish
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setDropdownOpen(false)
@@ -62,9 +61,10 @@ export default function Navbar() {
     )
 
     return (
-        <div className='fixed top-0 left-0 w-full z-50 font-sans select-none'>
-            <header className="bg-white/90 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-800/80 shadow-sm transition-colors duration-200">
-                <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3 flex items-center justify-between max-w-7xl">
+        <div className='fixed top-4 left-0 w-full z-50 font-sans select-none px-4'>
+            {/* O'rtada suzib turuvchi kapsula dizayni */}
+            <header className="max-w-6xl mx-auto bg-white/90 dark:bg-gray-950/85 backdrop-blur-md border border-gray-200/80 dark:border-gray-800 shadow-xl rounded-2xl transition-colors duration-200">
+                <div className="px-3 sm:px-6 py-3 flex items-center justify-between">
 
                     {/* Chap qism: Burger va Logotip */}
                     <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Kompyuter uchun asosiy menyu */}
-                    <nav className="hidden md:flex items-center text-sm font-bold text-gray-500 dark:text-gray-400 gap-7">
+                    <nav className="hidden md:flex items-center text-sm font-bold text-gray-500 dark:text-gray-400 gap-6">
                         <Link to="/" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">{t('Bosh sahifa')}</Link>
                         <Link to="/stats" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">{t('Statistika')}</Link>
                         <Link to="/products" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">{t('Yutuqlar')}</Link>
@@ -102,14 +102,12 @@ export default function Navbar() {
                         <LanguageSelector />
                     </div>
 
-                    {/* O'ng qism: Kompyuterda to'liq, Telefonda 3 ta nuqta */}
+                    {/* O'ng qism */}
                     <div className="flex items-center gap-2">
-                        {/* Theme almashtirgich doimiy ko'rinib turadi */}
                         <div onClick={Theme} className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-yellow-400 cursor-pointer hover:scale-105 transition-all shadow-sm">
                             {dark ? <FaRegSun className="w-4 h-4" /> : <FaRegMoon className="w-4 h-4 text-gray-900" />}
                         </div>
 
-                        {/* Kompyuter uchun Boshqaruv tugmasi */}
                         <div className="hidden md:block">
                             <Link to="/enter" className="inline-flex items-center bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-2.5 px-4 rounded-xl shadow-lg shadow-red-500/20 transition-all gap-2">
                                 <span>{t('Boshqaruv')}</span>
@@ -129,7 +127,6 @@ export default function Navbar() {
                                 <FaEllipsisV className="w-4 h-4" />
                             </button>
 
-                            {/* 3 ta nuqta bosilganda ochiladigan kichik oyna (Silliq animatsiya bilan) */}
                             <div className={`absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-3 z-50 flex flex-col gap-3 origin-top-right transition-all duration-200 ease-out ${dropdownOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible pointer-events-none'}`}>
                                 <Link
                                     to="/enter"
@@ -152,14 +149,14 @@ export default function Navbar() {
 
                 </div>
 
-                {/* Telefonda ochiladigan asosiy sahifalar navigatsiyasi (Silliq ochilish animatsiyasi) */}
+                {/* Telefonda ochiladigan asosiy sahifalar navigatsiyasi */}
                 <div className={`md:hidden grid transition-all duration-300 ease-in-out ${menuOpen ? 'grid-rows-[1fr] opacity-100 border-t border-gray-100 dark:border-gray-800' : 'grid-rows-[0fr] opacity-0 invisible'}`}>
                     <div className="overflow-hidden">
-                        <nav className="flex flex-col px-4 py-3 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl gap-1.5 font-bold text-sm text-gray-700 dark:text-gray-300">
+                        <nav className="flex flex-col px-4 py-3 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl gap-1.5 font-bold text-sm text-gray-700 dark:text-gray-300 rounded-b-2xl">
                             <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Bosh sahifa')}</Link>
                             <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Statistika')}</Link>
                             <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Yutuqlar')}</Link>
-                            <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Biz haqimizda')}</Link>
+                            <Link to="/about" onClick={() =>.setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Biz haqimizda')}</Link>
                             <Link to="/static" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Mentorlar')}</Link>
                             <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Ro`yxatdan o`tish')}</Link>
                         </nav>
