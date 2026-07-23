@@ -27,7 +27,7 @@ export default function App() {
       {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
       <div className="fixed bottom-6 right-6 z-50">
         <a
-          href="tel:+998901234567"
+          href="tel:+998910829979"
           className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 animate-bounce cursor-pointer border-2 border-white/20 dark:border-slate-800"
           title="Qo'ng'iroq qilish"
         >

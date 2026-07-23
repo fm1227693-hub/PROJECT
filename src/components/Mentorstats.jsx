@@ -11,7 +11,7 @@ const staticMentorsData = [
         experience: "4+ yil tajriba",
         bio: "Frontend yo'nalishi bo'yicha yuqori darajadagi mutaxassis va tajribali ustoz.",
         skills: ["React", "JavaScript", "TypeScript", "Tailwind CSS"],
-        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
+        image: "public/photo_2026-07-23_23-14-12.jpg",
         telegram: "https://t.me/username",
         birthYear: 2005,
         age: 21,
