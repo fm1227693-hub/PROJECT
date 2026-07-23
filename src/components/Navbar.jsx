@@ -50,11 +50,10 @@ export default function Navbar() {
                 <button
                     key={lang}
                     onClick={() => handleLanguageChange(lang)}
-                    className={`w-6 h-6 text-[10px] font-extrabold rounded-full transition-all flex items-center justify-center cursor-pointer ${
-                        i18n.language === lang
+                    className={`w-6 h-6 text-[10px] font-extrabold rounded-full transition-all flex items-center justify-center cursor-pointer ${i18n.language === lang
                             ? 'bg-red-600 text-white shadow-md'
                             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'
-                    }`}
+                        }`}
                 >
                     {lang.toUpperCase()}
                 </button>
@@ -130,41 +129,41 @@ export default function Navbar() {
                                 <FaEllipsisV className="w-4 h-4" />
                             </button>
 
-                            {/* 3 ta nuqta bosilganda ochiladigan kichik oyna */}
-                            {dropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-3 z-50 flex flex-col gap-3 animate-in fade-in zoom-in-95 duration-150">
-                                    <Link
-                                        to="/enter"
-                                        onClick={() => setDropdownOpen(false)}
-                                        className="flex items-center gap-2.5 w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-md transition-all justify-center"
-                                    >
-                                        <FaCog className="w-3.5 h-3.5" />
-                                        <span>{t('Boshqaruv')}</span>
-                                    </Link>
+                            {/* 3 ta nuqta bosilganda ochiladigan kichik oyna (Silliq animatsiya bilan) */}
+                            <div className={`absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-3 z-50 flex flex-col gap-3 origin-top-right transition-all duration-200 ease-out ${dropdownOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible pointer-events-none'}`}>
+                                <Link
+                                    to="/enter"
+                                    onClick={() => setDropdownOpen(false)}
+                                    className="flex items-center gap-2.5 w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-md transition-all justify-center"
+                                >
+                                    <FaCog className="w-3.5 h-3.5" />
+                                    <span>{t('Boshqaruv')}</span>
+                                </Link>
 
-                                    <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-1.5">
-                                        <span className="text-[11px] font-semibold text-gray-400 px-1">{t('Tilni tanlash')}</span>
-                                        <div className="flex justify-center">
-                                            <LanguageSelector />
-                                        </div>
+                                <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-1.5">
+                                    <span className="text-[11px] font-semibold text-gray-400 px-1">{t('Tilni tanlash')}</span>
+                                    <div className="flex justify-center">
+                                        <LanguageSelector />
                                     </div>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
 
                 </div>
 
-                {/* Telefonda ochiladigan asosiy sahifalar navigatsiyasi */}
-                <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? 'max-h-[400px] opacity-100 border-t border-gray-100 dark:border-gray-800' : 'max-h-0 opacity-0'}`}>
-                    <nav className="flex flex-col px-4 py-3 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl gap-1.5 font-bold text-sm text-gray-700 dark:text-gray-300">
-                        <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Bosh sahifa')}</Link>
-                        <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Statistika')}</Link>
-                        <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Yutuqlar')}</Link>
-                        <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Biz haqimizda')}</Link>
-                        <Link to="/static" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Mentorlar')}</Link>
-                        <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Ro`yxatdan o`tish')}</Link>
-                    </nav>
+                {/* Telefonda ochiladigan asosiy sahifalar navigatsiyasi (Silliq ochilish animatsiyasi) */}
+                <div className={`md:hidden grid transition-all duration-300 ease-in-out ${menuOpen ? 'grid-rows-[1fr] opacity-100 border-t border-gray-100 dark:border-gray-800' : 'grid-rows-[0fr] opacity-0 invisible'}`}>
+                    <div className="overflow-hidden">
+                        <nav className="flex flex-col px-4 py-3 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl gap-1.5 font-bold text-sm text-gray-700 dark:text-gray-300">
+                            <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Bosh sahifa')}</Link>
+                            <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Statistika')}</Link>
+                            <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Yutuqlar')}</Link>
+                            <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Biz haqimizda')}</Link>
+                            <Link to="/static" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Mentorlar')}</Link>
+                            <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Ro`yxatdan o`tish')}</Link>
+                        </nav>
+                    </div>
                 </div>
             </header>
         </div>
