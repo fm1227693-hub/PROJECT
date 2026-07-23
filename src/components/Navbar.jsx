@@ -156,7 +156,7 @@ export default function Navbar() {
                             <Link to="/" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Bosh sahifa')}</Link>
                             <Link to="/stats" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Statistika')}</Link>
                             <Link to="/products" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Yutuqlar')}</Link>
-                            <Link to="/about" onClick={() =>.setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Biz haqimizda')}</Link>
+                            <Link to="/about" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Biz haqimizda')}</Link>
                             <Link to="/static" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Mentorlar')}</Link>
                             <Link to="/register" onClick={() => setMenuOpen(false)} className="py-2 px-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 transition">{t('Ro`yxatdan o`tish')}</Link>
                         </nav>
