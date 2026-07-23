@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// public papkasidagi rasm to'g'ridan-to'g'ri string korinishida yoziladi
 const staticMentorsData = [
     {
         id: 1,
@@ -11,7 +12,7 @@ const staticMentorsData = [
         experience: "4+ yil tajriba",
         bio: "Frontend yo'nalishi bo'yicha yuqori darajadagi mutaxassis va tajribali ustoz.",
         skills: ["React", "JavaScript", "TypeScript", "Tailwind CSS"],
-        image: "public/photo_2026-07-23_23-14-12.jpg",
+        image: "/photo_2026-07-23_23-14-12.jpg", // public ichidagi fayl nomi
         telegram: "https://t.me/rukhillo",
         birthYear: 2005,
         age: 21,
@@ -29,7 +30,7 @@ export default function Mentorstats() {
     const [selectedMentor, setSelectedMentor] = useState("");
     const [toast, setToast] = useState(false);
     const [activeMentorDetail, setActiveMentorDetail] = useState(null);
-    
+
     const detailTopRef = useRef(null);
 
     useEffect(() => {
@@ -146,7 +147,7 @@ export default function Mentorstats() {
                             />
                             <h1 className="text-2xl sm:text-3xl font-bold mb-1">{activeMentorDetail.name}</h1>
                             <p className="text-red-600 dark:text-red-400 font-medium text-base mb-2">{activeMentorDetail.role}</p>
-                            
+
                             <span className="text-xs bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 px-3 py-1 rounded-md font-medium border border-red-100 dark:border-red-500/20 mb-4">
                                 {activeMentorDetail.experience}
                             </span>
