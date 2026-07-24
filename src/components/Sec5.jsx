@@ -3,7 +3,7 @@ import ResultsSlider from './ResultsSlider'
 
 export default function Sec5() {
   return (
-    <div>
+    <div className=''>
         <ResultsSlider/>
     </div>
   )

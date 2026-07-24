@@ -90,7 +90,7 @@
         "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
         "list": [
             {
-                "name": "Ruxillo Asrorov",
+                "name": "Ruhillo Asrorov",
                 "role": "Senior English Instructor (IELTS 8)",
                 "experience": "6+ yil tajriba",
                 "bio": "Ingliz tilini Zero dan boshlagan o'quvchilarga tez fursatda erkin gapirishni o'rgatadi. 200+ dan ortiq IELTS 7+ egalarini tayyorlagan.",
@@ -221,7 +221,7 @@
         "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
         "list": [
             {
-                "name": "Ruxillo Asrorov",
+                "name": "Ruhillo Asrorov",
                 "role": "Senior English Instructor & IELTS Expert",
                 "experience": "6+ yil",
                 "students": "200+ o'quvchi",
@@ -267,5 +267,21 @@
         "specialtyLabel": "Mutaxassisligi:",
         "certificatesTitle": "Olingan Sertifikatlar",
         "detailsBtn": "Batafsil"
+    },
+    "resultsSlider": {
+        "title": "Ba'zi o'quv   chilarimizning natijalari",
+        "listening": "Listening",
+        "reading": "Reading",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "overall": "Overall"
+    },
+    "productsPage": {
+        "title": "Ba'zi o'quvchilarimizning natijalari",
+        "listening": "Listening",
+        "reading": "Reading",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "overall": "Overall"
     }
 }

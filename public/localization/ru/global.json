@@ -90,7 +90,7 @@
         "successToast": "Ваша заявка успешно отправлена!",
         "list": [
             {
-                "name": "Ruxillo Asrorov",
+                "name": "Ruhillo Asrorov",
                 "role": "Senior English Instructor (IELTS 8)",
                 "experience": "6+ лет опыта",
                 "bio": "Обучает студентов, начавших с нуля, свободно говорить в кратчайшие сроки. Подготовила более 200+ обладателей IELTS 7+.",
@@ -220,7 +220,7 @@
         "successToast": "Ваша заявка успешно отправлена!",
         "list": [
             {
-                "name": "Ruxillo Asrorov",
+                "name": "Ruhillo Asrorov",
                 "role": "Senior English Instructor & IELTS Expert",
                 "experience": "6+ лет",
                 "students": "200+ учеников",
@@ -266,5 +266,21 @@
         "specialtyLabel": "Специальность:",
         "certificatesTitle": "Полученные сертификаты",
         "detailsBtn": "подробно"
+    },
+    "resultsSlider": {
+        "title": "Результаты некоторых наших учеников",
+        "listening": "Listening",
+        "reading": "Reading",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "overall": "Overall"
+    },
+    "productsPage": {
+        "title": "Результаты некоторых наших учеников",
+        "listening": "Listening",
+        "reading": "Reading",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "overall": "Overall"
     }
 }
