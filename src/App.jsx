@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
@@ -8,11 +9,27 @@ import AboutUs from "./components/AboutUs";
 import Admin from "./components/Admin";
 import Register from "./components/Register";
 import Mentorstats from "./components/Mentorstats";
+import ResultsSlider from "./components/ResultsSlider";
+
+// Sahifa o'zgarganda tepaga chiqarish uchun yordamchi funksiya
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   return (
     <div className="dark:bg-[#090623] bg-white min-h-screen relative transition-colors duration-200">
       <Navbar />
+      
+      {/* ScrollToTop shu yerga qo'shildi */}
+      <ScrollToTop />
+
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/stats" element={<Stats />} />

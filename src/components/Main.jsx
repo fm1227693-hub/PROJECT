@@ -7,6 +7,7 @@ import Sec4 from './Sec4'
 import Mentors from './Mentors'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import Sec5 from './Sec5'
 
 export default function Main() {
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function Main() {
       <Sec3 />
       <Sec2 />
       <Sec4 />
+      <Sec5/>
     </div>
   )
 }
