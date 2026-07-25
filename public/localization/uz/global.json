@@ -283,5 +283,52 @@
         "writing": "Writing",
         "speaking": "Speaking",
         "overall": "Overall"
-    }
+    },
+    "dovudxon": {
+        "role": "IELTS 9.0",
+        "scoreTitle": "IELTS bali",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "O'zbekistonda 8-marta IELTS 9.0 ballarini qo'lga kiritdim va bu o'zimga bo'lgan ishonchimni yanada oshirdi. O'quvchilarim yaxshi natijalarga erishishi uchun barcha yo'nalishlarga e'tibor qarataman.",
+        "expert": "Tajribali Mentor"
+    },
+    "zarnigor": {
+        "role": "IELTS 8.5",
+        "scoreTitle": "IELTS bali",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "17 yoshimda 8.5 ni qo‘lga kiritganman va o‘zimni ko‘rsatganman. O‘quvchilar bilan ishlashni yaxshi ko‘raman va ularga qiyin tuyulgan joylarni oson tushuntirib berishga harakat qilaman.",
+        "expert": "Tajribali Mentor"
+    },
+    "gulasal": {
+        "role": "IELTS 9.0",
+        "scoreTitle": "IELTS bali",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "Yuqori sifatli ta'lim va doimiy motivatsiya orqali o'quvchilarga ingliz tilini o'rganishda va yangi imkoniyatlarni kashf etishda yordam bermoqchiman.",
+        "expert": "Tajribali Mentor"
+    },
+    "ruxillo": {
+        "role": "Katta ingliz tili o'qituvchisi (IELTS 8)",
+        "scoreTitle": "IELTS bali",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "Noldan boshlagan o'quvchilarni qisqa vaqt ichida erkin gapirishga o'rgatadi. 200 dan ortiq IELTS 7+ egalarini tayyorlagan.",
+        "expert": "Tajribali Mentor"
+    },
+    "jasurbek": {
+        "role": "ESL va So'zlashuv murabbiyi",
+        "scoreTitle": "IELTS bali",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "Talaffuz ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv formatda olib boradi.",
+        "expert": "Tajribali Mentor"
+    },
+    "sec3Badge": "Professional O'qituvchilar",
+    "sec3Title": "Bizning mutaxassis bilan tanishing"
 }

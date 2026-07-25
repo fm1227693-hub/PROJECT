@@ -282,5 +282,52 @@
         "writing": "Writing",
         "speaking": "Speaking",
         "overall": "Overall"
-    }
+    },
+    "dovudxon": {
+        "role": "IELTS 9.0",
+        "scoreTitle": "IELTS score",
+        "certDesc": "Certified",
+        "experienceText": "Years experience",
+        "studentsText": "Students",
+        "description": "I got IELTS 9.0 for the 8th time in Uzbekistan, and it increased my self-confidence even more. I pay attention to all departments so that my students can achieve good results.",
+        "expert": "Expert Mentor"
+    },
+    "zarnigor": {
+        "role": "IELTS 8.5",
+        "scoreTitle": "IELTS score",
+        "certDesc": "Certified",
+        "experienceText": "Years experience",
+        "studentsText": "Students",
+        "description": "I achieved an 8.5 at the age of 17 and proved myself. I love working with students and try to explain difficult parts to them in an easy way.",
+        "expert": "Expert Mentor"
+    },
+    "gulasal": {
+        "role": "IELTS 9.0",
+        "scoreTitle": "IELTS score",
+        "certDesc": "Certified",
+        "experienceText": "Years experience",
+        "studentsText": "Students",
+        "description": "I want to help students to learn English and discover new opportunities through high-quality education and constant motivation.",
+        "expert": "Expert Mentor"
+    },
+    "ruxillo": {
+        "role": "Senior English Instructor (IELTS 8)",
+        "scoreTitle": "IELTS score",
+        "certDesc": "Certified",
+        "experienceText": "Years experience",
+        "studentsText": "Students",
+        "description": "Teaches students starting from zero to speak fluently in a short period. Has prepared more than 200+ IELTS 7+ holders.",
+        "expert": "Expert Mentor"
+    },
+    "jasurbek": {
+        "role": "ESL & Speaking Coach",
+        "scoreTitle": "IELTS score",
+        "certDesc": "Certified",
+        "experienceText": "Years experience",
+        "studentsText": "Students",
+        "description": "Specialist in accent reduction and overcoming the language barrier. Conducts lessons in an interactive format.",
+        "expert": "Expert Mentor"
+    },
+    "sec3Badge": "Professional Teachers",
+    "sec3Title": "Meet Our Expert"
 }
