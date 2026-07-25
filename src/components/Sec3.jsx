@@ -68,6 +68,7 @@ export default function Sec3() {
 
   const currentTeacher = teachers.find((tch) => tch.id === activeTeacher.id) || teachers[0]
 
+  // Matnni sekinroq va silliq yozish effekti (45ms)
   useEffect(() => {
     setDisplayedText('')
     let i = 0
@@ -79,7 +80,7 @@ export default function Sec3() {
       } else {
         clearInterval(typingInterval)
       }
-    }, 15)
+    }, 45)
     return () => clearInterval(typingInterval)
   }, [currentTeacher.id, i18n.language])
 
@@ -96,7 +97,7 @@ export default function Sec3() {
       <motion.div 
         animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-10 left-5 sm:left-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-lime-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
+        className="absolute top-10 left-5 sm:left-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-red-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
       />
       <motion.div 
         animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.2, 0.1] }}
@@ -118,7 +119,7 @@ export default function Sec3() {
           {t('sec3.title')}
         </h2>
 
-        {/* O'qituvchilar tanlash paneli (Kichik telefonlarda ham bemalol scroll qilinadi) */}
+        {/* O'qituvchilar tanlash paneli */}
         <div
           data-aos="fade-up"
           data-aos-delay="150"
@@ -193,16 +194,24 @@ export default function Sec3() {
                   {currentTeacher.cert}
                 </h3>
                 <div className="flex flex-wrap gap-2 mb-3">
-                  <span className="bg-red-500 text-gray-900 text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-1 rounded-lg shadow-sm">
+                  <span className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-1 rounded-lg shadow-sm">
                     {t('sec3.students')}: {currentTeacher.students}
                   </span>
-                  <span className="bg-red-500 text-gray-900 text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-1 rounded-lg shadow-sm">
+                  <span className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-1 rounded-lg shadow-sm">
                     {t('sec3.experience')}: {currentTeacher.experience}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-4">
+                
+                {/* Kartochka ichidagi matn ham silliq animatsiya bilan chiqadi */}
+                <motion.p 
+                  key={currentTeacher.id + '-desc'}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-4"
+                >
                   {currentTeacher.quote}
-                </p>
+                </motion.p>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -245,10 +254,22 @@ export default function Sec3() {
               </motion.div>
             </AnimatePresence>
 
-            <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-slate-100 dark:bg-white/[0.02] py-2 rounded-r-xl">
-              {displayedText}
-              <span className="inline-block w-1.5 h-4 ml-1 bg-red-500 animate-pulse align-middle"></span>
-            </p>
+            {/* Sekin yoziladigan matn bloki */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-slate-100 dark:bg-white/[0.02] py-3 rounded-r-xl flex items-center"
+            >
+              <p>
+                {displayedText}
+                <motion.span 
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                  className="inline-block w-1.5 h-4 ml-1 bg-red-500 align-middle"
+                />
+              </p>
+            </motion.div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <motion.a
@@ -268,7 +289,7 @@ export default function Sec3() {
                   setSelectedMentor(currentTeacher.name)
                   setModal(true)
                 }}
-                className="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-400/20"
+                className="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-500/20"
               >
                 {t('sec3.contactBtn')}
               </motion.button>
@@ -305,7 +326,7 @@ export default function Sec3() {
               <h3 className="text-lg sm:text-xl font-bold mb-1 pr-6">{t('sec3.modalTitle')}</h3>
               <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mb-5">
                 {t('sec3.selectedTeacher')}{' '}
-                <span className="text-red-500 dark:text-red-500 font-medium">{selectedMentor}</span>
+                <span className="text-red-500 font-medium">{selectedMentor}</span>
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -316,7 +337,7 @@ export default function Sec3() {
                     type="text"
                     required
                     placeholder={t('sec3.namePlaceholder')}
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-400 transition"
+                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-500 transition"
                   />
                 </div>
                 <div>
@@ -327,14 +348,14 @@ export default function Sec3() {
                     type="tel"
                     required
                     placeholder="+998 90 123 45 67"
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-400 transition"
+                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-500 transition"
                   />
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className="w-full bg-red-600 hover:bg-red-600 text-black font-bold py-3 rounded-xl transition text-sm shadow-lg shadow-red-400/20"
+                  className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-lg shadow-red-500/20"
                 >
                   {t('sec3.submitBtn')}
                 </motion.button>
