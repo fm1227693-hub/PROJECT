@@ -1,50 +1,50 @@
 {
-    "Welcome to React": "Xush kelibsiz React va react-i18next",
-    "greating": "salom hammaga",
+    "Welcome to React": "React va react-i18nextga xush kelibsiz",
+    "greating": "hammaga salom",
     "Bosh sahifa": "Bosh sahifa",
     "Statistika": "Statistika",
     "Yutuqlar": "Yutuqlar",
     "Biz haqimizda": "Biz haqimizda",
-    "Ro`yxatdan o`tish": "Ro`yxatdan o`tish",
+    "Ro`yxatdan o`tish": "Ro'yxatdan o'tish",
     "Boshqaruv": "Boshqaruv",
     "Mentorlar": "Mentorlar",
     "aboutStudents": {
         "backButton": "← Orqaga",
-        "title": "O'quvchilar haqida (2-Oyna)",
-        "description": "Bu yerda o'quvchi haqida batafsil ma'lumotlar chiqadi."
+        "title": "O'quvchilar haqida (2-oyna)",
+        "description": "Bu yerda o'quvchi haqida batafsil ma'lumot ko'rsatiladi."
     },
     "aboutUs": {
         "badge": "Biz haqimizda",
-        "title": "Kelajak avlod ta'lim platformasini birgalikda quramiz.",
-        "description1": "Oddiy kuzatuvdan boshladik: ko'pchilik til o'rganish markazlari va platformalari yoki zerikarli, yoki so'zlashuv amaliyoti uchun juda cheklangan. Biz bu bo'shliqni butunlay yo'q qilish uchun markazimizni barpo etdik.",
-        "description2": "Bizning yondashuvimiz ilg'or dars metodikasini o'quvchiga yo'naltirilgan qulay muhit bilan birlashtirib, zerikarli yodlashlarga emas, balki real vaqtda ravon muloqot qilishga imkon beradi.",
-        "card1Title": "Tezkor natija",
-        "card1Desc": "Maxsus ishlab chiqilgan intensiv dasturlar qisqa fursatda sezilarli til ko'rsatkichlariga erishishni ta'minlaydi.",
+        "title": "Kelajak avlodlar uchun ta'lim platformasini birgalikda quramiz.",
+        "description1": "Biz oddiy bir kuzatishdan boshladik: ko'pchilik til markazlari va platformalar yoki zerikarli, yoki nutq amaliyoti juda cheklangan. Biz markazimizni ushbu bo'shliqni to'liq bartaraf etish uchun yaratdik.",
+        "description2": "Bizning yondashuvimiz ilg'or o'qitish metodikasini o'quvchiga qulay muhit bilan birlashtiradi, bu esa zerikarli yodlash o'rniga real vaqtda erkin muloqot qilish imkonini beradi.",
+        "card1Title": "Tez natija",
+        "card1Desc": "Maxsus ishlab chiqilgan intensiv dasturlar qisqa muddatda til bo'yicha sezilarli o'sishni ta'minlaydi.",
         "card1Tag": "Asosiy tamoyil I",
         "card2Title": "Amaliy yondashuv",
-        "card2Desc": "Darslarning asosiy qismi jonli muloqot va so'zlashuvga qaratilgan bo'lib, til to'sig'ini qisqa vaqtda yengishga yordam beradi.",
+        "card2Desc": "Darslarning asosiy qismi jonli muloqot va nutqqa qaratilgan bo'lib, bu til to'sig'ini qisqa vaqtda yengib o'tishga yordam beradi.",
         "card2Tag": "Asosiy tamoyil II",
         "card3Title": "Mukammallik sari",
-        "card3Desc": "Har bir o'quvchining shaxsiy xatolari va kamchiliklari ustida alohida ishlanib, yuqori natijalarga olib chiqiladi.",
+        "card3Desc": "Har bir o'quvchining xato va kamchiliklari ustida individual ishlash yuqori natijalarga olib keladi.",
         "card3Tag": "Asosiy tamoyil III",
-        "locationBadge": "Bizning Manzil",
-        "locationTitle": "Bizni shu yerda topasiz",
-        "locationDesc": "O'zbekiston, Buxoro shahri, \"Buxoro davlat tibbiyot bilim yurti\" majmuasi yaqinida joylashganmiz. Bizning zamonaviy va shinam o'quv markazimiz siz uchun har doim ochiq. Kelib, o'quv jarayonlarimiz bilan yaqindan tanishing!",
+        "locationBadge": "Manzilimiz",
+        "locationTitle": "Bizni shu yerdan toping",
+        "locationDesc": "Biz O'zbekistonda, Buxoro shahrida, «Buxoro davlat tibbiyot kolleji» majmuasi yaqinida joylashganmiz. Zamonaviy va qulay o'quv markazimiz sizlar uchun doim ochiq. Keling va o'quv jarayonimiz bilan yaqindan tanishing!",
         "address": "Buxoro, O'zbekiston",
-        "imageAlt": "Bizning ofisimiz va o'quv markazimiz",
+        "imageAlt": "Bizning ofis va o'quv markazimiz",
         "footerTitle": "Maqsad sari birgalikda, ishonch bilan.",
-        "footerDesc": "Bizning tajribali ustozlar jamoamiz o'quvchilarga doimiy ko'mak berib, yuqori sertifikatlar va erkin muloqot darajasiga erishishlarini ta'minlaydi.",
+        "footerDesc": "Bizning tajribali o'qituvchilar jamoamiz o'quvchilarga doimiy qo'llab-quvvatlash ko'rsatib, yuqori sertifikatlar va erkin muloqot darajasiga erishishlariga yordam beradi.",
         "stat1Label": "Murosasiz sifat",
         "stat2Label": "Qo'llab-quvvatlash"
     },
     "addComment": {
         "editTitle": "O'quvchini tahrirlash",
         "addTitle": "Yangi o'quvchi qo'shish",
-        "imageLabel": "Rasm ssilkasi (URL)",
+        "imageLabel": "Rasm havolasi (URL)",
         "imagePlaceholder": "https://.../image.png",
-        "nameLabel": "O'quvchining ismi",
+        "nameLabel": "O'quvchi ismi",
         "namePlaceholder": "Masalan: Alisher Vahobov",
-        "achievementLabel": "Erishgan yutug'i",
+        "achievementLabel": "Erishilgan natija",
         "achievementPlaceholder": "Masalan: IELTS 8.0 / CEFR B2",
         "cancelBtn": "Bekor qilish",
         "saveBtn": "Saqlash",
@@ -54,11 +54,11 @@
         "errorOccurred": "Xatolik yuz berdi"
     },
     "admin": {
-        "title": "Admin panelga kirish",
-        "placeholder": "Parolingizni yozing",
+        "title": "Administrator panelga kirish",
+        "placeholder": "Parolni kiriting",
         "enterBtn": "Kirish",
-        "emptyError": "Iltimos yozing",
-        "wrongPassword": "Parol xato!"
+        "emptyError": "Iltimos, to'ldiring",
+        "wrongPassword": "Parol noto'g'ri!"
     },
     "comments": {
         "title": "Kurslarni boshqarish",
@@ -68,18 +68,18 @@
         "deleteSuccess": "Muvaffaqiyatli o'chirildi"
     },
     "footer": {
-        "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblar va sifatli ta'lim olib, o'z yo'lingizni toping.",
-        "rights": "Barcha huquqlar kafolatlangan."
+        "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblarni egallang va sifatli ta'lim oling, o'z yo'lingizni toping.",
+        "rights": "Barcha huquqlar himoyalangan."
     },
     "home": {
         "badge": "Optimum School of English",
-        "titlePrefix": "Ingliz tilini noldan boshlab",
-        "titleHighlight": "mukammal o'rganing",
-        "description": "Professional o'qituvchilar, jonli speaking klublar va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling."
+        "titlePrefix": "Ingliz tilini noldan",
+        "titleHighlight": "mukammallikkacha o'rganing",
+        "description": "Professional o'qituvchilar, jonli suhbat klublari va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling."
     },
     "mentors": {
         "sectionTitle": "Bizning tajribali mentorlarimiz",
-        "sectionDesc": "Sizga ingliz tilini mukammal o'rganishda va natijaga chiqishda yordam beradigan mutaxassislar.",
+        "sectionDesc": "Ingliz tilini mukammal o'rganishingiz va natijaga erishishingizga yordam beruvchi mutaxassislar.",
         "contactBtn": "Bog'lanish",
         "modalTitle": "Mentor bilan bog'lanish",
         "selectedTeacher": "Tanlangan o'qituvchi:",
@@ -92,8 +92,8 @@
             {
                 "name": "Ruhillo Asrorov",
                 "role": "Senior English Instructor (IELTS 8)",
-                "experience": "6+ yil tajriba",
-                "bio": "Ingliz tilini Zero dan boshlagan o'quvchilarga tez fursatda erkin gapirishni o'rgatadi. 200+ dan ortiq IELTS 7+ egalarini tayyorlagan.",
+                "experience": "6+ yillik tajriba",
+                "bio": "Noldan boshlagan o'quvchilarni qisqa muddatda erkin gapirishga o'rgatadi. 200+ IELTS 7+ egalarini tayyorlagan.",
                 "skills": [
                     "General English",
                     "IELTS",
@@ -103,8 +103,8 @@
             {
                 "name": "Jasurbek Sobirov",
                 "role": "ESL & Speaking Coach",
-                "experience": "4+ yil tajriba",
-                "bio": "Aksent ustida ishlash va til to'sig'ini (tili chiqishini) yengish bo'yicha mutaxassis. Darslarni interaktiv tarzda olib boradi.",
+                "experience": "4+ yillik tajriba",
+                "bio": "Aksent ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv shaklda olib boradi.",
                 "skills": [
                     "Grammar",
                     "Listening",
@@ -115,14 +115,14 @@
     },
     "products": {
         "badge": "Muvaffaqiyat",
-        "title": "Yutuqqa erishgan o'quvchilarimiz",
+        "title": "Bizning muvaffaqiyatli o'quvchilarimiz",
         "defaultAchievement": "IELTS 7.5 / Yuqori natija",
-        "certified": "Sertifikat olgan",
+        "certified": "Sertifikatlangan",
         "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
         "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
     },
     "register": {
-        "phoneError": "Faqat raqam yozing!",
+        "phoneError": "Faqat raqamlar kiriting!",
         "title": "Kursga ro'yxatdan o'tish",
         "nameLabel": "Ismingiz",
         "namePlaceholder": "Masalan: Alisher",
@@ -131,68 +131,70 @@
         "submitBtn": "Ro'yxatdan o'tish"
     },
     "stats": {
-        "studentsTitle": "Faol O`quvchilar",
-        "lessonsTitle": "Jami Darslar",
-        "speakingTitle": "Muloqot Klublari",
+        "studentsTitle": "Faol o'quvchilar",
+        "lessonsTitle": "Jami darslar",
+        "speakingTitle": "Suhbat klublari",
         "certificatesTitle": "Sertifikatlar"
     },
     "steps": {
         "badge": "O'qish jarayoni",
-        "title": "3 ta oson qadamda ingliz tilini boshlang",
-        "description": "Optimum School of English bilan xalqaro darajaga erishish yo'li shunchalik oson.",
+        "title": "Ingliz tilini 3 oson qadamda boshlang",
+        "description": "Optimum School of English bilan xalqaro darajaga yo'l shunchalik oson.",
         "step1Title": "Ro'yxatdan o'tish",
-        "step1Desc": "O'zingizga qulay kursni tanlang va ma'lumotlaringizni qoldirib, ro'yxatdan o'ting.",
+        "step1Desc": "O'zingizga mos kursni tanlang va ma'lumotlaringizni qoldirib ro'yxatdan o'ting.",
         "step2Title": "Darajani aniqlash",
-        "step2Desc": "Bilim darajangizni maxsus test orqali aniqlab, mos keluvchi guruhga biriktrilasiz.",
-        "step3Title": "Natijani boshlash",
-        "step3Desc": "Jonli darslar va so'zlashuv klublari yordamida qisqa fursatda erkin muloqotni oching."
+        "step2Desc": "Maxsus test yordamida bilim darajangiz aniqlanadi va mos guruhga joylashtirilasiz.",
+        "step3Title": "Natijaga erishish",
+        "step3Desc": "Jonli darslar va suhbat klublari yordamida qisqa muddatda erkin muloqotni his qiling."
     },
     "students": {
-        "title": "Yuqori yutuqqa erishgan o'quvchilar",
+        "title": "Yuqori natijalarga erishgan o'quvchilar",
         "badge": "Optimum Pride",
-        "ageLabel": "Age",
-        "levelLabel": "Starting level",
-        "timeLabel": "Preparation time",
-        "teacherLabel": "Teacher",
-        "viewBtn": "View →",
+        "ageLabel": "Yosh",
+        "levelLabel": "Boshlang'ich daraja",
+        "timeLabel": "Tayyorgarlik vaqti",
+        "teacherLabel": "O'qituvchi",
+        "viewBtn": "Ko'rish →",
         "modalTitle": "O'quvchi haqida to'liq ma'lumot",
         "closeBtn": "✕ Yopish"
     },
     "about": {
         "badge": "Biz haqimizda",
-        "titleStart": "Ingliz tilini zamonaviy va",
-        "titleHighlight": "oson usullar",
-        "titleEnd": "bilan o'rgatamiz.",
-        "description": "Optimum School of English jamoasi til o'rganish jarayonini zerikarli yod olishlardan xoli qilib, real muloqotga asoslangan qiziqarli muhitni taqdim etadi.",
-        "goalTitle": "Bizning Maqsadimiz",
-        "goalDesc": "Har bir o'quvchiga sifatli ta'lim berib, ularning kelajakdagi muvaffaqiyatiga poydevor qo'yish.",
-        "teacherTitle": "Malakali Ustozlar",
-        "teacherDesc": "Xalqaro sertifikatlar va ko'p yillik tajribaga ega professional o'qituvchilar jamoasi.",
-        "experienceText1": "Yillik",
+        "titleStart": "Ingliz tilini zamonaviy va ",
+        "highlight": "oson usullarda",
+        "titleHighlight": "oson usullarda",
+        "titleEnd": " o'rgatamiz.",
+        "description": "Optimum School of English jamoasi til o'rganish jarayonini zerikarli yodlashdan xalos qilib, real muloqotga asoslangan qiziqarli muhitni taklif etadi.",
+        "goalTitle": "Bizning maqsadimiz",
+        "goalDesc": "Har bir o'quvchiga sifatli ta'lim berish va uning kelajakdagi muvaffaqiyati uchun poydevor yaratish.",
+        "teacherTitle": "Malakali o'qituvchilar",
+        "teacherDesc": "Xalqaro sertifikatlarga va ko'p yillik tajribaga ega professional o'qituvchilar jamoasi.",
+        "experience": "Yil\nTajriba",
+        "experienceText1": "Yil",
         "experienceText2": "Tajriba"
     },
     "statistic": {
         "badge": "O'quv natijalari",
-        "title": "O'quvchilarimizning muvaffaqiyat ko'rsatkichi",
-        "description": "Darsdagi faollik, so'z boyligi oshishi va qulay muloqot darajasini har oy tahlil qilib boramiz.",
+        "title": "O'quvchilarimizning muvaffaqiyat ko'rsatkichlari",
+        "description": "Har oy darslardagi faollik, so'z boyligining o'sishi va erkin muloqot darajasini tahlil qilamiz.",
         "dynamicsTitle": "O'sish dinamikasi",
         "analysisTitle": "Natijalar tahlili",
         "tab1": "1-oy",
         "tab3": "3-oy",
         "tabEnd": "Kurs yakuni",
         "coursesTitle": "Kurs yo'nalishlari",
-        "courseTypeTitle": "Mashg'ulot turlari",
+        "courseTypeTitle": "Dars turlari",
         "studentsText": "(O'quvchilar)",
-        "footerText": "✨ Har bir qadamda mukammallik sari",
-        "tab1Min": "25 min",
+        "footerText": "✨ Har qadamda mukammallik sari",
+        "tab1Min": "25 daq",
         "tab1Errors": "Xatolar: 42%",
         "tab1Trend": "Boshlang'ich: +15% Speaking",
-        "tab3Min": "45 min",
+        "tab3Min": "45 daq",
         "tab3Errors": "Xatolar: 24.8% ↓",
         "tab3Trend": "Barqaror: +30% Speaking",
-        "endMin": "80 min",
+        "endMin": "80 daq",
         "endErrors": "Xatolar: 8.5% ↓",
-        "endTrend": "Eng yuqori: +45% Speaking"
+        "endTrend": "Yuqori: +45% Speaking"
     },
     "navbar": {
         "home": "Bosh sahifa",
@@ -207,17 +209,17 @@
     "mentorsPage": {
         "badge": "Professional jamoa",
         "title": "Bizning tajribali mentorlarimiz",
-        "description": "Har bir o'quvchiga individual yondashib, ularni noldan boshlab professional darajaga olib chiqadigan mutaxassislar bilan tanishing.",
+        "description": "Har bir o'quvchiga individual yondashib, noldan professional darajagacha olib boradigan mutaxassislar bilan tanishing.",
         "experienceLabel": "Tajriba:",
         "studentsLabel": "Bitiruvchilar:",
-        "achievementsTitle": "Asosiy yutuqlari va ko'nikmalari:",
+        "achievementsTitle": "Asosiy yutuq va ko'nikmalar:",
         "connectBtn": "Mentor bilan bog'lanish",
         "modalTitle": "Mentor bilan bog'lanish",
-        "selectedTeacher": "Tanlangan ustoz:",
+        "selectedTeacher": "Tanlangan o'qituvchi:",
         "nameLabel": "Ismingiz",
         "namePlaceholder": "Ismingizni kiriting",
         "phoneLabel": "Telefon raqamingiz",
-        "submitBtn": "So'rovni yuborish",
+        "submitBtn": "So'rov yuborish",
         "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
         "list": [
             {
@@ -225,7 +227,7 @@
                 "role": "Senior English Instructor & IELTS Expert",
                 "experience": "6+ yil",
                 "students": "200+ o'quvchi",
-                "bio": "Ingliz tilini Zero darajasidan boshlaganlarga tez fursatda erkin muloqot qilishni o'rgatadi. Xalqaro CELTA sertifikati egasi va 200 dan ortiq IELTS 7+ egalarini tayyorlagan.",
+                "bio": "Noldan boshlaganlarni qisqa muddatda erkin muloqot qilishga o'rgatadi. Xalqaro CELTA sertifikati egasi, 200+ IELTS 7+ egalarini tayyorlagan.",
                 "skills": [
                     "General English",
                     "IELTS 8.5",
@@ -238,7 +240,7 @@
                 "role": "ESL & Speaking Coach",
                 "experience": "4+ yil",
                 "students": "150+ o'quvchi",
-                "bio": "Til to'sig'ini (fear of speaking) yengish va ingliz tilida mukammal aksent bilan gapirishni shakllantirish bo'yicha mutaxassis. Darslarni qiziqarli interaktiv metodika asosida olib boradi.",
+                "bio": "Til to'sig'ini (gapirishdan qo'rqish) yengib o'tish va mukammal talaffuz shakllantirish bo'yicha mutaxassis. Darslarni qiziqarli interaktiv metodika asosida olib boradi.",
                 "skills": [
                     "Grammar",
                     "Interactive Speaking",
@@ -248,28 +250,8 @@
             }
         ]
     },
-    "aboutMentors": {
-        "sectionTitle": "Bizning Mentorlar",
-        "sectionDesc": "Professional va tajribali ustozlarimizdan ta'lim oling",
-        "contactBtn": "Bog'lanish",
-        "modalTitle": "Mentor bilan bog'lanish",
-        "selectedTeacher": "Tanlangan mentor:",
-        "nameLabel": "Ismingiz",
-        "namePlaceholder": "Ismingizni kiriting",
-        "phoneLabel": "Telefon raqamingiz",
-        "submitBtn": "Yuborish",
-        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
-        "backBtn": "← Orqaga qaytish",
-        "telegramBtn": "Telegram orqali bog'lanish",
-        "birthYearLabel": "Tug'ilgan yil:",
-        "ageLabel": "Yoshi:",
-        "yearsOld": "yosh",
-        "specialtyLabel": "Mutaxassisligi:",
-        "certificatesTitle": "Olingan Sertifikatlar",
-        "detailsBtn": "Batafsil"
-    },
     "resultsSlider": {
-        "title": "Ba'zi o'quv   chilarimizning natijalari",
+        "title": "Ba'zi o'quvchilarimizning natijalari",
         "listening": "Listening",
         "reading": "Reading",
         "writing": "Writing",
@@ -286,49 +268,64 @@
     },
     "dovudxon": {
         "role": "IELTS 9.0",
-        "scoreTitle": "IELTS bali",
+        "scoreTitle": "IELTS balli",
         "certDesc": "Sertifikatlangan",
         "experienceText": "Yillik tajriba",
         "studentsText": "O'quvchilar",
-        "description": "O'zbekistonda 8-marta IELTS 9.0 ballarini qo'lga kiritdim va bu o'zimga bo'lgan ishonchimni yanada oshirdi. O'quvchilarim yaxshi natijalarga erishishi uchun barcha yo'nalishlarga e'tibor qarataman.",
-        "expert": "Tajribali Mentor"
-    },
-    "zarnigor": {
-        "role": "IELTS 8.5",
-        "scoreTitle": "IELTS bali",
-        "certDesc": "Sertifikatlangan",
-        "experienceText": "Yillik tajriba",
-        "studentsText": "O'quvchilar",
-        "description": "17 yoshimda 8.5 ni qo‘lga kiritganman va o‘zimni ko‘rsatganman. O‘quvchilar bilan ishlashni yaxshi ko‘raman va ularga qiyin tuyulgan joylarni oson tushuntirib berishga harakat qilaman.",
-        "expert": "Tajribali Mentor"
-    },
-    "gulasal": {
-        "role": "IELTS 9.0",
-        "scoreTitle": "IELTS bali",
-        "certDesc": "Sertifikatlangan",
-        "experienceText": "Yillik tajriba",
-        "studentsText": "O'quvchilar",
-        "description": "Yuqori sifatli ta'lim va doimiy motivatsiya orqali o'quvchilarga ingliz tilini o'rganishda va yangi imkoniyatlarni kashf etishda yordam bermoqchiman.",
-        "expert": "Tajribali Mentor"
-    },
-    "ruxillo": {
-        "role": "Katta ingliz tili o'qituvchisi (IELTS 8)",
-        "scoreTitle": "IELTS bali",
-        "certDesc": "Sertifikatlangan",
-        "experienceText": "Yillik tajriba",
-        "studentsText": "O'quvchilar",
-        "description": "Noldan boshlagan o'quvchilarni qisqa vaqt ichida erkin gapirishga o'rgatadi. 200 dan ortiq IELTS 7+ egalarini tayyorlagan.",
-        "expert": "Tajribali Mentor"
+        "description": "O'zbekistonda 8 marta IELTS 9.0 ballini oldim va bu o'z-o'zimga ishonchimni yanada mustahkamladi. O'quvchilarim yaxshi natijalarga erishishi uchun barcha yo'nalishlarga e'tibor qarataman.",
+        "expert": "Tajribali mentor"
     },
     "jasurbek": {
-        "role": "ESL va So'zlashuv murabbiyi",
-        "scoreTitle": "IELTS bali",
+        "role": "ESL va suhbat bo'yicha murabbiy",
+        "scoreTitle": "IELTS balli",
         "certDesc": "Sertifikatlangan",
         "experienceText": "Yillik tajriba",
         "studentsText": "O'quvchilar",
         "description": "Talaffuz ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv formatda olib boradi.",
-        "expert": "Tajribali Mentor"
+        "expert": "Tajribali mentor"
     },
-    "sec3Badge": "Professional O'qituvchilar",
-    "sec3Title": "Bizning mutaxassis bilan tanishing"
+    "lesson18": {
+        "title": "18-dars: Advanced Speaking & Complex Grammar Structures",
+        "badge": "Modul yakuni / Advanced",
+        "description": "Ushbu darsda biz murakkab grammatik konstruksiyalarni (Inversion, Cleft sentences) qo'llashni va erkin muloqot paytida uchraydigan nozik jihatlarni mukammal o'rganamiz.",
+        "goal": "Talaffuz va grammatik aniqlikni professional darajaga ko'tarish.",
+        "tasks": [
+            "Murakkab gap tuzilmalarini amalda qo'llash",
+            "Real hayotiy vaziyatlar bo'yicha ilg'or darajadagi bahslar (Debate)",
+            "IELTS Speaking Part 3 savollariga yuqori darajada javob berish"
+        ],
+        "duration": "80 daqiqa"
+    },
+    "sec3": {
+        "badge": "Professional o'qituvchilar",
+        "title": "Bizning mutaxassisimiz bilan tanishing",
+        "ieltsScore": "IELTS score",
+        "certified": "Certified",
+        "experience": "Experience",
+        "students": "Students",
+        "contactBtn": "Bog'lanish",
+        "modalTitle": "O'qituvchi bilan bog'lanish",
+        "selectedTeacher": "Tanlangan o'qituvchi:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "Yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!"
+    },
+    "asilbek": {
+        "role": "CELTA",
+        "description": "Asilbek ketma-ket 3 marta IELTS 9.0 ballini olgan, va bu tasodif emas. Uning har bir darsi bitta g'oya atrofida quriladi — «imkonsiz» so'zini odamlar yetarlicha harakat qilmasdan turib ishlatishadi. U har bir ko'nikmani tushunarli qadamlarga bo'lib beradi, o'quvchining zaif tomonlarini doimiy kuzatib boradi va ko'pchilik tiqilib qoladigan bosqichdan olib o'tadi. Uning o'quvchilari nafaqat imtihondan o'tishadi — ular darsdan haqiqiy ishonch bilan chiqib ketishadi. Agar mehnat qilishga tayyor bo'lsangiz, natija albatta keladi."
+    },
+    "ruxillo": {
+        "role": "Katta ingliz tili o'qituvchisi (IELTS 8)",
+        "description": "Ruhillo ingliz tilini maktab davridayoq mustaqil o'rganishni boshlagan va bir necha yil ichida o'z shahridagi eng talab qilinadigan o'qituvchilardan biriga aylangan. U IELTS'ga tayyorlash va nutq amaliyoti bo'yicha ixtisoslashgan bo'lib, murakkab grammatik mavzularni sodda va tushunarli tilda tushuntiradi. 6 yillik faoliyati davomida u IELTS 7 va undan yuqori ball olgan 200 dan ortiq o'quvchini tayyorlagan va o'z o'qitish metodikasini doimiy takomillashtirib bormoqda."
+    },
+    "zarnigor": {
+        "role": "IELTS 8.5",
+        "description": "Zarnigor xalqaro IELTS imtihonidan 17 yoshidayoq 8.5 ball to'plagan, bu esa uning yoshi uchun haqiqiy yutuq bo'ldi. U CELTA sertifikati egasi bo'lib, nutq ko'nikmalarini rivojlantirish va talaffuz ustida ishlashga ixtisoslashgan. Zarnigor har bir o'quvchi materialni sodda va sabr bilan tushuntirilsa, yuqori natijaga erisha oladi deb ishonadi va aynan shu yondashuvni har bir darsida qo'llaydi."
+    },
+    "gulasal": {
+        "role": "IELTS 9.0",
+        "description": "Gulasal IELTS'ning eng yuqori balli 9.0 va xalqaro darajada ingliz tili o'qitish huquqini beruvchi TESOL sertifikati egasidir. 5 yillik amaliyoti davomida u 600 dan ortiq o'quvchini tayyorlagan, ularning ko'pchiligi chet el universitetlariga muvaffaqiyatli o'qishga kirgan. Gulasal akademik yozuv va ishonchli og'zaki ingliz tiliga alohida e'tibor qaratib, o'quvchilarga nafaqat imtihondan o'tishga, balki tilni haqiqatan ham egallashga yordam beradi."
+    }
 }

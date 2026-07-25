@@ -28,9 +28,9 @@ export default function Sec4() {
                     </div>
 
                     <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
-                        {t('about.titlePart1')}
-                        <span className="text-red-600 dark:text-red-400">{t('about.highlight')}</span>
-                        {t('about.titlePart2')}
+                        {t('about.titleStart')}
+                        <span className="text-red-600 dark:text-red-400">{t('about.titleHighlight')}</span>
+                        {t('about.titleEnd')}
                     </h2>
 
                     <p className="text-base text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
@@ -86,7 +86,7 @@ export default function Sec4() {
                     <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-white/20 dark:border-gray-800 flex items-center gap-3 transition-transform duration-300 group-hover:-translate-y-1">
                         <span className="text-2xl font-black text-red-600 dark:text-red-400">5+</span>
                         <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 leading-tight block whitespace-pre-line">
-                            {t('about.experience')}
+                            {t('about.experienceText1') + '\n' + t('about.experienceText2')}
                         </span>
                     </div>
                 </div>

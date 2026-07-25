@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 
-// O'quvchilar ma'lumotlari bazasi
 const resultsData = [
     {
         id: 1,
@@ -47,31 +47,20 @@ const resultsData = [
 export default function ResultsSlider() {
     const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
 
     const indexRef = useRef(currentIndex);
     indexRef.current = currentIndex;
 
     const triggerAnimation = (newIndex) => {
         if (newIndex === indexRef.current) return;
-        setIsAnimating(true);
         setCurrentIndex(newIndex);
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 300);
     };
 
     // Har 3 sekundda avtomatik o'tish logikasi
     useEffect(() => {
         const interval = setInterval(() => {
             const nextIndex = indexRef.current === resultsData.length - 1 ? 0 : indexRef.current + 1;
-
-            setIsAnimating(true);
             setCurrentIndex(nextIndex);
-            setTimeout(() => {
-                setIsAnimating(false);
-            }, 300);
-
         }, 3000);
 
         return () => clearInterval(interval);
@@ -80,96 +69,134 @@ export default function ResultsSlider() {
     const activeStudent = resultsData[currentIndex];
 
     return (
-        <div className="">
-            <div className="w-full max-w-5xl mx-auto p-6 bg-slate-900 dark:bg-[#090623] border border-slate-800 rounded-3xl shadow-2xl text-white my-10 transition-colors duration-200">
-                {/* Sarlavha (i18n orqali) */}
-                <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+        <div className="w-full px-2 sm:px-4">
+            <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white dark:bg-[#090623] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-6 sm:my-10 transition-colors duration-300 overflow-hidden">
+                
+                {/* Sarlavha */}
+                <motion.h2 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 px-2"
+                >
                     {t("resultsSlider.title")}
-                </h2>
+                </motion.h2>
 
                 {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}
-                <div className="flex flex-col items-center gap-3 mb-6">
-                    <div className="flex items-center justify-center gap-4 overflow-x-auto pb-2 w-full max-w-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div className="flex flex-col items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
+                    <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 w-full max-w-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4">
                         {resultsData.map((student, index) => {
                             const isActive = index === currentIndex;
                             return (
-                                <button
+                                <motion.button
                                     key={student.id}
                                     onClick={() => triggerAnimation(index)}
-                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${isActive
-                                        ? "p-1 bg-red-600 scale-110 shadow-lg shadow-red-500/50"
-                                        : "opacity-60 hover:opacity-100"
-                                        }`}
+                                    whileHover={{ scale: 1.08 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${
+                                        isActive
+                                            ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
+                                            : "opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
+                                    }`}
                                 >
                                     <img
                                         src={student.image}
                                         alt={student.name}
-                                        className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-slate-900"
+                                        className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-white dark:border-slate-900"
                                     />
-                                </button>
+                                </motion.button>
                             );
                         })}
                     </div>
+
                     {/* Tanlangan o'quvchining ismi */}
-                    <h3 className="text-xl font-semibold text-red-500 transition-all duration-300">
-                        {activeStudent.name}
-                    </h3>
+                    <AnimatePresence mode="wait">
+                        <motion.h3 
+                            key={activeStudent.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.25 }}
+                            className="text-base sm:text-lg md:text-xl font-semibold text-red-600 dark:text-red-500 text-center px-2"
+                        >
+                            {activeStudent.name}
+                        </motion.h3>
+                    </AnimatePresence>
                 </div>
 
                 {/* Progress chiziqchasi */}
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mb-8 overflow-hidden">
-                    <div
-                        className="bg-red-600 h-full transition-all duration-500"
-                        style={{
+                <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mb-6 sm:mb-8 overflow-hidden">
+                    <motion.div
+                        className="bg-red-600 h-full"
+                        animate={{
                             width: `${((currentIndex + 1) / resultsData.length) * 100}%`,
                         }}
-                    ></div>
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                    />
                 </div>
 
-                {/* Pastki qism: Ballar va Sertifikat rasmi animatsiya bilan */}
-                <div
-                    className={`grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white p-6 md:p-8 rounded-2xl shadow-inner transition-all duration-300 transform ${isAnimating
-                        ? "opacity-0 -translate-y-4"
-                        : "opacity-100 translate-y-0"
-                        }`}
-                >
+                {/* Pastki qism: Ballar va Sertifikat rasmi */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-inner">
+                    
                     {/* Ballar qismi (Chap tomon) */}
-                    <div className="md:col-span-5 flex flex-col gap-3">
-                        <div className="bg-emerald-600 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>{t("resultsSlider.listening")}</span>
-                            <span className="text-lg">{activeStudent.scores.listening}</span>
-                        </div>
+                    <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
+                        <AnimatePresence mode="wait">
+                            <motion.div 
+                                key={activeStudent.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 20 }}
+                                transition={{ duration: 0.3 }}
+                                className="flex flex-col gap-2.5 sm:gap-3 w-full"
+                            >
+                                <div className="bg-emerald-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.listening")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.listening}</span>
+                                </div>
 
-                        <div className="bg-purple-700 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>{t("resultsSlider.reading")}</span>
-                            <span className="text-lg">{activeStudent.scores.reading}</span>
-                        </div>
+                                <div className="bg-purple-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.reading")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.reading}</span>
+                                </div>
 
-                        <div className="bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>{t("resultsSlider.writing")}</span>
-                            <span className="text-lg">{activeStudent.scores.writing}</span>
-                        </div>
+                                <div className="bg-amber-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.writing")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.writing}</span>
+                                </div>
 
-                        <div className="bg-blue-600 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>{t("resultsSlider.speaking")}</span>
-                            <span className="text-lg">{activeStudent.scores.speaking}</span>
-                        </div>
+                                <div className="bg-blue-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.speaking")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.speaking}</span>
+                                </div>
 
-                        <div className="bg-red-600 text-white font-bold py-3.5 px-5 rounded-xl flex justify-between items-center shadow-xl text-lg mt-1">
-                            <span>{t("resultsSlider.overall")}</span>
-                            <span className="text-xl">{activeStudent.scores.overall}</span>
-                        </div>
+                                <div className="bg-red-600 text-white font-bold py-2.5 sm:py-3.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-md sm:shadow-xl text-base sm:text-lg mt-0.5">
+                                    <span>{t("resultsSlider.overall")}</span>
+                                    <span className="text-lg sm:text-xl">{activeStudent.scores.overall}</span>
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
 
-                    {/* Sertifikat rasmi (O'ng tomon) */}
-                    <div className="md:col-span-7 flex justify-center">
-                        <div className="relative border-2 border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800 w-full max-h-[400px] flex items-center justify-center">
-                            <img
-                                src={activeStudent.certImage}
-                                alt="IELTS Certificate"
-                                className="w-full h-full object-contain transition-all duration-500 hover:scale-105"
-                            />
-                        </div>
+                    {/* Sertifikat rasmi (O'ng tomon) - Kichik telefonlar uchun o'lchami moslashtirildi */}
+                    <div className="md:col-span-7 flex justify-center overflow-hidden">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeStudent.id + '-cert'}
+                                initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: -15 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                className="relative border border-slate-300 dark:border-slate-700 rounded-xl overflow-hidden shadow-md sm:shadow-lg bg-white dark:bg-slate-800 w-full h-[250px] sm:h-[320px] md:h-[380px] flex items-center justify-center group"
+                            >
+                                <motion.img
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.3 }}
+                                    src={activeStudent.certImage}
+                                    alt="IELTS Certificate"
+                                    className="w-full h-full object-contain p-2"
+                                />
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
 
                 </div>

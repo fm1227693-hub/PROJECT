@@ -1,51 +1,51 @@
 {
     "Welcome to React": "Welcome to React and react-i18next",
-    "greating": "hi everyone",
-    "Bosh sahifa": "Main page",
+    "greating": "hello everyone",
+    "Bosh sahifa": "Home",
     "Statistika": "Statistics",
     "Yutuqlar": "Achievements",
-    "Biz haqimizda": "About us",
-    "Ro`yxatdan o`tish": "To register",
-    "Boshqaruv": "Managemant",
+    "Biz haqimizda": "About Us",
+    "Ro`yxatdan o`tish": "Register",
+    "Boshqaruv": "Dashboard",
     "Mentorlar": "Mentors",
     "aboutStudents": {
         "backButton": "← Back",
-        "title": "About Students (2-Window)",
-        "description": "Detailed information about the student will be displayed here."
+        "title": "About Students (Window 2)",
+        "description": "Detailed information about the student appears here."
     },
     "aboutUs": {
         "badge": "About Us",
-        "title": "Building the next-generation education platform together.",
-        "description1": "We started from a simple observation: most language learning centers and platforms are either boring or too limited for speaking practice. We built our center to completely eliminate this gap.",
-        "description2": "Our approach combines advanced teaching methodology with a student-centered comfortable environment, allowing real-time fluent communication rather than boring memorization.",
+        "title": "Building the education platform of the future, together.",
+        "description1": "We started with a simple observation: most language learning centers and platforms are either boring or offer very limited speaking practice. We built our center to completely close this gap.",
+        "description2": "Our approach combines advanced teaching methodology with a comfortable, student-focused environment, enabling fluent real-time communication instead of tedious memorization.",
         "card1Title": "Fast Results",
-        "card1Desc": "Specially designed intensive programs ensure achieving significant language scores in a short time.",
+        "card1Desc": "Specially designed intensive programs ensure noticeable language progress in a short period.",
         "card1Tag": "Core Principle I",
         "card2Title": "Practical Approach",
-        "card2Desc": "The main part of classes focuses on live communication and speaking, helping to overcome the language barrier in a short time.",
+        "card2Desc": "The main focus of lessons is live communication and speaking, helping to overcome the language barrier in a short time.",
         "card2Tag": "Core Principle II",
-        "card3Title": "Towards Excellence",
-        "card3Desc": "Individual work is carried out on each student's personal mistakes and shortcomings to lead to high results.",
+        "card3Title": "Toward Excellence",
+        "card3Desc": "We work individually on each student's mistakes and weaknesses, leading them to high results.",
         "card3Tag": "Core Principle III",
         "locationBadge": "Our Location",
-        "locationTitle": "Find us here",
-        "locationDesc": "We are located in Uzbekistan, Bukhara city, near the \"Bukhara State Medical College\" complex. Our modern and cozy training center is always open for you. Come and get closely acquainted with our educational processes!",
+        "locationTitle": "Find Us Here",
+        "locationDesc": "We are located in Uzbekistan, Bukhara city, near the \"Bukhara State Medical College\" complex. Our modern and cozy learning center is always open for you. Come and get to know our learning process up close!",
         "address": "Bukhara, Uzbekistan",
-        "imageAlt": "Our office and training center",
-        "footerTitle": "Together towards the goal, with confidence.",
-        "footerDesc": "Our team of experienced mentors provides constant support to students, ensuring they achieve high certificates and a level of fluent communication.",
+        "imageAlt": "Our office and learning center",
+        "footerTitle": "Toward the goal, together, with confidence.",
+        "footerDesc": "Our team of experienced teachers provides students with continuous support, ensuring they achieve high certifications and a fluent level of communication.",
         "stat1Label": "Uncompromising Quality",
         "stat2Label": "Support"
     },
     "addComment": {
         "editTitle": "Edit Student",
         "addTitle": "Add New Student",
-        "imageLabel": "Image URL (Link)",
+        "imageLabel": "Image Link (URL)",
         "imagePlaceholder": "https://.../image.png",
-        "nameLabel": "Student Name",
-        "namePlaceholder": "Example: Alisher Vahobov",
-        "achievementLabel": "Achievement",
-        "achievementPlaceholder": "Example: IELTS 8.0 / CEFR B2",
+        "nameLabel": "Student's Name",
+        "namePlaceholder": "e.g. Alisher Vahobov",
+        "achievementLabel": "Achievement Reached",
+        "achievementPlaceholder": "e.g. IELTS 8.0 / CEFR B2",
         "cancelBtn": "Cancel",
         "saveBtn": "Save",
         "addBtn": "Add",
@@ -54,46 +54,46 @@
         "errorOccurred": "An error occurred"
     },
     "admin": {
-        "title": "Enter to admin panel",
-        "placeholder": "Write your password",
+        "title": "Admin Panel Login",
+        "placeholder": "Enter your password",
         "enterBtn": "Enter",
-        "emptyError": "Please type something",
+        "emptyError": "Please enter a value",
         "wrongPassword": "Wrong password!"
     },
     "comments": {
         "title": "Manage Courses",
         "deleteBtn": "Delete",
         "editBtn": "Edit",
-        "addBtnTitle": "Add new course",
+        "addBtnTitle": "Add New Course",
         "deleteSuccess": "Successfully deleted"
     },
     "footer": {
-        "description": "Build your future with us. Get modern professions and quality education to find your path.",
+        "description": "Build your future with us. Gain modern professions and quality education, and find your own path.",
         "rights": "All rights reserved."
     },
     "home": {
         "badge": "Optimum School of English",
-        "titlePrefix": "Learn English from scratch to",
-        "titleHighlight": "perfection",
-        "description": "Join our intensive courses based on professional teachers, live speaking clubs, and international standards right now."
+        "titlePrefix": "Learn English from scratch",
+        "titleHighlight": "to perfection",
+        "description": "Join our intensive courses now, built on professional teachers, live speaking clubs, and international standards."
     },
     "mentors": {
         "sectionTitle": "Our Experienced Mentors",
-        "sectionDesc": "Professionals who will help you master English and achieve great results.",
+        "sectionDesc": "Specialists who will help you master English and achieve results.",
         "contactBtn": "Contact",
-        "modalTitle": "Contact Mentor",
+        "modalTitle": "Contact a Mentor",
         "selectedTeacher": "Selected teacher:",
         "nameLabel": "Your Name",
         "namePlaceholder": "Enter your name",
-        "phoneLabel": "Phone Number",
+        "phoneLabel": "Your Phone Number",
         "submitBtn": "Submit",
-        "successToast": "Your request has been successfully sent!",
+        "successToast": "Your request has been sent successfully!",
         "list": [
             {
                 "name": "Ruhillo Asrorov",
                 "role": "Senior English Instructor (IELTS 8)",
-                "experience": "6+ years experience",
-                "bio": "Teaches students starting from Zero to speak fluently in a short time. Prepared 200+ IELTS 7+ holders.",
+                "experience": "6+ years of experience",
+                "bio": "Teaches students starting from zero to speak fluently in a short time. Has prepared 200+ students who scored IELTS 7+.",
                 "skills": [
                     "General English",
                     "IELTS",
@@ -103,8 +103,8 @@
             {
                 "name": "Jasurbek Sobirov",
                 "role": "ESL & Speaking Coach",
-                "experience": "4+ years experience",
-                "bio": "Specialist in accent reduction and overcoming the language barrier. Conducts interactive lessons.",
+                "experience": "4+ years of experience",
+                "bio": "Specialist in accent training and overcoming the language barrier (fear of speaking). Conducts lessons interactively.",
                 "skills": [
                     "Grammar",
                     "Listening",
@@ -113,63 +113,19 @@
             }
         ]
     },
-    "mentorsPage": {
-        "badge": "Professional Team",
-        "title": "Our Experienced Mentors",
-        "description": "Meet our specialists who provide individual attention and guide students from absolute zero to professional fluency.",
-        "experienceLabel": "Experience:",
-        "studentsLabel": "Students:",
-        "achievementsTitle": "Key achievements & skills:",
-        "connectBtn": "Contact Mentor",
-        "modalTitle": "Contact Mentor",
-        "selectedTeacher": "Selected teacher:",
-        "nameLabel": "Your Name",
-        "namePlaceholder": "Enter your name",
-        "phoneLabel": "Phone Number",
-        "submitBtn": "Submit Request",
-        "successToast": "Your request has been successfully sent!",
-        "list": [
-            {
-                "name": "Ruhillo Asrorov",
-                "role": "Senior English Instructor & IELTS Expert",
-                "experience": "6+ years",
-                "students": "200+ students",
-                "bio": "Helps students starting from Zero speak fluently in a short period. CELTA certified instructor who has trained 200+ IELTS 7+ holders.",
-                "skills": [
-                    "General English",
-                    "IELTS 8.5",
-                    "Speaking Coaching",
-                    "CELTA"
-                ]
-            },
-            {
-                "name": "Jasurbek Sobirov",
-                "role": "ESL & Speaking Coach",
-                "experience": "4+ years",
-                "students": "150+ students",
-                "bio": "Specialist in overcoming the language barrier and building a natural accent. Conducts lessons using engaging interactive methods.",
-                "skills": [
-                    "Grammar",
-                    "Interactive Speaking",
-                    "Vocabulary",
-                    "Listening"
-                ]
-            }
-        ]
-    },
     "products": {
         "badge": "Success",
         "title": "Our Successful Students",
-        "defaultAchievement": "IELTS 7.5 / High Score",
+        "defaultAchievement": "IELTS 7.5 / High Result",
         "certified": "Certified",
-        "emptyMessage": "No student results uploaded yet",
-        "errorMessage": "Error loading data!"
+        "emptyMessage": "No student results have been uploaded yet",
+        "errorMessage": "An error occurred while loading the data!"
     },
     "register": {
-        "phoneError": "Please type numbers only!",
-        "title": "Register for the course",
+        "phoneError": "Please enter numbers only!",
+        "title": "Register for a Course",
         "nameLabel": "Your Name",
-        "namePlaceholder": "Example: Alisher",
+        "namePlaceholder": "e.g. Alisher",
         "phoneLabel": "Your Phone Number",
         "phonePlaceholder": "+998 90 123 45 67",
         "submitBtn": "Register"
@@ -182,51 +138,54 @@
     },
     "steps": {
         "badge": "Learning Process",
-        "title": "Start English in 3 easy steps",
-        "description": "The path to an international level with Optimum School of English is so easy.",
-        "step1Title": "Registration",
-        "step1Desc": "Choose a convenient course, leave your details, and register.",
+        "title": "Start English in 3 Easy Steps",
+        "description": "With Optimum School of English, the path to an international level is that easy.",
+        "step1Title": "Register",
+        "step1Desc": "Choose the course that suits you and register by leaving your details.",
         "step2Title": "Level Assessment",
-        "step2Desc": "Determine your knowledge level through a special test and join the matching group.",
-        "step3Title": "Start Result",
-        "step3Desc": "Unlock fluent communication in a short time with live classes and speaking clubs."
+        "step2Desc": "Your knowledge level will be determined through a special test, and you will be placed in a suitable group.",
+        "step3Title": "Start Getting Results",
+        "step3Desc": "Unlock fluent communication in a short time through live lessons and speaking clubs."
     },
     "students": {
-        "title": "High-achieving students",
+        "title": "Students Who Achieved High Results",
         "badge": "Optimum Pride",
         "ageLabel": "Age",
         "levelLabel": "Starting level",
         "timeLabel": "Preparation time",
         "teacherLabel": "Teacher",
         "viewBtn": "View →",
-        "modalTitle": "Detailed student information",
+        "modalTitle": "Full Information About the Student",
         "closeBtn": "✕ Close"
     },
     "about": {
         "badge": "About Us",
-        "titlePart1": "Learn English with modern and ",
+        "titleStart": "We teach English with modern and ",
         "highlight": "easy methods",
-        "titlePart2": ".",
-        "description": "The Optimum School of English team provides an engaging environment based on real communication, free from boring memorization.",
+        "titleHighlight": "easy methods",
+        "titleEnd": ".",
+        "description": "The Optimum School of English team frees the language learning process from tedious memorization, offering an engaging environment based on real communication.",
         "goalTitle": "Our Goal",
-        "goalDesc": "Provide quality education to every student and lay the foundation for their future success.",
+        "goalDesc": "To provide every student with quality education, laying the foundation for their future success.",
         "teacherTitle": "Qualified Teachers",
-        "teacherDesc": "A team of professional teachers with international certificates and years of experience.",
-        "experience": "Years of\nExperience"
+        "teacherDesc": "A team of professional teachers with international certificates and many years of experience.",
+        "experience": "Years\nof Experience",
+        "experienceText1": "Years",
+        "experienceText2": "of Experience"
     },
     "statistic": {
         "badge": "Learning Results",
         "title": "Our Students' Success Indicators",
-        "description": "We analyze lesson activity, vocabulary growth, and comfortable communication levels every month.",
+        "description": "We analyze classroom activity, vocabulary growth, and comfortable communication levels every month.",
         "dynamicsTitle": "Growth Dynamics",
         "analysisTitle": "Results Analysis",
-        "tab1": "1 Month",
-        "tab3": "3 Months",
-        "tabEnd": "End of Course",
+        "tab1": "Month 1",
+        "tab3": "Month 3",
+        "tabEnd": "Course End",
         "coursesTitle": "Course Directions",
-        "courseTypeTitle": "Lesson Types",
+        "courseTypeTitle": "Types of Lessons",
         "studentsText": "(Students)",
-        "footerText": "✨ Excellence in every step",
+        "footerText": "✨ Toward excellence at every step",
         "tab1Min": "25 min",
         "tab1Errors": "Errors: 42%",
         "tab1Trend": "Beginner: +15% Speaking",
@@ -244,31 +203,55 @@
         "about": "About Us",
         "register": "Register",
         "dashboard": "Dashboard",
-        "selectLang": "Select language:",
+        "selectLang": "Select Language:",
         "Mentorlar": "Mentors:"
     },
-    "aboutMentors": {
-        "sectionTitle": "Our Mentors",
-        "sectionDesc": "Learn from our professional and experienced teachers",
-        "contactBtn": "Contact",
-        "modalTitle": "Contact Mentor",
-        "selectedTeacher": "Selected mentor:",
+    "mentorsPage": {
+        "badge": "Professional Team",
+        "title": "Our Experienced Mentors",
+        "description": "Meet the specialists who take an individual approach to every student, guiding them from zero to a professional level.",
+        "experienceLabel": "Experience:",
+        "studentsLabel": "Graduates:",
+        "achievementsTitle": "Key Achievements and Skills:",
+        "connectBtn": "Contact a Mentor",
+        "modalTitle": "Contact a Mentor",
+        "selectedTeacher": "Selected teacher:",
         "nameLabel": "Your Name",
         "namePlaceholder": "Enter your name",
         "phoneLabel": "Your Phone Number",
-        "submitBtn": "Submit",
-        "successToast": "Your request has been successfully sent!",
-        "backBtn": "← Back",
-        "telegramBtn": "Contact via Telegram",
-        "birthYearLabel": "Birth Year:",
-        "ageLabel": "Age:",
-        "yearsOld": "years old",
-        "specialtyLabel": "Specialty:",
-        "certificatesTitle": "Received Certificates",
-        "detailsBtn": "In detail"
+        "submitBtn": "Send Request",
+        "successToast": "Your request has been sent successfully!",
+        "list": [
+            {
+                "name": "Ruhillo Asrorov",
+                "role": "Senior English Instructor & IELTS Expert",
+                "experience": "6+ years",
+                "students": "200+ students",
+                "bio": "Teaches those starting from zero to communicate fluently in a short time. Holder of an international CELTA certificate, has prepared 200+ students who scored IELTS 7+.",
+                "skills": [
+                    "General English",
+                    "IELTS 8.5",
+                    "Speaking Coaching",
+                    "CELTA"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ years",
+                "students": "150+ students",
+                "bio": "Specialist in overcoming the language barrier (fear of speaking) and developing a flawless English accent. Conducts lessons based on an engaging, interactive methodology.",
+                "skills": [
+                    "Grammar",
+                    "Interactive Speaking",
+                    "Vocabulary",
+                    "Listening"
+                ]
+            }
+        ]
     },
     "resultsSlider": {
-        "title": "Results of some of our students",
+        "title": "Results of Some of Our Students",
         "listening": "Listening",
         "reading": "Reading",
         "writing": "Writing",
@@ -276,7 +259,7 @@
         "overall": "Overall"
     },
     "productsPage": {
-        "title": "Results of some of our students",
+        "title": "Results of Some of Our Students",
         "listening": "Listening",
         "reading": "Reading",
         "writing": "Writing",
@@ -285,49 +268,64 @@
     },
     "dovudxon": {
         "role": "IELTS 9.0",
-        "scoreTitle": "IELTS score",
+        "scoreTitle": "IELTS Score",
         "certDesc": "Certified",
-        "experienceText": "Years experience",
+        "experienceText": "Years of Experience",
         "studentsText": "Students",
-        "description": "I got IELTS 9.0 for the 8th time in Uzbekistan, and it increased my self-confidence even more. I pay attention to all departments so that my students can achieve good results.",
-        "expert": "Expert Mentor"
+        "description": "I have achieved an IELTS score of 9.0 eight times in Uzbekistan, and this has further boosted my self-confidence. I pay attention to all areas so that my students achieve good results.",
+        "expert": "Experienced Mentor"
+    },
+    "jasurbek": {
+        "role": "ESL and Speaking Coach",
+        "scoreTitle": "IELTS Score",
+        "certDesc": "Certified",
+        "experienceText": "Years of Experience",
+        "studentsText": "Students",
+        "description": "Specialist in accent training and overcoming the language barrier. Conducts lessons in an interactive format.",
+        "expert": "Experienced Mentor"
+    },
+    "lesson18": {
+        "title": "Lesson 18: Advanced Speaking & Complex Grammar Structures",
+        "badge": "Module End / Advanced",
+        "description": "In this lesson, we will master applying complex grammatical structures (Inversion, Cleft sentences) and the subtle nuances encountered during fluent communication.",
+        "goal": "Elevate pronunciation and grammatical accuracy to a professional level.",
+        "tasks": [
+            "Applying complex sentence structures in practice",
+            "Debating at an advanced level on real-life situations",
+            "Answering IELTS Speaking Part 3 questions at a high level"
+        ],
+        "duration": "80 minutes"
+    },
+    "sec3": {
+        "badge": "Professional Teachers",
+        "title": "Meet Our Specialists",
+        "ieltsScore": "IELTS score",
+        "certified": "Certified",
+        "experience": "Experience",
+        "students": "Students",
+        "contactBtn": "Contact",
+        "modalTitle": "Contact a Teacher",
+        "selectedTeacher": "Selected teacher:",
+        "nameLabel": "Your Name",
+        "namePlaceholder": "Enter your name",
+        "phoneLabel": "Your Phone Number",
+        "submitBtn": "Submit",
+        "successToast": "Your request has been sent successfully!"
+    },
+    "asilbek": {
+        "role": "CELTA",
+        "description": "I got IELTS 9.0 three times in a row, and honestly, none of it happened by accident. Every session I run is built around one idea — impossible is a word people use before they've tried hard enough. I break down every skill into something manageable, track your weak points relentlessly, and push you past the plateau most students get stuck at. My students don't just pass the exam, they walk out speaking with real confidence. If you're ready to put in the work, I'll make sure the result follows."
+    },
+    "ruxillo": {
+        "role": "Senior English Teacher (IELTS 8)",
+        "description": "Ruhillo started learning English on his own while still in school, and within just a few years became one of the most sought-after teachers in his city. He specializes in IELTS preparation and speaking practice, breaking down complex grammar topics into simple, easy-to-understand explanations. Over 6 years of teaching, he has prepared more than 200 students who scored IELTS 7 or higher, and he continues refining his own teaching methodology."
     },
     "zarnigor": {
         "role": "IELTS 8.5",
-        "scoreTitle": "IELTS score",
-        "certDesc": "Certified",
-        "experienceText": "Years experience",
-        "studentsText": "Students",
-        "description": "I achieved an 8.5 at the age of 17 and proved myself. I love working with students and try to explain difficult parts to them in an easy way.",
-        "expert": "Expert Mentor"
+        "description": "Zarnigor scored 8.5 on the international IELTS exam at just 17 years old, a remarkable achievement for her age. She holds a CELTA certificate and specializes in developing speaking skills and refining pronunciation. Zarnigor believes every student can reach a high result if the material is explained clearly and with patience, and that's exactly the approach she brings to every lesson."
     },
     "gulasal": {
         "role": "IELTS 9.0",
-        "scoreTitle": "IELTS score",
-        "certDesc": "Certified",
-        "experienceText": "Years experience",
-        "studentsText": "Students",
-        "description": "I want to help students to learn English and discover new opportunities through high-quality education and constant motivation.",
-        "expert": "Expert Mentor"
-    },
-    "ruxillo": {
-        "role": "Senior English Instructor (IELTS 8)",
-        "scoreTitle": "IELTS score",
-        "certDesc": "Certified",
-        "experienceText": "Years experience",
-        "studentsText": "Students",
-        "description": "Teaches students starting from zero to speak fluently in a short period. Has prepared more than 200+ IELTS 7+ holders.",
-        "expert": "Expert Mentor"
-    },
-    "jasurbek": {
-        "role": "ESL & Speaking Coach",
-        "scoreTitle": "IELTS score",
-        "certDesc": "Certified",
-        "experienceText": "Years experience",
-        "studentsText": "Students",
-        "description": "Specialist in accent reduction and overcoming the language barrier. Conducts lessons in an interactive format.",
-        "expert": "Expert Mentor"
-    },
-    "sec3Badge": "Professional Teachers",
-    "sec3Title": "Meet Our Expert"
+        "description": "Gulasal holds the maximum IELTS score of 9.0 and a TESOL certificate, qualifying her to teach English at an international level. Over 5 years of practice, she has prepared more than 600 students, many of whom successfully entered universities abroad. Gulasal focuses on academic writing and confident spoken English, helping students not just pass the exam but truly master the language."
+    }
 }
