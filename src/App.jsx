@@ -9,7 +9,7 @@ import AboutUs from "./components/AboutUs";
 import Admin from "./components/Admin";
 import Register from "./components/Register";
 import Mentorstats from "./components/Mentorstats";
-import ResultsSlider from "./components/ResultsSlider";
+import IeltsPracticeApp from "./components/IeltsPractiseApp";
 
 // Sahifa o'zgarganda tepaga chiqarish uchun yordamchi funksiya
 function ScrollToTop() {
@@ -26,14 +26,13 @@ export default function App() {
   return (
     <div className="dark:bg-[#090623] bg-white min-h-screen relative transition-colors duration-200">
       <Navbar />
-      
+      <IeltsPracticeApp className="mt-10"/>
       {/* ScrollToTop shu yerga qo'shildi */}
       <ScrollToTop />
-
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/stats" element={<Stats />} />
-        <Route path="/products" element={<Products className=""/>} />
+        <Route path="/products" element={<Products/> } />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/enter" element={<Admin />} />
         <Route path="/static" element={<Mentorstats />} />

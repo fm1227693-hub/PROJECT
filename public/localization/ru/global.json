@@ -328,5 +328,33 @@
     "gulasal": {
         "role": "IELTS 9.0",
         "description": "Гулясал — обладательница максимального балла IELTS 9.0 и сертификата TESOL, дающего право преподавать английский язык на международном уровне. За 5 лет практики она подготовила более 600 учеников, многие из которых успешно поступили в зарубежные университеты. Гулясал делает акцент на академическом письме и уверенном разговорном английском, помогая ученикам не просто сдать экзамен, а действительно овладеть языком."
+    },
+    "ieltsEngine": {
+        "heroBadge": "IELTS BAND 5.0 - 9.0 TEST ENGINE",
+        "heroTitle": "IELTS Тесты",
+        "heroSub": "Проходите тесты по Reading, Grammar и Speaking, соответствующие вашему уровню. Каждый уровень и каждая часть (Part) — это отдельная уникальная тема.",
+        "startBtn": "Начать тест",
+        "feature1Title": "Грамматика",
+        "feature1Desc": "10 специально подобранных тестов для каждого уровня Band.",
+        "feature2Title": "Reading (13 Вопросов)",
+        "feature2Desc": "7 вопросов True/False/Not Given и 6 вопросов Gap Fill/MCQ.",
+        "feature3Title": "Speaking",
+        "feature3Desc": "Образцовые ответы под уровень Band для частей 1, 2 и 3.",
+        "levelSelectionTitle": "Выберите уровень",
+        "bandLevel": "IELTS",
+        "skillSelectionTitle": "Выберите раздел",
+        "grammarSkill": "Grammar",
+        "grammarDesc": "10 вопросов уровня Band {level}.0",
+        "readingSkill": "Reading",
+        "readingDesc": "Какую часть (Part) хотите пройти?",
+        "speakingSkill": "Speaking",
+        "speakingDesc": "образцовые ответы",
+        "levelChoice": "Выберите уровень Band для теста",
+        "backBtn": "← Назад",
+        "resetBtn": "Пройти заново",
+        "resultLabel": "Ваш результат",
+        "checkBtn": "Проверить",
+        "correctAnswerLabel": "Правильный ответ",
+        "idealAnswerLabel": "Образцовый ответ"
     }
 }

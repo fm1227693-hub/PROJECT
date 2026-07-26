@@ -327,5 +327,33 @@
     "gulasal": {
         "role": "IELTS 9.0",
         "description": "Gulasal holds the maximum IELTS score of 9.0 and a TESOL certificate, qualifying her to teach English at an international level. Over 5 years of practice, she has prepared more than 600 students, many of whom successfully entered universities abroad. Gulasal focuses on academic writing and confident spoken English, helping students not just pass the exam but truly master the language."
+    },
+    "ieltsEngine": {
+        "heroBadge": "IELTS BAND 5.0 - 9.0 TEST ENGINE",
+        "heroTitle": "IELTS Tests",
+        "heroSub": "Practice Reading, Grammar and Speaking tests matched to your level. Every level and every part has its own unique topic.",
+        "startBtn": "Start Test",
+        "feature1Title": "Grammar",
+        "feature1Desc": "10 specially selected tests for each Band level.",
+        "feature2Title": "Reading (13 Questions)",
+        "feature2Desc": "7 True/False/Not Given questions and 6 Gap Fill/MCQ questions.",
+        "feature3Title": "Speaking",
+        "feature3Desc": "High-Band sample answers for Parts 1, 2 & 3.",
+        "levelSelectionTitle": "Select a Level",
+        "bandLevel": "IELTS",
+        "skillSelectionTitle": "Select a Section",
+        "grammarSkill": "Grammar",
+        "grammarDesc": "10 Band {level}.0 questions",
+        "readingSkill": "Reading",
+        "readingDesc": "Which part would you like to take?",
+        "speakingSkill": "Speaking",
+        "speakingDesc": "sample answers",
+        "levelChoice": "Choose the IELTS band you want to test",
+        "backBtn": "← Back",
+        "resetBtn": "Retake",
+        "resultLabel": "Your Score",
+        "checkBtn": "Check",
+        "correctAnswerLabel": "Correct answer",
+        "idealAnswerLabel": "Sample answer"
     }
 }
