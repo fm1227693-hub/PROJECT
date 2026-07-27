@@ -26,7 +26,6 @@ export default function App() {
   return (
     <div className="dark:bg-[#090623] bg-white min-h-screen relative transition-colors duration-200">
       <Navbar />
-      <IeltsPracticeApp className="mt-10"/>
       {/* ScrollToTop shu yerga qo'shildi */}
       <ScrollToTop />
       <Routes>
@@ -38,6 +37,7 @@ export default function App() {
         <Route path="/static" element={<Mentorstats />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <IeltsPracticeApp className="mt-10"/>
       <Footer />
 
       {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
