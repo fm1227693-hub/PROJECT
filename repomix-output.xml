@@ -351,6 +351,293 @@ createRoot(document.getElementById('root')).render(
 )
 </file>
 
+<file path="src/components/ResultsSlider.jsx">
+import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
+
+const resultsData = [
+    {
+        id: 1,
+        name: "Muhammadjon Masharipov",
+        image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
+        certImage: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=600&q=80",
+        scores: {
+            listening: "9.0",
+            reading: "9.0",
+            writing: "7.0",
+            speaking: "7.5",
+            overall: "8.0",
+        },
+    },
+    {
+        id: 2,
+        name: "Alisher Valiyev",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        certImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+        scores: {
+            listening: "8.5",
+            reading: "8.0",
+            writing: "7.5",
+            speaking: "8.0",
+            overall: "8.0",
+        },
+    },
+    {
+        id: 3,
+        name: "Madina Karimova",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+        certImage: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
+        scores: {
+            listening: "8.0",
+            reading: "8.5",
+            writing: "7.0",
+            speaking: "8.5",
+            overall: "8.0",
+        },
+    },
+];
+
+export default function ResultsSlider() {
+    const { t } = useTranslation();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const indexRef = useRef(currentIndex);
+    indexRef.current = currentIndex;
+
+    const triggerAnimation = (newIndex) => {
+        if (newIndex === indexRef.current) return;
+        setCurrentIndex(newIndex);
+    };
+
+    // Har 3 sekundda avtomatik o'tish logikasi
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const nextIndex = indexRef.current === resultsData.length - 1 ? 0 : indexRef.current + 1;
+            setCurrentIndex(nextIndex);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const activeStudent = resultsData[currentIndex];
+
+    return (
+        <div className="w-full px-2 sm:px-4">
+            <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white dark:bg-[#090623] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-6 sm:my-10 transition-colors duration-300 overflow-hidden">
+                
+                {/* Sarlavha */}
+                <motion.h2 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 px-2"
+                >
+                    {t("resultsSlider.title")}
+                </motion.h2>
+
+                {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}
+                <div className="flex flex-col items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
+                    <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 w-full max-w-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4">
+                        {resultsData.map((student, index) => {
+                            const isActive = index === currentIndex;
+                            return (
+                                <motion.button
+                                    key={student.id}
+                                    onClick={() => triggerAnimation(index)}
+                                    whileHover={{ scale: 1.08 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${
+                                        isActive
+                                            ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
+                                            : "opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
+                                    }`}
+                                >
+                                    <img
+                                        src={student.image}
+                                        alt={student.name}
+                                        className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-white dark:border-slate-900"
+                                    />
+                                </motion.button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Tanlangan o'quvchining ismi */}
+                    <AnimatePresence mode="wait">
+                        <motion.h3 
+                            key={activeStudent.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.25 }}
+                            className="text-base sm:text-lg md:text-xl font-semibold text-red-600 dark:text-red-500 text-center px-2"
+                        >
+                            {activeStudent.name}
+                        </motion.h3>
+                    </AnimatePresence>
+                </div>
+
+                {/* Progress chiziqchasi */}
+                <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mb-6 sm:mb-8 overflow-hidden">
+                    <motion.div
+                        className="bg-red-600 h-full"
+                        animate={{
+                            width: `${((currentIndex + 1) / resultsData.length) * 100}%`,
+                        }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                    />
+                </div>
+
+                {/* Pastki qism: Ballar va Sertifikat rasmi */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-inner">
+                    
+                    {/* Ballar qismi (Chap tomon) */}
+                    <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
+                        <AnimatePresence mode="wait">
+                            <motion.div 
+                                key={activeStudent.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 20 }}
+                                transition={{ duration: 0.3 }}
+                                className="flex flex-col gap-2.5 sm:gap-3 w-full"
+                            >
+                                <div className="bg-emerald-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.listening")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.listening}</span>
+                                </div>
+
+                                <div className="bg-purple-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.reading")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.reading}</span>
+                                </div>
+
+                                <div className="bg-amber-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.writing")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.writing}</span>
+                                </div>
+
+                                <div className="bg-blue-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
+                                    <span>{t("resultsSlider.speaking")}</span>
+                                    <span className="text-base sm:text-lg">{activeStudent.scores.speaking}</span>
+                                </div>
+
+                                <div className="bg-red-600 text-white font-bold py-2.5 sm:py-3.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-md sm:shadow-xl text-base sm:text-lg mt-0.5">
+                                    <span>{t("resultsSlider.overall")}</span>
+                                    <span className="text-lg sm:text-xl">{activeStudent.scores.overall}</span>
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Sertifikat rasmi (O'ng tomon) - Kichik telefonlar uchun o'lchami moslashtirildi */}
+                    <div className="md:col-span-7 flex justify-center overflow-hidden">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeStudent.id + '-cert'}
+                                initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: -15 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                className="relative border border-slate-300 dark:border-slate-700 rounded-xl overflow-hidden shadow-md sm:shadow-lg bg-white dark:bg-slate-800 w-full h-[250px] sm:h-[320px] md:h-[380px] flex items-center justify-center group"
+                            >
+                                <motion.img
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.3 }}
+                                    src={activeStudent.certImage}
+                                    alt="IELTS Certificate"
+                                    className="w-full h-full object-contain p-2"
+                                />
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    );
+}
+</file>
+
+<file path="src/components/Aboutstudents.jsx">
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+
+export default function AboutStudents({ onBack }) {
+  const { t } = useTranslation()
+
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      offset: 100,
+    })
+
+    return () => {
+      AOS.refreshHard()
+    }
+  }, [])
+
+  const handleBack = () => {
+    if (typeof onBack === 'function') {
+      onBack()
+    }
+  }
+
+  return (
+    <section
+      className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 mb-20 sm:mb-24 select-none font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen"
+      aria-labelledby="about-students-title"
+    >
+      {/* Orqaga qaytish tugmasi */}
+      <button
+        type="button"
+        onClick={handleBack}
+        data-aos="fade-down"
+        data-aos-duration="600"
+        className="mb-6 sm:mb-8 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-700 dark:text-white border border-gray-200 dark:border-gray-800 text-xs sm:text-sm rounded-xl font-semibold cursor-pointer active:scale-95 transition-all shadow-sm"
+      >
+        ← {t('aboutStudents.backButton')}
+      </button>
+
+      {/* Sarlavha qismi */}
+      <div className="space-y-3 sm:space-y-4 max-w-4xl">
+        <span
+          data-aos="fade-up"
+          data-aos-delay="50"
+          className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full border border-red-100 dark:border-red-900/30"
+        >
+          {t('aboutStudents.badge') || "Talabalar haqida"}
+        </span>
+
+        <h2
+          id="about-students-title"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="100"
+          className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight"
+        >
+          {t('aboutStudents.title')}
+        </h2>
+
+        <p
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="200"
+          className="text-gray-600 dark:text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl font-medium"
+        >
+          {t('aboutStudents.description')}
+        </p>
+      </div>
+
+      {/* Kelgusida talabalar kartochkalari yoki ro'yxatini shu yerga qo'shishingiz mumkin */}
+    </section>
+  )
+}
+</file>
+
 <file path="src/components/IeltsPractiseApp.jsx">
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -1047,7 +1334,7 @@ export default function IeltsPracticeApp() {
           if (prev <= 1) {
             clearInterval(timer);
             setSubmitted(true);
-            setToastMessage("Vaqt tugadi!");
+            setToastMessage(t("ieltsEngine.timeUpToast", "Vaqt tugadi!"));
             setTimeout(() => setToastMessage(null), 4000);
             return 0;
           }
@@ -1184,9 +1471,9 @@ export default function IeltsPracticeApp() {
   /* ---------------- SKILLS ---------------- */
   if (screen === "skills") {
     const options = [
-      { key: "reading", label: `📖 ${t("ieltsEngine.readingSkill", "Reading")}`, to: "readingParts", desc: "Matnni o'qing va savollarga javob bering" },
-      { key: "speaking", label: `🗣️ ${t("ieltsEngine.speakingSkill", "Speaking")}`, to: "speakingParts", desc: "Ideal og'zaki javoblar namunasi" },
-      { key: "grammar", label: `✏️ ${t("ieltsEngine.grammarSkill", "Grammar")}`, to: "grammarTest", meta: t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level), desc: "Grammatik qoidalar bo'yicha testlar" },
+      { key: "reading", label: `📖 ${t("ieltsEngine.readingSkill", "Reading")}`, to: "readingParts", desc: t("ieltsEngine.readingMenuDesc", "Matnni o'qing va savollarga javob bering") },
+      { key: "speaking", label: `🗣️ ${t("ieltsEngine.speakingSkill", "Speaking")}`, to: "speakingParts", desc: t("ieltsEngine.speakingMenuDesc", "Ideal og'zaki javoblar namunasi") },
+      { key: "grammar", label: `✏️ ${t("ieltsEngine.grammarSkill", "Grammar")}`, to: "grammarTest", meta: t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level), desc: t("ieltsEngine.grammarMenuDesc", "Grammatik qoidalar bo'yicha testlar") },
     ];
     return (
       <div className="pt-6">
@@ -1299,18 +1586,18 @@ export default function IeltsPracticeApp() {
           {/* Start tugmasi va Taymer paneli */}
           {!testStarted ? (
             <div className="mb-8 rounded-3xl border border-indigo-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
-              <h2 className="mb-4 text-2xl font-bold text-white">Testni boshlashga tayyormisiz?</h2>
-              <p className="mb-6 text-sm text-slate-400">Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.</p>
+              <h2 className="mb-4 text-2xl font-bold text-white">{t("ieltsEngine.readyTitle", "Testni boshlashga tayyormisiz?")}</h2>
+              <p className="mb-6 text-sm text-slate-400">{t("ieltsEngine.readyDesc", "Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.")}</p>
               <button
                 onClick={() => setTestStarted(true)}
                 className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
               >
-                Start
+                {t("ieltsEngine.startTestBtn", "Start")}
               </button>
             </div>
           ) : (
             <div className="mb-6 flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-4 backdrop-blur-xl">
-              <span className="text-sm font-semibold text-slate-300">Qolgan vaqt:</span>
+              <span className="text-sm font-semibold text-slate-300">{t("ieltsEngine.timeLeftLabel", "Qolgan vaqt:")}</span>
               <span className={`text-lg font-black ${timeLeft < 60 ? "text-rose-500 animate-pulse" : "text-sky-400"}`}>
                 {formatTime(timeLeft)}
               </span>
@@ -1391,12 +1678,12 @@ export default function IeltsPracticeApp() {
                   <button
                     onClick={() => {
                       setSubmitted(true);
-                      setToastMessage("Natijalar chiqdi!");
+                      setToastMessage(t("ieltsEngine.resultsReadyToast", "Natijalar chiqdi!"));
                       setTimeout(() => setToastMessage(null), 3000);
                     }}
                     className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-10 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
                   >
-                    Natijani ko'rish
+                    {t("ieltsEngine.viewResultBtn", "Natijani ko'rish")}
                   </button>
                 ) : (
                   <button
@@ -1439,18 +1726,18 @@ export default function IeltsPracticeApp() {
           {/* Start tugmasi va Taymer paneli */}
           {!testStarted ? (
             <div className="mb-8 rounded-3xl border border-indigo-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
-              <h2 className="mb-4 text-2xl font-bold text-white">Testni boshlashga tayyormisiz?</h2>
-              <p className="mb-6 text-sm text-slate-400">Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.</p>
+              <h2 className="mb-4 text-2xl font-bold text-white">{t("ieltsEngine.readyTitle", "Testni boshlashga tayyormisiz?")}</h2>
+              <p className="mb-6 text-sm text-slate-400">{t("ieltsEngine.readyDesc", "Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.")}</p>
               <button
                 onClick={() => setTestStarted(true)}
                 className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
               >
-                Start
+                {t("ieltsEngine.startTestBtn", "Start")}
               </button>
             </div>
           ) : (
             <div className="mb-6 flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-4 backdrop-blur-xl">
-              <span className="text-sm font-semibold text-slate-300">Qolgan vaqt:</span>
+              <span className="text-sm font-semibold text-slate-300">{t("ieltsEngine.timeLeftLabel", "Qolgan vaqt:")}</span>
               <span className={`text-lg font-black ${timeLeft < 60 ? "text-rose-500 animate-pulse" : "text-sky-400"}`}>
                 {formatTime(timeLeft)}
               </span>
@@ -1526,12 +1813,12 @@ export default function IeltsPracticeApp() {
                   <button
                     onClick={() => {
                       setSubmitted(true);
-                      setToastMessage("Natijalar chiqdi!");
+                      setToastMessage(t("ieltsEngine.resultsReadyToast", "Natijalar chiqdi!"));
                       setTimeout(() => setToastMessage(null), 3000);
                     }}
                     className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-10 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
                   >
-                    Natijani ko'rish
+                    {t("ieltsEngine.viewResultBtn", "Natijani ko'rish")}
                   </button>
                 ) : (
                   <button
@@ -1578,293 +1865,6 @@ export default function IeltsPracticeApp() {
   }
 
   return null;
-}
-</file>
-
-<file path="src/components/ResultsSlider.jsx">
-import React, { useState, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { motion, AnimatePresence } from "framer-motion";
-
-const resultsData = [
-    {
-        id: 1,
-        name: "Muhammadjon Masharipov",
-        image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
-        certImage: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=600&q=80",
-        scores: {
-            listening: "9.0",
-            reading: "9.0",
-            writing: "7.0",
-            speaking: "7.5",
-            overall: "8.0",
-        },
-    },
-    {
-        id: 2,
-        name: "Alisher Valiyev",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
-        certImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
-        scores: {
-            listening: "8.5",
-            reading: "8.0",
-            writing: "7.5",
-            speaking: "8.0",
-            overall: "8.0",
-        },
-    },
-    {
-        id: 3,
-        name: "Madina Karimova",
-        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
-        certImage: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
-        scores: {
-            listening: "8.0",
-            reading: "8.5",
-            writing: "7.0",
-            speaking: "8.5",
-            overall: "8.0",
-        },
-    },
-];
-
-export default function ResultsSlider() {
-    const { t } = useTranslation();
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const indexRef = useRef(currentIndex);
-    indexRef.current = currentIndex;
-
-    const triggerAnimation = (newIndex) => {
-        if (newIndex === indexRef.current) return;
-        setCurrentIndex(newIndex);
-    };
-
-    // Har 3 sekundda avtomatik o'tish logikasi
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const nextIndex = indexRef.current === resultsData.length - 1 ? 0 : indexRef.current + 1;
-            setCurrentIndex(nextIndex);
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    const activeStudent = resultsData[currentIndex];
-
-    return (
-        <div className="w-full px-2 sm:px-4">
-            <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white dark:bg-[#090623] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-6 sm:my-10 transition-colors duration-300 overflow-hidden">
-                
-                {/* Sarlavha */}
-                <motion.h2 
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 px-2"
-                >
-                    {t("resultsSlider.title")}
-                </motion.h2>
-
-                {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}
-                <div className="flex flex-col items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
-                    <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 w-full max-w-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4">
-                        {resultsData.map((student, index) => {
-                            const isActive = index === currentIndex;
-                            return (
-                                <motion.button
-                                    key={student.id}
-                                    onClick={() => triggerAnimation(index)}
-                                    whileHover={{ scale: 1.08 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${
-                                        isActive
-                                            ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
-                                            : "opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
-                                    }`}
-                                >
-                                    <img
-                                        src={student.image}
-                                        alt={student.name}
-                                        className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-white dark:border-slate-900"
-                                    />
-                                </motion.button>
-                            );
-                        })}
-                    </div>
-
-                    {/* Tanlangan o'quvchining ismi */}
-                    <AnimatePresence mode="wait">
-                        <motion.h3 
-                            key={activeStudent.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.25 }}
-                            className="text-base sm:text-lg md:text-xl font-semibold text-red-600 dark:text-red-500 text-center px-2"
-                        >
-                            {activeStudent.name}
-                        </motion.h3>
-                    </AnimatePresence>
-                </div>
-
-                {/* Progress chiziqchasi */}
-                <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mb-6 sm:mb-8 overflow-hidden">
-                    <motion.div
-                        className="bg-red-600 h-full"
-                        animate={{
-                            width: `${((currentIndex + 1) / resultsData.length) * 100}%`,
-                        }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                    />
-                </div>
-
-                {/* Pastki qism: Ballar va Sertifikat rasmi */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-inner">
-                    
-                    {/* Ballar qismi (Chap tomon) */}
-                    <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
-                        <AnimatePresence mode="wait">
-                            <motion.div 
-                                key={activeStudent.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 20 }}
-                                transition={{ duration: 0.3 }}
-                                className="flex flex-col gap-2.5 sm:gap-3 w-full"
-                            >
-                                <div className="bg-emerald-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.listening")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.listening}</span>
-                                </div>
-
-                                <div className="bg-purple-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.reading")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.reading}</span>
-                                </div>
-
-                                <div className="bg-amber-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.writing")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.writing}</span>
-                                </div>
-
-                                <div className="bg-blue-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.speaking")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.speaking}</span>
-                                </div>
-
-                                <div className="bg-red-600 text-white font-bold py-2.5 sm:py-3.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-md sm:shadow-xl text-base sm:text-lg mt-0.5">
-                                    <span>{t("resultsSlider.overall")}</span>
-                                    <span className="text-lg sm:text-xl">{activeStudent.scores.overall}</span>
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
-
-                    {/* Sertifikat rasmi (O'ng tomon) - Kichik telefonlar uchun o'lchami moslashtirildi */}
-                    <div className="md:col-span-7 flex justify-center overflow-hidden">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeStudent.id + '-cert'}
-                                initial={{ opacity: 0, scale: 0.9, y: 15 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9, y: -15 }}
-                                transition={{ duration: 0.4, ease: "easeOut" }}
-                                className="relative border border-slate-300 dark:border-slate-700 rounded-xl overflow-hidden shadow-md sm:shadow-lg bg-white dark:bg-slate-800 w-full h-[250px] sm:h-[320px] md:h-[380px] flex items-center justify-center group"
-                            >
-                                <motion.img
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.3 }}
-                                    src={activeStudent.certImage}
-                                    alt="IELTS Certificate"
-                                    className="w-full h-full object-contain p-2"
-                                />
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    );
-}
-</file>
-
-<file path="src/components/Aboutstudents.jsx">
-import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-
-export default function AboutStudents({ onBack }) {
-  const { t } = useTranslation()
-
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      offset: 100,
-    })
-
-    return () => {
-      AOS.refreshHard()
-    }
-  }, [])
-
-  const handleBack = () => {
-    if (typeof onBack === 'function') {
-      onBack()
-    }
-  }
-
-  return (
-    <section
-      className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 mb-20 sm:mb-24 select-none font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen"
-      aria-labelledby="about-students-title"
-    >
-      {/* Orqaga qaytish tugmasi */}
-      <button
-        type="button"
-        onClick={handleBack}
-        data-aos="fade-down"
-        data-aos-duration="600"
-        className="mb-6 sm:mb-8 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-700 dark:text-white border border-gray-200 dark:border-gray-800 text-xs sm:text-sm rounded-xl font-semibold cursor-pointer active:scale-95 transition-all shadow-sm"
-      >
-        ← {t('aboutStudents.backButton')}
-      </button>
-
-      {/* Sarlavha qismi */}
-      <div className="space-y-3 sm:space-y-4 max-w-4xl">
-        <span
-          data-aos="fade-up"
-          data-aos-delay="50"
-          className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full border border-red-100 dark:border-red-900/30"
-        >
-          {t('aboutStudents.badge') || "Talabalar haqida"}
-        </span>
-
-        <h2
-          id="about-students-title"
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="100"
-          className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight"
-        >
-          {t('aboutStudents.title')}
-        </h2>
-
-        <p
-          data-aos="fade-up"
-          data-aos-duration="800"
-          data-aos-delay="200"
-          className="text-gray-600 dark:text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl font-medium"
-        >
-          {t('aboutStudents.description')}
-        </p>
-      </div>
-
-      {/* Kelgusida talabalar kartochkalari yoki ro'yxatini shu yerga qo'shishingiz mumkin */}
-    </section>
-  )
 }
 </file>
 
@@ -3114,6 +3114,299 @@ export default function Mentorstats() {
 }
 </file>
 
+<file path="src/components/Sec4.jsx">
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+
+export default function Sec4() {
+    const { t } = useTranslation()
+
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            offset: 100,
+        })
+    }, [])
+
+    return (
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+                {/* Chap tomon: Matnlar va ma'lumotlar */}
+                <div
+                    data-aos="fade-right"
+                    data-aos-duration="800"
+                    className="flex flex-col space-y-6 max-w-xl"
+                >
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit animate-pulse">
+                        {t('about.badge')}
+                    </div>
+
+                    <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
+                        {t('about.titleStart')}
+                        <span className="text-red-600 dark:text-red-400">{t('about.titleHighlight')}</span>
+                        {t('about.titleEnd')}
+                    </h2>
+
+                    <p className="text-base text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                        {t('about.description')}
+                    </p>
+
+                    <div className="space-y-4 pt-2">
+                        {/* 1-blok */}
+                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
+                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
+                                🎯
+                            </div>
+                            <div>
+                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
+                                    {t('about.goalTitle')}
+                                </h4>
+                                <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
+                                    {t('about.goalDesc')}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* 2-blok */}
+                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
+                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
+                                👨‍🏫
+                            </div>
+                            <div>
+                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
+                                    {t('about.teacherTitle')}
+                                </h4>
+                                <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
+                                    {t('about.teacherDesc')}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* O'ng tomon: Rasm va tajriba bloki */}
+                <div
+                    data-aos="fade-left"
+                    data-aos-duration="800"
+                    className="w-full h-[400px] rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 dark:border-gray-800 relative group"
+                >
+                    <img
+                        src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2340&auto=format&fit=crop"
+                        alt="Students studying English"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent"></div>
+
+                    <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-white/20 dark:border-gray-800 flex items-center gap-3 transition-transform duration-300 group-hover:-translate-y-1">
+                        <span className="text-2xl font-black text-red-600 dark:text-red-400">5+</span>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 leading-tight block whitespace-pre-line">
+                            {t('about.experienceText1') + '\n' + t('about.experienceText2')}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    )
+}
+</file>
+
+<file path="src/components/Stats.jsx">
+import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+
+export default function Stats() {
+    const { t } = useTranslation()
+    // Faqat '1m', '3m', 'end' qiymatlarini qabul qiladigan state
+    const [activeTab, setActiveTab] = useState('1m');
+
+    // AOS kutubxonasini ishga tushirish
+    useEffect(() => {
+        AOS.init({
+            once: true, // Animatsiya faqat bir marta o'ynaydi
+            offset: 100, // Element ko'ringandan 100px keyin boshlanadi
+            duration: 800, // Standart animatsiya davomiyligi
+        })
+    }, [])
+
+    // Har bir tab uchun ma'lumotlar konfiguratsiyasi
+    const dataConfig = {
+        '1m': {
+            label: t('statistic.tab1'),
+            speaking: '25 min',
+            errors: t('statistic.tab1Errors'),
+            trendText: t('statistic.tab1Trend'),
+            pathD: 'M 0 130 Q 100 120, 200 100 T 400 70',
+            gradD: 'M 0 130 Q 100 120, 200 100 T 400 70 L 400 150 L 0 150 Z',
+            circleX: 200,
+            circleY: 100
+        },
+        '3m': {
+            label: t('statistic.tab3'),
+            speaking: '45 min',
+            errors: t('statistic.tab3Errors'),
+            trendText: t('statistic.tab3Trend'),
+            pathD: 'M 0 120 Q 80 50, 160 90 T 320 30 T 400 40',
+            gradD: 'M 0 120 Q 80 50, 160 90 T 320 30 T 400 40 L 400 150 L 0 150 Z',
+            circleX: 320,
+            circleY: 30
+        },
+        'end': {
+            label: t('statistic.tabEnd'),
+            speaking: '80 min',
+            errors: t('statistic.endErrors'),
+            trendText: t('statistic.endTrend'),
+            pathD: 'M 0 130 Q 100 90, 220 50 T 400 10',
+            gradD: 'M 0 130 Q 100 90, 220 50 T 400 10 L 400 150 L 0 150 Z',
+            circleX: 400,
+            circleY: 10
+        }
+    };
+
+    // Hozirgi faol tab bo'yicha ma'lumotlarni olish
+    const current = dataConfig[activeTab];
+
+    return (
+        // Yuqori qismdagi padding pt-24 sm:pt-28 ga o'zgartirildi (fixed navbar uchun joy)
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 mb-16 sm:mb-24 select-none font-sans transition-colors duration-200">
+
+            {/* Sarlavha qismi */}
+            <div 
+                data-aos="fade-up" 
+                className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4"
+            >
+                <div className="max-w-xl">
+                    <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full inline-block animate-pulse">
+                        {t('statistic.badge')}
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mt-3 sm:mt-4 tracking-tight leading-tight">
+                        {t('statistic.title')}
+                    </h2>
+                </div>
+                <p className="text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm md:text-base max-w-sm md:text-right">
+                    {t('statistic.description')}
+                </p>
+            </div>
+
+            {/* Asosiy Grid kontent */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+
+                {/* Left Card: Chart & Dynamics */}
+                <div 
+                    data-aos="fade-right" 
+                    className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl lg:col-span-7 flex flex-col justify-between hover:shadow-2xl transition-all duration-500 group/card"
+                >
+                    <div>
+                        {/* Dinamik sarlavha va tablar qismi (Mobil uchun moslashtirilgan) */}
+                        <div className="flex flex-col gap-4 mb-6">
+                            <div className="flex flex-col">
+                                <span className="text-[11px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.dynamicsTitle')}</span>
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-black text-gray-950 dark:text-white mt-0.5 sm:mt-1">{t('statistic.analysisTitle')}</h3>
+                            </div>
+                            
+                            {/* Tab tugmalari - Kichik ekranlarda 3 ta ustunga bo'linadi */}
+                            <div className="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-gray-900 p-1 rounded-xl border border-gray-100 dark:border-gray-800 w-full">
+                                {Object.keys(dataConfig).map((key) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => setActiveTab(key)}
+                                        className={`py-2 px-1 text-[11px] sm:text-xs font-bold rounded-lg transition-all duration-300 cursor-pointer active:scale-95 truncate text-center ${activeTab === key ? 'bg-white dark:bg-gray-800 shadow-sm text-red-600 dark:text-red-400 scale-[1.02]' : 'text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+                                    >
+                                        {dataConfig[key].label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Grafik ko'rinishi */}
+                        <div className="w-full h-48 sm:h-56 bg-gradient-to-b from-red-50/20 dark:from-red-500/10 to-transparent rounded-2xl p-3 sm:p-4 flex items-end relative border border-dashed border-gray-100/70 dark:border-gray-800 mb-6 overflow-hidden transition-all duration-500 group-hover/card:border-red-200 dark:group-hover/card:border-red-900/40">
+                            <svg className="w-full h-full transition-all duration-700 ease-in-out" viewBox="0 0 400 150" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="largeChartGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#dc2626" stopOpacity="0.3" />
+                                        <stop offset="100%" stopColor="#dc2626" stopOpacity="0.0" />
+                                    </linearGradient>
+                                </defs>
+                                <path d={current.gradD} fill="url(#largeChartGrad)" className="transition-all duration-700 ease-in-out" />
+                                <path d={current.pathD} stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="none" className="transition-all duration-700 ease-in-out" />
+                                {/* Pulsatsiyalanuvchi nuqta */}
+                                <circle cx={current.circleX} cy={current.circleY} r="6" fill="#dc2626" stroke="#ffffff" strokeWidth="2.5" className="transition-all duration-700 ease-in-out animate-pulse" />
+                            </svg>
+
+                            {/* Trend haqida yorliq */}
+                            <div className="absolute top-3 right-3 sm:top-6 sm:right-6 bg-gray-950 dark:bg-white text-white dark:text-gray-950 text-[10px] sm:text-[11px] font-bold px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105 border border-white/10 dark:border-gray-900/10">
+                                {current.trendText}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Pastki 3 ta oy kartochkalari (Statistikani tez almashtirish uchun) */}
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 border-t border-gray-100 dark:border-gray-800/80 pt-4 sm:pt-5 mt-2 text-center">
+                        {Object.keys(dataConfig).map((key) => {
+                            const item = dataConfig[key];
+                            const isActive = activeTab === key;
+                            return (
+                                <div 
+                                    key={key}
+                                    onClick={() => setActiveTab(key)} 
+                                    className={`p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 cursor-pointer active:scale-95 hover:border-red-400 hover:-translate-y-1 flex flex-col justify-between ${isActive ? 'bg-red-50/60 dark:bg-red-500/10 border-red-300 dark:border-red-900/60 shadow-md scale-[1.02]' : 'bg-gray-50/50 dark:bg-gray-900/50 border-gray-100 dark:border-gray-800'}`}
+                                >
+                                    <span className="text-[9px] sm:text-xs font-bold text-red-600 dark:text-red-400 block uppercase tracking-wider truncate">{item.label}</span>
+                                    <span className="text-xs sm:text-base font-extrabold text-gray-900 dark:text-white block my-1">{item.speaking}</span>
+                                    <span className="text-[9px] sm:text-[10px] font-semibold text-gray-500 dark:text-gray-400 block truncate">{item.errors}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Right Card: Course Types & Progress Bars */}
+                <div 
+                    data-aos="fade-left" 
+                    className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl lg:col-span-5 flex flex-col justify-between hover:shadow-2xl transition-all duration-500 group/card"
+                >
+                    <div>
+                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.courseTypeTitle')}</span>
+                        <h3 className="text-xl sm:text-2xl font-black text-gray-950 dark:text-white mt-1 mb-5 sm:mb-6">{t('statistic.coursesTitle')}</h3>
+
+                        <div className="space-y-4 sm:space-y-6">
+                            {/* Kurslar ro'yxati va progress barlar */}
+                            {[
+                                { name: 'General English', progress: '42%', color: 'bg-red-600' },
+                                { name: 'IELTS Preparation', progress: '31%', color: 'bg-gray-950 dark:bg-white' },
+                                { name: 'Speaking Club', progress: '18%', color: 'bg-red-400' },
+                                { name: 'Grammar Intensive', progress: '9%', color: 'bg-gray-300 dark:bg-gray-700' }
+                            ].map((course, index) => (
+                                <div key={index} className="space-y-2 group p-2.5 sm:p-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 border border-transparent hover:border-gray-100 dark:hover:border-gray-800">
+                                    <div className="flex justify-between text-xs font-bold">
+                                        <span className="text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">{course.name}</span>
+                                        <span className="text-gray-900 dark:text-white">{course.progress} {t('statistic.studentsText')}</span>
+                                    </div>
+                                    <div className="w-full h-2.5 bg-gray-100 dark:bg-gray-900 rounded-full overflow-hidden p-0.5">
+                                        <div className={`${course.color} h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-110 shadow-sm`} style={{ width: course.progress }}></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Pastki yozuv */}
+                    <div className="w-full mt-6 sm:mt-8 py-3.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold rounded-xl border border-red-100 dark:border-red-900/30 text-xs flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm">
+                        {t('statistic.footerText')}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    )
+}
+</file>
+
 <file path="public/localization/en/global.json">
 {
     "Welcome to React": "Welcome to React and react-i18next",
@@ -3471,7 +3764,17 @@ export default function Mentorstats() {
         "resultLabel": "Your Score",
         "checkBtn": "Check",
         "correctAnswerLabel": "Correct answer",
-        "idealAnswerLabel": "Sample answer"
+        "idealAnswerLabel": "Sample answer",
+        "grammarMenuDesc": "Tests on grammar rules",
+        "readingMenuDesc": "Read the text and answer the questions",
+        "speakingMenuDesc": "Sample ideal spoken answers",
+        "readyTitle": "Ready to start the test?",
+        "readyDesc": "Once you press Start, a 20-minute timer will begin.",
+        "startTestBtn": "Start",
+        "timeLeftLabel": "Time left:",
+        "viewResultBtn": "View Result",
+        "resultsReadyToast": "Results are ready!",
+        "timeUpToast": "Time's up!"
     }
 }
 </file>
@@ -3834,343 +4137,351 @@ export default function Mentorstats() {
         "resultLabel": "Ваш результат",
         "checkBtn": "Проверить",
         "correctAnswerLabel": "Правильный ответ",
-        "idealAnswerLabel": "Образцовый ответ"
+        "idealAnswerLabel": "Образцовый ответ",
+        "grammarMenuDesc": "Тесты по грамматическим правилам",
+        "readingMenuDesc": "Прочитайте текст и ответьте на вопросы",
+        "speakingMenuDesc": "Образцы идеальных устных ответов",
+        "readyTitle": "Готовы начать тест?",
+        "readyDesc": "После нажатия кнопки Старт запустится 20-минутный таймер.",
+        "startTestBtn": "Начать",
+        "timeLeftLabel": "Оставшееся время:",
+        "viewResultBtn": "Посмотреть результат",
+        "resultsReadyToast": "Результаты готовы!",
+        "timeUpToast": "Время истекло!"
     }
 }
 </file>
 
 <file path="public/localization/uz/global.json">
 {
-    "uz": {
-        "Welcome to React": "React va react-i18nextga xush kelibsiz",
-        "greating": "hammaga salom",
-        "Bosh sahifa": "Bosh sahifa",
-        "Statistika": "Statistika",
-        "Yutuqlar": "Yutuqlar",
-        "Biz haqimizda": "Biz haqimizda",
-        "Ro`yxatdan o`tish": "Ro'yxatdan o'tish",
-        "Boshqaruv": "Boshqaruv",
-        "Mentorlar": "Mentorlar",
-        "aboutStudents": {
-            "backButton": "← Orqaga",
-            "title": "O'quvchilar haqida (2-oyna)",
-            "description": "Bu yerda o'quvchi haqida batafsil ma'lumot ko'rsatiladi."
-        },
-        "aboutUs": {
-            "badge": "Biz haqimizda",
-            "title": "Kelajak avlodlar uchun ta'lim platformasini birgalikda quramiz.",
-            "description1": "Biz oddiy bir kuzatishdan boshladik: ko'pchilik til markazlari va platformalar yoki zerikarli, yoki nutq amaliyoti juda cheklangan. Biz markazimizni ushbu bo'shliqni to'liq bartaraf etish uchun yaratdik.",
-            "description2": "Bizning yondashuvimiz ilg'or o'qitish metodikasini o'quvchiga qulay muhit bilan birlashtiradi, bu esa zerikarli yodlash o'rniga real vaqtda erkin muloqot qilish imkonini beradi.",
-            "card1Title": "Tez natija",
-            "card1Desc": "Maxsus ishlab chiqilgan intensiv dasturlar qisqa muddatda til bo'yicha sezilarli o'sishni ta'minlaydi.",
-            "card1Tag": "Asosiy tamoyil I",
-            "card2Title": "Amaliy yondashuv",
-            "card2Desc": "Darslarning asosiy qismi jonli muloqot va nutqqa qaratilgan bo'lib, bu til to'sig'ini qisqa vaqtda yengib o'tishga yordam beradi.",
-            "card2Tag": "Asosiy tamoyil II",
-            "card3Title": "Mukammallik sari",
-            "card3Desc": "Har bir o'quvchining xato va kamchiliklari ustida individual ishlash yuqori natijalarga olib keladi.",
-            "card3Tag": "Asosiy tamoyil III",
-            "locationBadge": "Manzilimiz",
-            "locationTitle": "Bizni shu yerdan toping",
-            "locationDesc": "Biz O'zbekistonda, Buxoro shahrida, «Buxoro davlat tibbiyot kolleji» majmuasi yaqinida joylashganmiz. Zamonaviy va qulay o'quv markazimiz sizlar uchun doim ochiq. Keling va o'quv jarayonimiz bilan yaqindan tanishing!",
-            "address": "Buxoro, O'zbekiston",
-            "imageAlt": "Bizning ofis va o'quv markazimiz",
-            "footerTitle": "Maqsad sari birgalikda, ishonch bilan.",
-            "footerDesc": "Bizning tajribali o'qituvchilar jamoamiz o'quvchilarga doimiy qo'llab-quvvatlash ko'rsatib, yuqori sertifikatlar va erkin muloqot darajasiga erishishlariga yordam beradi.",
-            "stat1Label": "Murosasiz sifat",
-            "stat2Label": "Qo'llab-quvvatlash"
-        },
-        "addComment": {
-            "editTitle": "O'quvchini tahrirlash",
-            "addTitle": "Yangi o'quvchi qo'shish",
-            "imageLabel": "Rasm havolasi (URL)",
-            "imagePlaceholder": "https://.../image.png",
-            "nameLabel": "O'quvchi ismi",
-            "namePlaceholder": "Masalan: Alisher Vahobov",
-            "achievementLabel": "Erishilgan natija",
-            "achievementPlaceholder": "Masalan: IELTS 8.0 / CEFR B2",
-            "cancelBtn": "Bekor qilish",
-            "saveBtn": "Saqlash",
-            "addBtn": "Qo'shish",
-            "editSuccess": "Muvaffaqiyatli tahrirlandi",
-            "addSuccess": "Muvaffaqiyatli qo'shildi",
-            "errorOccurred": "Xatolik yuz berdi"
-        },
-        "admin": {
-            "title": "Administrator panelga kirish",
-            "placeholder": "Parolni kiriting",
-            "enterBtn": "Kirish",
-            "emptyError": "Iltimos, to'ldiring",
-            "wrongPassword": "Parol noto'g'ri!"
-        },
-        "comments": {
-            "title": "Kurslarni boshqarish",
-            "deleteBtn": "O'chirish",
-            "editBtn": "Tahrirlash",
-            "addBtnTitle": "Yangi kurs qo'shish",
-            "deleteSuccess": "Muvaffaqiyatli o'chirildi"
-        },
-        "footer": {
-            "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblarni egallang va sifatli ta'lim oling, o'z yo'lingizni toping.",
-            "rights": "Barcha huquqlar himoyalangan."
-        },
-        "home": {
-            "badge": "Optimum School of English",
-            "titlePrefix": "Ingliz tilini noldan",
-            "titleHighlight": "mukammallikkacha o'rganing",
-            "description": "Professional o'qituvchilar, jonli suhbat klublari va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling."
-        },
-        "mentors": {
-            "sectionTitle": "Bizning tajribali mentorlarimiz",
-            "sectionDesc": "Ingliz tilini mukammal o'rganishingiz va natijaga erishishingizga yordam beruvchi mutaxassislar.",
-            "contactBtn": "Bog'lanish",
-            "modalTitle": "Mentor bilan bog'lanish",
-            "selectedTeacher": "Tanlangan o'qituvchi:",
-            "nameLabel": "Ismingiz",
-            "namePlaceholder": "Ismingizni kiriting",
-            "phoneLabel": "Telefon raqamingiz",
-            "submitBtn": "Yuborish",
-            "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
-            "list": [
-                {
-                    "name": "Ruhillo Asrorov",
-                    "role": "Senior English Instructor (IELTS 8)",
-                    "experience": "6+ yillik tajriba",
-                    "bio": "Noldan boshlagan o'quvchilarni qisqa muddatda erkin gapirishga o'rgatadi. 200+ IELTS 7+ egalarini tayyorlagan.",
-                    "skills": [
-                        "General English",
-                        "IELTS",
-                        "Speaking"
-                    ]
-                },
-                {
-                    "name": "Jasurbek Sobirov",
-                    "role": "ESL & Speaking Coach",
-                    "experience": "4+ yillik tajriba",
-                    "bio": "Aksent ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv shaklda olib boradi.",
-                    "skills": [
-                        "Grammar",
-                        "Listening",
-                        "Vocabulary"
-                    ]
-                }
-            ]
-        },
-        "products": {
-            "badge": "Muvaffaqiyat",
-            "title": "Bizning muvaffaqiyatli o'quvchilarimiz",
-            "defaultAchievement": "IELTS 7.5 / Yuqori natija",
-            "certified": "Sertifikatlangan",
-            "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
-            "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
-        },
-        "register": {
-            "phoneError": "Faqat raqamlar kiriting!",
-            "title": "Kursga ro'yxatdan o'tish",
-            "nameLabel": "Ismingiz",
-            "namePlaceholder": "Masalan: Alisher",
-            "phoneLabel": "Telefon raqamingiz",
-            "phonePlaceholder": "+998 90 123 45 67",
-            "submitBtn": "Ro'yxatdan o'tish"
-        },
-        "stats": {
-            "studentsTitle": "Faol o'quvchilar",
-            "lessonsTitle": "Jami darslar",
-            "speakingTitle": "Suhbat klublari",
-            "certificatesTitle": "Sertifikatlar"
-        },
-        "steps": {
-            "badge": "O'qish jarayoni",
-            "title": "Ingliz tilini 3 oson qadamda boshlang",
-            "description": "Optimum School of English bilan xalqaro darajaga yo'l shunchalik oson.",
-            "step1Title": "Ro'yxatdan o'tish",
-            "step1Desc": "O'zingizga mos kursni tanlang va ma'lumotlaringizni qoldirib ro'yxatdan o'ting.",
-            "step2Title": "Darajani aniqlash",
-            "step2Desc": "Maxsus test yordamida bilim darajangiz aniqlanadi va mos guruhga joylashtirilasiz.",
-            "step3Title": "Natijaga erishish",
-            "step3Desc": "Jonli darslar va suhbat klublari yordamida qisqa muddatda erkin muloqotni his qiling."
-        },
-        "students": {
-            "title": "Yuqori natijalarga erishgan o'quvchilar",
-            "badge": "Optimum Pride",
-            "ageLabel": "Yosh",
-            "levelLabel": "Boshlang'ich daraja",
-            "timeLabel": "Tayyorgarlik vaqti",
-            "teacherLabel": "O'qituvchi",
-            "viewBtn": "Ko'rish →",
-            "modalTitle": "O'quvchi haqida to'liq ma'lumot",
-            "closeBtn": "✕ Yopish"
-        },
-        "about": {
-            "badge": "Biz haqimizda",
-            "titleStart": "Ingliz tilini zamonaviy va ",
-            "highlight": "oson usullarda",
-            "titleHighlight": "oson usullarda",
-            "titleEnd": " o'rgatamiz.",
-            "description": "Optimum School of English jamoasi til o'rganish jarayonini zerikarli yodlashdan xalos qilib, real muloqotga asoslangan qiziqarli muhitni taklif etadi.",
-            "goalTitle": "Bizning maqsadimiz",
-            "goalDesc": "Har bir o'quvchiga sifatli ta'lim berish va uning kelajakdagi muvaffaqiyati uchun poydevor yaratish.",
-            "teacherTitle": "Malakali o'qituvchilar",
-            "teacherDesc": "Xalqaro sertifikatlarga va ko'p yillik tajribaga ega professional o'qituvchilar jamoasi.",
-            "experience": "Yil\nTajriba",
-            "experienceText1": "Yil",
-            "experienceText2": "Tajriba"
-        },
-        "statistic": {
-            "badge": "O'quv natijalari",
-            "title": "O'quvchilarimizning muvaffaqiyat ko'rsatkichlari",
-            "description": "Har oy darslardagi faollik, so'z boyligining o'sishi va erkin muloqot darajasini tahlil qilamiz.",
-            "dynamicsTitle": "O'sish dinamikasi",
-            "analysisTitle": "Natijalar tahlili",
-            "tab1": "1-oy",
-            "tab3": "3-oy",
-            "tabEnd": "Kurs yakuni",
-            "coursesTitle": "Kurs yo'nalishlari",
-            "courseTypeTitle": "Dars turlari",
-            "studentsText": "(O'quvchilar)",
-            "footerText": "✨ Har qadamda mukammallik sari",
-            "tab1Min": "25 daq",
-            "tab1Errors": "Xatolar: 42%",
-            "tab1Trend": "Boshlang'ich: +15% Speaking",
-            "tab3Min": "45 daq",
-            "tab3Errors": "Xatolar: 24.8% ↓",
-            "tab3Trend": "Barqaror: +30% Speaking",
-            "endMin": "80 daq",
-            "endErrors": "Xatolar: 8.5% ↓",
-            "endTrend": "Yuqori: +45% Speaking"
-        },
-        "navbar": {
-            "home": "Bosh sahifa",
-            "statistic": "Statistika",
-            "achievements": "Yutuqlar",
-            "about": "Biz haqimizda",
-            "register": "Ro'yxatdan o'tish",
-            "dashboard": "Boshqaruv",
-            "selectLang": "Tilni tanlang:",
-            "Mentorlar": "Mentorlar:"
-        },
-        "mentorsPage": {
-            "badge": "Professional jamoa",
-            "title": "Bizning tajribali mentorlarimiz",
-            "description": "Har bir o'quvchiga individual yondashib, noldan professional darajagacha olib boradigan mutaxassislar bilan tanishing.",
-            "experienceLabel": "Tajriba:",
-            "studentsLabel": "Bitiruvchilar:",
-            "achievementsTitle": "Asosiy yutuq va ko'nikmalar:",
-            "connectBtn": "Mentor bilan bog'lanish",
-            "modalTitle": "Mentor bilan bog'lanish",
-            "selectedTeacher": "Tanlangan o'qituvchi:",
-            "nameLabel": "Ismingiz",
-            "namePlaceholder": "Ismingizni kiriting",
-            "phoneLabel": "Telefon raqamingiz",
-            "submitBtn": "So'rov yuborish",
-            "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
-            "list": [
-                {
-                    "name": "Ruhillo Asrorov",
-                    "role": "Senior English Instructor & IELTS Expert",
-                    "experience": "6+ yil",
-                    "students": "200+ o'quvchi",
-                    "bio": "Noldan boshlaganlarni qisqa muddatda erkin muloqot qilishga o'rgatadi. Xalqaro CELTA sertifikati egasi, 200+ IELTS 7+ egalarini tayyorlagan.",
-                    "skills": [
-                        "General English",
-                        "IELTS 8.5",
-                        "Speaking Coaching",
-                        "CELTA"
-                    ]
-                },
-                {
-                    "name": "Jasurbek Sobirov",
-                    "role": "ESL & Speaking Coach",
-                    "experience": "4+ yil",
-                    "students": "150+ o'quvchi",
-                    "bio": "Til to'sig'ini (gapirishdan qo'rqish) yengib o'tish va mukammal talaffuz shakllantirish bo'yicha mutaxassis. Darslarni qiziqarli interaktiv metodika asosida olib boradi.",
-                    "skills": [
-                        "Grammar",
-                        "Interactive Speaking",
-                        "Vocabulary",
-                        "Listening"
-                    ]
-                }
-            ]
-        },
-        "resultsSlider": {
-            "title": "Ba'zi o'quvchilarimizning natijalari",
-            "listening": "Listening",
-            "reading": "Reading",
-            "writing": "Writing",
-            "speaking": "Speaking",
-            "overall": "Overall"
-        },
-        "productsPage": {
-            "title": "Ba'zi o'quvchilarimizning natijalari",
-            "listening": "Listening",
-            "reading": "Reading",
-            "writing": "Writing",
-            "speaking": "Speaking",
-            "overall": "Overall"
-        },
-        "dovudxon": {
-            "role": "IELTS 9.0",
-            "scoreTitle": "IELTS balli",
-            "certDesc": "Sertifikatlangan",
-            "experienceText": "Yillik tajriba",
-            "studentsText": "O'quvchilar",
-            "description": "O'zbekistonda 8 marta IELTS 9.0 ballini oldim va bu o'z-o'zimga ishonchimni yanada mustahkamladi. O'quvchilarim yaxshi natijalarga erishishi uchun barcha yo'nalishlarga e'tibor qarataman.",
-            "expert": "Tajribali mentor"
-        },
-        "jasurbek": {
-            "role": "ESL va suhbat bo'yicha murabbiy",
-            "scoreTitle": "IELTS balli",
-            "certDesc": "Sertifikatlangan",
-            "experienceText": "Yillik tajriba",
-            "studentsText": "O'quvchilar",
-            "description": "Talaffuz ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv formatda olib boradi.",
-            "expert": "Tajribali mentor"
-        },
-        "lesson18": {
-            "title": "18-dars: Advanced Speaking & Complex Grammar Structures",
-            "badge": "Modul yakuni / Advanced",
-            "description": "Ushbu darsda biz murakkab grammatik konstruksiyalarni (Inversion, Cleft sentences) qo'llashni va erkin muloqot paytida uchraydigan nozik jihatlarni mukammal o'rganamiz.",
-            "goal": "Talaffuz va grammatik aniqlikni professional darajaga ko'tarish.",
-            "tasks": [
-                "Murakkab gap tuzilmalarini amalda qo'llash",
-                "Real hayotiy vaziyatlar bo'yicha ilg'or darajadagi bahslar (Debate)",
-                "IELTS Speaking Part 3 savollariga yuqori darajada javob berish"
-            ],
-            "duration": "80 daqiqa"
-        },
-        "sec3": {
-            "badge": "Professional o'qituvchilar",
-            "title": "Bizning mutaxassisimiz bilan tanishing",
-            "ieltsScore": "IELTS score",
-            "certified": "Certified",
-            "experience": "Experience",
-            "students": "Students",
-            "contactBtn": "Bog'lanish",
-            "modalTitle": "O'qituvchi bilan bog'lanish",
-            "selectedTeacher": "Tanlangan o'qituvchi:",
-            "nameLabel": "Ismingiz",
-            "namePlaceholder": "Ismingizni kiriting",
-            "phoneLabel": "Telefon raqamingiz",
-            "submitBtn": "Yuborish",
-            "successToast": "So'rovingiz muvaffaqiyatli yuborildi!"
-        },
-        "asilbek": {
-            "role": "CELTA",
-            "description": "Asilbek ketma-ket 3 marta IELTS 9.0 ballini olgan, va bu tasodif emas. Uning har bir darsi bitta g'oya atrofida quriladi — «imkonsiz» so'zini odamlar yetarlicha harakat qilmasdan turib ishlatishadi. U har bir ko'nikmani tushunarli qadamlarga bo'lib beradi, o'quvchining zaif tomonlarini doimiy kuzatib boradi va ko'pchilik tiqilib qoladigan bosqichdan olib o'tadi. Uning o'quvchilari nafaqat imtihondan o'tishadi — ular darsdan haqiqiy ishonch bilan chiqib ketishadi. Agar mehnat qilishga tayyor bo'lsangiz, natija albatta keladi."
-        },
-        "ruxillo": {
-            "role": "Katta ingliz tili o'qituvchisi (IELTS 8)",
-            "description": "Ruhillo ingliz tilini maktab davridayoq mustaqil o'rganishni boshlagan va bir necha yil ichida o'z shahridagi eng talab qilinadigan o'qituvchilardan biriga aylangan. U IELTS'ga tayyorlash va nutq amaliyoti bo'yicha ixtisoslashgan bo'lib, murakkab grammatik mavzularni sodda va tushunarli tilda tushuntiradi. 6 yillik faoliyati davomida u IELTS 7 va undan yuqori ball olgan 200 dan ortiq o'quvchini tayyorlagan va o'z o'qitish metodikasini doimiy takomillashtirib bormoqda."
-        },
-        "zarnigor": {
-            "role": "IELTS 8.5",
-            "description": "Zarnigor xalqaro IELTS imtihonidan 17 yoshidayoq 8.5 ball to'plagan, bu esa uning yoshi uchun haqiqiy yutuq bo'ldi. U CELTA sertifikati egasi bo'lib, nutq ko'nikmalarini rivojlantirish va talaffuz ustida ishlashga ixtisoslashgan. Zarnigor har bir o'quvchi materialni sodda va sabr bilan tushuntirilsa, yuqori natijaga erisha oladi deb ishonadi va aynan shu yondashuvni har bir darsida qo'llaydi."
-        },
-        "gulasal": {
-            "role": "IELTS 9.0",
-            "description": "Gulasal IELTS'ning eng yuqori balli 9.0 va xalqaro darajada ingliz tili o'qitish huquqini beruvchi TESOL sertifikati egasidir. 5 yillik amaliyoti davomida u 600 dan ortiq o'quvchini tayyorlagan, ularning ko'pchiligi chet el universitetlariga muvaffaqiyatli o'qishga kirgan. Gulasal akademik yozuv va ishonchli og'zaki ingliz tiliga alohida e'tibor qaratib, o'quvchilarga nafaqat imtihondan o'tishga, balki tilni haqiqatan ham egallashga yordam beradi."
-        }
+    "Welcome to React": "React va react-i18nextga xush kelibsiz",
+    "greating": "hammaga salom",
+    "Bosh sahifa": "Bosh sahifa",
+    "Statistika": "Statistika",
+    "Yutuqlar": "Yutuqlar",
+    "Biz haqimizda": "Biz haqimizda",
+    "Ro`yxatdan o`tish": "Ro'yxatdan o'tish",
+    "Boshqaruv": "Boshqaruv",
+    "Mentorlar": "Mentorlar",
+    "aboutStudents": {
+        "backButton": "← Orqaga",
+        "title": "O'quvchilar haqida (2-oyna)",
+        "description": "Bu yerda o'quvchi haqida batafsil ma'lumot ko'rsatiladi."
+    },
+    "aboutUs": {
+        "badge": "Biz haqimizda",
+        "title": "Kelajak avlodlar uchun ta'lim platformasini birgalikda quramiz.",
+        "description1": "Biz oddiy bir kuzatishdan boshladik: ko'pchilik til markazlari va platformalar yoki zerikarli, yoki nutq amaliyoti juda cheklangan. Biz markazimizni ushbu bo'shliqni to'liq bartaraf etish uchun yaratdik.",
+        "description2": "Bizning yondashuvimiz ilg'or o'qitish metodikasini o'quvchiga qulay muhit bilan birlashtiradi, bu esa zerikarli yodlash o'rniga real vaqtda erkin muloqot qilish imkonini beradi.",
+        "card1Title": "Tez natija",
+        "card1Desc": "Maxsus ishlab chiqilgan intensiv dasturlar qisqa muddatda til bo'yicha sezilarli o'sishni ta'minlaydi.",
+        "card1Tag": "Asosiy tamoyil I",
+        "card2Title": "Amaliy yondashuv",
+        "card2Desc": "Darslarning asosiy qismi jonli muloqot va nutqqa qaratilgan bo'lib, bu til to'sig'ini qisqa vaqtda yengib o'tishga yordam beradi.",
+        "card2Tag": "Asosiy tamoyil II",
+        "card3Title": "Mukammallik sari",
+        "card3Desc": "Har bir o'quvchining xato va kamchiliklari ustida individual ishlash yuqori natijalarga olib keladi.",
+        "card3Tag": "Asosiy tamoyil III",
+        "locationBadge": "Manzilimiz",
+        "locationTitle": "Bizni shu yerdan toping",
+        "locationDesc": "Biz O'zbekistonda, Buxoro shahrida, «Buxoro davlat tibbiyot kolleji» majmuasi yaqinida joylashganmiz. Zamonaviy va qulay o'quv markazimiz sizlar uchun doim ochiq. Keling va o'quv jarayonimiz bilan yaqindan tanishing!",
+        "address": "Buxoro, O'zbekiston",
+        "imageAlt": "Bizning ofis va o'quv markazimiz",
+        "footerTitle": "Maqsad sari birgalikda, ishonch bilan.",
+        "footerDesc": "Bizning tajribali o'qituvchilar jamoamiz o'quvchilarga doimiy qo'llab-quvvatlash ko'rsatib, yuqori sertifikatlar va erkin muloqot darajasiga erishishlariga yordam beradi.",
+        "stat1Label": "Murosasiz sifat",
+        "stat2Label": "Qo'llab-quvvatlash"
+    },
+    "addComment": {
+        "editTitle": "O'quvchini tahrirlash",
+        "addTitle": "Yangi o'quvchi qo'shish",
+        "imageLabel": "Rasm havolasi (URL)",
+        "imagePlaceholder": "https://.../image.png",
+        "nameLabel": "O'quvchi ismi",
+        "namePlaceholder": "Masalan: Alisher Vahobov",
+        "achievementLabel": "Erishilgan natija",
+        "achievementPlaceholder": "Masalan: IELTS 8.0 / CEFR B2",
+        "cancelBtn": "Bekor qilish",
+        "saveBtn": "Saqlash",
+        "addBtn": "Qo'shish",
+        "editSuccess": "Muvaffaqiyatli tahrirlandi",
+        "addSuccess": "Muvaffaqiyatli qo'shildi",
+        "errorOccurred": "Xatolik yuz berdi"
+    },
+    "admin": {
+        "title": "Administrator panelga kirish",
+        "placeholder": "Parolni kiriting",
+        "enterBtn": "Kirish",
+        "emptyError": "Iltimos, to'ldiring",
+        "wrongPassword": "Parol noto'g'ri!"
+    },
+    "comments": {
+        "title": "Kurslarni boshqarish",
+        "deleteBtn": "O'chirish",
+        "editBtn": "Tahrirlash",
+        "addBtnTitle": "Yangi kurs qo'shish",
+        "deleteSuccess": "Muvaffaqiyatli o'chirildi"
+    },
+    "footer": {
+        "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblarni egallang va sifatli ta'lim oling, o'z yo'lingizni toping.",
+        "rights": "Barcha huquqlar himoyalangan."
+    },
+    "home": {
+        "badge": "Optimum School of English",
+        "titlePrefix": "Ingliz tilini noldan",
+        "titleHighlight": "mukammallikkacha o'rganing",
+        "description": "Professional o'qituvchilar, jonli suhbat klublari va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling."
+    },
+    "mentors": {
+        "sectionTitle": "Bizning tajribali mentorlarimiz",
+        "sectionDesc": "Ingliz tilini mukammal o'rganishingiz va natijaga erishishingizga yordam beruvchi mutaxassislar.",
+        "contactBtn": "Bog'lanish",
+        "modalTitle": "Mentor bilan bog'lanish",
+        "selectedTeacher": "Tanlangan o'qituvchi:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "Yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
+        "list": [
+            {
+                "name": "Ruhillo Asrorov",
+                "role": "Senior English Instructor (IELTS 8)",
+                "experience": "6+ yillik tajriba",
+                "bio": "Noldan boshlagan o'quvchilarni qisqa muddatda erkin gapirishga o'rgatadi. 200+ IELTS 7+ egalarini tayyorlagan.",
+                "skills": [
+                    "General English",
+                    "IELTS",
+                    "Speaking"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ yillik tajriba",
+                "bio": "Aksent ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv shaklda olib boradi.",
+                "skills": [
+                    "Grammar",
+                    "Listening",
+                    "Vocabulary"
+                ]
+            }
+        ]
+    },
+    "products": {
+        "badge": "Muvaffaqiyat",
+        "title": "Bizning muvaffaqiyatli o'quvchilarimiz",
+        "defaultAchievement": "IELTS 7.5 / Yuqori natija",
+        "certified": "Sertifikatlangan",
+        "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
+        "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
+    },
+    "register": {
+        "phoneError": "Faqat raqamlar kiriting!",
+        "title": "Kursga ro'yxatdan o'tish",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Masalan: Alisher",
+        "phoneLabel": "Telefon raqamingiz",
+        "phonePlaceholder": "+998 90 123 45 67",
+        "submitBtn": "Ro'yxatdan o'tish"
+    },
+    "stats": {
+        "studentsTitle": "Faol o'quvchilar",
+        "lessonsTitle": "Jami darslar",
+        "speakingTitle": "Suhbat klublari",
+        "certificatesTitle": "Sertifikatlar"
+    },
+    "steps": {
+        "badge": "O'qish jarayoni",
+        "title": "Ingliz tilini 3 oson qadamda boshlang",
+        "description": "Optimum School of English bilan xalqaro darajaga yo'l shunchalik oson.",
+        "step1Title": "Ro'yxatdan o'tish",
+        "step1Desc": "O'zingizga mos kursni tanlang va ma'lumotlaringizni qoldirib ro'yxatdan o'ting.",
+        "step2Title": "Darajani aniqlash",
+        "step2Desc": "Maxsus test yordamida bilim darajangiz aniqlanadi va mos guruhga joylashtirilasiz.",
+        "step3Title": "Natijaga erishish",
+        "step3Desc": "Jonli darslar va suhbat klublari yordamida qisqa muddatda erkin muloqotni his qiling."
+    },
+    "students": {
+        "title": "Yuqori natijalarga erishgan o'quvchilar",
+        "badge": "Optimum Pride",
+        "ageLabel": "Yosh",
+        "levelLabel": "Boshlang'ich daraja",
+        "timeLabel": "Tayyorgarlik vaqti",
+        "teacherLabel": "O'qituvchi",
+        "viewBtn": "Ko'rish →",
+        "modalTitle": "O'quvchi haqida to'liq ma'lumot",
+        "closeBtn": "✕ Yopish"
+    },
+    "about": {
+        "badge": "Biz haqimizda",
+        "titleStart": "Ingliz tilini zamonaviy va ",
+        "highlight": "oson usullarda",
+        "titleHighlight": "oson usullarda",
+        "titleEnd": " o'rgatamiz.",
+        "description": "Optimum School of English jamoasi til o'rganish jarayonini zerikarli yodlashdan xalos qilib, real muloqotga asoslangan qiziqarli muhitni taklif etadi.",
+        "goalTitle": "Bizning maqsadimiz",
+        "goalDesc": "Har bir o'quvchiga sifatli ta'lim berish va uning kelajakdagi muvaffaqiyati uchun poydevor yaratish.",
+        "teacherTitle": "Malakali o'qituvchilar",
+        "teacherDesc": "Xalqaro sertifikatlarga va ko'p yillik tajribaga ega professional o'qituvchilar jamoasi.",
+        "experience": "Yil\nTajriba",
+        "experienceText1": "Yil",
+        "experienceText2": "Tajriba"
+    },
+    "statistic": {
+        "badge": "O'quv natijalari",
+        "title": "O'quvchilarimizning muvaffaqiyat ko'rsatkichlari",
+        "description": "Har oy darslardagi faollik, so'z boyligining o'sishi va erkin muloqot darajasini tahlil qilamiz.",
+        "dynamicsTitle": "O'sish dinamikasi",
+        "analysisTitle": "Natijalar tahlili",
+        "tab1": "1-oy",
+        "tab3": "3-oy",
+        "tabEnd": "Kurs yakuni",
+        "coursesTitle": "Kurs yo'nalishlari",
+        "courseTypeTitle": "Dars turlari",
+        "studentsText": "(O'quvchilar)",
+        "footerText": "✨ Har qadamda mukammallik sari",
+        "tab1Min": "25 daq",
+        "tab1Errors": "Xatolar: 42%",
+        "tab1Trend": "Boshlang'ich: +15% Speaking",
+        "tab3Min": "45 daq",
+        "tab3Errors": "Xatolar: 24.8% ↓",
+        "tab3Trend": "Barqaror: +30% Speaking",
+        "endMin": "80 daq",
+        "endErrors": "Xatolar: 8.5% ↓",
+        "endTrend": "Yuqori: +45% Speaking"
+    },
+    "navbar": {
+        "home": "Bosh sahifa",
+        "statistic": "Statistika",
+        "achievements": "Yutuqlar",
+        "about": "Biz haqimizda",
+        "register": "Ro'yxatdan o'tish",
+        "dashboard": "Boshqaruv",
+        "selectLang": "Tilni tanlang:",
+        "Mentorlar": "Mentorlar:"
+    },
+    "mentorsPage": {
+        "badge": "Professional jamoa",
+        "title": "Bizning tajribali mentorlarimiz",
+        "description": "Har bir o'quvchiga individual yondashib, noldan professional darajagacha olib boradigan mutaxassislar bilan tanishing.",
+        "experienceLabel": "Tajriba:",
+        "studentsLabel": "Bitiruvchilar:",
+        "achievementsTitle": "Asosiy yutuq va ko'nikmalar:",
+        "connectBtn": "Mentor bilan bog'lanish",
+        "modalTitle": "Mentor bilan bog'lanish",
+        "selectedTeacher": "Tanlangan o'qituvchi:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "So'rov yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!",
+        "list": [
+            {
+                "name": "Ruhillo Asrorov",
+                "role": "Senior English Instructor & IELTS Expert",
+                "experience": "6+ yil",
+                "students": "200+ o'quvchi",
+                "bio": "Noldan boshlaganlarni qisqa muddatda erkin muloqot qilishga o'rgatadi. Xalqaro CELTA sertifikati egasi, 200+ IELTS 7+ egalarini tayyorlagan.",
+                "skills": [
+                    "General English",
+                    "IELTS 8.5",
+                    "Speaking Coaching",
+                    "CELTA"
+                ]
+            },
+            {
+                "name": "Jasurbek Sobirov",
+                "role": "ESL & Speaking Coach",
+                "experience": "4+ yil",
+                "students": "150+ o'quvchi",
+                "bio": "Til to'sig'ini (gapirishdan qo'rqish) yengib o'tish va mukammal talaffuz shakllantirish bo'yicha mutaxassis. Darslarni qiziqarli interaktiv metodika asosida olib boradi.",
+                "skills": [
+                    "Grammar",
+                    "Interactive Speaking",
+                    "Vocabulary",
+                    "Listening"
+                ]
+            }
+        ]
+    },
+    "resultsSlider": {
+        "title": "Ba'zi o'quvchilarimizning natijalari",
+        "listening": "Listening",
+        "reading": "Reading",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "overall": "Overall"
+    },
+    "productsPage": {
+        "title": "Ba'zi o'quvchilarimizning natijalari",
+        "listening": "Listening",
+        "reading": "Reading",
+        "writing": "Writing",
+        "speaking": "Speaking",
+        "overall": "Overall"
+    },
+    "dovudxon": {
+        "role": "IELTS 9.0",
+        "scoreTitle": "IELTS balli",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "O'zbekistonda 8 marta IELTS 9.0 ballini oldim va bu o'z-o'zimga ishonchimni yanada mustahkamladi. O'quvchilarim yaxshi natijalarga erishishi uchun barcha yo'nalishlarga e'tibor qarataman.",
+        "expert": "Tajribali mentor"
+    },
+    "jasurbek": {
+        "role": "ESL va suhbat bo'yicha murabbiy",
+        "scoreTitle": "IELTS balli",
+        "certDesc": "Sertifikatlangan",
+        "experienceText": "Yillik tajriba",
+        "studentsText": "O'quvchilar",
+        "description": "Talaffuz ustida ishlash va til to'sig'ini yengib o'tish bo'yicha mutaxassis. Darslarni interaktiv formatda olib boradi.",
+        "expert": "Tajribali mentor"
+    },
+    "lesson18": {
+        "title": "18-dars: Advanced Speaking & Complex Grammar Structures",
+        "badge": "Modul yakuni / Advanced",
+        "description": "Ushbu darsda biz murakkab grammatik konstruksiyalarni (Inversion, Cleft sentences) qo'llashni va erkin muloqot paytida uchraydigan nozik jihatlarni mukammal o'rganamiz.",
+        "goal": "Talaffuz va grammatik aniqlikni professional darajaga ko'tarish.",
+        "tasks": [
+            "Murakkab gap tuzilmalarini amalda qo'llash",
+            "Real hayotiy vaziyatlar bo'yicha ilg'or darajadagi bahslar (Debate)",
+            "IELTS Speaking Part 3 savollariga yuqori darajada javob berish"
+        ],
+        "duration": "80 daqiqa"
+    },
+    "sec3": {
+        "badge": "Professional o'qituvchilar",
+        "title": "Bizning mutaxassisimiz bilan tanishing",
+        "ieltsScore": "IELTS score",
+        "certified": "Certified",
+        "experience": "Experience",
+        "students": "Students",
+        "contactBtn": "Bog'lanish",
+        "modalTitle": "O'qituvchi bilan bog'lanish",
+        "selectedTeacher": "Tanlangan o'qituvchi:",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Ismingizni kiriting",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "Yuborish",
+        "successToast": "So'rovingiz muvaffaqiyatli yuborildi!"
+    },
+    "asilbek": {
+        "role": "CELTA",
+        "description": "Asilbek ketma-ket 3 marta IELTS 9.0 ballini olgan, va bu tasodif emas. Uning har bir darsi bitta g'oya atrofida quriladi — «imkonsiz» so'zini odamlar yetarlicha harakat qilmasdan turib ishlatishadi. U har bir ko'nikmani tushunarli qadamlarga bo'lib beradi, o'quvchining zaif tomonlarini doimiy kuzatib boradi va ko'pchilik tiqilib qoladigan bosqichdan olib o'tadi. Uning o'quvchilari nafaqat imtihondan o'tishadi — ular darsdan haqiqiy ishonch bilan chiqib ketishadi. Agar mehnat qilishga tayyor bo'lsangiz, natija albatta keladi."
+    },
+    "ruxillo": {
+        "role": "Katta ingliz tili o'qituvchisi (IELTS 8)",
+        "description": "Ruhillo ingliz tilini maktab davridayoq mustaqil o'rganishni boshlagan va bir necha yil ichida o'z shahridagi eng talab qilinadigan o'qituvchilardan biriga aylangan. U IELTS'ga tayyorlash va nutq amaliyoti bo'yicha ixtisoslashgan bo'lib, murakkab grammatik mavzularni sodda va tushunarli tilda tushuntiradi. 6 yillik faoliyati davomida u IELTS 7 va undan yuqori ball olgan 200 dan ortiq o'quvchini tayyorlagan va o'z o'qitish metodikasini doimiy takomillashtirib bormoqda."
+    },
+    "zarnigor": {
+        "role": "IELTS 8.5",
+        "description": "Zarnigor xalqaro IELTS imtihonidan 17 yoshidayoq 8.5 ball to'plagan, bu esa uning yoshi uchun haqiqiy yutuq bo'ldi. U CELTA sertifikati egasi bo'lib, nutq ko'nikmalarini rivojlantirish va talaffuz ustida ishlashga ixtisoslashgan. Zarnigor har bir o'quvchi materialni sodda va sabr bilan tushuntirilsa, yuqori natijaga erisha oladi deb ishonadi va aynan shu yondashuvni har bir darsida qo'llaydi."
+    },
+    "gulasal": {
+        "role": "IELTS 9.0",
+        "description": "Gulasal IELTS'ning eng yuqori balli 9.0 va xalqaro darajada ingliz tili o'qitish huquqini beruvchi TESOL sertifikati egasidir. 5 yillik amaliyoti davomida u 600 dan ortiq o'quvchini tayyorlagan, ularning ko'pchiligi chet el universitetlariga muvaffaqiyatli o'qishga kirgan. Gulasal akademik yozuv va ishonchli og'zaki ingliz tiliga alohida e'tibor qaratib, o'quvchilarga nafaqat imtihondan o'tishga, balki tilni haqiqatan ham egallashga yordam beradi."
     },
     "ieltsEngine": {
         "heroBadge": "IELTS BAND 5.0 - 9.0 TEST ENGINE",
@@ -4198,301 +4509,18 @@ export default function Mentorstats() {
         "resultLabel": "Natijangiz",
         "checkBtn": "Tekshirish",
         "correctAnswerLabel": "To'g'ri javob",
-        "idealAnswerLabel": "Ideal javob"
+        "idealAnswerLabel": "Ideal javob",
+        "grammarMenuDesc": "Grammatik qoidalar bo'yicha testlar",
+        "readingMenuDesc": "Matnni o'qing va savollarga javob bering",
+        "speakingMenuDesc": "Ideal og'zaki javoblar namunasi",
+        "readyTitle": "Testni boshlashga tayyormisiz?",
+        "readyDesc": "Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.",
+        "startTestBtn": "Boshlash",
+        "timeLeftLabel": "Qolgan vaqt:",
+        "viewResultBtn": "Natijani ko'rish",
+        "resultsReadyToast": "Natijalar chiqdi!",
+        "timeUpToast": "Vaqt tugadi!"
     }
-}
-</file>
-
-<file path="src/components/Sec4.jsx">
-import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-
-export default function Sec4() {
-    const { t } = useTranslation()
-
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 100,
-        })
-    }, [])
-
-    return (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-                {/* Chap tomon: Matnlar va ma'lumotlar */}
-                <div
-                    data-aos="fade-right"
-                    data-aos-duration="800"
-                    className="flex flex-col space-y-6 max-w-xl"
-                >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit animate-pulse">
-                        {t('about.badge')}
-                    </div>
-
-                    <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
-                        {t('about.titleStart')}
-                        <span className="text-red-600 dark:text-red-400">{t('about.titleHighlight')}</span>
-                        {t('about.titleEnd')}
-                    </h2>
-
-                    <p className="text-base text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                        {t('about.description')}
-                    </p>
-
-                    <div className="space-y-4 pt-2">
-                        {/* 1-blok */}
-                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
-                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
-                                🎯
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
-                                    {t('about.goalTitle')}
-                                </h4>
-                                <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
-                                    {t('about.goalDesc')}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* 2-blok */}
-                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
-                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
-                                👨‍🏫
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
-                                    {t('about.teacherTitle')}
-                                </h4>
-                                <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
-                                    {t('about.teacherDesc')}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* O'ng tomon: Rasm va tajriba bloki */}
-                <div
-                    data-aos="fade-left"
-                    data-aos-duration="800"
-                    className="w-full h-[400px] rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 dark:border-gray-800 relative group"
-                >
-                    <img
-                        src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2340&auto=format&fit=crop"
-                        alt="Students studying English"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent"></div>
-
-                    <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-white/20 dark:border-gray-800 flex items-center gap-3 transition-transform duration-300 group-hover:-translate-y-1">
-                        <span className="text-2xl font-black text-red-600 dark:text-red-400">5+</span>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 leading-tight block whitespace-pre-line">
-                            {t('about.experienceText1') + '\n' + t('about.experienceText2')}
-                        </span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    )
-}
-</file>
-
-<file path="src/components/Stats.jsx">
-import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-
-export default function Stats() {
-    const { t } = useTranslation()
-    // Faqat '1m', '3m', 'end' qiymatlarini qabul qiladigan state
-    const [activeTab, setActiveTab] = useState('1m');
-
-    // AOS kutubxonasini ishga tushirish
-    useEffect(() => {
-        AOS.init({
-            once: true, // Animatsiya faqat bir marta o'ynaydi
-            offset: 100, // Element ko'ringandan 100px keyin boshlanadi
-            duration: 800, // Standart animatsiya davomiyligi
-        })
-    }, [])
-
-    // Har bir tab uchun ma'lumotlar konfiguratsiyasi
-    const dataConfig = {
-        '1m': {
-            label: t('statistic.tab1'),
-            speaking: '25 min',
-            errors: t('statistic.tab1Errors'),
-            trendText: t('statistic.tab1Trend'),
-            pathD: 'M 0 130 Q 100 120, 200 100 T 400 70',
-            gradD: 'M 0 130 Q 100 120, 200 100 T 400 70 L 400 150 L 0 150 Z',
-            circleX: 200,
-            circleY: 100
-        },
-        '3m': {
-            label: t('statistic.tab3'),
-            speaking: '45 min',
-            errors: t('statistic.tab3Errors'),
-            trendText: t('statistic.tab3Trend'),
-            pathD: 'M 0 120 Q 80 50, 160 90 T 320 30 T 400 40',
-            gradD: 'M 0 120 Q 80 50, 160 90 T 320 30 T 400 40 L 400 150 L 0 150 Z',
-            circleX: 320,
-            circleY: 30
-        },
-        'end': {
-            label: t('statistic.tabEnd'),
-            speaking: '80 min',
-            errors: t('statistic.endErrors'),
-            trendText: t('statistic.endTrend'),
-            pathD: 'M 0 130 Q 100 90, 220 50 T 400 10',
-            gradD: 'M 0 130 Q 100 90, 220 50 T 400 10 L 400 150 L 0 150 Z',
-            circleX: 400,
-            circleY: 10
-        }
-    };
-
-    // Hozirgi faol tab bo'yicha ma'lumotlarni olish
-    const current = dataConfig[activeTab];
-
-    return (
-        // Yuqori qismdagi padding pt-24 sm:pt-28 ga o'zgartirildi (fixed navbar uchun joy)
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 mb-16 sm:mb-24 select-none font-sans transition-colors duration-200">
-
-            {/* Sarlavha qismi */}
-            <div 
-                data-aos="fade-up" 
-                className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4"
-            >
-                <div className="max-w-xl">
-                    <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-3 py-1 rounded-full inline-block animate-pulse">
-                        {t('statistic.badge')}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mt-3 sm:mt-4 tracking-tight leading-tight">
-                        {t('statistic.title')}
-                    </h2>
-                </div>
-                <p className="text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm md:text-base max-w-sm md:text-right">
-                    {t('statistic.description')}
-                </p>
-            </div>
-
-            {/* Asosiy Grid kontent */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
-
-                {/* Left Card: Chart & Dynamics */}
-                <div 
-                    data-aos="fade-right" 
-                    className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl lg:col-span-7 flex flex-col justify-between hover:shadow-2xl transition-all duration-500 group/card"
-                >
-                    <div>
-                        {/* Dinamik sarlavha va tablar qismi (Mobil uchun moslashtirilgan) */}
-                        <div className="flex flex-col gap-4 mb-6">
-                            <div className="flex flex-col">
-                                <span className="text-[11px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.dynamicsTitle')}</span>
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-black text-gray-950 dark:text-white mt-0.5 sm:mt-1">{t('statistic.analysisTitle')}</h3>
-                            </div>
-                            
-                            {/* Tab tugmalari - Kichik ekranlarda 3 ta ustunga bo'linadi */}
-                            <div className="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-gray-900 p-1 rounded-xl border border-gray-100 dark:border-gray-800 w-full">
-                                {Object.keys(dataConfig).map((key) => (
-                                    <button
-                                        key={key}
-                                        onClick={() => setActiveTab(key)}
-                                        className={`py-2 px-1 text-[11px] sm:text-xs font-bold rounded-lg transition-all duration-300 cursor-pointer active:scale-95 truncate text-center ${activeTab === key ? 'bg-white dark:bg-gray-800 shadow-sm text-red-600 dark:text-red-400 scale-[1.02]' : 'text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
-                                    >
-                                        {dataConfig[key].label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Grafik ko'rinishi */}
-                        <div className="w-full h-48 sm:h-56 bg-gradient-to-b from-red-50/20 dark:from-red-500/10 to-transparent rounded-2xl p-3 sm:p-4 flex items-end relative border border-dashed border-gray-100/70 dark:border-gray-800 mb-6 overflow-hidden transition-all duration-500 group-hover/card:border-red-200 dark:group-hover/card:border-red-900/40">
-                            <svg className="w-full h-full transition-all duration-700 ease-in-out" viewBox="0 0 400 150" preserveAspectRatio="none">
-                                <defs>
-                                    <linearGradient id="largeChartGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#dc2626" stopOpacity="0.3" />
-                                        <stop offset="100%" stopColor="#dc2626" stopOpacity="0.0" />
-                                    </linearGradient>
-                                </defs>
-                                <path d={current.gradD} fill="url(#largeChartGrad)" className="transition-all duration-700 ease-in-out" />
-                                <path d={current.pathD} stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="none" className="transition-all duration-700 ease-in-out" />
-                                {/* Pulsatsiyalanuvchi nuqta */}
-                                <circle cx={current.circleX} cy={current.circleY} r="6" fill="#dc2626" stroke="#ffffff" strokeWidth="2.5" className="transition-all duration-700 ease-in-out animate-pulse" />
-                            </svg>
-
-                            {/* Trend haqida yorliq */}
-                            <div className="absolute top-3 right-3 sm:top-6 sm:right-6 bg-gray-950 dark:bg-white text-white dark:text-gray-950 text-[10px] sm:text-[11px] font-bold px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105 border border-white/10 dark:border-gray-900/10">
-                                {current.trendText}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Pastki 3 ta oy kartochkalari (Statistikani tez almashtirish uchun) */}
-                    <div className="grid grid-cols-3 gap-2 sm:gap-3 border-t border-gray-100 dark:border-gray-800/80 pt-4 sm:pt-5 mt-2 text-center">
-                        {Object.keys(dataConfig).map((key) => {
-                            const item = dataConfig[key];
-                            const isActive = activeTab === key;
-                            return (
-                                <div 
-                                    key={key}
-                                    onClick={() => setActiveTab(key)} 
-                                    className={`p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 cursor-pointer active:scale-95 hover:border-red-400 hover:-translate-y-1 flex flex-col justify-between ${isActive ? 'bg-red-50/60 dark:bg-red-500/10 border-red-300 dark:border-red-900/60 shadow-md scale-[1.02]' : 'bg-gray-50/50 dark:bg-gray-900/50 border-gray-100 dark:border-gray-800'}`}
-                                >
-                                    <span className="text-[9px] sm:text-xs font-bold text-red-600 dark:text-red-400 block uppercase tracking-wider truncate">{item.label}</span>
-                                    <span className="text-xs sm:text-base font-extrabold text-gray-900 dark:text-white block my-1">{item.speaking}</span>
-                                    <span className="text-[9px] sm:text-[10px] font-semibold text-gray-500 dark:text-gray-400 block truncate">{item.errors}</span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* Right Card: Course Types & Progress Bars */}
-                <div 
-                    data-aos="fade-left" 
-                    className="bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl lg:col-span-5 flex flex-col justify-between hover:shadow-2xl transition-all duration-500 group/card"
-                >
-                    <div>
-                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.courseTypeTitle')}</span>
-                        <h3 className="text-xl sm:text-2xl font-black text-gray-950 dark:text-white mt-1 mb-5 sm:mb-6">{t('statistic.coursesTitle')}</h3>
-
-                        <div className="space-y-4 sm:space-y-6">
-                            {/* Kurslar ro'yxati va progress barlar */}
-                            {[
-                                { name: 'General English', progress: '42%', color: 'bg-red-600' },
-                                { name: 'IELTS Preparation', progress: '31%', color: 'bg-gray-950 dark:bg-white' },
-                                { name: 'Speaking Club', progress: '18%', color: 'bg-red-400' },
-                                { name: 'Grammar Intensive', progress: '9%', color: 'bg-gray-300 dark:bg-gray-700' }
-                            ].map((course, index) => (
-                                <div key={index} className="space-y-2 group p-2.5 sm:p-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 border border-transparent hover:border-gray-100 dark:hover:border-gray-800">
-                                    <div className="flex justify-between text-xs font-bold">
-                                        <span className="text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">{course.name}</span>
-                                        <span className="text-gray-900 dark:text-white">{course.progress} {t('statistic.studentsText')}</span>
-                                    </div>
-                                    <div className="w-full h-2.5 bg-gray-100 dark:bg-gray-900 rounded-full overflow-hidden p-0.5">
-                                        <div className={`${course.color} h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-110 shadow-sm`} style={{ width: course.progress }}></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Pastki yozuv */}
-                    <div className="w-full mt-6 sm:mt-8 py-3.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold rounded-xl border border-red-100 dark:border-red-900/30 text-xs flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm">
-                        {t('statistic.footerText')}
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    )
 }
 </file>
 
@@ -4905,66 +4933,6 @@ export default function Comments() {
 }
 </file>
 
-<file path="src/App.jsx">
-import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import Footer from "./components/Footer";
-import Main from "./components/Main";
-import Navbar from "./components/Navbar";
-import Stats from "./components/Stats";
-import Products from "./components/Products";
-import AboutUs from "./components/AboutUs";
-import Admin from "./components/Admin";
-import Register from "./components/Register";
-import Mentorstats from "./components/Mentorstats";
-import IeltsPracticeApp from "./components/IeltsPractiseApp";
-
-// Sahifa o'zgarganda tepaga chiqarish uchun yordamchi funksiya
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
-
-export default function App() {
-  return (
-    <div className="dark:bg-[#090623] bg-white min-h-screen relative transition-colors duration-200">
-      <Navbar />
-      {/* ScrollToTop shu yerga qo'shildi */}
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/stats" element={<Stats />} />
-        <Route path="/products" element={<Products/> } />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/enter" element={<Admin />} />
-        <Route path="/static" element={<Mentorstats />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-      <IeltsPracticeApp className="mt-10"/>
-      <Footer />
-
-      {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <a
-          href="tel:+998910829979"
-          className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 animate-bounce cursor-pointer border-2 border-white/20 dark:border-slate-800"
-          title="Qo'ng'iroq qilish"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  );
-}
-</file>
-
 <file path="src/components/AddComment.jsx">
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -5149,12 +5117,87 @@ export default function Footer() {
 }
 </file>
 
+<file path="src/App.jsx">
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Footer from "./components/Footer";
+import Main from "./components/Main";
+import Navbar from "./components/Navbar";
+import Stats from "./components/Stats";
+import Products from "./components/Products";
+import AboutUs from "./components/AboutUs";
+import Admin from "./components/Admin";
+import Register from "./components/Register";
+import Mentorstats from "./components/Mentorstats";
+import IeltsPracticeApp from "./components/IeltsPractiseApp";
+
+// Sahifa o'zgarganda tepaga chiqarish uchun yordamchi funksiya
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
+export default function App() {
+  return (
+    <div className="dark:bg-[#030712] bg-white min-h-screen relative transition-colors duration-200 overflow-hidden">
+      
+      {/* Chap yuqori burchakdagi binafsha neon nur */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
+      
+      {/* O'ng o'rta qismdagi ko'k neon nur (chuqurlik berish uchun) */}
+      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+      <div className="relative z-10">
+        <Navbar />
+        {/* ScrollToTop shu yerga qo'shildi */}
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/products" element={<Products/> } />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/enter" element={<Admin />} />
+          <Route path="/static" element={<Mentorstats />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        <IeltsPracticeApp className="mt-10"/>
+        <Footer />
+      </div>
+
+      {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <a
+          href="tel:+998910829979"
+          className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 animate-bounce cursor-pointer border-2 border-white/20 dark:border-slate-800"
+          title="Qo'ng'iroq qilish"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  );
+}
+</file>
+
 <file path="src/components/Navbar.jsx">
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaGlobe, FaEllipsisV, FaArrowRight } from 'react-icons/fa'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaEllipsisV, FaArrowRight, FaChevronDown } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+
+const LANGS = {
+    uz: { label: "O'zbekcha", short: 'UZ' },
+    ru: { label: 'Русский', short: 'RU' },
+    en: { label: 'English', short: 'EN' },
+}
 
 export default function Navbar() {
     const { t, i18n } = useTranslation()
@@ -5163,8 +5206,10 @@ export default function Navbar() {
     const [dark, isDark] = useState(true)
     const [menuOpen, setMenuOpen] = useState(false)
     const [dropdownOpen, setDropdownOpen] = useState(false)
+    const [langOpen, setLangOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const dropdownRef = useRef(null)
+    const langRef = useRef(null)
 
     const Theme = () => {
         const nextState = !dark
@@ -5199,9 +5244,12 @@ export default function Navbar() {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setDropdownOpen(false)
             }
+            if (langRef.current && !langRef.current.contains(event.target)) {
+                setLangOpen(false)
+            }
         }
         document.addEventListener('mousedown', handleClickOutside)
-        
+
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
             window.removeEventListener('scroll', handleScroll)
@@ -5210,9 +5258,9 @@ export default function Navbar() {
 
     const handleLanguageChange = (lang) => {
         i18n.changeLanguage(lang)
+        setLangOpen(false)
     }
 
-    // Tarjimalar i18next standartiga moslab kalitlar ko'rinishiga keltirildi
     const navItems = [
         { name: t('navbar.home', 'Bosh sahifa'), path: '/' },
         { name: t('navbar.stats', 'Statistika'), path: '/stats' },
@@ -5222,43 +5270,58 @@ export default function Navbar() {
         { name: t('navbar.register', 'Ro`yxatdan o`tish'), path: '/register' },
     ]
 
-    const LanguageSelector = () => (
-        <div className="flex items-center gap-1 bg-white/60 dark:bg-gray-900/60 p-1.5 rounded-2xl border border-gray-200/60 dark:border-gray-800/80 backdrop-blur-md shadow-sm">
-            <div className="pl-1.5 text-gray-400 dark:text-gray-500 flex items-center">
-                <FaGlobe className="w-3.5 h-3.5" />
-            </div>
-            {['en', 'uz', 'ru'].map((lang) => (
-                <button
-                    key={lang}
-                    onClick={() => handleLanguageChange(lang)}
-                    className={`relative px-2.5 py-1 text-[11px] font-black rounded-xl transition-colors duration-300 cursor-pointer ${
-                        i18n.language === lang
-                            ? 'text-white'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                >
-                    {i18n.language === lang && (
-                        <motion.div
-                            layoutId="activeLang"
-                            className="absolute inset-0 bg-gradient-to-r from-red-600 to-rose-600 rounded-xl shadow-md shadow-red-500/25 z-[-1]"
-                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                    )}
-                    {lang.toUpperCase()}
-                </button>
-            ))}
+    const currentLang = LANGS[i18n.language]?.short ? i18n.language : 'en'
+
+    // Yig'iladigan til tanlagich: bitta tugma, bosilganda pastga ochiladi
+    const LanguageSelector = ({ align = 'right' }) => (
+        <div className="relative" ref={langRef}>
+            <motion.button
+                whileTap={{ scale: 0.94 }}
+                onClick={() => setLangOpen((v) => !v)}
+                className="flex items-center gap-1.5 pl-3 pr-2 h-10 rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 border border-gray-200/60 dark:border-gray-800/80 text-gray-700 dark:text-gray-200 text-xs font-black cursor-pointer shadow-sm"
+            >
+                <span className="tracking-wide">{LANGS[currentLang].short}</span>
+                <FaChevronDown className={`w-2.5 h-2.5 text-gray-400 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
+            </motion.button>
+
+            <AnimatePresence>
+                {langOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                        transition={{ duration: 0.15 }}
+                        className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} top-full mt-2 w-36 bg-white/95 dark:bg-gray-950/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-1.5 z-[60] flex flex-col gap-0.5`}
+                    >
+                        {Object.entries(LANGS).map(([code, { label, short }]) => (
+                            <button
+                                key={code}
+                                onClick={() => handleLanguageChange(code)}
+                                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                                    currentLang === code
+                                        ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white'
+                                        : 'text-gray-600 dark:text-gray-300 hover:bg-red-500/10 hover:text-red-600'
+                                }`}
+                            >
+                                <span>{label}</span>
+                                <span className="opacity-70 text-[10px]">{short}</span>
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 
     return (
         <div className="fixed top-4 left-0 w-full z-50 font-sans select-none px-4 pointer-events-none">
-            <motion.header 
+            <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className={`max-w-6xl mx-auto transition-all duration-500 rounded-3xl pointer-events-auto ${
-                    scrolled 
-                        ? 'bg-white/85 dark:bg-gray-950/85 backdrop-blur-2xl border border-white/40 dark:border-gray-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] py-2' 
+                    scrolled
+                        ? 'bg-white/85 dark:bg-gray-950/85 backdrop-blur-2xl border border-white/40 dark:border-gray-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] py-2'
                         : 'bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border border-white/20 dark:border-gray-800/40 shadow-lg py-3'
                 }`}
             >
@@ -5275,7 +5338,7 @@ export default function Navbar() {
                         </motion.button>
 
                         <Link to="/" className="flex items-center gap-2.5 group">
-                            <motion.div 
+                            <motion.div
                                 whileHover={{ rotate: 5, scale: 1.05 }}
                                 className="relative shrink-0"
                             >
@@ -5324,10 +5387,10 @@ export default function Navbar() {
                         </div>
 
                         {/* Tema tugmasi */}
-                        <motion.button 
+                        <motion.button
                             whileTap={{ scale: 0.9, rotate: 180 }}
                             transition={{ duration: 0.3 }}
-                            onClick={Theme} 
+                            onClick={Theme}
                             className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-yellow-400 shadow-sm cursor-pointer shrink-0"
                         >
                             {dark ? <FaRegSun className="w-4 h-4" /> : <FaRegMoon className="w-4 h-4 text-gray-800" />}
@@ -5336,8 +5399,8 @@ export default function Navbar() {
                         {/* Boshqaruv tugmasi (Desktop) */}
                         <div className="hidden md:block">
                             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
-                                <Link 
-                                    to="/enter" 
+                                <Link
+                                    to="/enter"
                                     className="group relative inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold shadow-lg shadow-red-500/25 overflow-hidden whitespace-nowrap"
                                 >
                                     <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
@@ -5345,6 +5408,11 @@ export default function Navbar() {
                                     <FaArrowRight className="relative w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </motion.div>
+                        </div>
+
+                        {/* Tablet oralig'i uchun til tugmasi (lg dan kichik, md dan katta) */}
+                        <div className="hidden md:block lg:hidden">
+                            <LanguageSelector />
                         </div>
 
                         {/* Mobil uchun Dropdown (3 ta nuqta) */}
@@ -5359,7 +5427,7 @@ export default function Navbar() {
 
                             <AnimatePresence>
                                 {dropdownOpen && (
-                                    <motion.div 
+                                    <motion.div
                                         initial={{ opacity: 0, scale: 0.95, y: 10 }}
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -5373,8 +5441,8 @@ export default function Navbar() {
                                         >
                                             {t('navbar.control', 'Boshqaruv')}
                                         </Link>
-                                        <div className="flex justify-center pt-2 border-t border-gray-100 dark:border-gray-800">
-                                            <LanguageSelector />
+                                        <div className="flex justify-center pt-1 border-t border-gray-100 dark:border-gray-800">
+                                            <LanguageSelector align="left" />
                                         </div>
                                     </motion.div>
                                 )}
@@ -5387,7 +5455,7 @@ export default function Navbar() {
                 {/* Mobil uchun ochiladigan animatsion menyu */}
                 <AnimatePresence>
                     {menuOpen && (
-                        <motion.div 
+                        <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
@@ -5396,13 +5464,13 @@ export default function Navbar() {
                         >
                             <nav className="flex flex-col p-4 gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 {navItems.map((item) => (
-                                    <Link 
+                                    <Link
                                         key={item.path}
-                                        to={item.path} 
-                                        onClick={() => setMenuOpen(false)} 
+                                        to={item.path}
+                                        onClick={() => setMenuOpen(false)}
                                         className={`py-2.5 px-4 rounded-xl transition ${
-                                            location.pathname === item.path 
-                                                ? 'bg-red-500/10 text-red-600 font-bold' 
+                                            location.pathname === item.path
+                                                ? 'bg-red-500/10 text-red-600 font-bold'
                                                 : 'hover:bg-red-500/10 hover:text-red-600'
                                         }`}
                                     >
@@ -5410,7 +5478,7 @@ export default function Navbar() {
                                     </Link>
                                 ))}
                                 <div className="pt-3 border-t border-gray-200/40 dark:border-gray-800/40 flex justify-center">
-                                    <LanguageSelector />
+                                    <LanguageSelector align="left" />
                                 </div>
                             </nav>
                         </motion.div>
