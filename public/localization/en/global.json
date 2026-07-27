@@ -354,6 +354,16 @@
         "resultLabel": "Your Score",
         "checkBtn": "Check",
         "correctAnswerLabel": "Correct answer",
-        "idealAnswerLabel": "Sample answer"
+        "idealAnswerLabel": "Sample answer",
+        "grammarMenuDesc": "Tests on grammar rules",
+        "readingMenuDesc": "Read the text and answer the questions",
+        "speakingMenuDesc": "Sample ideal spoken answers",
+        "readyTitle": "Ready to start the test?",
+        "readyDesc": "Once you press Start, a 20-minute timer will begin.",
+        "startTestBtn": "Start",
+        "timeLeftLabel": "Time left:",
+        "viewResultBtn": "View Result",
+        "resultsReadyToast": "Results are ready!",
+        "timeUpToast": "Time's up!"
     }
 }

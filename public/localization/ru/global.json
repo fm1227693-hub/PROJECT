@@ -355,6 +355,16 @@
         "resultLabel": "Ваш результат",
         "checkBtn": "Проверить",
         "correctAnswerLabel": "Правильный ответ",
-        "idealAnswerLabel": "Образцовый ответ"
+        "idealAnswerLabel": "Образцовый ответ",
+        "grammarMenuDesc": "Тесты по грамматическим правилам",
+        "readingMenuDesc": "Прочитайте текст и ответьте на вопросы",
+        "speakingMenuDesc": "Образцы идеальных устных ответов",
+        "readyTitle": "Готовы начать тест?",
+        "readyDesc": "После нажатия кнопки Старт запустится 20-минутный таймер.",
+        "startTestBtn": "Начать",
+        "timeLeftLabel": "Оставшееся время:",
+        "viewResultBtn": "Посмотреть результат",
+        "resultsReadyToast": "Результаты готовы!",
+        "timeUpToast": "Время истекло!"
     }
 }

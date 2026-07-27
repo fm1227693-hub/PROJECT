@@ -321,12 +321,43 @@ export default defineConfig({
 ]
 </file>
 
+<file path="src/components/Sec5.jsx">
+import React from 'react'
+import ResultsSlider from './ResultsSlider'
+
+export default function Sec5() {
+  return (
+    <div className=''>
+        <ResultsSlider/>
+    </div>
+  )
+}
+</file>
+
+<file path="src/main.jsx">
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { BrowserRouter } from 'react-router-dom'
+import '../i18n.js'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>,
+)
+</file>
+
 <file path="src/components/IeltsPractiseApp.jsx">
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { gsap } from "gsap";
 
 /* ---------------------------------------------------------
-   MA'LUMOTLAR BAZASI
+   MA'LUMOTLAR BAZASI (O'ZGARTIRILMADI)
    Har bir daraja (5,6,7,8,9) uchun Reading va Speaking
    endi 3 tadan QISM (Part 1, Part 2, Part 3) bor.
    JAMI: 5 daraja x 3 qism = 15 ta noyob Reading mavzusi
@@ -913,66 +944,83 @@ const speakingByLevel = {
 };
 
 /* ---------------------------------------------------------
-   YORDAMCHI KICHIK KOMPONENTLAR
+   YORDAMCHI KICHIK KOMPONENTLAR (GSAP Effects bilan boyitilgan)
 --------------------------------------------------------- */
 
 function BackButton({ onClick }) {
   const { t } = useTranslation();
+  const btnRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (gsap.effects.pulse) {
+      gsap.effects.pulse(btnRef.current, { scale: 1.05, duration: 0.3 });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (gsap.effects.pulse) {
+      gsap.effects.pulse(btnRef.current, { scale: 1, duration: 0.3 });
+    }
+  };
+
   return (
     <button
+      ref={btnRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      className="group mb-4 inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/80 px-4 py-1.5 text-sm font-medium text-slate-600 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-x-0.5 hover:border-indigo-400 hover:text-indigo-700 hover:shadow-md active:scale-95 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400 dark:hover:shadow-sky-900/30"
+      className="group mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-white/70 px-5 py-2 text-sm font-semibold text-indigo-600 shadow-lg shadow-indigo-500/5 backdrop-blur-xl transition-all hover:bg-indigo-600 hover:text-white dark:border-sky-500/30 dark:bg-slate-900/60 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-slate-950"
     >
-      <span className="transition-transform duration-300 group-hover:-translate-x-0.5">←</span>
+      <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>
       <span>{t("ieltsEngine.backBtn", "Orqaga").replace("← ", "")}</span>
     </button>
   );
 }
 
 function Shell({ children }) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (containerRef.current && gsap.effects.fadeIn) {
+      gsap.effects.fadeIn(containerRef.current, { duration: 0.8, y: 20 });
+    }
+  }, []);
+
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-8 transition-colors duration-500 dark:bg-gradient-to-b dark:from-[#05070f] dark:via-[#070b16] dark:to-[#03040a]">
-      {/* Dark-mode ambient glow orbs */}
-      <div className="pointer-events-none absolute -top-24 -left-24 hidden h-72 w-72 rounded-full bg-indigo-600/20 blur-3xl dark:block animate-[pulse_6s_ease-in-out_infinite]" />
-      <div className="pointer-events-none absolute top-1/3 -right-24 hidden h-80 w-80 rounded-full bg-sky-500/10 blur-3xl dark:block animate-[pulse_8s_ease-in-out_infinite]" />
-      <div className="pointer-events-none absolute bottom-0 left-1/4 hidden h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl dark:block animate-[pulse_10s_ease-in-out_infinite]" />
+    <div ref={containerRef} className="relative min-h-screen w-full overflow-hidden bg-slate-950 px-4 py-12 text-slate-100 selection:bg-indigo-500 selection:text-white">
+      {/* Zamonaviy Neon Glow Orbs */}
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-indigo-600/20 blur-[120px]" />
+      <div className="pointer-events-none absolute top-1/2 -right-32 h-96 w-96 rounded-full bg-sky-500/20 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 left-1/3 h-96 w-96 rounded-full bg-emerald-500/15 blur-[120px]" />
 
-      <div className="relative mx-auto max-w-2xl animate-[fadeIn_0.5s_ease-out]">{children}</div>
-
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popIn {
-          0% { opacity: 0; transform: scale(0.94) translateY(6px); }
-          100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-        .animate-popIn { animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
-      `}</style>
+      <div className="relative mx-auto max-w-3xl">{children}</div>
     </div>
   );
 }
 
 function Header({ title, subtitle }) {
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    if (headerRef.current && gsap.effects.fadeIn) {
+      gsap.effects.fadeIn(headerRef.current, { duration: 0.6, y: -10 });
+    }
+  }, [title]);
+
   return (
-    <div className="mb-6 text-center animate-[fadeIn_0.6s_ease-out]">
-      <h1 className="bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-2xl font-bold tracking-tight text-transparent dark:from-white dark:via-sky-100 dark:to-indigo-300 dark:bg-clip-text dark:text-transparent">
+    <div ref={headerRef} className="mb-8 text-center">
+      <h1 className="bg-gradient-to-r from-white via-indigo-200 to-sky-400 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl">
         {title}
       </h1>
       {subtitle && (
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400/80">{subtitle}</p>
+        <p className="mt-2 text-sm text-slate-400 sm:text-base">{subtitle}</p>
       )}
     </div>
   );
 }
 
 /* ---------------------------------------------------------
-   ASOSIY ILOVA
+   ASOSIY ILOVA (GSAP Effects bilan boyitilgan)
 --------------------------------------------------------- */
 
 export default function IeltsPracticeApp() {
@@ -983,9 +1031,75 @@ export default function IeltsPracticeApp() {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
+  // Yangi qo'shilgan state'lar (Start, Timer, Toast)
+  const [testStarted, setTestStarted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(1200); // 20 minut = 1200 soniya
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const heroRef = useRef(null);
+
+  // Taymer logikasi
+  useEffect(() => {
+    let timer;
+    if (testStarted && !submitted && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            setSubmitted(true);
+            setToastMessage("Vaqt tugadi!");
+            setTimeout(() => setToastMessage(null), 4000);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [testStarted, submitted, timeLeft]);
+
+  // GSAP Effects ni ro'yxatdan o'tkazish
+  useEffect(() => {
+    if (!gsap.effects.fadeIn) {
+      gsap.registerEffect({
+        name: "fadeIn",
+        effect: (targets, config) => {
+          return gsap.from(targets, {
+            duration: config.duration || 0.6,
+            opacity: 0,
+            y: config.y || 15,
+            ease: "power3.out",
+          });
+        },
+        defaults: { duration: 0.6 },
+      });
+    }
+
+    if (!gsap.effects.pulse) {
+      gsap.registerEffect({
+        name: "pulse",
+        effect: (targets, config) => {
+          return gsap.to(targets, {
+            scale: config.scale || 1.03,
+            duration: config.duration || 0.3,
+            ease: "power2.out",
+          });
+        },
+        defaults: { duration: 0.3, scale: 1.03 },
+      });
+    }
+
+    if (heroRef.current && gsap.effects.fadeIn) {
+      gsap.effects.fadeIn(heroRef.current, { duration: 0.9, y: 30 });
+    }
+  }, [screen]);
+
   const resetTest = () => {
     setAnswers({});
     setSubmitted(false);
+    setTestStarted(false);
+    setTimeLeft(1200);
+    setToastMessage(null);
   };
 
   const goto = (s) => {
@@ -993,25 +1107,40 @@ export default function IeltsPracticeApp() {
     setScreen(s);
   };
 
+  const handleCardHover = (e, enter) => {
+    if (gsap.effects.pulse) {
+      gsap.effects.pulse(e.currentTarget, { scale: enter ? 1.02 : 1 });
+    }
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
+
   /* ---------------- HOME ---------------- */
   if (screen === "home") {
     return (
-      <div className="pt-25">
+      <div className="pt-12">
         <Shell>
-          <div className="flex min-h-[70vh] flex-col items-center justify-center text-center">
-            <div className="mb-3 animate-[popIn_0.6s_cubic-bezier(0.16,1,0.3,1)] text-5xl drop-shadow-sm dark:drop-shadow-[0_0_18px_rgba(56,189,248,0.35)]">📘</div>
-            <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:bg-gradient-to-r dark:from-white dark:to-sky-300 dark:bg-clip-text dark:text-transparent">
+          <div ref={heroRef} className="flex min-h-[75vh] flex-col items-center justify-center text-center">
+            <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-indigo-500/20 to-sky-500/20 border border-indigo-500/30 text-4xl shadow-2xl shadow-indigo-500/10 backdrop-blur-xl">
+              📘
+            </div>
+            <h1 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
               {t("ieltsEngine.heroTitle", "IELTS Testlar")}
             </h1>
-            <p className="mb-8 max-w-sm text-slate-500 dark:text-slate-400">
+            <p className="mb-10 max-w-md text-base text-slate-400 sm:text-lg">
               {t("ieltsEngine.heroSub", "Reading, Grammar va Speaking bo'yicha darajangizga mos testlarni yeching. Har bir daraja va har bir qism (Part) — o'zining noyob mavzusi.")}
             </p>
             <button
+              onMouseEnter={(e) => handleCardHover(e, true)}
+              onMouseLeave={(e) => handleCardHover(e, false)}
               onClick={() => goto("levels")}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-rose-500/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-rose-500/40 active:scale-95 dark:from-rose-500 dark:to-red-600 dark:shadow-red-900/50"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-indigo-600 bg-[length:200%_auto] px-10 py-5 text-lg font-bold text-white shadow-xl shadow-indigo-500/25 transition-all duration-500 hover:bg-[position:right_center]"
             >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              <span className="relative">{t("ieltsEngine.startBtn", "Test yechish")}</span>
+              <span className="relative z-10">{t("ieltsEngine.startBtn", "Test yechish")}</span>
             </button>
           </div>
         </Shell>
@@ -1022,25 +1151,26 @@ export default function IeltsPracticeApp() {
   /* ---------------- LEVELS ---------------- */
   if (screen === "levels") {
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
           <BackButton onClick={() => goto("home")} />
           <Header title={t("ieltsEngine.levelSelectionTitle", "Darajani tanlang")} subtitle={t("ieltsEngine.levelChoice", "Qaysi IELTS bandiga mos test yechmoqchisiz?")} />
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {LEVELS.map((l, idx) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {LEVELS.map((l) => (
               <button
                 key={l}
-                style={{ animationDelay: `${idx * 60}ms` }}
+                onMouseEnter={(e) => handleCardHover(e, true)}
+                onMouseLeave={(e) => handleCardHover(e, false)}
                 onClick={() => {
                   setLevel(l);
                   goto("skills");
                 }}
-                className="group animate-popIn rounded-2xl border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 active:scale-95 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-none dark:backdrop-blur hover:dark:border-sky-500/60 hover:dark:bg-slate-900 hover:dark:shadow-[0_0_25px_-5px_rgba(56,189,248,0.35)]"
+                className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-left shadow-xl backdrop-blur-xl transition-all hover:border-sky-500/50 hover:bg-slate-900/90 hover:shadow-sky-500/10"
               >
-                <div className="text-xs font-medium uppercase tracking-wide text-indigo-500 transition-colors dark:text-sky-400">
+                <div className="text-xs font-bold uppercase tracking-widest text-indigo-400">
                   {t("ieltsEngine.bandLevel", "IELTS")}
                 </div>
-                <div className="text-2xl font-bold text-slate-900 transition-colors dark:text-white dark:group-hover:text-sky-300">
+                <div className="mt-1 text-3xl font-black text-white transition-colors group-hover:text-sky-300">
                   {l}.0
                 </div>
               </button>
@@ -1054,30 +1184,27 @@ export default function IeltsPracticeApp() {
   /* ---------------- SKILLS ---------------- */
   if (screen === "skills") {
     const options = [
-      { key: "reading", label: `📖 ${t("ieltsEngine.readingSkill", "Reading")}`, to: "readingParts", accent: "indigo" },
-      { key: "speaking", label: `🗣️ ${t("ieltsEngine.speakingSkill", "Speaking")}`, to: "speakingParts", accent: "emerald" },
-      { key: "grammar", label: `✏️ ${t("ieltsEngine.grammarSkill", "Grammar")}`, to: "grammarTest", meta: t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level), accent: "rose" },
+      { key: "reading", label: `📖 ${t("ieltsEngine.readingSkill", "Reading")}`, to: "readingParts", desc: "Matnni o'qing va savollarga javob bering" },
+      { key: "speaking", label: `🗣️ ${t("ieltsEngine.speakingSkill", "Speaking")}`, to: "speakingParts", desc: "Ideal og'zaki javoblar namunasi" },
+      { key: "grammar", label: `✏️ ${t("ieltsEngine.grammarSkill", "Grammar")}`, to: "grammarTest", meta: t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level), desc: "Grammatik qoidalar bo'yicha testlar" },
     ];
-    const accentClasses = {
-      indigo: "hover:border-indigo-400 hover:shadow-indigo-100 dark:hover:border-sky-500/60 dark:hover:shadow-[0_0_25px_-5px_rgba(56,189,248,0.35)]",
-      emerald: "hover:border-emerald-400 hover:shadow-emerald-100 dark:hover:border-emerald-500/60 dark:hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.35)]",
-      rose: "hover:border-rose-400 hover:shadow-rose-100 dark:hover:border-rose-500/60 dark:hover:shadow-[0_0_25px_-5px_rgba(244,63,94,0.35)]",
-    };
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
           <BackButton onClick={() => goto("levels")} />
           <Header title={`IELTS ${level}.0`} subtitle={t("ieltsEngine.skillSelectionTitle", "Bo'limni tanlang")} />
-          <div className="grid grid-cols-1 gap-3">
-            {options.map((o, idx) => (
+          <div className="grid grid-cols-1 gap-4">
+            {options.map((o) => (
               <button
                 key={o.key}
-                style={{ animationDelay: `${idx * 70}ms` }}
+                onMouseEnter={(e) => handleCardHover(e, true)}
+                onMouseLeave={(e) => handleCardHover(e, false)}
                 onClick={() => goto(o.to)}
-                className={`animate-popIn rounded-2xl border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-none dark:backdrop-blur ${accentClasses[o.accent]}`}
+                className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-left shadow-xl backdrop-blur-xl transition-all hover:border-indigo-500/50 hover:bg-slate-900/90 hover:shadow-indigo-500/10"
               >
-                <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">{o.label}</div>
-                {o.meta && <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{o.meta}</div>}
+                <div className="text-xl font-bold text-white transition-colors group-hover:text-indigo-300">{o.label}</div>
+                <div className="mt-1 text-sm text-slate-400">{o.desc}</div>
+                {o.meta && <div className="mt-2 text-xs font-semibold text-indigo-400">{o.meta}</div>}
               </button>
             ))}
           </div>
@@ -1089,22 +1216,24 @@ export default function IeltsPracticeApp() {
   /* ---------------- READING: PARTLARNI TANLASH ---------------- */
   if (screen === "readingParts") {
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
           <BackButton onClick={() => goto("skills")} />
           <Header title={`${t("ieltsEngine.readingSkill", "Reading")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.readingDesc", "Qaysi qismni (Part) yechmoqchisiz?")} />
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {PARTS.map((p) => (
               <button
                 key={p}
+                onMouseEnter={(e) => handleCardHover(e, true)}
+                onMouseLeave={(e) => handleCardHover(e, false)}
                 onClick={() => {
                   setPart(p);
                   goto("readingTest");
                 }}
-                className="rounded-2xl border border-slate-200 bg-white px-6 py-6 text-center shadow-sm transition hover:border-indigo-400 hover:shadow-md"
+                className="group rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-center shadow-xl backdrop-blur-xl transition-all hover:border-sky-500/50 hover:bg-slate-900/90"
               >
-                <div className="text-lg font-bold text-slate-900">Part {p}</div>
-                <div className="mt-1 text-xs text-slate-500">{readingByLevel[level]?.[p]?.title}</div>
+                <div className="text-xl font-black text-white group-hover:text-sky-300">Part {p}</div>
+                <div className="mt-2 text-xs font-medium text-slate-400">{readingByLevel[level]?.[p]?.title}</div>
               </button>
             ))}
           </div>
@@ -1116,22 +1245,24 @@ export default function IeltsPracticeApp() {
   /* ---------------- SPEAKING: PARTLARNI TANLASH ---------------- */
   if (screen === "speakingParts") {
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
           <BackButton onClick={() => goto("skills")} />
           <Header title={`${t("ieltsEngine.speakingSkill", "Speaking")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.speakingDesc", "Qaysi qismni (Part) ko'rmoqchisiz?")} />
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {PARTS.map((p) => (
               <button
                 key={p}
+                onMouseEnter={(e) => handleCardHover(e, true)}
+                onMouseLeave={(e) => handleCardHover(e, false)}
                 onClick={() => {
                   setPart(p);
                   goto("speakingContent");
                 }}
-                className="rounded-2xl border border-slate-200 bg-white px-6 py-6 text-center shadow-sm transition hover:border-indigo-400 hover:shadow-md"
+                className="group rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-center shadow-xl backdrop-blur-xl transition-all hover:border-emerald-500/50 hover:bg-slate-900/90"
               >
-                <div className="text-lg font-bold text-slate-900">Part {p}</div>
-                <div className="mt-1 text-xs text-slate-500">{speakingByLevel[level]?.[p]?.title}</div>
+                <div className="text-xl font-black text-white group-hover:text-emerald-300">Part {p}</div>
+                <div className="mt-2 text-xs font-medium text-slate-400">{speakingByLevel[level]?.[p]?.title}</div>
               </button>
             ))}
           </div>
@@ -1153,85 +1284,131 @@ export default function IeltsPracticeApp() {
     }
 
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
-          <BackButton onClick={() => goto("readingParts")} />
-          <Header title={topic.title} subtitle={`${t("ieltsEngine.readingSkill", "Reading")} Part ${part} — IELTS ${level}.0`} />
-
-          <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-relaxed text-slate-700 shadow-sm">
-            {topic.passage}
-          </div>
-
-          {submitted && (
-            <div className="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
-              <div className="text-sm text-emerald-700">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
-              <div className="text-3xl font-bold text-emerald-700">
-                {score} / {questions.length}
-              </div>
+          {/* Toast Notification */}
+          {toastMessage && (
+            <div className="fixed top-6 left-1/2 z-50 -translate-x-1/2 rounded-2xl bg-rose-600 px-6 py-3 text-sm font-bold text-white shadow-2xl animate-bounce">
+              {toastMessage}
             </div>
           )}
 
-          <div className="space-y-4">
-            {questions.map((q, i) => {
-              const opts = q.type === "tfng" ? TFNG : q.options;
-              const isCorrect = submitted && answers[i] === q.answer;
-              const isWrong = submitted && answers[i] && answers[i] !== q.answer;
-              return (
-                <div
-                  key={i}
-                  className={`rounded-2xl border bg-white p-4 shadow-sm ${submitted ? (isCorrect ? "border-emerald-300" : isWrong ? "border-rose-300" : "border-slate-200") : "border-slate-200"
-                    }`}
-                >
-                  <div className="mb-2 text-sm font-medium text-slate-800">
-                    {i + 1}. {q.text}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {opts.map((opt) => {
-                      const selected = answers[i] === opt;
-                      return (
-                        <button
-                          key={opt}
-                          disabled={submitted}
-                          onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
-                          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${selected
-                            ? submitted
-                              ? opt === q.answer
-                                ? "border-emerald-500 bg-emerald-500 text-white"
-                                : "border-rose-500 bg-rose-500 text-white"
-                              : "border-indigo-500 bg-indigo-500 text-white"
-                            : "border-slate-300 bg-slate-50 text-slate-600 hover:border-indigo-300"
-                            }`}
-                        >
-                          {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {submitted && isWrong && (
-                    <div className="mt-2 text-xs text-slate-500">{t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}</div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          <BackButton onClick={() => goto("readingParts")} />
+          <Header title={topic.title} subtitle={`${t("ieltsEngine.readingSkill", "Reading")} Part ${part} — IELTS ${level}.0`} />
 
-          <div className="mt-6 flex justify-center">
-            {!submitted ? (
+          {/* Start tugmasi va Taymer paneli */}
+          {!testStarted ? (
+            <div className="mb-8 rounded-3xl border border-indigo-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
+              <h2 className="mb-4 text-2xl font-bold text-white">Testni boshlashga tayyormisiz?</h2>
+              <p className="mb-6 text-sm text-slate-400">Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.</p>
               <button
-                onClick={() => setSubmitted(true)}
-                className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
+                onClick={() => setTestStarted(true)}
+                className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
               >
-                {t("ieltsEngine.checkBtn", "Tekshirish")}
+                Start
               </button>
-            ) : (
-              <button
-                onClick={() => resetTest()}
-                className="rounded-xl bg-slate-800 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-slate-900"
-              >
-                {t("ieltsEngine.resetBtn", "Qayta yechish")}
-              </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="mb-6 flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-4 backdrop-blur-xl">
+              <span className="text-sm font-semibold text-slate-300">Qolgan vaqt:</span>
+              <span className={`text-lg font-black ${timeLeft < 60 ? "text-rose-500 animate-pulse" : "text-sky-400"}`}>
+                {formatTime(timeLeft)}
+              </span>
+            </div>
+          )}
+
+          {testStarted && (
+            <>
+              <div className="mb-8 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-base leading-relaxed text-slate-300 shadow-xl backdrop-blur-xl">
+                {topic.passage}
+              </div>
+
+              {submitted && (
+                <div className="mb-8 rounded-3xl border border-emerald-500/30 bg-emerald-950/40 p-6 text-center shadow-xl backdrop-blur-xl">
+                  <div className="text-sm font-semibold uppercase tracking-wider text-emerald-400">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
+                  <div className="mt-1 text-4xl font-black text-emerald-300">
+                    {score} / {questions.length}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-6">
+                {questions.map((q, i) => {
+                  const opts = q.type === "tfng" ? TFNG : q.options;
+                  const isCorrect = submitted && answers[i] === q.answer;
+                  const isWrong = submitted && answers[i] && answers[i] !== q.answer;
+                  return (
+                    <div
+                      key={i}
+                      className={`rounded-3xl border bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl transition-colors ${
+                        submitted
+                          ? isCorrect
+                            ? "border-emerald-500/50 bg-emerald-950/20"
+                            : isWrong
+                              ? "border-rose-500/50 bg-rose-950/20"
+                              : "border-slate-800"
+                          : "border-slate-800"
+                      }`}
+                    >
+                      <div className="mb-4 text-sm font-bold text-white">
+                        {i + 1}. {q.text}
+                      </div>
+                      <div className="flex flex-wrap gap-2.5">
+                        {opts.map((opt) => {
+                          const selected = answers[i] === opt;
+                          return (
+                            <button
+                              key={opt}
+                              disabled={submitted || timeLeft === 0}
+                              onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
+                              className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all ${
+                                selected
+                                  ? submitted
+                                    ? opt === q.answer
+                                      ? "border-emerald-500 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20"
+                                      : "border-rose-500 bg-rose-500 text-white shadow-lg shadow-rose-500/20"
+                                    : "border-indigo-500 bg-indigo-500 text-white shadow-lg shadow-indigo-500/20"
+                                  : "border-slate-800 bg-slate-800/50 text-slate-300 hover:border-slate-700 hover:bg-slate-800"
+                              }`}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {submitted && isWrong && (
+                        <div className="mt-3 text-xs font-medium text-rose-400">
+                          {t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-8 flex justify-center pb-12">
+                {!submitted ? (
+                  <button
+                    onClick={() => {
+                      setSubmitted(true);
+                      setToastMessage("Natijalar chiqdi!");
+                      setTimeout(() => setToastMessage(null), 3000);
+                    }}
+                    className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-10 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+                  >
+                    Natijani ko'rish
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => resetTest()}
+                    className="rounded-2xl bg-slate-800 px-10 py-4 font-bold text-white shadow-xl transition-all hover:bg-slate-700 active:scale-95"
+                  >
+                    {t("ieltsEngine.resetBtn", "Qayta yechish")}
+                  </button>
+                )}
+              </div>
+            </>
+          )}
         </Shell>
       </div>
     );
@@ -1247,80 +1424,126 @@ export default function IeltsPracticeApp() {
       });
     }
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
-          <BackButton onClick={() => goto("skills")} />
-          <Header title={`${t("ieltsEngine.grammarSkill", "Grammar")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level)} />
-
-          {submitted && (
-            <div className="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
-              <div className="text-sm text-emerald-700">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
-              <div className="text-3xl font-bold text-emerald-700">
-                {score} / {questions.length}
-              </div>
+          {/* Toast Notification */}
+          {toastMessage && (
+            <div className="fixed top-6 left-1/2 z-50 -translate-x-1/2 rounded-2xl bg-rose-600 px-6 py-3 text-sm font-bold text-white shadow-2xl animate-bounce">
+              {toastMessage}
             </div>
           )}
 
-          <div className="space-y-4">
-            {questions.map((q, i) => {
-              const isCorrect = submitted && answers[i] === q.answer;
-              const isWrong = submitted && answers[i] && answers[i] !== q.answer;
-              return (
-                <div
-                  key={i}
-                  className={`rounded-2xl border bg-white p-4 shadow-sm ${submitted ? (isCorrect ? "border-emerald-300" : isWrong ? "border-rose-300" : "border-slate-200") : "border-slate-200"
-                    }`}
-                >
-                  <div className="mb-2 text-sm font-medium text-slate-800">
-                    {i + 1}. {q.text}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {q.options.map((opt) => {
-                      const selected = answers[i] === opt;
-                      return (
-                        <button
-                          key={opt}
-                          disabled={submitted}
-                          onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
-                          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${selected
-                            ? submitted
-                              ? opt === q.answer
-                                ? "border-emerald-500 bg-emerald-500 text-white"
-                                : "border-rose-500 bg-rose-500 text-white"
-                              : "border-indigo-500 bg-indigo-500 text-white"
-                            : "border-slate-300 bg-slate-50 text-slate-600 hover:border-indigo-300"
-                            }`}
-                        >
-                          {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {submitted && isWrong && (
-                    <div className="mt-2 text-xs text-slate-500">{t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}</div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          <BackButton onClick={() => goto("skills")} />
+          <Header title={`${t("ieltsEngine.grammarSkill", "Grammar")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level)} />
 
-          <div className="mt-6 flex justify-center">
-            {!submitted ? (
+          {/* Start tugmasi va Taymer paneli */}
+          {!testStarted ? (
+            <div className="mb-8 rounded-3xl border border-indigo-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
+              <h2 className="mb-4 text-2xl font-bold text-white">Testni boshlashga tayyormisiz?</h2>
+              <p className="mb-6 text-sm text-slate-400">Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.</p>
               <button
-                onClick={() => setSubmitted(true)}
-                className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
+                onClick={() => setTestStarted(true)}
+                className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
               >
-                {t("ieltsEngine.checkBtn", "Tekshirish")}
+                Start
               </button>
-            ) : (
-              <button
-                onClick={() => resetTest()}
-                className="rounded-xl bg-slate-800 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-slate-900"
-              >
-                {t("ieltsEngine.resetBtn", "Qayta yechish")}
-              </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="mb-6 flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-4 backdrop-blur-xl">
+              <span className="text-sm font-semibold text-slate-300">Qolgan vaqt:</span>
+              <span className={`text-lg font-black ${timeLeft < 60 ? "text-rose-500 animate-pulse" : "text-sky-400"}`}>
+                {formatTime(timeLeft)}
+              </span>
+            </div>
+          )}
+
+          {testStarted && (
+            <>
+              {submitted && (
+                <div className="mb-8 rounded-3xl border border-emerald-500/30 bg-emerald-950/40 p-6 text-center shadow-xl backdrop-blur-xl">
+                  <div className="text-sm font-semibold uppercase tracking-wider text-emerald-400">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
+                  <div className="mt-1 text-4xl font-black text-emerald-300">
+                    {score} / {questions.length}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-6">
+                {questions.map((q, i) => {
+                  const isCorrect = submitted && answers[i] === q.answer;
+                  const isWrong = submitted && answers[i] && answers[i] !== q.answer;
+                  return (
+                    <div
+                      key={i}
+                      className={`rounded-3xl border bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl transition-colors ${
+                        submitted
+                          ? isCorrect
+                            ? "border-emerald-500/50 bg-emerald-950/20"
+                            : isWrong
+                              ? "border-rose-500/50 bg-rose-950/20"
+                              : "border-slate-800"
+                          : "border-slate-800"
+                      }`}
+                    >
+                      <div className="mb-4 text-sm font-bold text-white">
+                        {i + 1}. {q.text}
+                      </div>
+                      <div className="flex flex-wrap gap-2.5">
+                        {q.options.map((opt) => {
+                          const selected = answers[i] === opt;
+                          return (
+                            <button
+                              key={opt}
+                              disabled={submitted || timeLeft === 0}
+                              onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
+                              className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all ${
+                                selected
+                                  ? submitted
+                                    ? opt === q.answer
+                                      ? "border-emerald-500 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20"
+                                      : "border-rose-500 bg-rose-500 text-white shadow-lg shadow-rose-500/20"
+                                    : "border-indigo-500 bg-indigo-500 text-white shadow-lg shadow-indigo-500/20"
+                                  : "border-slate-800 bg-slate-800/50 text-slate-300 hover:border-slate-700 hover:bg-slate-800"
+                              }`}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {submitted && isWrong && (
+                        <div className="mt-3 text-xs font-medium text-rose-400">
+                          {t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-8 flex justify-center pb-12">
+                {!submitted ? (
+                  <button
+                    onClick={() => {
+                      setSubmitted(true);
+                      setToastMessage("Natijalar chiqdi!");
+                      setTimeout(() => setToastMessage(null), 3000);
+                    }}
+                    className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-10 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+                  >
+                    Natijani ko'rish
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => resetTest()}
+                    className="rounded-2xl bg-slate-800 px-10 py-4 font-bold text-white shadow-xl transition-all hover:bg-slate-700 active:scale-95"
+                  >
+                    {t("ieltsEngine.resetBtn", "Qayta yechish")}
+                  </button>
+                )}
+              </div>
+            </>
+          )}
         </Shell>
       </div>
     );
@@ -1330,18 +1553,18 @@ export default function IeltsPracticeApp() {
   if (screen === "speakingContent") {
     const topic = speakingByLevel[level][part];
     return (
-      <div className="pt-25">
+      <div className="pt-6">
         <Shell>
           <BackButton onClick={() => goto("speakingParts")} />
           <Header title={topic.title} subtitle={`${t("ieltsEngine.speakingSkill", "Speaking")} Part ${part} — IELTS ${level}.0 ${t("ieltsEngine.speakingDesc", "uchun ideal javoblar")}`} />
-          <div className="space-y-4">
+          <div className="space-y-6 pb-12">
             {topic.questions.map((item, i) => (
-              <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                <div className="mb-2 text-sm font-semibold text-slate-900">
+              <div key={i} className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl">
+                <div className="mb-3 text-base font-bold text-white">
                   {i + 1}. {item.q}
                 </div>
-                <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-sm text-slate-700">
-                  <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-amber-600">
+                <div className="rounded-2xl border border-amber-500/20 bg-amber-950/20 p-4 text-sm leading-relaxed text-slate-300">
+                  <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-amber-400">
                     {t("ieltsEngine.idealAnswerLabel", "Ideal javob")}
                   </span>
                   {item.a}
@@ -1356,36 +1579,6 @@ export default function IeltsPracticeApp() {
 
   return null;
 }
-</file>
-
-<file path="src/components/Sec5.jsx">
-import React from 'react'
-import ResultsSlider from './ResultsSlider'
-
-export default function Sec5() {
-  return (
-    <div className=''>
-        <ResultsSlider/>
-    </div>
-  )
-}
-</file>
-
-<file path="src/main.jsx">
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { BrowserRouter } from 'react-router-dom'
-import '../i18n.js'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
-)
 </file>
 
 <file path="src/components/ResultsSlider.jsx">
@@ -1709,48 +1902,6 @@ export default function Main() {
 }
 </file>
 
-<file path="package.json">
-{
-  "name": "project",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.3.2",
-    "aos": "^2.3.4",
-    "axios": "^1.18.1",
-    "framer-motion": "^12.42.2",
-    "i18next": "^26.3.6",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "react-hot-toast": "^2.6.0",
-    "react-i18next": "^17.0.10",
-    "react-icons": "^5.7.0",
-    "react-router-dom": "^7.18.1",
-    "react-toastify": "^11.1.0",
-    "swiper": "^14.0.2",
-    "tailwindcss": "^4.3.2"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
-    "eslint": "^10.6.0",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.3",
-    "globals": "^17.7.0",
-    "vite": "^8.1.1"
-  }
-}
-</file>
-
 <file path="src/components/Register.jsx">
 import React, { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
@@ -1845,6 +1996,49 @@ export default function Register() {
             </div>
         </div>
     )
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "aos": "^2.3.4",
+    "axios": "^1.18.1",
+    "framer-motion": "^12.42.2",
+    "gsap": "^3.15.0",
+    "i18next": "^26.3.6",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-hot-toast": "^2.6.0",
+    "react-i18next": "^17.0.10",
+    "react-icons": "^5.7.0",
+    "react-router-dom": "^7.18.1",
+    "react-toastify": "^11.1.0",
+    "swiper": "^14.0.2",
+    "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "eslint": "^10.6.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "vite": "^8.1.1"
+  }
 }
 </file>
 
@@ -4740,7 +4934,6 @@ export default function App() {
   return (
     <div className="dark:bg-[#090623] bg-white min-h-screen relative transition-colors duration-200">
       <Navbar />
-      {/* <IeltsPracticeApp className="mt-10"/> */}
       {/* ScrollToTop shu yerga qo'shildi */}
       <ScrollToTop />
       <Routes>
@@ -4752,6 +4945,7 @@ export default function App() {
         <Route path="/static" element={<Mentorstats />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <IeltsPracticeApp className="mt-10"/>
       <Footer />
 
       {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
@@ -4972,20 +5166,24 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const dropdownRef = useRef(null)
 
-    const Theme = function () {
+    const Theme = () => {
         const nextState = !dark
         isDark(nextState)
         localStorage.setItem('theme', nextState)
-        document.querySelector('body').classList.toggle('dark', nextState)
+        if (nextState) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
     }
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('theme') === 'true'
         isDark(savedTheme)
         if (savedTheme) {
-            document.querySelector('body').classList.add('dark')
+            document.documentElement.classList.add('dark')
         } else {
-            document.querySelector('body').classList.remove('dark')
+            document.documentElement.classList.remove('dark')
         }
 
         const handleScroll = () => {
@@ -5003,6 +5201,7 @@ export default function Navbar() {
             }
         }
         document.addEventListener('mousedown', handleClickOutside)
+        
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
             window.removeEventListener('scroll', handleScroll)
@@ -5013,17 +5212,18 @@ export default function Navbar() {
         i18n.changeLanguage(lang)
     }
 
+    // Tarjimalar i18next standartiga moslab kalitlar ko'rinishiga keltirildi
     const navItems = [
-        { name: t('Bosh sahifa'), path: '/' },
-        { name: t('Statistika'), path: '/stats' },
-        { name: t('Yutuqlar'), path: '/products' },
-        { name: t('Biz haqimizda'), path: '/about' },
-        { name: t('Mentorlar'), path: '/static' },
-        { name: t('Ro`yxatdan o`tish'), path: '/register' },
+        { name: t('navbar.home', 'Bosh sahifa'), path: '/' },
+        { name: t('navbar.stats', 'Statistika'), path: '/stats' },
+        { name: t('navbar.achievements', 'Yutuqlar'), path: '/products' },
+        { name: t('navbar.about', 'Biz haqimizda'), path: '/about' },
+        { name: t('navbar.mentors', 'Mentorlar'), path: '/static' },
+        { name: t('navbar.register', 'Ro`yxatdan o`tish'), path: '/register' },
     ]
 
     const LanguageSelector = () => (
-        <div className="flex items-center gap-1 bg-white/40 dark:bg-gray-900/40 p-1.5 rounded-2xl border border-gray-200/50 dark:border-gray-800/80 backdrop-blur-md">
+        <div className="flex items-center gap-1 bg-white/60 dark:bg-gray-900/60 p-1.5 rounded-2xl border border-gray-200/60 dark:border-gray-800/80 backdrop-blur-md shadow-sm">
             <div className="pl-1.5 text-gray-400 dark:text-gray-500 flex items-center">
                 <FaGlobe className="w-3.5 h-3.5" />
             </div>
@@ -5031,7 +5231,7 @@ export default function Navbar() {
                 <button
                     key={lang}
                     onClick={() => handleLanguageChange(lang)}
-                    className={`relative px-2.5 py-1 text-[11px] font-black rounded-xl transition-colors duration-300 ${
+                    className={`relative px-2.5 py-1 text-[11px] font-black rounded-xl transition-colors duration-300 cursor-pointer ${
                         i18n.language === lang
                             ? 'text-white'
                             : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -5051,33 +5251,33 @@ export default function Navbar() {
     )
 
     return (
-        <div className="fixed top-4 left-0 w-full z-50 font-sans select-none px-4">
+        <div className="fixed top-4 left-0 w-full z-50 font-sans select-none px-4 pointer-events-none">
             <motion.header 
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className={`max-w-6xl mx-auto transition-all duration-500 rounded-3xl ${
+                className={`max-w-6xl mx-auto transition-all duration-500 rounded-3xl pointer-events-auto ${
                     scrolled 
-                        ? 'bg-white/80 dark:bg-gray-950/80 backdrop-blur-2xl border border-white/40 dark:border-gray-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] py-2' 
-                        : 'bg-white/50 dark:bg-gray-950/50 backdrop-blur-xl border border-white/20 dark:border-gray-800/40 shadow-lg py-3'
+                        ? 'bg-white/85 dark:bg-gray-950/85 backdrop-blur-2xl border border-white/40 dark:border-gray-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] py-2' 
+                        : 'bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border border-white/20 dark:border-gray-800/40 shadow-lg py-3'
                 }`}
             >
-                <div className="px-4 sm:px-6 flex items-center justify-between">
+                <div className="px-3 sm:px-6 flex items-center justify-between gap-2">
 
                     {/* Chap qism: Logotip va Mobil Menyu tugmasi */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 shrink-0">
                         <motion.button
                             whileTap={{ scale: 0.9 }}
                             onClick={() => { setMenuOpen(!menuOpen); setDropdownOpen(false); }}
-                            className="md:hidden w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-200"
+                            className="md:hidden w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-200 cursor-pointer shadow-sm"
                         >
                             {menuOpen ? <FaTimes className="w-4 h-4 text-red-600" /> : <FaBars className="w-4 h-4" />}
                         </motion.button>
 
-                        <Link to="/" className="flex items-center gap-3 group">
+                        <Link to="/" className="flex items-center gap-2.5 group">
                             <motion.div 
                                 whileHover={{ rotate: 5, scale: 1.05 }}
-                                className="relative"
+                                className="relative shrink-0"
                             >
                                 <div className="absolute -inset-0.5 bg-gradient-to-r from-red-600 to-rose-600 rounded-2xl blur opacity-40 group-hover:opacity-80 transition duration-300"></div>
                                 <img
@@ -5086,21 +5286,21 @@ export default function Navbar() {
                                     className="relative w-10 h-10 rounded-2xl object-cover shadow-md"
                                 />
                             </motion.div>
-                            <span className="text-gray-900 dark:text-white font-black text-xl tracking-tight">
+                            <span className="text-gray-900 dark:text-white font-black text-lg sm:text-xl tracking-tight">
                                 OPTIMUM<span className="text-red-600">.</span>
                             </span>
                         </Link>
                     </div>
 
                     {/* Kompyuter uchun markaziy menyu */}
-                    <nav className="hidden md:flex items-center p-1.5 bg-gray-100/50 dark:bg-gray-900/50 backdrop-blur-md rounded-full border border-gray-200/40 dark:border-gray-800/60 relative">
+                    <nav className="hidden md:flex items-center p-1 bg-gray-100/50 dark:bg-gray-900/50 backdrop-blur-md rounded-full border border-gray-200/40 dark:border-gray-800/60 relative">
                         {navItems.map((item) => {
                             const isActive = location.pathname === item.path
                             return (
                                 <Link
                                     key={item.path}
                                     to={item.path}
-                                    className={`relative px-4 py-2 text-xs font-bold transition-colors duration-200 ${
+                                    className={`relative px-3.5 py-2 text-[11px] lg:text-xs font-bold transition-colors duration-200 text-center whitespace-nowrap ${
                                         isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                                     }`}
                                 >
@@ -5118,7 +5318,7 @@ export default function Navbar() {
                     </nav>
 
                     {/* O'ng qism elementlari */}
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2 shrink-0">
                         <div className="hidden lg:block">
                             <LanguageSelector />
                         </div>
@@ -5128,7 +5328,7 @@ export default function Navbar() {
                             whileTap={{ scale: 0.9, rotate: 180 }}
                             transition={{ duration: 0.3 }}
                             onClick={Theme} 
-                            className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-yellow-400 shadow-sm"
+                            className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-yellow-400 shadow-sm cursor-pointer shrink-0"
                         >
                             {dark ? <FaRegSun className="w-4 h-4" /> : <FaRegMoon className="w-4 h-4 text-gray-800" />}
                         </motion.button>
@@ -5138,10 +5338,10 @@ export default function Navbar() {
                             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }}>
                                 <Link 
                                     to="/enter" 
-                                    className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold shadow-lg shadow-red-500/25 overflow-hidden"
+                                    className="group relative inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold shadow-lg shadow-red-500/25 overflow-hidden whitespace-nowrap"
                                 >
                                     <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-                                    <span className="relative">{t('Boshqaruv')}</span>
+                                    <span className="relative">{t('navbar.control', 'Boshqaruv')}</span>
                                     <FaArrowRight className="relative w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </motion.div>
@@ -5152,7 +5352,7 @@ export default function Navbar() {
                             <motion.button
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => { setDropdownOpen(!dropdownOpen); setMenuOpen(false); }}
-                                className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-200"
+                                className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-100/80 dark:bg-gray-900/80 text-gray-700 dark:text-gray-200 cursor-pointer shadow-sm"
                             >
                                 <FaEllipsisV className="w-4 h-4" />
                             </motion.button>
@@ -5171,7 +5371,7 @@ export default function Navbar() {
                                             onClick={() => setDropdownOpen(false)}
                                             className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold py-3 rounded-2xl text-center shadow-md shadow-red-500/20"
                                         >
-                                            {t('Boshqaruv')}
+                                            {t('navbar.control', 'Boshqaruv')}
                                         </Link>
                                         <div className="flex justify-center pt-2 border-t border-gray-100 dark:border-gray-800">
                                             <LanguageSelector />

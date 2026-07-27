@@ -24,21 +24,30 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="dark:bg-[#090623] bg-white min-h-screen relative transition-colors duration-200">
-      <Navbar />
-      {/* ScrollToTop shu yerga qo'shildi */}
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/stats" element={<Stats />} />
-        <Route path="/products" element={<Products/> } />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/enter" element={<Admin />} />
-        <Route path="/static" element={<Mentorstats />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-      <IeltsPracticeApp className="mt-10"/>
-      <Footer />
+    <div className="dark:bg-[#030712] bg-white min-h-screen relative transition-colors duration-200 overflow-hidden">
+      
+      {/* Chap yuqori burchakdagi binafsha neon nur */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
+      
+      {/* O'ng o'rta qismdagi ko'k neon nur (chuqurlik berish uchun) */}
+      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+      <div className="relative z-10">
+        <Navbar />
+        {/* ScrollToTop shu yerga qo'shildi */}
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/products" element={<Products/> } />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/enter" element={<Admin />} />
+          <Route path="/static" element={<Mentorstats />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        <IeltsPracticeApp className="mt-10"/>
+        <Footer />
+      </div>
 
       {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
       <div className="fixed bottom-6 right-6 z-50">
