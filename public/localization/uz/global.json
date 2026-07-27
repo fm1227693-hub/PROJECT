@@ -365,5 +365,49 @@
         "viewResultBtn": "Natijani ko'rish",
         "resultsReadyToast": "Natijalar chiqdi!",
         "timeUpToast": "Vaqt tugadi!"
+    },
+    "games": {
+        "title": "Mini o'yinlar",
+        "subtitle": "Ingliz tilini o'yin tarzida o'rganing va so'z boyligingizni oshiring",
+        "wordScramble": {
+            "title": "So'zni topish (Word Scramble)",
+            "description": "Aralashib ketgan harflardan to'g'ri inglizcha so'zni tuzing.",
+            "scrambledLabel": "Aralash so'z:",
+            "placeholder": "Javobingizni yozing...",
+            "check": "Tekshirish",
+            "next": "Keyingisi",
+            "correct": "Barakalla! To'g'ri topdingiz.",
+            "incorrect": "Xato, qaytadan urinib ko'ring!"
+        }
+    },
+    "games1": {
+        "title": "Krestik-Nolik",
+        "subtitle": "Do'stingiz bilan birgalikda o'ynang va g'olibni aniqlang!",
+        "turn": "Navbat:",
+        "winner": "G'olib:",
+        "draw": "Durang! 🤝",
+        "reset": "Qayta boshlash"
+    },
+    "game2": {
+        "title": "Ingliz tili Daraja Testi",
+        "subtitle": "Savollar osondan qiyinga qarab boradi. Bilimingizni sinang!",
+        "level": "Daraja:",
+        "question": "Savol",
+        "of": "/",
+        "scoreText": "To'g'ri javoblar:",
+        "restart": "Qayta boshlash",
+        "finishTitle": "Test Yakunlandi! 🎉",
+        "resultText": "Siz 20 ta savoldan {score} ta to'g'ri topdingiz."
+    },
+    "game3": {
+        "title": "So'zlarni Topish O'yini",
+        "subtitle": "Inglizcha so'zlarning to'g'ri tarjimasini toping va tezligingizni sinang!",
+        "score": "Ball:",
+        "streak": "Seriya:",
+        "question": "So'z",
+        "of": "/",
+        "restart": "Qayta boshlash",
+        "finishTitle": "O'yin Yakunlandi! 🏆",
+        "resultText": "Siz {{score}} ta so'zni muvaffaqiyatli topdingiz!"
     }
 }

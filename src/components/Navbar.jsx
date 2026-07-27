@@ -193,7 +193,8 @@ export default function Navbar() {
 
                     {/* O'ng qism elementlari */}
                     <div className="flex items-center gap-2 shrink-0">
-                        <div className="hidden lg:block">
+                        {/* Til tanlagich (Kompyuter va planshetlar uchun) */}
+                        <div className="hidden md:block">
                             <LanguageSelector />
                         </div>
 
@@ -219,11 +220,6 @@ export default function Navbar() {
                                     <FaArrowRight className="relative w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </motion.div>
-                        </div>
-
-                        {/* Tablet oralig'i uchun til tugmasi (lg dan kichik, md dan katta) */}
-                        <div className="hidden md:block lg:hidden">
-                            <LanguageSelector />
                         </div>
 
                         {/* Mobil uchun Dropdown (3 ta nuqta) */}

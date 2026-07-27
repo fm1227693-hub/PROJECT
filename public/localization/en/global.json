@@ -365,5 +365,49 @@
         "viewResultBtn": "View Result",
         "resultsReadyToast": "Results are ready!",
         "timeUpToast": "Time's up!"
+    },
+    "games": {
+        "title": "Mini Games",
+        "subtitle": "Learn English through games and expand your vocabulary",
+        "wordScramble": {
+            "title": "Word Scramble",
+            "description": "Unscramble the letters to form the correct English word.",
+            "scrambledLabel": "Scrambled Word:",
+            "placeholder": "Type your answer...",
+            "check": "Check",
+            "next": "Next",
+            "correct": "Great job! That's correct.",
+            "incorrect": "Incorrect, try again!"
+        }
+    },
+    "games1": {
+        "title": "Tic-Tac-Toe",
+        "subtitle": "Play together with a friend and find out who wins!",
+        "turn": "Turn:",
+        "winner": "Winner:",
+        "draw": "Draw! 🤝",
+        "reset": "Restart"
+    },
+    "game2": {
+        "title": "English Level Test",
+        "subtitle": "Questions go from easy to hard. Test your skills!",
+        "level": "Level:",
+        "question": "Question",
+        "of": "of",
+        "scoreText": "Correct answers:",
+        "restart": "Play Again",
+        "finishTitle": "Test Completed! 🎉",
+        "resultText": "You got {score} out of 20 correct answers."
+    },
+    "game3": {
+        "title": "Word Flash Game",
+        "subtitle": "Find the correct translation of English words and test your speed!",
+        "score": "Score:",
+        "streak": "Streak:",
+        "question": "Word",
+        "of": "of",
+        "restart": "Play Again",
+        "finishTitle": "Game Completed! 🏆",
+        "resultText": "You successfully matched {{score}} words!"
     }
 }
