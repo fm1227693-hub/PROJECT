@@ -672,54 +672,58 @@ export default function IeltsPracticeApp() {
   /* ---------------- HOME ---------------- */
   if (screen === "home") {
     return (
-      <Shell>
-        <div className="flex min-h-[70vh] flex-col items-center justify-center text-center">
-          <div className="mb-3 animate-[popIn_0.6s_cubic-bezier(0.16,1,0.3,1)] text-5xl drop-shadow-sm dark:drop-shadow-[0_0_18px_rgba(56,189,248,0.35)]">📘</div>
-          <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:bg-gradient-to-r dark:from-white dark:to-sky-300 dark:bg-clip-text dark:text-transparent">
-            {t("ieltsEngine.heroTitle", "IELTS Testlar")}
-          </h1>
-          <p className="mb-8 max-w-sm text-slate-500 dark:text-slate-400">
-            {t("ieltsEngine.heroSub", "Reading, Grammar va Speaking bo'yicha darajangizga mos testlarni yeching. Har bir daraja va har bir qism (Part) — o'zining noyob mavzusi.")}
-          </p>
-          <button
-            onClick={() => goto("levels")}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-rose-500/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-rose-500/40 active:scale-95 dark:from-rose-500 dark:to-red-600 dark:shadow-red-900/50"
-          >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-            <span className="relative">{t("ieltsEngine.startBtn", "Test yechish")}</span>
-          </button>
-        </div>
-      </Shell>
+      <div className="pt-25">
+        <Shell>
+          <div className="flex min-h-[70vh] flex-col items-center justify-center text-center">
+            <div className="mb-3 animate-[popIn_0.6s_cubic-bezier(0.16,1,0.3,1)] text-5xl drop-shadow-sm dark:drop-shadow-[0_0_18px_rgba(56,189,248,0.35)]">📘</div>
+            <h1 className="mb-2 text-3xl font-bold text-slate-900 dark:bg-gradient-to-r dark:from-white dark:to-sky-300 dark:bg-clip-text dark:text-transparent">
+              {t("ieltsEngine.heroTitle", "IELTS Testlar")}
+            </h1>
+            <p className="mb-8 max-w-sm text-slate-500 dark:text-slate-400">
+              {t("ieltsEngine.heroSub", "Reading, Grammar va Speaking bo'yicha darajangizga mos testlarni yeching. Har bir daraja va har bir qism (Part) — o'zining noyob mavzusi.")}
+            </p>
+            <button
+              onClick={() => goto("levels")}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-rose-500/30 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-rose-500/40 active:scale-95 dark:from-rose-500 dark:to-red-600 dark:shadow-red-900/50"
+            >
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="relative">{t("ieltsEngine.startBtn", "Test yechish")}</span>
+            </button>
+          </div>
+        </Shell>
+      </div>
     );
   }
 
   /* ---------------- LEVELS ---------------- */
   if (screen === "levels") {
     return (
-      <Shell>
-        <BackButton onClick={() => goto("home")} />
-        <Header title={t("ieltsEngine.levelSelectionTitle", "Darajani tanlang")} subtitle={t("ieltsEngine.levelChoice", "Qaysi IELTS bandiga mos test yechmoqchisiz?")} />
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {LEVELS.map((l, idx) => (
-            <button
-              key={l}
-              style={{ animationDelay: `${idx * 60}ms` }}
-              onClick={() => {
-                setLevel(l);
-                goto("skills");
-              }}
-              className="group animate-popIn rounded-2xl border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 active:scale-95 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-none dark:backdrop-blur hover:dark:border-sky-500/60 hover:dark:bg-slate-900 hover:dark:shadow-[0_0_25px_-5px_rgba(56,189,248,0.35)]"
-            >
-              <div className="text-xs font-medium uppercase tracking-wide text-indigo-500 transition-colors dark:text-sky-400">
-                {t("ieltsEngine.bandLevel", "IELTS")}
-              </div>
-              <div className="text-2xl font-bold text-slate-900 transition-colors dark:text-white dark:group-hover:text-sky-300">
-                {l}.0
-              </div>
-            </button>
-          ))}
-        </div>
-      </Shell>
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("home")} />
+          <Header title={t("ieltsEngine.levelSelectionTitle", "Darajani tanlang")} subtitle={t("ieltsEngine.levelChoice", "Qaysi IELTS bandiga mos test yechmoqchisiz?")} />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {LEVELS.map((l, idx) => (
+              <button
+                key={l}
+                style={{ animationDelay: `${idx * 60}ms` }}
+                onClick={() => {
+                  setLevel(l);
+                  goto("skills");
+                }}
+                className="group animate-popIn rounded-2xl border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 active:scale-95 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-none dark:backdrop-blur hover:dark:border-sky-500/60 hover:dark:bg-slate-900 hover:dark:shadow-[0_0_25px_-5px_rgba(56,189,248,0.35)]"
+              >
+                <div className="text-xs font-medium uppercase tracking-wide text-indigo-500 transition-colors dark:text-sky-400">
+                  {t("ieltsEngine.bandLevel", "IELTS")}
+                </div>
+                <div className="text-2xl font-bold text-slate-900 transition-colors dark:text-white dark:group-hover:text-sky-300">
+                  {l}.0
+                </div>
+              </button>
+            ))}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
@@ -736,73 +740,79 @@ export default function IeltsPracticeApp() {
       rose: "hover:border-rose-400 hover:shadow-rose-100 dark:hover:border-rose-500/60 dark:hover:shadow-[0_0_25px_-5px_rgba(244,63,94,0.35)]",
     };
     return (
-      <Shell>
-        <BackButton onClick={() => goto("levels")} />
-        <Header title={`IELTS ${level}.0`} subtitle={t("ieltsEngine.skillSelectionTitle", "Bo'limni tanlang")} />
-        <div className="grid grid-cols-1 gap-3">
-          {options.map((o, idx) => (
-            <button
-              key={o.key}
-              style={{ animationDelay: `${idx * 70}ms` }}
-              onClick={() => goto(o.to)}
-              className={`animate-popIn rounded-2xl border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-none dark:backdrop-blur ${accentClasses[o.accent]}`}
-            >
-              <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">{o.label}</div>
-              {o.meta && <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{o.meta}</div>}
-            </button>
-          ))}
-        </div>
-      </Shell>
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("levels")} />
+          <Header title={`IELTS ${level}.0`} subtitle={t("ieltsEngine.skillSelectionTitle", "Bo'limni tanlang")} />
+          <div className="grid grid-cols-1 gap-3">
+            {options.map((o, idx) => (
+              <button
+                key={o.key}
+                style={{ animationDelay: `${idx * 70}ms` }}
+                onClick={() => goto(o.to)}
+                className={`animate-popIn rounded-2xl border border-slate-200 bg-white px-6 py-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 dark:border-slate-800 dark:bg-slate-900/60 dark:shadow-none dark:backdrop-blur ${accentClasses[o.accent]}`}
+              >
+                <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">{o.label}</div>
+                {o.meta && <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{o.meta}</div>}
+              </button>
+            ))}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
   /* ---------------- READING: PARTLARNI TANLASH ---------------- */
   if (screen === "readingParts") {
     return (
-      <Shell>
-        <BackButton onClick={() => goto("skills")} />
-        <Header title={`${t("ieltsEngine.readingSkill", "Reading")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.readingDesc", "Qaysi qismni (Part) yechmoqchisiz?")} />
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {PARTS.map((p) => (
-            <button
-              key={p}
-              onClick={() => {
-                setPart(p);
-                goto("readingTest");
-              }}
-              className="rounded-2xl border border-slate-200 bg-white px-6 py-6 text-center shadow-sm transition hover:border-indigo-400 hover:shadow-md"
-            >
-              <div className="text-lg font-bold text-slate-900">Part {p}</div>
-              <div className="mt-1 text-xs text-slate-500">{readingByLevel[level]?.[p]?.title}</div>
-            </button>
-          ))}
-        </div>
-      </Shell>
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("skills")} />
+          <Header title={`${t("ieltsEngine.readingSkill", "Reading")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.readingDesc", "Qaysi qismni (Part) yechmoqchisiz?")} />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {PARTS.map((p) => (
+              <button
+                key={p}
+                onClick={() => {
+                  setPart(p);
+                  goto("readingTest");
+                }}
+                className="rounded-2xl border border-slate-200 bg-white px-6 py-6 text-center shadow-sm transition hover:border-indigo-400 hover:shadow-md"
+              >
+                <div className="text-lg font-bold text-slate-900">Part {p}</div>
+                <div className="mt-1 text-xs text-slate-500">{readingByLevel[level]?.[p]?.title}</div>
+              </button>
+            ))}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
   /* ---------------- SPEAKING: PARTLARNI TANLASH ---------------- */
   if (screen === "speakingParts") {
     return (
-      <Shell>
-        <BackButton onClick={() => goto("skills")} />
-        <Header title={`${t("ieltsEngine.speakingSkill", "Speaking")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.speakingDesc", "Qaysi qismni (Part) ko'rmoqchisiz?")} />
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {PARTS.map((p) => (
-            <button
-              key={p}
-              onClick={() => {
-                setPart(p);
-                goto("speakingContent");
-              }}
-              className="rounded-2xl border border-slate-200 bg-white px-6 py-6 text-center shadow-sm transition hover:border-indigo-400 hover:shadow-md"
-            >
-              <div className="text-lg font-bold text-slate-900">Part {p}</div>
-              <div className="mt-1 text-xs text-slate-500">{speakingByLevel[level]?.[p]?.title}</div>
-            </button>
-          ))}
-        </div>
-      </Shell>
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("skills")} />
+          <Header title={`${t("ieltsEngine.speakingSkill", "Speaking")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.speakingDesc", "Qaysi qismni (Part) ko'rmoqchisiz?")} />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {PARTS.map((p) => (
+              <button
+                key={p}
+                onClick={() => {
+                  setPart(p);
+                  goto("speakingContent");
+                }}
+                className="rounded-2xl border border-slate-200 bg-white px-6 py-6 text-center shadow-sm transition hover:border-indigo-400 hover:shadow-md"
+              >
+                <div className="text-lg font-bold text-slate-900">Part {p}</div>
+                <div className="mt-1 text-xs text-slate-500">{speakingByLevel[level]?.[p]?.title}</div>
+              </button>
+            ))}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
@@ -819,91 +829,91 @@ export default function IeltsPracticeApp() {
     }
 
     return (
-      <Shell>
-        <BackButton onClick={() => goto("readingParts")} />
-        <Header title={topic.title} subtitle={`${t("ieltsEngine.readingSkill", "Reading")} Part ${part} — IELTS ${level}.0`} />
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("readingParts")} />
+          <Header title={topic.title} subtitle={`${t("ieltsEngine.readingSkill", "Reading")} Part ${part} — IELTS ${level}.0`} />
 
-        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-relaxed text-slate-700 shadow-sm">
-          {topic.passage}
-        </div>
-
-        {submitted && (
-          <div className="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
-            <div className="text-sm text-emerald-700">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
-            <div className="text-3xl font-bold text-emerald-700">
-              {score} / {questions.length}
-            </div>
+          <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-relaxed text-slate-700 shadow-sm">
+            {topic.passage}
           </div>
-        )}
 
-        <div className="space-y-4">
-          {questions.map((q, i) => {
-            const opts = q.type === "tfng" ? TFNG : q.options;
-            const isCorrect = submitted && answers[i] === q.answer;
-            const isWrong = submitted && answers[i] && answers[i] !== q.answer;
-            return (
-              <div
-                key={i}
-                className={`rounded-2xl border bg-white p-4 shadow-sm ${
-                  submitted ? (isCorrect ? "border-emerald-300" : isWrong ? "border-rose-300" : "border-slate-200") : "border-slate-200"
-                }`}
-              >
-                <div className="mb-2 text-sm font-medium text-slate-800">
-                  {i + 1}. {q.text}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {opts.map((opt) => {
-                    const selected = answers[i] === opt;
-                    return (
-                      <button
-                        key={opt}
-                        disabled={submitted}
-                        onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
-                        className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                          selected
+          {submitted && (
+            <div className="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
+              <div className="text-sm text-emerald-700">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
+              <div className="text-3xl font-bold text-emerald-700">
+                {score} / {questions.length}
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {questions.map((q, i) => {
+              const opts = q.type === "tfng" ? TFNG : q.options;
+              const isCorrect = submitted && answers[i] === q.answer;
+              const isWrong = submitted && answers[i] && answers[i] !== q.answer;
+              return (
+                <div
+                  key={i}
+                  className={`rounded-2xl border bg-white p-4 shadow-sm ${submitted ? (isCorrect ? "border-emerald-300" : isWrong ? "border-rose-300" : "border-slate-200") : "border-slate-200"
+                    }`}
+                >
+                  <div className="mb-2 text-sm font-medium text-slate-800">
+                    {i + 1}. {q.text}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {opts.map((opt) => {
+                      const selected = answers[i] === opt;
+                      return (
+                        <button
+                          key={opt}
+                          disabled={submitted}
+                          onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
+                          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${selected
                             ? submitted
                               ? opt === q.answer
                                 ? "border-emerald-500 bg-emerald-500 text-white"
                                 : "border-rose-500 bg-rose-500 text-white"
                               : "border-indigo-500 bg-indigo-500 text-white"
                             : "border-slate-300 bg-slate-50 text-slate-600 hover:border-indigo-300"
-                        }`}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
+                            }`}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {submitted && isWrong && (
+                    <div className="mt-2 text-xs text-slate-500">{t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}</div>
+                  )}
                 </div>
-                {submitted && isWrong && (
-                  <div className="mt-2 text-xs text-slate-500">{t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}</div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        <div className="mt-6 flex justify-center">
-          {!submitted ? (
-            <button
-              onClick={() => setSubmitted(true)}
-              className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
-            >
-              {t("ieltsEngine.checkBtn", "Tekshirish")}
-            </button>
-          ) : (
-            <button
-              onClick={() => resetTest()}
-              className="rounded-xl bg-slate-800 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-slate-900"
-            >
-              {t("ieltsEngine.resetBtn", "Qayta yechish")}
-            </button>
-          )}
-        </div>
-      </Shell>
+          <div className="mt-6 flex justify-center">
+            {!submitted ? (
+              <button
+                onClick={() => setSubmitted(true)}
+                className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
+              >
+                {t("ieltsEngine.checkBtn", "Tekshirish")}
+              </button>
+            ) : (
+              <button
+                onClick={() => resetTest()}
+                className="rounded-xl bg-slate-800 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-slate-900"
+              >
+                {t("ieltsEngine.resetBtn", "Qayta yechish")}
+              </button>
+            )}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
-  /* ---------------- GRAMMAR (Part shart emas) ---------------- */
+  /* ---------------- GRAMMAR  ---------------- */
   if (screen === "grammarTest") {
     const questions = grammarBank[level];
     let score = 0;
@@ -913,82 +923,82 @@ export default function IeltsPracticeApp() {
       });
     }
     return (
-      <Shell>
-        <BackButton onClick={() => goto("skills")} />
-        <Header title={`${t("ieltsEngine.grammarSkill", "Grammar")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level)} />
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("skills")} />
+          <Header title={`${t("ieltsEngine.grammarSkill", "Grammar")} — IELTS ${level}.0`} subtitle={t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level)} />
 
-        {submitted && (
-          <div className="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
-            <div className="text-sm text-emerald-700">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
-            <div className="text-3xl font-bold text-emerald-700">
-              {score} / {questions.length}
+          {submitted && (
+            <div className="mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center">
+              <div className="text-sm text-emerald-700">{t("ieltsEngine.resultLabel", "Natijangiz")}</div>
+              <div className="text-3xl font-bold text-emerald-700">
+                {score} / {questions.length}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="space-y-4">
-          {questions.map((q, i) => {
-            const isCorrect = submitted && answers[i] === q.answer;
-            const isWrong = submitted && answers[i] && answers[i] !== q.answer;
-            return (
-              <div
-                key={i}
-                className={`rounded-2xl border bg-white p-4 shadow-sm ${
-                  submitted ? (isCorrect ? "border-emerald-300" : isWrong ? "border-rose-300" : "border-slate-200") : "border-slate-200"
-                }`}
-              >
-                <div className="mb-2 text-sm font-medium text-slate-800">
-                  {i + 1}. {q.text}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {q.options.map((opt) => {
-                    const selected = answers[i] === opt;
-                    return (
-                      <button
-                        key={opt}
-                        disabled={submitted}
-                        onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
-                        className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                          selected
+          <div className="space-y-4">
+            {questions.map((q, i) => {
+              const isCorrect = submitted && answers[i] === q.answer;
+              const isWrong = submitted && answers[i] && answers[i] !== q.answer;
+              return (
+                <div
+                  key={i}
+                  className={`rounded-2xl border bg-white p-4 shadow-sm ${submitted ? (isCorrect ? "border-emerald-300" : isWrong ? "border-rose-300" : "border-slate-200") : "border-slate-200"
+                    }`}
+                >
+                  <div className="mb-2 text-sm font-medium text-slate-800">
+                    {i + 1}. {q.text}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {q.options.map((opt) => {
+                      const selected = answers[i] === opt;
+                      return (
+                        <button
+                          key={opt}
+                          disabled={submitted}
+                          onClick={() => setAnswers((a) => ({ ...a, [i]: opt }))}
+                          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${selected
                             ? submitted
                               ? opt === q.answer
                                 ? "border-emerald-500 bg-emerald-500 text-white"
                                 : "border-rose-500 bg-rose-500 text-white"
                               : "border-indigo-500 bg-indigo-500 text-white"
                             : "border-slate-300 bg-slate-50 text-slate-600 hover:border-indigo-300"
-                        }`}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
+                            }`}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {submitted && isWrong && (
+                    <div className="mt-2 text-xs text-slate-500">{t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}</div>
+                  )}
                 </div>
-                {submitted && isWrong && (
-                  <div className="mt-2 text-xs text-slate-500">{t("ieltsEngine.correctAnswerLabel", "To'g'ri javob")}: {q.answer}</div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        <div className="mt-6 flex justify-center">
-          {!submitted ? (
-            <button
-              onClick={() => setSubmitted(true)}
-              className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
-            >
-              {t("ieltsEngine.checkBtn", "Tekshirish")}
-            </button>
-          ) : (
-            <button
-              onClick={() => resetTest()}
-              className="rounded-xl bg-slate-800 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-slate-900"
-            >
-              {t("ieltsEngine.resetBtn", "Qayta yechish")}
-            </button>
-          )}
-        </div>
-      </Shell>
+          <div className="mt-6 flex justify-center">
+            {!submitted ? (
+              <button
+                onClick={() => setSubmitted(true)}
+                className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
+              >
+                {t("ieltsEngine.checkBtn", "Tekshirish")}
+              </button>
+            ) : (
+              <button
+                onClick={() => resetTest()}
+                className="rounded-xl bg-slate-800 px-8 py-3 font-semibold text-white shadow-md transition hover:bg-slate-900"
+              >
+                {t("ieltsEngine.resetBtn", "Qayta yechish")}
+              </button>
+            )}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
@@ -996,25 +1006,27 @@ export default function IeltsPracticeApp() {
   if (screen === "speakingContent") {
     const topic = speakingByLevel[level][part];
     return (
-      <Shell>
-        <BackButton onClick={() => goto("speakingParts")} />
-        <Header title={topic.title} subtitle={`${t("ieltsEngine.speakingSkill", "Speaking")} Part ${part} — IELTS ${level}.0 ${t("ieltsEngine.speakingDesc", "uchun ideal javoblar")}`} />
-        <div className="space-y-4">
-          {topic.questions.map((item, i) => (
-            <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-              <div className="mb-2 text-sm font-semibold text-slate-900">
-                {i + 1}. {item.q}
+      <div className="pt-25">
+        <Shell>
+          <BackButton onClick={() => goto("speakingParts")} />
+          <Header title={topic.title} subtitle={`${t("ieltsEngine.speakingSkill", "Speaking")} Part ${part} — IELTS ${level}.0 ${t("ieltsEngine.speakingDesc", "uchun ideal javoblar")}`} />
+          <div className="space-y-4">
+            {topic.questions.map((item, i) => (
+              <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="mb-2 text-sm font-semibold text-slate-900">
+                  {i + 1}. {item.q}
+                </div>
+                <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-sm text-slate-700">
+                  <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-amber-600">
+                    {t("ieltsEngine.idealAnswerLabel", "Ideal javob")}
+                  </span>
+                  {item.a}
+                </div>
               </div>
-              <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-sm text-slate-700">
-                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-amber-600">
-                  {t("ieltsEngine.idealAnswerLabel", "Ideal javob")}
-                </span>
-                {item.a}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Shell>
+            ))}
+          </div>
+        </Shell>
+      </div>
     );
   }
 
