@@ -161,7 +161,7 @@ export default function Navbar() {
                                 />
                             </motion.div>
                             <span className="text-gray-900 dark:text-white font-black text-lg sm:text-xl tracking-tight">
-                                OPTIMUM<span className="text-red-600">.</span>
+                                OPTIMUM<span className="text-red-600"></span>
                             </span>
                         </Link>
                     </div>
