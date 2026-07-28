@@ -121,15 +121,6 @@
         "emptyMessage": "No student results have been uploaded yet",
         "errorMessage": "An error occurred while loading the data!"
     },
-    "register": {
-        "phoneError": "Please enter numbers only!",
-        "title": "Register for a Course",
-        "nameLabel": "Your Name",
-        "namePlaceholder": "e.g. Alisher",
-        "phoneLabel": "Your Phone Number",
-        "phonePlaceholder": "+998 90 123 45 67",
-        "submitBtn": "Register"
-    },
     "stats": {
         "studentsTitle": "Active Students",
         "lessonsTitle": "Total Lessons",
@@ -409,5 +400,69 @@
         "restart": "Play Again",
         "finishTitle": "Game Completed! 🏆",
         "resultText": "You successfully matched {{score}} words!"
+    },
+    "steps": {
+        "badge": "How it works",
+        "title": "Get started in 3 simple steps",
+        "description": "Follow these steps to enroll in our course",
+        "step1Title": "Sign up",
+        "step1Desc": "Register on the site and begin your learning journey",
+        "step2Title": "Determine your level",
+        "step2Desc": "Find out your English level with a 40-question test",
+        "step3Title": "Choose a course",
+        "step3Desc": "Review the plan that matches your level and get in touch"
+    },
+    "levelTest": {
+        "badge": "Level assessment",
+        "title": "Find out your English level",
+        "description": "Your level will be determined through a 40-question test. Difficulty gradually increases.",
+        "questionsLabel": "Questions",
+        "timeLabel": "Time",
+        "startBtn": "Start test",
+        "timeUp": "Time's up!",
+        "testFinished": "Test finished",
+        "doneBadge": "Test finished",
+        "readyMsg": "Your result is ready",
+        "answeredMsg": "You answered {{answered}} / {{total}} questions",
+        "seeScoreBtn": "See score",
+        "resultBadge": "Result",
+        "correctOf": "You answered {{correct}} out of {{total}} questions correctly",
+        "continueBtn": "Continue",
+        "retakeBtn": "Retake test",
+        "prevBtn": "Back",
+        "nextBtn": "Next",
+        "finishBtn": "Finish test",
+        "finishEarlyBtn": "Finish test early",
+        "leaveConfirm": "Do you want to leave the test? Your result will not be saved."
+    },
+    "pricing": {
+        "badge": "Achieve results",
+        "title": "Choose the course that fits you",
+        "description": "Select the plan that matches your level and get in touch with us.",
+        "descriptionWithLevel": "Your level: {{level}}. The plan below fits you best.",
+        "recommendationText": "We recommend the {{price}} course for you",
+        "recommendedBadge": "Recommended",
+        "recommendedInline": "✓ Recommended for your level",
+        "yourLevelBadge": "Your level",
+        "currency": "sum",
+        "basicDesc": "A solid foundation course for beginners.",
+        "standardDesc": "A conversation and grammar course for intermediate learners.",
+        "advancedDesc": "A professional fluency course for advanced learners.",
+        "contactBtn": "Contact us",
+        "otherContact": "Or call us directly:"
+    },
+    "register": {
+        "badge": "Optimum",
+        "phoneError": "Please enter numbers only!",
+        "title": "Course registration",
+        "nameLabel": "Your name",
+        "namePlaceholder": "e.g. Alisher",
+        "phoneLabel": "Your phone number",
+        "phonePlaceholder": "+998 90 123 45 67",
+        "submitBtn": "Register",
+        "loadingBtn": "Loading..."
+    },
+    "common": {
+        "backBtn": "Back"
     }
 }

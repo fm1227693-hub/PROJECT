@@ -121,15 +121,6 @@
         "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
         "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
     },
-    "register": {
-        "phoneError": "Faqat raqamlar kiriting!",
-        "title": "Kursga ro'yxatdan o'tish",
-        "nameLabel": "Ismingiz",
-        "namePlaceholder": "Masalan: Alisher",
-        "phoneLabel": "Telefon raqamingiz",
-        "phonePlaceholder": "+998 90 123 45 67",
-        "submitBtn": "Ro'yxatdan o'tish"
-    },
     "stats": {
         "studentsTitle": "Faol o'quvchilar",
         "lessonsTitle": "Jami darslar",
@@ -409,5 +400,69 @@
         "restart": "Qayta boshlash",
         "finishTitle": "O'yin Yakunlandi! 🏆",
         "resultText": "Siz {{score}} ta so'zni muvaffaqiyatli topdingiz!"
+    },
+    "steps": {
+        "badge": "Qanday ishlaydi",
+        "title": "3 oddiy qadamda boshlang",
+        "description": "Kursimizga yozilish uchun quyidagi qadamlarni bajaring",
+        "step1Title": "Ro'yxatdan o'ting",
+        "step1Desc": "Sayt orqali ro'yxatdan o'tib, o'quv jarayonini boshlang",
+        "step2Title": "Darajangizni aniqlang",
+        "step2Desc": "40 ta savoldan iborat test orqali ingliz tili darajangizni bilib oling",
+        "step3Title": "Kursni tanlang",
+        "step3Desc": "Darajangizga mos tarifni ko'rib chiqing va bog'laning"
+    },
+    "levelTest": {
+        "badge": "Darajani aniqlash",
+        "title": "Ingliz tili darajangizni bilib oling",
+        "description": "40 ta savoldan iborat test orqali darajangiz aniqlanadi. Qiyinlik darajasi asta-sekin oshib boradi.",
+        "questionsLabel": "Savollar",
+        "timeLabel": "Vaqt",
+        "startBtn": "Testni boshlash",
+        "timeUp": "Vaqt tugadi!",
+        "testFinished": "Test yakunlandi",
+        "doneBadge": "Test yakunlandi",
+        "readyMsg": "Natijangiz tayyor",
+        "answeredMsg": "{{answered}} / {{total}} savolga javob berdingiz",
+        "seeScoreBtn": "Ballni ko'rish",
+        "resultBadge": "Natija",
+        "correctOf": "{{correct}} ta savoldan {{total}} tasiga to'g'ri javob berdingiz",
+        "continueBtn": "Davom etish",
+        "retakeBtn": "Qayta topshirish",
+        "prevBtn": "Orqaga",
+        "nextBtn": "Keyingisi",
+        "finishBtn": "Testni yakunlash",
+        "finishEarlyBtn": "Testni oldindan yakunlash",
+        "leaveConfirm": "Testni tark etmoqchimisiz? Natijangiz saqlanmaydi."
+    },
+    "pricing": {
+        "badge": "Natijaga erishish",
+        "title": "O'zingizga mos kursni tanlang",
+        "description": "Darajangizga mos tarifni tanlab, biz bilan bog'laning.",
+        "descriptionWithLevel": "Sizning darajangiz: {{level}}. Quyidagi tarif sizga mos keladi.",
+        "recommendationText": "Sizga {{price}} so'mlik kurs tavsiya etiladi",
+        "recommendedBadge": "Tavsiya etiladi",
+        "recommendedInline": "✓ Sizning darajangiz uchun tavsiya etiladi",
+        "yourLevelBadge": "Sizning darajangiz",
+        "currency": "so'm",
+        "basicDesc": "Boshlang'ich bosqichdagilar uchun mustahkam fundament kursi.",
+        "standardDesc": "O'rta darajadagilar uchun erkin muloqot va grammatika kursi.",
+        "advancedDesc": "Yuqori darajadagilar uchun professional va ravon muloqot kursi.",
+        "contactBtn": "Bog'lanish",
+        "otherContact": "Yoki bevosita qo'ng'iroq qiling:"
+    },
+    "register": {
+        "badge": "Optimum",
+        "phoneError": "Faqat raqamlarni kiriting!",
+        "title": "Kursga ro'yxatdan o'tish",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Masalan: Alisher",
+        "phoneLabel": "Telefon raqamingiz",
+        "phonePlaceholder": "+998 90 123 45 67",
+        "submitBtn": "Ro'yxatdan o'tish",
+        "loadingBtn": "Yuklanmoqda..."
+    },
+    "common": {
+        "backBtn": "Orqaga"
     }
 }
