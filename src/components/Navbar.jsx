@@ -74,11 +74,11 @@ export default function Navbar() {
 
     const navItems = [
         { name: t('navbar.home', 'Bosh sahifa'), path: '/' },
-        { name: t('navbar.stats', 'Statistika'), path: '/stats' },
+        { name: t('navbar.statistic', 'Statistika'), path: '/stats' },
         { name: t('navbar.achievements', 'Yutuqlar'), path: '/products' },
         { name: t('navbar.about', 'Biz haqimizda'), path: '/about' },
-        { name: t('navbar.mentors', 'Mentorlar'), path: '/static' },
-        { name: t('navbar.register', 'Ro`yxatdan o`tish'), path: '/register' },
+        { name: t('navbar.Mentorlar', 'Mentorlar'), path: '/static' },
+        { name: t('navbar.register', "Ro'yxatdan o'tish"), path: '/register' },
     ]
 
     const currentLang = LANGS[i18n.language]?.short ? i18n.language : 'en'
@@ -108,11 +108,10 @@ export default function Navbar() {
                             <button
                                 key={code}
                                 onClick={() => handleLanguageChange(code)}
-                                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                                    currentLang === code
+                                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${currentLang === code
                                         ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white'
                                         : 'text-gray-600 dark:text-gray-300 hover:bg-red-500/10 hover:text-red-600'
-                                }`}
+                                    }`}
                             >
                                 <span>{label}</span>
                                 <span className="opacity-70 text-[10px]">{short}</span>
@@ -130,11 +129,10 @@ export default function Navbar() {
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className={`max-w-6xl mx-auto transition-all duration-500 rounded-3xl pointer-events-auto ${
-                    scrolled
+                className={`max-w-6xl mx-auto transition-all duration-500 rounded-3xl pointer-events-auto ${scrolled
                         ? 'bg-white/85 dark:bg-gray-950/85 backdrop-blur-2xl border border-white/40 dark:border-gray-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] py-2'
                         : 'bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border border-white/20 dark:border-gray-800/40 shadow-lg py-3'
-                }`}
+                    }`}
             >
                 <div className="px-3 sm:px-6 flex items-center justify-between gap-2">
 
@@ -174,9 +172,8 @@ export default function Navbar() {
                                 <Link
                                     key={item.path}
                                     to={item.path}
-                                    className={`relative px-3.5 py-2 text-[11px] lg:text-xs font-bold transition-colors duration-200 text-center whitespace-nowrap ${
-                                        isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                                    }`}
+                                    className={`relative px-3.5 py-2 text-[11px] lg:text-xs font-bold transition-colors duration-200 text-center whitespace-nowrap ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                                        }`}
                                 >
                                     {isActive && (
                                         <motion.div
@@ -216,7 +213,7 @@ export default function Navbar() {
                                     className="group relative inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold shadow-lg shadow-red-500/25 overflow-hidden whitespace-nowrap"
                                 >
                                     <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-                                    <span className="relative">{t('navbar.control', 'Boshqaruv')}</span>
+                                    <span className="relative">{t('navbar.dashboard', 'Boshqaruv')}</span>
                                     <FaArrowRight className="relative w-3 h-3 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </motion.div>
@@ -246,7 +243,7 @@ export default function Navbar() {
                                             onClick={() => setDropdownOpen(false)}
                                             className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold py-3 rounded-2xl text-center shadow-md shadow-red-500/20"
                                         >
-                                            {t('navbar.control', 'Boshqaruv')}
+                                            {t('navbar.dashboard', 'Boshqaruv')}
                                         </Link>
                                         <div className="flex justify-center pt-1 border-t border-gray-100 dark:border-gray-800">
                                             <LanguageSelector align="left" />
@@ -275,11 +272,10 @@ export default function Navbar() {
                                         key={item.path}
                                         to={item.path}
                                         onClick={() => setMenuOpen(false)}
-                                        className={`py-2.5 px-4 rounded-xl transition ${
-                                            location.pathname === item.path
+                                        className={`py-2.5 px-4 rounded-xl transition ${location.pathname === item.path
                                                 ? 'bg-red-500/10 text-red-600 font-bold'
                                                 : 'hover:bg-red-500/10 hover:text-red-600'
-                                        }`}
+                                            }`}
                                     >
                                         {item.name}
                                     </Link>
@@ -294,4 +290,4 @@ export default function Navbar() {
             </motion.header>
         </div>
     )
-}
+} 

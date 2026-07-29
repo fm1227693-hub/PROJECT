@@ -121,7 +121,7 @@
         "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
         "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
     },
-    "stats": {
+                        "stats": {
         "studentsTitle": "Faol o'quvchilar",
         "lessonsTitle": "Jami darslar",
         "speakingTitle": "Suhbat klublari",

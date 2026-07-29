@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
+import { FaBookOpen, FaCommentDots, FaPenNib } from "react-icons/fa";
 
 /* ---------------------------------------------------------
    MA'LUMOTLAR BAZASI (O'ZGARTIRILMADI)
@@ -771,8 +772,8 @@ export default function IeltsPracticeApp() {
       <div className="pt-12">
         <Shell>
           <div ref={heroRef} className="flex min-h-[75vh] flex-col items-center justify-center text-center">
-            <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-indigo-500/20 to-sky-500/20 border border-indigo-500/30 text-4xl shadow-2xl shadow-indigo-500/10 backdrop-blur-xl">
-              📘
+            <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-indigo-500/20 to-sky-500/20 border border-indigo-500/30 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl">
+              <FaBookOpen className="h-9 w-9 text-indigo-300" />
             </div>
             <h1 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
               {t("ieltsEngine.heroTitle", "IELTS Testlar")}
@@ -830,9 +831,9 @@ export default function IeltsPracticeApp() {
   /* ---------------- SKILLS ---------------- */
   if (screen === "skills") {
     const options = [
-      { key: "reading", label: `📖 ${t("ieltsEngine.readingSkill", "Reading")}`, to: "readingParts", desc: t("ieltsEngine.readingMenuDesc", "Matnni o'qing va savollarga javob bering") },
-      { key: "speaking", label: `🗣️ ${t("ieltsEngine.speakingSkill", "Speaking")}`, to: "speakingParts", desc: t("ieltsEngine.speakingMenuDesc", "Ideal og'zaki javoblar namunasi") },
-      { key: "grammar", label: `✏️ ${t("ieltsEngine.grammarSkill", "Grammar")}`, to: "grammarTest", meta: t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level), desc: t("ieltsEngine.grammarMenuDesc", "Grammatik qoidalar bo'yicha testlar") },
+      { key: "reading", icon: <FaBookOpen className="h-5 w-5 text-sky-400" />, label: t("ieltsEngine.readingSkill", "Reading"), to: "readingParts", desc: t("ieltsEngine.readingMenuDesc", "Matnni o'qing va savollarga javob bering") },
+      { key: "speaking", icon: <FaCommentDots className="h-5 w-5 text-emerald-400" />, label: t("ieltsEngine.speakingSkill", "Speaking"), to: "speakingParts", desc: t("ieltsEngine.speakingMenuDesc", "Ideal og'zaki javoblar namunasi") },
+      { key: "grammar", icon: <FaPenNib className="h-5 w-5 text-indigo-400" />, label: t("ieltsEngine.grammarSkill", "Grammar"), to: "grammarTest", meta: t("ieltsEngine.grammarDesc", "10 ta Band {level}.0 savollari").replace("{level}", level), desc: t("ieltsEngine.grammarMenuDesc", "Grammatik qoidalar bo'yicha testlar") },
     ];
     return (
       <div className="pt-6">
@@ -848,7 +849,10 @@ export default function IeltsPracticeApp() {
                 onClick={() => goto(o.to)}
                 className="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 p-6 text-left shadow-xl backdrop-blur-xl transition-all hover:border-indigo-500/50 hover:bg-slate-900/90 hover:shadow-indigo-500/10"
               >
-                <div className="text-xl font-bold text-white transition-colors group-hover:text-indigo-300">{o.label}</div>
+                <div className="flex items-center gap-3">
+                  {o.icon}
+                  <div className="text-xl font-bold text-white transition-colors group-hover:text-indigo-300">{o.label}</div>
+                </div>
                 <div className="mt-1 text-sm text-slate-400">{o.desc}</div>
                 {o.meta && <div className="mt-2 text-xs font-semibold text-indigo-400">{o.meta}</div>}
               </button>
