@@ -34,7 +34,7 @@ export default function Admin() {
     }
 
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-950 flex flex-col items-center justify-center p-4 transition-colors duration-200 relative">
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-200 relative">
             
             {/* Orqaga qaytish tugmasi (Chap yuqori burchakda) */}
             <div className="absolute top-6 left-6">

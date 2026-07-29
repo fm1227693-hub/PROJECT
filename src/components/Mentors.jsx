@@ -70,7 +70,7 @@ export default function Mentors() {
   };
 
   return (
-    <section className="bg-white dark:bg-[#090623] py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200">
+    <section className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200">
       <div className="max-w-6xl mx-auto">
         {/* Sarlavha qismi */}
         <div

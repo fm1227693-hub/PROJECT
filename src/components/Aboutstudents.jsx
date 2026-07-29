@@ -25,7 +25,7 @@ export default function AboutStudents({ onBack }) {
 
   return (
     <section
-      className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 mb-20 sm:mb-24 select-none font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen"
+      className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 mb-20 sm:mb-24 select-none font-sans text-gray-900 dark:text-white transition-colors duration-200 min-h-screen"
       aria-labelledby="about-students-title"
     >
       {/* Orqaga qaytish tugmasi */}

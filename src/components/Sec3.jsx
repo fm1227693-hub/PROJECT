@@ -92,14 +92,14 @@ export default function Sec3() {
   }
 
   return (
-    <div className="relative bg-white dark:bg-[#0a0817] min-h-screen py-12 sm:py-16 px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300">
+    <div className="relative py-12 sm:py-16 px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300">
       {/* Orqa fondagi jozibali va sekin pulslanuvchi nurlar */}
-      <motion.div 
+      <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-10 left-5 sm:left-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-red-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
       />
-      <motion.div 
+      <motion.div
         animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.2, 0.1] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-10 right-5 sm:right-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
@@ -107,7 +107,8 @@ export default function Sec3() {
 
       <div className="relative max-w-6xl mx-auto">
         <div data-aos="fade-up" className="text-center mb-3">
-          <span className="inline-block bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full shadow-inner">
+          <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full shadow-inner">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
             {t('sec3.badge')}
           </span>
         </div>
@@ -145,9 +146,9 @@ export default function Sec3() {
                   className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-red-400"
                 />
                 {isActive && (
-                  <motion.div 
-                    initial={{ opacity: 0, x: -10 }} 
-                    animate={{ opacity: 1, x: 0 }} 
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
                     className="text-left"
                   >
                     <h4 className="text-xs sm:text-sm font-bold leading-tight">
@@ -163,7 +164,7 @@ export default function Sec3() {
 
         {/* Asosiy kontent grid qismi */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-center">
-          
+
           {/* Chap qism: O'qituvchi kartochkasi */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -172,7 +173,7 @@ export default function Sec3() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -30, scale: 0.95 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="mx-auto w-full max-w-sm rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-white dark:bg-slate-900 relative group border border-slate-200 dark:border-white/10"
+              className="mx-auto w-full max-w-sm rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl relative group border border-slate-200 dark:border-white/10"
             >
               <div className="relative h-60 sm:h-72 bg-gradient-to-b from-indigo-800 to-purple-900 overflow-hidden">
                 <motion.img
@@ -201,9 +202,9 @@ export default function Sec3() {
                     {t('sec3.experience')}: {currentTeacher.experience}
                   </span>
                 </div>
-                
+
                 {/* Kartochka ichidagi matn ham silliq animatsiya bilan chiqadi */}
-                <motion.p 
+                <motion.p
                   key={currentTeacher.id + '-desc'}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -225,37 +226,29 @@ export default function Sec3() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="grid grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-6 sm:gap-y-8"
+                className="grid grid-cols-2 gap-3 sm:gap-4"
               >
-                <div>
-                  <span className="block text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
-                    {currentTeacher.score}
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('sec3.ieltsScore')}</span>
-                </div>
-                <div>
-                  <span className="block text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
-                    {currentTeacher.cert}
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('sec3.certified')}</span>
-                </div>
-                <div>
-                  <span className="block text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
-                    {currentTeacher.experience}
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('sec3.experience')}</span>
-                </div>
-                <div>
-                  <span className="block text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
-                    {currentTeacher.students}
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('sec3.students')}</span>
-                </div>
+                {[
+                  { value: currentTeacher.score, label: t('sec3.ieltsScore') },
+                  { value: currentTeacher.cert, label: t('sec3.certified') },
+                  { value: currentTeacher.experience, label: t('sec3.experience') },
+                  { value: currentTeacher.students, label: t('sec3.students') },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] p-4"
+                  >
+                    <span className="block text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
+                      {stat.value}
+                    </span>
+                    <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{stat.label}</span>
+                  </div>
+                ))}
               </motion.div>
             </AnimatePresence>
 
             {/* Sekin yoziladigan matn bloki */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
@@ -263,7 +256,7 @@ export default function Sec3() {
             >
               <p>
                 {displayedText}
-                <motion.span 
+                <motion.span
                   animate={{ opacity: [1, 0, 1] }}
                   transition={{ duration: 0.8, repeat: Infinity }}
                   className="inline-block w-1.5 h-4 ml-1 bg-red-500 align-middle"
@@ -301,18 +294,18 @@ export default function Sec3() {
       {/* Modal Oyna */}
       <AnimatePresence>
         {modal && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-white dark:bg-[#0f0d24] border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-md relative text-slate-900 dark:text-white shadow-2xl shadow-purple-950/50"
+              className="bg-white/95 dark:bg-[#0f0d24]/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-md relative text-slate-900 dark:text-white shadow-2xl shadow-purple-950/50"
             >
               <motion.button
                 whileHover={{ rotate: 90, scale: 1.1 }}
@@ -368,7 +361,7 @@ export default function Sec3() {
       {/* Toast Xabarnoma */}
       <AnimatePresence>
         {toast && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}

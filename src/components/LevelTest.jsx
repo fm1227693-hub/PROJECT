@@ -193,7 +193,7 @@ export default function LevelTest() {
     // INTRO
     if (stage === 'intro') {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
                 <div className="absolute top-1/4 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
                 <Toaster position="bottom-right" />
                 <BackBtn />
@@ -240,7 +240,7 @@ export default function LevelTest() {
     if (stage === 'result' && showResult) {
         const { correct, total, percent, level } = computeScore()
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
                 <Toaster position="bottom-right" />
                 <BackBtn />
                 <div
@@ -307,7 +307,7 @@ export default function LevelTest() {
     // FINISHED but result hidden
     if (finished && !showResult) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
                 <Toaster position="bottom-right" />
                 <BackBtn />
                 <div
@@ -340,7 +340,7 @@ export default function LevelTest() {
 
     // TEST
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
+        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
             <Toaster position="bottom-right" />
             <BackBtn />
             <div

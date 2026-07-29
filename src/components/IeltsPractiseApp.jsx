@@ -616,7 +616,7 @@ function BackButton({ onClick }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      className="group mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-white/70 px-5 py-2 text-sm font-semibold text-indigo-600 shadow-lg shadow-indigo-500/5 backdrop-blur-xl transition-all hover:bg-indigo-600 hover:text-white dark:border-sky-500/30 dark:bg-slate-900/60 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-slate-950"
+      className="group mb-6 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-white/70 px-5 py-2 text-sm font-semibold text-red-600 shadow-lg shadow-red-500/5 backdrop-blur-xl transition-all hover:bg-red-600 hover:text-white dark:border-red-500/30 dark:bg-slate-900/60 dark:text-red-400 dark:hover:bg-red-500 dark:hover:text-slate-950"
     >
       <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>
       <span>{t("ieltsEngine.backBtn", "Orqaga").replace("← ", "")}</span>
@@ -634,11 +634,19 @@ function Shell({ children }) {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen w-full overflow-hidden bg-slate-950 px-4 py-12 text-slate-100 selection:bg-indigo-500 selection:text-white">
-      {/* Zamonaviy Neon Glow Orbs */}
-      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-indigo-600/20 blur-[120px]" />
-      <div className="pointer-events-none absolute top-1/2 -right-32 h-96 w-96 rounded-full bg-sky-500/20 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-32 left-1/3 h-96 w-96 rounded-full bg-emerald-500/15 blur-[120px]" />
+    <div ref={containerRef} className="relative min-h-screen w-full overflow-hidden px-4 py-12 text-slate-100 selection:bg-red-500 selection:text-white">
+      {/* Zamonaviy Neon Glow Orbs — boshqa bo'limlar bilan uyg'un palitra */}
+      <div className="pointer-events-none absolute top-1/3 -right-32 h-96 w-96 rounded-full bg-purple-500/15 blur-[130px]" />
+      <div className="pointer-events-none absolute -bottom-32 left-1/3 h-96 w-96 rounded-full bg-indigo-500/10 blur-[130px]" />
+
+      {/* Nozik nuqtali grid naqsh — boshqa sahifalar bilan bir xil detal */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(148,163,184,0.4) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
 
       <div className="relative mx-auto max-w-3xl">{children}</div>
     </div>
@@ -656,7 +664,7 @@ function Header({ title, subtitle }) {
 
   return (
     <div ref={headerRef} className="mb-8 text-center">
-      <h1 className="bg-gradient-to-r from-white via-indigo-200 to-sky-400 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl">
+      <h1 className="bg-gradient-to-r from-white via-red-200 to-purple-300 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl">
         {title}
       </h1>
       {subtitle && (
@@ -772,8 +780,8 @@ export default function IeltsPracticeApp() {
       <div className="pt-12">
         <Shell>
           <div ref={heroRef} className="flex min-h-[75vh] flex-col items-center justify-center text-center">
-            <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-indigo-500/20 to-sky-500/20 border border-indigo-500/30 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl">
-              <FaBookOpen className="h-9 w-9 text-indigo-300" />
+            <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-tr from-red-500/20 to-purple-500/20 border border-red-500/30 shadow-2xl shadow-red-500/10 backdrop-blur-xl">
+              <FaBookOpen className="h-9 w-9 text-red-300" />
             </div>
             <h1 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
               {t("ieltsEngine.heroTitle", "IELTS Testlar")}
@@ -785,7 +793,7 @@ export default function IeltsPracticeApp() {
               onMouseEnter={(e) => handleCardHover(e, true)}
               onMouseLeave={(e) => handleCardHover(e, false)}
               onClick={() => goto("levels")}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-sky-600 to-indigo-600 bg-[length:200%_auto] px-10 py-5 text-lg font-bold text-white shadow-xl shadow-indigo-500/25 transition-all duration-500 hover:bg-[position:right_center]"
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 via-rose-500 to-red-600 bg-[length:200%_auto] px-10 py-5 text-lg font-bold text-white shadow-xl shadow-red-500/25 transition-all duration-500 hover:bg-[position:right_center]"
             >
               <span className="relative z-10">{t("ieltsEngine.startBtn", "Test yechish")}</span>
             </button>
@@ -948,12 +956,12 @@ export default function IeltsPracticeApp() {
 
           {/* Start tugmasi va Taymer paneli */}
           {!testStarted ? (
-            <div className="mb-8 rounded-3xl border border-indigo-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
+            <div className="mb-8 rounded-3xl border border-red-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
               <h2 className="mb-4 text-2xl font-bold text-white">{t("ieltsEngine.readyTitle", "Testni boshlashga tayyormisiz?")}</h2>
               <p className="mb-6 text-sm text-slate-400">{t("ieltsEngine.readyDesc", "Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.")}</p>
               <button
                 onClick={() => setTestStarted(true)}
-                className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+                className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 px-8 py-4 font-bold text-white shadow-xl shadow-red-500/20 transition-all hover:scale-105 active:scale-95"
               >
                 {t("ieltsEngine.startTestBtn", "Start")}
               </button>
@@ -1017,7 +1025,7 @@ export default function IeltsPracticeApp() {
                                     ? opt === q.answer
                                       ? "border-emerald-500 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20"
                                       : "border-rose-500 bg-rose-500 text-white shadow-lg shadow-rose-500/20"
-                                    : "border-indigo-500 bg-indigo-500 text-white shadow-lg shadow-indigo-500/20"
+                                    : "border-red-500 bg-red-500 text-white shadow-lg shadow-red-500/20"
                                   : "border-slate-800 bg-slate-800/50 text-slate-300 hover:border-slate-700 hover:bg-slate-800"
                               }`}
                             >
@@ -1044,7 +1052,7 @@ export default function IeltsPracticeApp() {
                       setToastMessage(t("ieltsEngine.resultsReadyToast", "Natijalar chiqdi!"));
                       setTimeout(() => setToastMessage(null), 3000);
                     }}
-                    className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-10 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+                    className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 px-10 py-4 font-bold text-white shadow-xl shadow-red-500/20 transition-all hover:scale-105 active:scale-95"
                   >
                     {t("ieltsEngine.viewResultBtn", "Natijani ko'rish")}
                   </button>
@@ -1088,12 +1096,12 @@ export default function IeltsPracticeApp() {
 
           {/* Start tugmasi va Taymer paneli */}
           {!testStarted ? (
-            <div className="mb-8 rounded-3xl border border-indigo-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
+            <div className="mb-8 rounded-3xl border border-red-500/30 bg-slate-900/80 p-8 text-center shadow-xl backdrop-blur-xl">
               <h2 className="mb-4 text-2xl font-bold text-white">{t("ieltsEngine.readyTitle", "Testni boshlashga tayyormisiz?")}</h2>
               <p className="mb-6 text-sm text-slate-400">{t("ieltsEngine.readyDesc", "Start tugmasi bosilgach, 20 daqiqalik taymer ishga tushadi.")}</p>
               <button
                 onClick={() => setTestStarted(true)}
-                className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-8 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+                className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 px-8 py-4 font-bold text-white shadow-xl shadow-red-500/20 transition-all hover:scale-105 active:scale-95"
               >
                 {t("ieltsEngine.startTestBtn", "Start")}
               </button>
@@ -1152,7 +1160,7 @@ export default function IeltsPracticeApp() {
                                     ? opt === q.answer
                                       ? "border-emerald-500 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20"
                                       : "border-rose-500 bg-rose-500 text-white shadow-lg shadow-rose-500/20"
-                                    : "border-indigo-500 bg-indigo-500 text-white shadow-lg shadow-indigo-500/20"
+                                    : "border-red-500 bg-red-500 text-white shadow-lg shadow-red-500/20"
                                   : "border-slate-800 bg-slate-800/50 text-slate-300 hover:border-slate-700 hover:bg-slate-800"
                               }`}
                             >
@@ -1179,7 +1187,7 @@ export default function IeltsPracticeApp() {
                       setToastMessage(t("ieltsEngine.resultsReadyToast", "Natijalar chiqdi!"));
                       setTimeout(() => setToastMessage(null), 3000);
                     }}
-                    className="rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 px-10 py-4 font-bold text-white shadow-xl shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+                    className="rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 px-10 py-4 font-bold text-white shadow-xl shadow-red-500/20 transition-all hover:scale-105 active:scale-95"
                   >
                     {t("ieltsEngine.viewResultBtn", "Natijani ko'rish")}
                   </button>

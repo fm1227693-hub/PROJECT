@@ -10,12 +10,10 @@ import Admin from "./components/Admin";
 import Register from "./components/Register";
 import Mentorstats from "./components/Mentorstats";
 import IeltsPracticeApp from "./components/IeltsPractiseApp";
-import Games from "./components/Game";
-import Games1 from "./components/Game1";
-import Game2 from "./components/Game2";
-import Game3 from "./components/Game3";
 import Game from "./components/Game";
 import Game1 from "./components/Game1";
+import Game2 from "./components/Game2";
+import Game3 from "./components/Game3";
 import LevelTest from "./components/LevelTest";
 import Pricing from "./components/Pricing";
 
@@ -32,22 +30,51 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="dark:bg-[#030712] bg-white min-h-screen relative transition-colors duration-200 overflow-hidden">
-      
-      {/* Chap yuqori burchakdagi binafsha neon nur */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
-      
-      {/* O'ng o'rta qismdagi ko'k neon nur (chuqurlik berish uchun) */}
-      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+    <div className="relative min-h-screen bg-white dark:bg-[#030712] transition-colors duration-300 overflow-hidden">
+
+      {/* ================= PREMIUM FON QATLAMI ================= */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+
+        {/* Nozik gradient asos — pastdan tepaga yumshoq o'tish */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-100 dark:from-[#030712] dark:via-[#050912] dark:to-[#0a0f1c]" />
+
+        {/* Nozik nuqtali grid naqsh (premium SaaS saytlarga xos) */}
+        <div
+          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.15]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(100,116,139,0.25) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+
+        {/* Chap yuqori — binafsha/moviy mesh nur */}
+        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-purple-500/25 via-indigo-500/15 to-transparent rounded-full blur-[160px]" />
+
+        {/* O'ng yuqori — moviy/siyan nur */}
+        <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-500/20 via-cyan-400/10 to-transparent rounded-full blur-[150px]" />
+
+        {/* Markaz-o'ng — chuqurlik uchun ikkinchi qatlam */}
+        <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-gradient-to-l from-fuchsia-500/10 to-transparent rounded-full blur-[140px]" />
+
+        {/* Pastki chap — issiq aksent (oltin/amber, minimal) */}
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[400px] bg-gradient-to-t from-amber-400/10 via-orange-400/5 to-transparent rounded-full blur-[150px]" />
+
+        {/* Eng pastki qatlam — sahifa oxirida yumshoq qorong'ulashuv (dark mode chuqurligi) */}
+        <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100 dark:from-[#020509] to-transparent" />
+
+        {/* Yuqori vinyet — navbar ostidagi kontent bilan uyg'unlashishi uchun */}
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/60 dark:from-[#030712]/80 to-transparent" />
+      </div>
+      {/* ================= FON QATLAMI TUGADI ================= */}
 
       <div className="relative z-10">
         <Navbar />
-        {/* ScrollToTop shu yerga qo'shildi */}
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/stats" element={<Stats />} />
-          <Route path="/products" element={<Products/> } />
+          <Route path="/products" element={<Products />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/enter" element={<Admin />} />
           <Route path="/static" element={<Mentorstats />} />
@@ -55,11 +82,11 @@ export default function App() {
           <Route path="/level-test" element={<LevelTest />} />
           <Route path="/pricing" element={<Pricing />} />
         </Routes>
-        <IeltsPracticeApp className="mt-10"/>
-        <Game/>
-        <Game1  />
-        <Game2/>
-        <Game3/>
+        <IeltsPracticeApp className="mt-10" />
+        <Game />
+        <Game1 />
+        <Game2 />
+        <Game3 />
         <Footer />
       </div>
 

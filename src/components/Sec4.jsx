@@ -14,8 +14,12 @@ export default function Sec4() {
     }, [])
 
     return (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200 overflow-hidden">
+
+            {/* Dekorativ fon nuri */}
+            <div className="pointer-events-none absolute top-0 right-0 w-96 h-96 bg-red-500/5 dark:bg-red-500/10 rounded-full blur-3xl" />
+
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
                 {/* Chap tomon: Matnlar va ma'lumotlar */}
                 <div
@@ -23,7 +27,8 @@ export default function Sec4() {
                     data-aos-duration="800"
                     className="flex flex-col space-y-6 max-w-xl"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit animate-pulse">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit ring-1 ring-red-100 dark:ring-red-500/20">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
                         {t('about.badge')}
                     </div>
 
@@ -39,7 +44,7 @@ export default function Sec4() {
 
                     <div className="space-y-4 pt-2">
                         {/* 1-blok */}
-                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
+                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-900/40 hover:shadow-lg group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
                             <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
                                 🎯
                             </div>
@@ -54,7 +59,7 @@ export default function Sec4() {
                         </div>
 
                         {/* 2-blok */}
-                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
+                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-900/40 hover:shadow-lg group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
                             <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
                                 👨‍🏫
                             </div>
@@ -74,7 +79,7 @@ export default function Sec4() {
                 <div
                     data-aos="fade-left"
                     data-aos-duration="800"
-                    className="w-full h-[400px] rounded-3xl overflow-hidden shadow-xl border border-gray-100/50 dark:border-gray-800 relative group"
+                    className="w-full h-[400px] rounded-3xl overflow-hidden shadow-2xl border border-gray-100/50 dark:border-gray-800 relative group"
                 >
                     <img
                         src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2340&auto=format&fit=crop"

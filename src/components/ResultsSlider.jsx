@@ -70,20 +70,23 @@ export default function ResultsSlider() {
 
     return (
         <div className="w-full px-2 sm:px-4">
-            <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white dark:bg-[#090623] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-6 sm:my-10 transition-colors duration-300 overflow-hidden">
-                
+            <div className="relative w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white/90 dark:bg-[#090623]/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-6 sm:my-10 transition-colors duration-300 overflow-hidden">
+
+                {/* Dekorativ fon nuri */}
+                <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
+
                 {/* Sarlavha */}
-                <motion.h2 
+                <motion.h2
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 px-2"
+                    className="relative text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 px-2"
                 >
                     {t("resultsSlider.title")}
                 </motion.h2>
 
                 {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}
-                <div className="flex flex-col items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
+                <div className="relative flex flex-col items-center gap-2 sm:gap-3 mb-5 sm:mb-6">
                     <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 w-full max-w-md [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4">
                         {resultsData.map((student, index) => {
                             const isActive = index === currentIndex;
@@ -111,7 +114,7 @@ export default function ResultsSlider() {
 
                     {/* Tanlangan o'quvchining ismi */}
                     <AnimatePresence mode="wait">
-                        <motion.h3 
+                        <motion.h3
                             key={activeStudent.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -125,7 +128,7 @@ export default function ResultsSlider() {
                 </div>
 
                 {/* Progress chiziqchasi */}
-                <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mb-6 sm:mb-8 overflow-hidden">
+                <div className="relative w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mb-6 sm:mb-8 overflow-hidden">
                     <motion.div
                         className="bg-red-600 h-full"
                         animate={{
@@ -136,12 +139,12 @@ export default function ResultsSlider() {
                 </div>
 
                 {/* Pastki qism: Ballar va Sertifikat rasmi */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-inner">
-                    
+                <div className="relative grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-inner">
+
                     {/* Ballar qismi (Chap tomon) */}
                     <div className="md:col-span-5 flex flex-col gap-2.5 sm:gap-3">
                         <AnimatePresence mode="wait">
-                            <motion.div 
+                            <motion.div
                                 key={activeStudent.id}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
