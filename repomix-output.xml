@@ -3614,7 +3614,7 @@ export default function Stats() {
         "register": "Register",
         "dashboard": "Dashboard",
         "selectLang": "Select Language:",
-        "Mentorlar": "Mentors:"
+        "Mentorlar": "Mentors"
     },
     "mentorsPage": {
         "badge": "Professional Team",
@@ -3987,7 +3987,7 @@ export default function Stats() {
         "register": "Регистрация",
         "dashboard": "Управление",
         "selectLang": "Выберите язык:",
-        "Mentorlar": "Менторы:"
+        "Mentorlar": "Менторы"
     },
     "mentorsPage": {
         "badge": "Профессиональная команда",
@@ -4359,7 +4359,7 @@ export default function Stats() {
         "register": "Ro'yxatdan o'tish",
         "dashboard": "Boshqaruv",
         "selectLang": "Tilni tanlang:",
-        "Mentorlar": "Mentorlar:"
+        "Mentorlar": "Mentorlar"
     },
     "mentorsPage": {
         "badge": "Professional jamoa",
