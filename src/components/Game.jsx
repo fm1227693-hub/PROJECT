@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGamepad, FaCheckCircle, FaTimesCircle, FaRedo, FaArrowRight, FaLightbulb } from 'react-icons/fa';
+import { 
+    FaGamepad, 
+    FaCheckCircle, 
+    FaTimesCircle, 
+    FaRedo, 
+    FaArrowRight, 
+    FaLightbulb, 
+    FaTrophy,
+    FaBolt,
+    FaBullseye,
+    FaMagic
+} from 'react-icons/fa';
 
 const wordsList = [
     { word: 'achieve', hint: 'To successfully bring about or reach something' },
@@ -195,7 +206,7 @@ export default function Game() {
                         className="text-center py-6"
                     >
                         <div className="w-16 h-16 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-3xl mx-auto flex items-center justify-center mb-4 text-2xl shadow-inner">
-                            🎉
+                            <FaTrophy className="w-7 h-7 text-indigo-500 animate-bounce" />
                         </div>
                         <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white mb-2">
                             Ajoyib natija!

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGamepad, FaRedo, FaAward, FaFire } from 'react-icons/fa'
+import { FaGamepad, FaRedo, FaAward, FaFire, FaStar, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
 
 const WORDS_DATABASE = [
     { en: 'Eloquent', uz: 'So\'zamol, ta\'sirli gapiradigan', options: ['So\'zamol, ta\'sirli gapiradigan', 'Ijtimoiy odobsiz', 'Yolg\'onchi', 'Sokin'] },
@@ -151,9 +151,15 @@ export default function Game3() {
                                             key={idx}
                                             whileTap={{ scale: 0.96 }}
                                             onClick={() => handleAnswer(opt)}
-                                            className={`py-3.5 px-3 rounded-2xl text-[11px] sm:text-xs font-bold border transition-all text-center cursor-pointer shadow-sm flex items-center justify-center leading-snug ${btnStyle}`}
+                                            className={`py-3.5 px-3 rounded-2xl text-[11px] sm:text-xs font-bold border transition-all text-center cursor-pointer shadow-sm flex items-center justify-between px-4 leading-snug ${btnStyle}`}
                                         >
-                                            <span>{opt}</span>
+                                            <span className="text-left">{opt}</span>
+                                            {isAnswered && opt === currentItem.uz && (
+                                                <FaCheckCircle className="w-4 h-4 text-emerald-500 shrink-0 ml-2" />
+                                            )}
+                                            {isAnswered && opt === selectedOption && opt !== currentItem.uz && (
+                                                <FaTimesCircle className="w-4 h-4 text-red-500 shrink-0 ml-2" />
+                                            )}
                                         </motion.button>
                                     )
                                 })}
@@ -167,8 +173,8 @@ export default function Game3() {
                             animate={{ opacity: 1, scale: 1 }}
                             className="text-center py-4"
                         >
-                            <div className="w-14 h-14 bg-red-500/10 text-red-600 rounded-3xl mx-auto flex items-center justify-center mb-3 text-xl shadow-inner">
-                                <FaAward />
+                            <div className="w-16 h-16 bg-red-500/10 text-red-600 rounded-3xl mx-auto flex items-center justify-center mb-4 text-2xl shadow-inner">
+                                <FaAward className="w-8 h-8 text-red-500 animate-bounce" />
                             </div>
                             <h2 className="text-xl font-black text-gray-900 dark:text-white mb-1">
                                 {t('game3.finishTitle')}
@@ -179,7 +185,8 @@ export default function Game3() {
                             </p>
                             
                             {/* Nechta to'g'ri topgani aniq ko'rsatiladigan qism */}
-                            <div className="text-lg font-black text-red-600 dark:text-red-400 mb-6 py-2 px-4 rounded-2xl bg-red-500/10 inline-block border border-red-500/20">
+                            <div className="text-lg font-black text-red-600 dark:text-red-400 mb-6 py-2 px-4 rounded-2xl bg-red-500/10 inline-flex items-center gap-2 border border-red-500/20">
+                                <FaStar className="w-4 h-4 text-amber-500 animate-spin" />
                                 {score} / {shuffledList.length} ta to'g'ri javob
                             </div>
 

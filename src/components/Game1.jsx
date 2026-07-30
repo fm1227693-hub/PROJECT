@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGamepad, FaRedo, FaTrophy, FaHandshake } from 'react-icons/fa'
+import { FaGamepad, FaRedo, FaTrophy, FaHandshake, FaStar, FaTimes, FaRegCircle } from 'react-icons/fa'
 
 export default function Game1() {
     const { t } = useTranslation()
@@ -84,8 +84,9 @@ export default function Game1() {
                         >
                             {winner ? (
                                 <span className="text-emerald-500 font-black flex items-center gap-1.5 text-sm">
-                                    <FaTrophy className="w-4 h-4 text-amber-500" />
-                                    {t('games1.winner')} {winner} 🎉
+                                    <FaTrophy className="w-4 h-4 text-amber-500 animate-bounce" />
+                                    {t('games1.winner')} {winner === 'X' ? <FaTimes className="w-3.5 h-3.5 inline text-red-600" /> : <FaRegCircle className="w-3.5 h-3.5 inline text-rose-500" />} 
+                                    <FaStar className="w-3.5 h-3.5 text-amber-400 animate-spin" />
                                 </span>
                             ) : isDraw ? (
                                 <span className="text-amber-500 font-black flex items-center gap-1.5 text-sm">
@@ -93,8 +94,8 @@ export default function Game1() {
                                     {t('games1.draw')}
                                 </span>
                             ) : (
-                                <span>
-                                    {t('games1.turn')} <strong className="text-red-600 dark:text-red-400 text-sm px-1.5 py-0.5 rounded-lg bg-red-500/10">{isXNext ? 'X' : 'O'}</strong>
+                                <span className="flex items-center gap-1.5">
+                                    {t('games1.turn')} <strong className="text-red-600 dark:text-red-400 text-sm px-2 py-0.5 rounded-lg bg-red-500/10 inline-flex items-center justify-center">{isXNext ? <FaTimes className="w-3.5 h-3.5" /> : <FaRegCircle className="w-3.5 h-3.5" />}</strong>
                                 </span>
                             )}
                         </motion.div>
@@ -123,8 +124,9 @@ export default function Game1() {
                                         initial={{ scale: 0, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
                                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                        className="flex items-center justify-center"
                                     >
-                                        {cell}
+                                        {cell === 'X' ? <FaTimes className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" /> : <FaRegCircle className="w-7 h-7 sm:w-9 sm:h-9 text-rose-500" />}
                                     </motion.span>
                                 )}
                             </AnimatePresence>
