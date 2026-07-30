@@ -6,6 +6,7 @@ import {
     FaYoutube,
     FaMapMarkerAlt,
     FaPhoneAlt,
+    FaClock,
 } from 'react-icons/fa'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -16,7 +17,7 @@ export default function Footer() {
     useEffect(() => {
         AOS.init({
             once: true,
-            offset: 80,
+            offset: 50, // Kamroq ofset mobil uchun
         })
     }, [])
 
@@ -32,47 +33,56 @@ export default function Footer() {
             icon: <FaTelegramPlane />,
             href: 'https://telegram.me/optimumenglishscape',
             label: 'Telegram',
-            hover: 'hover:bg-blue-600 dark:hover:bg-blue-600',
+            color: 'hover:text-sky-500',
         },
         {
             icon: <FaInstagram />,
             href: 'https://www.instagram.com/optimum_english_9/profilecard/?igsh=MTZmc2JvMmhvNHpjdw==',
             label: 'Instagram',
-            hover: 'hover:bg-pink-600 dark:hover:bg-pink-600',
+            color: 'hover:text-pink-500',
         },
         {
             icon: <FaYoutube />,
             href: 'https://youtube.com/@optimumschoolofenglish?si=3swxgqQR7g884fnu',
             label: 'YouTube',
-            hover: 'hover:bg-red-700 dark:hover:bg-red-700',
+            color: 'hover:text-red-600',
         },
     ]
+
+    // Yordamchi komponent takrorlanmasligi uchun
+    const FooterSection = ({ title, children, noBorder }) => (
+        <div className={`pb-6 ${noBorder ? '' : 'border-b border-gray-100 dark:border-gray-800'} sm:border-none sm:pb-0`}>
+            <h4 className="text-sm font-extrabold text-gray-950 dark:text-white uppercase tracking-wider mb-4 px-1 sm:px-0">
+                {title}
+            </h4>
+            <div className="flex flex-col gap-3 px-1 sm:px-0">
+                {children}
+            </div>
+        </div>
+    )
 
     return (
         <footer
             data-aos="fade-up"
-            data-aos-duration="600"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="relative text-gray-700 dark:text-gray-400 pt-14 sm:pt-16 pb-8 px-4 sm:px-6 border-t border-gray-200/80 dark:border-gray-800/80 mt-10 transition-colors duration-200 overflow-hidden bg-white/50 dark:bg-gray-950/50 backdrop-blur-md"
+            className="relative text-gray-600 dark:text-gray-400 pt-12 pb-6 px-5 border-t border-gray-100 dark:border-gray-800 mt-10 transition-colors duration-200 bg-white dark:bg-gray-950"
         >
-            {/* Fon uchun dekorativ blur doira */}
-            <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-blue-500/10 dark:bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 bg-pink-500/10 dark:bg-pink-500/10 rounded-full blur-3xl" />
+            {/* Asosiy kontent: Mobil uchun flex-col, Desktop uchun grid */}
+            <div className="relative max-w-6xl mx-auto flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-10 text-left">
 
-            <div className="relative max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-8 text-center sm:text-left">
-
-                {/* Brend va tavsif */}
-                <div className="flex flex-col items-center sm:items-start gap-4">
-                    <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+                {/* 1. Brend va tavsif (Mobil: chapda) */}
+                <div className="flex flex-col items-start gap-3 pb-6 border-b border-gray-100 dark:border-gray-800 sm:border-none sm:pb-0">
+                    <span className="text-3xl font-black text-gray-950 dark:text-white tracking-tighter">
                         Optimum
                     </span>
-                    <p className="text-xs sm:text-sm leading-relaxed max-w-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-sm leading-relaxed max-w-sm text-gray-600 dark:text-gray-400">
                         {t(
                             'footer.description',
-                            'Optimum — ingliz tilini chuqur va samarali oʻrgatuvchi zamonaviy til markazi. Bilim, tajriba va natija — bizning ustuvorligimiz.'
+                            'Kelajagingizni biz bilan birga quring. Zamonaviy kasblarni egallang va sifatli taʼlim oling.'
                         )}
                     </p>
-                    <div className="flex gap-3">
+                    {/* Ikonkalar (kichikroq va rangli) */}
+                    <div className="flex gap-5 mt-2 text-gray-400 dark:text-gray-500">
                         {socials.map((s) => (
                             <a
                                 key={s.label}
@@ -80,7 +90,7 @@ export default function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={s.label}
-                                className={`w-11 h-11 flex items-center justify-center rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 ${s.hover} hover:text-white hover:border-transparent transition-all text-lg shadow-sm hover:shadow-lg active:scale-95`}
+                                className={`text-2xl transition-colors ${s.color} active:scale-95`}
                             >
                                 {s.icon}
                             </a>
@@ -88,66 +98,61 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Tezkor havolalar */}
-                <div className="flex flex-col items-center sm:items-start gap-3">
-                    <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider mb-1">
-                        {t('footer.quickLinks', 'Tezkor havolalar')}
-                    </h4>
+                {/* 2. Tezkor havolalar */}
+                <FooterSection title={t('footer.quickLinks', 'Tezkor havolalar')}>
                     {quickLinks.map((link) => (
                         <a
                             key={link.href}
                             href={link.href}
-                            className="text-xs sm:text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-gray-500 dark:text-gray-400"
+                            className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium py-1"
                         >
                             {link.label}
                         </a>
                     ))}
-                </div>
+                </FooterSection>
 
-                {/* Aloqa maʼlumotlari */}
-                <div className="flex flex-col items-center sm:items-start gap-3">
-                    <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider mb-1">
-                        {t('footer.contactTitle', 'Aloqa')}
-                    </h4>
-                    <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                        <FaMapMarkerAlt className="mt-0.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                        <span>{t('footer.address', 'Qarshi shahar, Qashqadaryo viloyati')}</span>
+                {/* 3. Aloqa maʼlumotlari (Yangi, ixcham dizayn) */}
+                <FooterSection title={t('footer.contactTitle', 'Aloqa')}>
+                    <div className="flex items-start gap-3 group">
+                        <FaMapMarkerAlt className="mt-1 text-blue-600 dark:text-blue-400 shrink-0 text-sm" />
+                        <span className="text-sm leading-snug">
+                            {t('footer.address', 'Buxoro shahar, Buxoro viloyati')}
+                        </span>
                     </div>
                     <a
                         href="tel:+998900000000"
-                        className="flex items-center gap-2 text-xs sm:text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-gray-500 dark:text-gray-400"
+                        className="flex items-center gap-3 group hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                     >
-                        <FaPhoneAlt className="text-blue-600 dark:text-blue-400 shrink-0" />
-                        +998 90 000 00 00
+                        <FaPhoneAlt className="text-blue-600 dark:text-blue-400 shrink-0 text-xs" />
+                        <span className="text-sm font-medium tracking-wide">+998 90 000 00 00</span>
                     </a>
-                </div>
+                </FooterSection>
 
-                {/* Ish vaqti */}
-                <div className="flex flex-col items-center sm:items-start gap-3">
-                    <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider mb-1">
-                        {t('footer.hoursTitle', 'Ish vaqti')}
-                    </h4>
-                    <div className="text-xs sm:text-sm space-y-1.5 w-full text-gray-500 dark:text-gray-400">
-                        <div className="flex justify-between sm:justify-start sm:gap-6 w-full">
-                            <span>{t('footer.weekdays', 'Dushanba – Shanba')}</span>
-                            <span className="font-bold text-gray-900 dark:text-white">08:00 – 20:00</span>
-                        </div>
-                        <div className="flex justify-between sm:justify-start sm:gap-6 w-full">
-                            <span>{t('footer.sunday', 'Yakshanba')}</span>
-                            <span className="font-bold text-gray-900 dark:text-white">
-                                {t('footer.closed', 'Dam olish kuni')}
+                {/* 4. Ish vaqti */}
+                <FooterSection title={t('footer.hoursTitle', 'Ish vaqti')} noBorder>
+                    <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 p-3 rounded-xl border border-gray-100 dark:border-gray-800 sm:bg-transparent sm:p-0 sm:border-none">
+                        <FaClock className="text-blue-600 dark:text-blue-400 shrink-0 text-sm" />
+                        <div className="flex flex-col sm:flex-row sm:gap-3">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {t('footer.everyday', 'Har kuni')}
+                            </span>
+                            <span className="text-sm font-bold text-gray-950 dark:text-white">
+                                08:00 – 20:00
                             </span>
                         </div>
                     </div>
-                </div>
+                </FooterSection>
+
             </div>
 
-            {/* Pastki qism */}
-            <div className="relative max-w-6xl mx-auto mt-10 pt-6 border-t border-gray-200 dark:border-gray-900/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] sm:text-xs text-gray-400 dark:text-gray-500 font-medium">
+            {/* Pastki qism (Divider bilan) */}
+            <div className="relative max-w-6xl mx-auto mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 flex flex-col-reverse sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-500 dark:text-gray-600 font-medium">
+                
                 <span>
-                    © {new Date().getFullYear()} Optimum School of English. {t('footer.rights', 'Barcha huquqlar himoyalangan.')}
+                    © {new Date().getFullYear()} Optimum School of English.
                 </span>
-                <div className="flex gap-4">
+                
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
                     <a href="#privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                         {t('footer.privacy', 'Maxfiylik siyosati')}
                     </a>
