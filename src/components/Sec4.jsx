@@ -14,7 +14,7 @@ export default function Sec4() {
     }, [])
 
     return (
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-sans transition-colors duration-200 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200 overflow-hidden">
 
             {/* Dekorativ fon nuri */}
             <div className="pointer-events-none absolute top-0 right-0 w-96 h-96 bg-red-500/5 dark:bg-red-500/10 rounded-full blur-3xl" />

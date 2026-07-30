@@ -92,7 +92,7 @@ export default function Sec3() {
   }
 
   return (
-    <div className="relative py-12 sm:py-16 px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300">
+    <div className="relative py-12 sm:py-16 px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Orqa fondagi jozibali va sekin pulslanuvchi nurlar */}
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}

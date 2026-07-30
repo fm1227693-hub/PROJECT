@@ -173,7 +173,10 @@ export default function Game2() {
     const currentQ = QUIZ_QUESTIONS[currentIndex]
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-lg mx-auto font-sans select-none flex flex-col justify-center items-center">
+        <div 
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-lg mx-auto select-none flex flex-col justify-center items-center"
+        >
             {/* Sarlavha qismi */}
             <motion.div 
                 initial={{ opacity: 0, y: -20 }}
@@ -210,7 +213,7 @@ export default function Game2() {
                         >
                             {/* Progress va Daraja */}
                             <div className="flex justify-between items-center mb-5 text-[11px] font-bold">
-                                <span className="bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 px-3 py-1 rounded-full border border-indigo-500/20">
+                                <span className="bg-red-500/10 text-red-600 dark:text-red-400 px-3 py-1 rounded-full border border-red-500/20">
                                     {t('game2.level')} {currentQ.level}
                                 </span>
                                 <span className="text-gray-400">
@@ -241,7 +244,7 @@ export default function Game2() {
                                             key={idx}
                                             whileTap={{ scale: 0.98 }}
                                             onClick={() => handleOptionClick(idx)}
-                                            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-bold border transition-all flex items-center justify-between cursor-pointer shadow-sm ${btnStyle}`}
+                                            className={`w-full text-left px-4 py-3.5 rounded-2xl text-xs font-bold border transition-all flex items-center justify-between cursor-pointer shadow-sm ${btnStyle}`}
                                         >
                                             <span>{option}</span>
                                             {isAnswered && idx === currentQ.correct && (

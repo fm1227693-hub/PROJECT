@@ -69,7 +69,7 @@ export default function ResultsSlider() {
     const activeStudent = resultsData[currentIndex];
 
     return (
-        <div className="w-full px-2 sm:px-4">
+        <div className="w-full px-2 sm:px-4 font-['Plus_Jakarta_Sans',sans-serif]">
             <div className="relative w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white/90 dark:bg-[#090623]/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-6 sm:my-10 transition-colors duration-300 overflow-hidden">
 
                 {/* Dekorativ fon nuri */}

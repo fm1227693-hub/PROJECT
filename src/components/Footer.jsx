@@ -6,7 +6,6 @@ import {
     FaYoutube,
     FaMapMarkerAlt,
     FaPhoneAlt,
-    FaEnvelope,
 } from 'react-icons/fa'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -53,7 +52,8 @@ export default function Footer() {
         <footer
             data-aos="fade-up"
             data-aos-duration="600"
-            className="relative text-gray-700 dark:text-gray-400 pt-14 sm:pt-16 pb-8 px-4 sm:px-6 border-t border-gray-200 dark:border-gray-800 mt-10 transition-colors duration-200 overflow-hidden"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            className="relative text-gray-700 dark:text-gray-400 pt-14 sm:pt-16 pb-8 px-4 sm:px-6 border-t border-gray-200/80 dark:border-gray-800/80 mt-10 transition-colors duration-200 overflow-hidden bg-white/50 dark:bg-gray-950/50 backdrop-blur-md"
         >
             {/* Fon uchun dekorativ blur doira */}
             <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-blue-500/10 dark:bg-blue-500/10 rounded-full blur-3xl" />
@@ -66,7 +66,7 @@ export default function Footer() {
                     <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                         Optimum
                     </span>
-                    <p className="text-sm leading-relaxed max-w-xs">
+                    <p className="text-xs sm:text-sm leading-relaxed max-w-xs text-gray-500 dark:text-gray-400">
                         {t(
                             'footer.description',
                             'Optimum — ingliz tilini chuqur va samarali oʻrgatuvchi zamonaviy til markazi. Bilim, tajriba va natija — bizning ustuvorligimiz.'
@@ -90,14 +90,14 @@ export default function Footer() {
 
                 {/* Tezkor havolalar */}
                 <div className="flex flex-col items-center sm:items-start gap-3">
-                    <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wide mb-1">
+                    <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider mb-1">
                         {t('footer.quickLinks', 'Tezkor havolalar')}
                     </h4>
                     {quickLinks.map((link) => (
                         <a
                             key={link.href}
                             href={link.href}
-                            className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            className="text-xs sm:text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-gray-500 dark:text-gray-400"
                         >
                             {link.label}
                         </a>
@@ -106,16 +106,16 @@ export default function Footer() {
 
                 {/* Aloqa maʼlumotlari */}
                 <div className="flex flex-col items-center sm:items-start gap-3">
-                    <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wide mb-1">
+                    <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider mb-1">
                         {t('footer.contactTitle', 'Aloqa')}
                     </h4>
-                    <div className="flex items-start gap-2 text-sm">
+                    <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                         <FaMapMarkerAlt className="mt-0.5 text-blue-600 dark:text-blue-400 shrink-0" />
                         <span>{t('footer.address', 'Qarshi shahar, Qashqadaryo viloyati')}</span>
                     </div>
                     <a
                         href="tel:+998900000000"
-                        className="flex items-center gap-2 text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="flex items-center gap-2 text-xs sm:text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-gray-500 dark:text-gray-400"
                     >
                         <FaPhoneAlt className="text-blue-600 dark:text-blue-400 shrink-0" />
                         +998 90 000 00 00
@@ -124,17 +124,17 @@ export default function Footer() {
 
                 {/* Ish vaqti */}
                 <div className="flex flex-col items-center sm:items-start gap-3">
-                    <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wide mb-1">
+                    <h4 className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider mb-1">
                         {t('footer.hoursTitle', 'Ish vaqti')}
                     </h4>
-                    <div className="text-sm space-y-1">
-                        <div className="flex justify-between gap-4 w-full">
+                    <div className="text-xs sm:text-sm space-y-1.5 w-full text-gray-500 dark:text-gray-400">
+                        <div className="flex justify-between sm:justify-start sm:gap-6 w-full">
                             <span>{t('footer.weekdays', 'Dushanba – Shanba')}</span>
-                            <span className="font-medium text-gray-900 dark:text-white">08:00 – 20:00</span>
+                            <span className="font-bold text-gray-900 dark:text-white">08:00 – 20:00</span>
                         </div>
-                        <div className="flex justify-between gap-4 w-full">
+                        <div className="flex justify-between sm:justify-start sm:gap-6 w-full">
                             <span>{t('footer.sunday', 'Yakshanba')}</span>
-                            <span className="font-medium text-gray-900 dark:text-white">
+                            <span className="font-bold text-gray-900 dark:text-white">
                                 {t('footer.closed', 'Dam olish kuni')}
                             </span>
                         </div>

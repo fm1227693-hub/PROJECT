@@ -42,7 +42,7 @@ export default function Pricing() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-20 xs:pt-24 pb-12 xs:pb-16 transition-colors duration-200 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-20 xs:pt-24 pb-12 xs:pb-16 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
             <div className="absolute top-0 right-0 w-72 h-72 bg-red-500/5 rounded-full blur-3xl pointer-events-none" />
 
             <div className="max-w-6xl mx-auto relative z-10">

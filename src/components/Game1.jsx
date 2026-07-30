@@ -14,7 +14,7 @@ export default function Game1() {
         const lines = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Gorizontal
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertikal
-            [0, 4, 8], [2, 4, 6]             // Diagonal
+            [0, 4, 8], [2, 4, 6]            // Diagonal
         ]
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i]
@@ -43,7 +43,10 @@ export default function Game1() {
     }
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-md mx-auto font-sans select-none flex flex-col justify-center items-center">
+        <div 
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
+        >
             {/* Sarlavha qismi */}
             <motion.div 
                 initial={{ opacity: 0, y: -20 }}
@@ -77,7 +80,7 @@ export default function Game1() {
                             initial={{ opacity: 0, y: -5 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 5 }}
-                            className="py-3 px-4 rounded-2xl bg-gray-100/80 dark:bg-gray-950/80 text-xs font-bold text-center text-gray-700 dark:text-gray-300 shadow-inner flex items-center justify-center gap-2 border border-gray-200/40 dark:border-gray-800/60"
+                            className="py-3 px-4 rounded-2xl bg-gray-100/90 dark:bg-gray-950/90 text-xs font-bold text-center text-gray-700 dark:text-gray-300 shadow-inner flex items-center justify-center gap-2 border border-gray-200/40 dark:border-gray-800/60"
                         >
                             {winner ? (
                                 <span className="text-emerald-500 font-black flex items-center gap-1.5 text-sm">
@@ -98,7 +101,7 @@ export default function Game1() {
                     </AnimatePresence>
                 </div>
 
-                {/* Maydon (Grid 3x3) - Compact telefonlarga mos o'lcham */}
+                {/* Maydon (Grid 3x3) */}
                 <div className="grid grid-cols-3 gap-2.5 sm:gap-3 w-full max-w-[280px] sm:max-w-[320px] aspect-square mb-6">
                     {board.map((cell, index) => (
                         <motion.button
@@ -110,7 +113,7 @@ export default function Game1() {
                                 cell === 'X'
                                     ? 'bg-red-500/10 text-red-600 border border-red-500/30'
                                     : cell === 'O'
-                                    ? 'bg-indigo-500/10 text-indigo-500 border border-indigo-500/30'
+                                    ? 'bg-rose-500/10 text-rose-500 border border-rose-500/30'
                                     : 'bg-gray-100/90 dark:bg-gray-950/90 text-gray-400 hover:bg-gray-200/80 dark:hover:bg-gray-800 border border-gray-200/60 dark:border-gray-800/80'
                             }`}
                         >

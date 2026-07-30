@@ -36,7 +36,7 @@ export default function Register() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 select-none relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 select-none relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
 
             {/* Fon effektlari */}
             <div className="absolute -top-24 -right-24 w-64 h-64 xs:w-80 xs:h-80 bg-red-500/10 dark:bg-red-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />

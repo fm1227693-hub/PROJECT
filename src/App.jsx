@@ -30,7 +30,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-white dark:bg-[#030712] transition-colors duration-300 overflow-hidden">
+    <div className="relative min-h-screen bg-white dark:bg-[#030712] transition-colors duration-300 overflow-hidden font-sans">
 
       {/* ================= PREMIUM FON QATLAMI ================= */}
       <div className="pointer-events-none fixed inset-0 z-0">

@@ -103,7 +103,6 @@ export default function LevelTest() {
             })
         }, 1000)
         return () => clearInterval(timerRef.current)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stage, finished])
 
     const handleAutoFinish = useCallback(() => {
@@ -193,7 +192,7 @@ export default function LevelTest() {
     // INTRO
     if (stage === 'intro') {
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
                 <div className="absolute top-1/4 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
                 <Toaster position="bottom-right" />
                 <BackBtn />
@@ -240,7 +239,7 @@ export default function LevelTest() {
     if (stage === 'result' && showResult) {
         const { correct, total, percent, level } = computeScore()
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
                 <Toaster position="bottom-right" />
                 <BackBtn />
                 <div
@@ -275,8 +274,8 @@ export default function LevelTest() {
                             <div
                                 key={lvl.key}
                                 className={`rounded-lg xs:rounded-xl py-1.5 xs:py-2 text-[9px] xs:text-[11px] font-bold border transition-all ${lvl.key === level.key
-                                        ? 'text-white'
-                                        : 'text-gray-400 dark:text-gray-600 border-gray-100 dark:border-gray-800'
+                                    ? 'text-white'
+                                    : 'text-gray-400 dark:text-gray-600 border-gray-100 dark:border-gray-800'
                                     }`}
                                 style={lvl.key === level.key ? { backgroundColor: lvl.color, borderColor: lvl.color } : {}}
                             >
@@ -307,7 +306,7 @@ export default function LevelTest() {
     // FINISHED but result hidden
     if (finished && !showResult) {
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
                 <Toaster position="bottom-right" />
                 <BackBtn />
                 <div
@@ -340,7 +339,7 @@ export default function LevelTest() {
 
     // TEST
     return (
-        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
+        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
             <Toaster position="bottom-right" />
             <BackBtn />
             <div
@@ -354,8 +353,8 @@ export default function LevelTest() {
                     </span>
                     <span
                         className={`text-xs xs:text-sm font-black tabular-nums px-2.5 xs:px-3 py-1 rounded-full transition-colors ${timeLeft <= 60
-                                ? 'text-red-600 bg-red-50 dark:bg-red-500/10 animate-pulse'
-                                : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800'
+                            ? 'text-red-600 bg-red-50 dark:bg-red-500/10 animate-pulse'
+                            : 'text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800'
                             }`}
                     >
                         {formatTime(timeLeft)}
@@ -384,8 +383,8 @@ export default function LevelTest() {
                                 key={idx}
                                 onClick={() => selectAnswer(q.id, idx)}
                                 className={`w-full text-left px-3.5 xs:px-4 py-3 xs:py-3.5 rounded-xl xs:rounded-2xl border text-xs xs:text-sm font-semibold transition-all cursor-pointer active:scale-[0.98] ${selected
-                                        ? 'border-red-600 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 shadow-sm'
-                                        : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-gray-700 dark:text-gray-300 hover:border-red-300 dark:hover:border-red-800 hover:-translate-y-0.5'
+                                    ? 'border-red-600 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 shadow-sm'
+                                    : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-gray-700 dark:text-gray-300 hover:border-red-300 dark:hover:border-red-800 hover:-translate-y-0.5'
                                     }`}
                             >
                                 {opt}

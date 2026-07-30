@@ -41,7 +41,7 @@ export default function Sec1() {
     ]
 
     return (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 mb-12 select-none font-sans transition-colors duration-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 mb-12 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"

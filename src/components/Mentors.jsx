@@ -70,7 +70,9 @@ export default function Mentors() {
   };
 
   return (
-    <section className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200">
+    <section
+      className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]"
+    >
       <div className="max-w-6xl mx-auto">
         {/* Sarlavha qismi */}
         <div
@@ -101,6 +103,7 @@ export default function Mentors() {
                   alt={mentor.name}
                   className="w-32 h-32 rounded-2xl object-cover border-2 border-red-500/20 group-hover:scale-105 transition-transform duration-500 shadow-sm"
                 />
+                
                 <a
                   href={mentor.telegram}
                   target="_blank"

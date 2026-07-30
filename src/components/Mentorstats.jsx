@@ -127,7 +127,7 @@ export default function Mentorstats() {
 
     if (activeMentorDetail) {
         return (
-            <div ref={detailTopRef} className="bg-white dark:bg-[#090623] min-h-screen py-12 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
+            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-white dark:bg-[#090623] min-h-screen py-12 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
                 <div className="max-w-2xl mx-auto">
                     {/* Scroll qilganda ham tepada qotib turishi uchun sticky qilindi */}
                     <div className="sticky top-6 z-20 mb-6">
@@ -224,7 +224,7 @@ export default function Mentorstats() {
     }
 
     return (
-        <div className="pt-10">
+        <div className="font-['Plus_Jakarta_Sans',sans-serif] pt-10">
             <section className="bg-white dark:bg-[#090623] py-20 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
                 <div className="max-w-4xl mx-auto" data-aos="fade-up">
                     <div className="text-center mb-12">
