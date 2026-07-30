@@ -15,7 +15,7 @@ export default function AboutUs() {
     }, [])
 
     return (
-        <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-sans text-gray-900 dark:text-white transition-colors duration-200">
+        <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-['Plus_Jakarta_Sans'] text-gray-900 dark:text-white transition-colors duration-200">
 
             {/* 1-Bo'lim: Sarlavha va matnlar */}
             <div
@@ -23,7 +23,6 @@ export default function AboutUs() {
                 data-aos-duration="800"
                 className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start mb-16 sm:mb-20 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6 sm:p-12 rounded-3xl shadow-sm dark:shadow-xl transition-colors duration-200 overflow-hidden"
             >
-                {/* Dekorativ nur */}
                 <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
 
                 <div className="relative lg:col-span-5">
