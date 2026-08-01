@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaUserPlus, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaTrophy, FaCompass, FaGraduationCap } from 'react-icons/fa'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaUserPlus, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaTrophy, FaGraduationCap } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -356,8 +356,13 @@ export default function Navbar() {
                     >
                         <div className="relative z-20 flex items-center justify-between px-5 h-16 border-b border-black/[0.05] dark:border-white/[0.08] shrink-0">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#8a0f1e] to-[#c41e30] flex items-center justify-center text-white shadow-md">
-                                    <FaCompass className="w-4 h-4" />
+                                <div className="relative shrink-0">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-[#c41e30] to-rose-600 rounded-xl blur-[8px] opacity-50" />
+                                    <img
+                                        src="/Снимок экрана 2026-07-13 125121.png"
+                                        alt="Optimum Logo"
+                                        className="relative w-8 h-8 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/20 shadow-sm"
+                                    />
                                 </div>
                                 <span className="text-gray-900 dark:text-white font-extrabold text-base tracking-[0.16em] uppercase">
                                     Optimum
