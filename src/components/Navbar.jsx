@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaUserPlus, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaTrophy, FaGraduationCap } from 'react-icons/fa'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -20,7 +20,7 @@ export default function Navbar() {
     const [testsDropdownOpen, setTestsDropdownOpen] = useState(false)
     const [langOpen, setLangOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
-    
+
     const aboutRef = useRef(null)
     const testsRef = useRef(null)
     const langRef = useRef(null)
@@ -167,11 +167,11 @@ export default function Navbar() {
                         {/* 1. Bosh sahifa */}
                         <Link
                             to="/"
-                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.pathname === '/' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.pathname === '/' && !location.hash ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                         >
                             <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
                             {t('navbar.home', 'Bosh sahifa')}
-                            {location.pathname === '/' && (
+                            {location.pathname === '/' && !location.hash && (
                                 <motion.div layoutId="activeTab" className="absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-gradient-to-r from-[#8a0f1e] to-[#c41e30]" />
                             )}
                         </Link>
@@ -182,7 +182,7 @@ export default function Navbar() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => { setAboutDropdownOpen((v) => !v); setTestsDropdownOpen(false); }}
-                                className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full inline-flex items-center gap-1.5 cursor-pointer ${['/about', '/static', '/stats', '/products'].includes(location.pathname) ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                                className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full inline-flex items-center gap-1.5 cursor-pointer ${['/about', '/static', '/stats'].includes(location.pathname) ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                             >
                                 <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
                                 <span>{t('navbar.about', 'Biz haqimizda')}</span>
@@ -224,20 +224,12 @@ export default function Navbar() {
                                             <FaChartBar className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.statistic', 'Statistika')}</span>
                                         </Link>
-                                        <Link
-                                            to="/products"
-                                            onClick={() => setAboutDropdownOpen(false)}
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
-                                        >
-                                            <FaTrophy className="w-3.5 h-3.5 text-[#c41e30]" />
-                                            <span>{t('navbar.achievements', 'Yutuqlar')}</span>
-                                        </Link>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
 
-                        {/* 3. Test va O'yinlar (Daraja testi, IELTS Practice, O'yinlar) */}
+                        {/* 3. Test va O'yinlar */}
                         <div className="relative" ref={testsRef}>
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
@@ -290,16 +282,13 @@ export default function Navbar() {
                             </AnimatePresence>
                         </div>
 
-                        {/* 4. Ro'yxatdan o'tish */}
+                        {/* 4. FAQ */}
                         <Link
-                            to="/register"
-                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.pathname === '/register' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                            to="/faqat"
+                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.hash === '#faq' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                         >
                             <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
-                            {t('navbar.register', "Ro'yxatdan o'tish")}
-                            {location.pathname === '/register' && (
-                                <motion.div layoutId="activeTab" className="absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-gradient-to-r from-[#8a0f1e] to-[#c41e30]" />
-                            )}
+                            {t('navbar.faq', 'FAQ')}
                         </Link>
                     </nav>
 
@@ -327,19 +316,6 @@ export default function Navbar() {
                                 </motion.div>
                             </AnimatePresence>
                         </motion.button>
-
-                        <div className="hidden md:block">
-                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <Link
-                                    to="/enter"
-                                    className="group relative inline-flex items-center gap-2 pl-4 pr-3.5 py-2 rounded-full bg-gradient-to-r from-[#7a0e1a] via-[#a5182a] to-[#d31d31] text-white text-[12.5px] font-semibold tracking-wide overflow-hidden whitespace-nowrap shadow-[0_6px_20px_rgba(196,30,40,0.4)]"
-                                >
-                                    <span className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 group-hover:left-[130%] transition-all duration-700 ease-out" />
-                                    <span className="relative">{t('navbar.dashboard', 'Boshqaruv')}</span>
-                                    <FaArrowRight className="relative w-3 h-3 group-hover:translate-x-1.5 transition-transform duration-300" />
-                                </Link>
-                            </motion.div>
-                        </div>
                     </div>
                 </div>
             </motion.header>
@@ -393,7 +369,6 @@ export default function Navbar() {
                                 <Link to="/about" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.aboutUs', 'Biz haqimizda')}</Link>
                                 <Link to="/static" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.mentors', 'Mentorlar')}</Link>
                                 <Link to="/stats" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.statistic', 'Statistika')}</Link>
-                                <Link to="/products" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.achievements', 'Yutuqlar')}</Link>
                             </div>
 
                             <div className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
@@ -403,10 +378,10 @@ export default function Navbar() {
                                 <Link to="/gamess" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.games', "O'yinlar")}</Link>
                             </div>
 
-                            <Link to="/register" onClick={() => setMenuOpen(false)} className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
+                            <Link to="/faqat" onClick={() => setMenuOpen(false)} className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
                                 <div className="flex items-center gap-3">
-                                    <FaUserPlus className="text-[#c41e30]" />
-                                    <span className="text-sm font-bold">{t('navbar.register', "Ro'yxatdan o'tish")}</span>
+                                    <FaQuestionCircle className="text-[#c41e30]" />
+                                    <span className="text-sm font-bold">{t('navbar.faq', 'FAQ')}</span>
                                 </div>
                                 <FaArrowRight className="w-3 h-3 text-gray-400" />
                             </Link>
@@ -414,14 +389,6 @@ export default function Navbar() {
 
                         <div className="relative z-20 px-5 pt-3 pb-6 border-t border-black/[0.05] dark:border-white/[0.08] flex flex-col gap-2.5 bg-white/90 dark:bg-[#030712]/90 backdrop-blur-2xl shrink-0">
                             <LanguageSelector align="left" large />
-                            <Link
-                                to="/enter"
-                                onClick={() => setMenuOpen(false)}
-                                className="w-full inline-flex items-center justify-center gap-2.5 py-3.5 rounded-2xl bg-gradient-to-r from-[#7a0e1a] via-[#a5182a] to-[#d31d31] text-white text-xs font-bold tracking-wider shadow-lg"
-                            >
-                                <span>{t('navbar.dashboard', 'Boshqaruv')}</span>
-                                <FaArrowRight className="w-3 h-3" />
-                            </Link>
                         </div>
                     </motion.div>
                 )}

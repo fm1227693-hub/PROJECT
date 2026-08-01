@@ -205,13 +205,11 @@
         "aboutUs": "About us",
         "mentors": "Mentors",
         "statistic": "Statistics",
-        "achievements": "Achievements",
         "testAndGames": "Tests & Games",
-        "levelTest": "Level test",
+        "levelTest": "Level Test",
         "ieltsPractice": "IELTS Practice",
         "games": "Games",
-        "register": "Register",
-        "dashboard": "Dashboard"
+        "faq": "FAQ"
     },
     "mentorsPage": {
         "badge": "Professional Team",
@@ -483,5 +481,18 @@
     },
     "common": {
         "backBtn": "Back"
+    },
+    "faq": {
+        "badge": "FAQ",
+        "title": "Frequently Asked Questions",
+        "subtitle": "Check out the answers to the most common questions from our students.",
+        "q1": "How long do our courses last?",
+        "a1": "Depending on the field, our courses last on average from 3 to 12 months. Classes are held 4 times a week by qualified instructors.",
+        "q2": "What is required to start the classes?",
+        "a2": "To get started, you only need a laptop (computer), necessary books, internet connection, and a strong desire to learn. Basic knowledge is taught from scratch.",
+        "q3": "What happens if I miss a class?",
+        "a3": "Active participation in every class is recommended. If you cannot attend or struggle with a topic, our experienced assistant teachers will help you outside of class hours, re-explain the covered topics, and assist you with practical exercises.",
+        "q4": "Is a certificate awarded after completing the course?",
+        "a4": "Yes, graduates who successfully complete the course receive a special certificate, and top students are provided with practical assistance in finding a job."
     }
 }

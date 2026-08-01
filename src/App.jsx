@@ -13,8 +13,8 @@ import IeltsPracticeApp from "./components/IeltsPractiseApp";
 import LevelTest from "./components/LevelTest";
 import Pricing from "./components/Pricing";
 import Gamess from "./components/Gamess";
+import FAQ from "./components/FAQ";
 
-// Sahifa o'zgarganda tepaga chiqarish uchun yordamchi funksiya
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -29,13 +29,8 @@ export default function App() {
   return (
     <div className="relative min-h-screen bg-white dark:bg-[#030712] transition-colors duration-300 overflow-hidden font-sans">
 
-      {/* ================= PREMIUM FON QATLAMI ================= */}
       <div className="pointer-events-none fixed inset-0 z-0">
-
-        {/* Nozik gradient asos — pastdan tepaga yumshoq o'tish */}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-100 dark:from-[#030712] dark:via-[#050912] dark:to-[#0a0f1c]" />
-
-        {/* Nozik nuqtali grid naqsh (premium SaaS saytlarga xos) */}
         <div
           className="absolute inset-0 opacity-[0.4] dark:opacity-[0.15]"
           style={{
@@ -44,26 +39,13 @@ export default function App() {
             backgroundSize: "28px 28px",
           }}
         />
-
-        {/* Chap yuqori — binafsha/moviy mesh nur */}
         <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-purple-500/25 via-indigo-500/15 to-transparent rounded-full blur-[160px]" />
-
-        {/* O'ng yuqori — moviy/siyan nur */}
         <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-500/20 via-cyan-400/10 to-transparent rounded-full blur-[150px]" />
-
-        {/* Markaz-o'ng — chuqurlik uchun ikkinchi qatlam */}
         <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-gradient-to-l from-fuchsia-500/10 to-transparent rounded-full blur-[140px]" />
-
-        {/* Pastki chap — issiq aksent (oltin/amber, minimal) */}
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[400px] bg-gradient-to-t from-amber-400/10 via-orange-400/5 to-transparent rounded-full blur-[150px]" />
-
-        {/* Eng pastki qatlam — sahifa oxirida yumshoq qorong'ulashuv (dark mode chuqurligi) */}
         <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100 dark:from-[#020509] to-transparent" />
-
-        {/* Yuqori vinyet — navbar ostidagi kontent bilan uyg'unlashishi uchun */}
         <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/60 dark:from-[#030712]/80 to-transparent" />
       </div>
-      {/* ================= FON QATLAMI TUGADI ================= */}
 
       <div className="relative z-10">
         <Navbar />
@@ -80,11 +62,11 @@ export default function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/gamess" element={<Gamess />} />
           <Route path="/ieltspractiseapp" element={<IeltsPracticeApp />} />
+          <Route path="/faqat" element={<FAQ />} />
         </Routes>
         <Footer />
       </div>
 
-      {/* Sayt dizayniga moslashtirilgan, animatsiyali va telefon qilish funksiyali tugma */}
       <div className="fixed bottom-6 right-6 z-50">
         <a
           href="tel:+998910829979"

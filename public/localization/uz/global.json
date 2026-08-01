@@ -205,13 +205,11 @@
         "aboutUs": "Biz haqimizda",
         "mentors": "Mentorlar",
         "statistic": "Statistika",
-        "achievements": "Yutuqlar",
         "testAndGames": "Test va o'yinlar",
         "levelTest": "Daraja testi",
         "ieltsPractice": "IELTS Practice",
         "games": "O'yinlar",
-        "register": "Ro'yxatdan o'tish",
-        "dashboard": "Boshqaruv"
+        "faq": "KBS"
     },
     "mentorsPage": {
         "badge": "Professional jamoa",
@@ -483,5 +481,18 @@
     },
     "common": {
         "backBtn": "Orqaga"
+    },
+    "faq": {
+        "badge": "FAQ",
+        "title": "Ko'p beriladigan savollar",
+        "subtitle": "O'quvchilarimiz tomonidan eng ko'p beriladigan savollarga javoblar bilan tanishing.",
+        "q1": "Kurslarimiz qancha davom etadi?",
+        "a1": "Kurslarimiz yo'nalishiga qarab o'rtacha 3 oydan 12 oygacha davom etadi. Darslar haftasiga 4 marta malakali ustozlar tomonidan olib boriladi.",
+        "q2": "Darslarni boshlash uchun nima talab qilinadi?",
+        "a2": "Boshlash uchun sizdan faqat noutbuk (kompyuter), kerakli kitoblar, internet va kuchli xohish-istak talab etiladi. Boshlang'ich bilimlar noldan o'rgatiladi.",
+        "q3": "Darsda qatnasha olmay qolsam nima bo'ladi?",
+        "a3": "Har bir darsda faol qatnashish tavsiya etiladi. Agar darsga kela olmay qolsangiz yoki qaysidir mavzuni tushunmay qiynalsangiz, markazimizdagi tajribali assistent o'qituvchilar darsdan tashqari vaqtlarda sizga yaqindan yordam berib, o'tilgan mavzularni qaytadan tushuntirib berishadi va amaliy mashqlarni bajarishda ko'maklashishadi.",
+        "q4": "Kurs tugatgandan keyin sertifikat beriladimi?",
+        "a4": "Ha, kursni muvaffaqiyatli tamomlagan bitiruvchilarga maxsus sertifikat beriladi va eng yaxshi o'quvchilarga ish topishda amaliy yordam ko'rsatiladi."
     }
 }
