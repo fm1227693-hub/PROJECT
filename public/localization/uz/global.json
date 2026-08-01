@@ -468,15 +468,18 @@
         "otherContact": "Yoki bevosita qo'ng'iroq qiling:"
     },
     "register": {
-        "badge": "Optimum",
-        "phoneError": "Faqat raqamlarni kiriting!",
-        "title": "Kursga ro'yxatdan o'tish",
-        "nameLabel": "Ismingiz",
-        "namePlaceholder": "Masalan: Alisher",
-        "phoneLabel": "Telefon raqamingiz",
-        "phonePlaceholder": "+998 90 123 45 67",
-        "submitBtn": "Ro'yxatdan o'tish",
-        "loadingBtn": "Yuklanmoqda..."
+        "title": "Kursga Ro'yxatdan O'tish",
+        "subtitle": "Ma'lumotlaringizni kiriting, botimizga yuboriladi.",
+        "fullNameLabel": "F.I.O",
+        "fullNamePlaceholder": "Alisherov Baxtiyor",
+        "phoneLabel": "Telefon Raqam",
+        "courseLabel": "Kurs",
+        "courseName": "Ingliz tili",
+        "submitBtn": "Yuborish",
+        "successMsg": "Muvaffaqiyatli yuborildi!",
+        "errorMsg": "Xatolik yuz berdi. Botga /start bosganingizni tekshiring.",
+        "netErrorMsg": "Internet bilan aloqa yo'q!",
+        "phoneError": "Iltimos, telefon raqamni to'liq kiriting!"
     },
     "common": {
         "backBtn": "Orqaga"

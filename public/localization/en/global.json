@@ -468,15 +468,18 @@
         "otherContact": "Or call us directly:"
     },
     "register": {
-        "badge": "Optimum",
-        "phoneError": "Please enter numbers only!",
-        "title": "Course registration",
-        "nameLabel": "Your name",
-        "namePlaceholder": "e.g. Alisher",
-        "phoneLabel": "Your phone number",
-        "phonePlaceholder": "+998 90 123 45 67",
-        "submitBtn": "Register",
-        "loadingBtn": "Loading..."
+        "title": "Course Registration",
+        "subtitle": "Enter your details, and they will be sent to our bot.",
+        "fullNameLabel": "Full Name",
+        "fullNamePlaceholder": "Alisherov Bakhtiyor",
+        "phoneLabel": "Phone Number",
+        "courseLabel": "Course",
+        "courseName": "English Language",
+        "submitBtn": "Submit",
+        "successMsg": "Successfully sent!",
+        "errorMsg": "An error occurred. Check if you pressed /start in the bot.",
+        "netErrorMsg": "No internet connection!",
+        "phoneError": "Please enter the full phone number!"
     },
     "common": {
         "backBtn": "Back"

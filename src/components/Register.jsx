@@ -1,139 +1,190 @@
-import React, { useState, useEffect } from 'react'
-import toast, { Toaster } from 'react-hot-toast'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 export default function Register() {
-    const { t } = useTranslation()
-    const navigate = useNavigate()
-    const [formData, setFormData] = useState({ name: '', phone: '' })
-    const [loading, setLoading] = useState(false)
-    const [focused, setFocused] = useState(null)
+    const { t } = useTranslation();
+    
+    const [formData, setFormData] = useState({
+        fullName: '',
+        phone: '',
+        course: t('register.courseName')
+    });
+    const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null); // { message, type: 'success' | 'error' }
 
-    useEffect(() => {
-        AOS.init({ once: true, offset: 60, duration: 700 })
-    }, [])
+    // Botingiz tokeni va Chat ID raqamingiz
+    const BOT_TOKEN = "8800216213:AAGmRhvFeu0bmzYcGxVAgMT-LEiqAEJ1WnI";
+    const CHAT_ID = "6383523156";
 
-    const handlePhoneChange = (e) => {
-        const val = e.target.value
-        if (/^[0-9+\s()]*$/.test(val)) {
-            setFormData({ ...formData, phone: val })
+    const showToast = (message, type = 'success') => {
+        setToast({ message, type });
+        setTimeout(() => {
+            setToast(null);
+        }, 3500);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        
+        if (name === 'phone') {
+            const numbers = value.replace(/\D/g, '').slice(0, 9);
+            setFormData({ ...formData, phone: numbers });
         } else {
-            toast.error(t('register.phoneError'), {
-                id: 'phone-error',
-                position: 'top-right',
-                duration: 2000,
-            })
+            setFormData({ ...formData, [name]: value });
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        // Bu yerda API ga yuborish logikasini yozishingiz mumkin
-    }
+        e.preventDefault();
+        
+        if (formData.phone.length < 9) {
+            showToast(t('register.phoneError'), "error");
+            return;
+        }
+
+        setLoading(true);
+
+        const message = `
+🔔 Yangi ro'yxatdan o'tish!
+
+👤 F.I.O: ${formData.fullName}
+📞 Telefon: +998 ${formData.phone}
+📚 Kurs: ${t('register.courseName')}
+        `;
+
+        try {
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                }),
+            });
+
+            if (response.ok) {
+                showToast(t('register.successMsg'), "success");
+                setFormData({ fullName: '', phone: '', course: t('register.courseName') });
+            } else {
+                showToast(t('register.errorMsg'), "error");
+            }
+        } catch (error) {
+            console.error("Xatolik:", error);
+            showToast(t('register.netErrorMsg'), "error");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 select-none relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-[#030712] dark:via-[#070b14] dark:to-[#0f172a] font-['Plus_Jakarta_Sans',sans-serif] relative overflow-hidden">
+            
+            {/* Toast Xabarnoma */}
+            <AnimatePresence>
+                {toast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                        className="fixed top-6 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-xl shadow-2xl border border-gray-200/80 dark:border-white/10 text-gray-900 dark:text-white"
+                    >
+                        {toast.type === 'success' ? (
+                            <FaCheckCircle className="text-emerald-500 text-xl shrink-0" />
+                        ) : (
+                            <FaExclamationCircle className="text-red-500 text-xl shrink-0" />
+                        )}
+                        <p className="text-sm font-semibold">{toast.message}</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            {/* Fon effektlari */}
-            <div className="absolute -top-24 -right-24 w-64 h-64 xs:w-80 xs:h-80 bg-red-500/10 dark:bg-red-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 xs:w-80 xs:h-80 bg-red-600/10 dark:bg-red-600/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
-
-            <Toaster position="bottom-right" />
-
-            <button
-                onClick={() => navigate(-1)}
-                data-aos="fade-right"
-                data-aos-duration="600"
-                className="fixed top-16 xs:top-20 sm:top-24 left-3 xs:left-4 sm:left-8 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer z-20 hover:-translate-x-1"
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="w-full max-w-lg bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-2xl rounded-3xl p-8 sm:p-10 shadow-xl border border-gray-200/80 dark:border-white/10 relative overflow-hidden"
             >
-                <span className="text-base xs:text-lg leading-none">←</span>
-                {t('common.backBtn') || 'Orqaga'}
-            </button>
-
-            <div
-                data-aos="zoom-in"
-                data-aos-duration="600"
-                className="max-w-md w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80 relative z-10 animate-fade-in-up"
-            >
-                <div className="text-center mb-6 xs:mb-8">
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block animate-bounce-subtle">
-                        {t('register.badge') || 'Optimum'}
-                    </span>
-                    <h2 className="text-xl xs:text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mt-3 tracking-tight">
-                        {t('register.title')}
-                    </h2>
-                </div>
-
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4 xs:gap-5">
-                    <div className="group">
-                        <label className={`block text-[10px] xs:text-xs font-bold mb-1.5 uppercase tracking-wider transition-colors duration-200 ${focused === 'name' ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-slate-300'}`}>
-                            {t('register.nameLabel')}
-                        </label>
-                        <input
-                            type="text"
-                            placeholder={t('register.namePlaceholder')}
-                            required
-                            value={formData.name}
-                            onFocus={() => setFocused('name')}
-                            onBlur={() => setFocused(null)}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-3.5 xs:px-4 py-2.5 xs:py-3 rounded-xl xs:rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-red-600 dark:focus:border-red-500 focus:ring-4 focus:ring-red-500/10 transition-all duration-200 shadow-sm"
-                        />
+                <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
+                    <div className="text-center space-y-2">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                            {t('register.title')}
+                        </h2>
+                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                            {t('register.subtitle')}
+                        </p>
                     </div>
-                    <div className="group">
-                        <label className={`block text-[10px] xs:text-xs font-bold mb-1.5 uppercase tracking-wider transition-colors duration-200 ${focused === 'phone' ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-slate-300'}`}>
-                            {t('register.phoneLabel')}
-                        </label>
-                        <input
-                            type="text"
-                            placeholder={t('register.phonePlaceholder')}
-                            required
-                            value={formData.phone}
-                            onFocus={() => setFocused('phone')}
-                            onBlur={() => setFocused(null)}
-                            onChange={handlePhoneChange}
-                            className="w-full px-3.5 xs:px-4 py-2.5 xs:py-3 rounded-xl xs:rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-red-600 dark:focus:border-red-500 focus:ring-4 focus:ring-red-500/10 transition-all duration-200 shadow-sm"
-                        />
+
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.fullNameLabel')}</label>
+                        <div className="relative flex items-center">
+                            <FaUser className="absolute left-4 text-gray-400" />
+                            <input 
+                                type="text" 
+                                name="fullName" 
+                                placeholder={t('register.fullNamePlaceholder')} 
+                                value={formData.fullName} 
+                                onChange={handleChange}
+                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
+                                required 
+                            />
+                        </div>
                     </div>
-                    <button
-                        type="submit"
+
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.phoneLabel')}</label>
+                        <div className="relative flex items-center">
+                            <FaPhoneAlt className="absolute left-4 text-gray-400 z-10" />
+                            <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
+                                +998
+                            </div>
+                            <input 
+                                type="tel" 
+                                name="phone" 
+                                placeholder="901234567" 
+                                value={formData.phone} 
+                                onChange={handleChange}
+                                className="w-full pl-24 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
+                                required 
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.courseLabel')}</label>
+                        <div className="relative flex items-center">
+                            <FaBookOpen className="absolute left-4 text-gray-400" />
+                            <input 
+                                type="text" 
+                                value={t('register.courseName')} 
+                                disabled
+                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-100 dark:bg-white/[0.02] border border-gray-200/80 dark:border-white/10 text-sm text-gray-600 dark:text-gray-400 cursor-not-allowed"
+                            />
+                        </div>
+                    </div>
+
+                    <motion.button 
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit" 
                         disabled={loading}
-                        className="w-full mt-1.5 xs:mt-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-bold py-3 xs:py-3.5 rounded-xl xs:rounded-2xl transition-all text-sm shadow-lg shadow-red-500/20 cursor-pointer active:scale-95 hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5"
+                        className="w-full py-4 rounded-2xl bg-[#c41e30] text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-70"
                     >
                         {loading ? (
-                            <span className="inline-flex items-center gap-2">
-                                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                                {t('register.loadingBtn') || 'Yuklanmoqda...'}
-                            </span>
-                        ) : t('register.submitBtn')}
-                    </button>
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                            <>
+                                <span>{t('register.submitBtn')}</span>
+                                <FaPaperPlane className="w-3.5 h-3.5" />
+                            </>
+                        )}
+                    </motion.button>
                 </form>
-            </div>
-
-            <style>{`
-                @keyframes fade-in-up {
-                    from { opacity: 0; transform: translateY(16px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fade-in-up { animation: fade-in-up 0.5s ease-out; }
-                @keyframes pulse-slow {
-                    0%, 100% { opacity: 0.5; transform: scale(1); }
-                    50% { opacity: 0.8; transform: scale(1.05); }
-                }
-                .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-                @keyframes bounce-subtle {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-2px); }
-                }
-                .animate-bounce-subtle { animation: bounce-subtle 2.5s ease-in-out infinite; }
-                @media (max-width: 380px) {
-                    .xs\\:px-4 { padding-left: 0.75rem; padding-right: 0.75rem; }
-                }
-            `}</style>
+            </motion.div>
         </div>
-    )
+    );
 }

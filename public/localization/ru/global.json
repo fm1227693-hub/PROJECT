@@ -118,15 +118,18 @@
         "errorMessage": "Произошла ошибка при загрузке данных!"
     },
     "register": {
-        "badge": "Optimum",
-        "phoneError": "Пишите только цифры!",
         "title": "Регистрация на курс",
-        "nameLabel": "Ваше имя",
-        "namePlaceholder": "Например: Алишер",
-        "phoneLabel": "Ваш номер телефона",
-        "phonePlaceholder": "+998 90 123 45 67",
-        "submitBtn": "Зарегистрироваться",
-        "loadingBtn": "Загрузка..."
+        "subtitle": "Введите свои данные, они будут отправлены в бот.",
+        "fullNameLabel": "Ф.И.О.",
+        "fullNamePlaceholder": "Алишерov Бахтияр",
+        "phoneLabel": "Номер телефона",
+        "courseLabel": "Курс",
+        "courseName": "Английский язык",
+        "submitBtn": "Отправить",
+        "successMsg": "Успешно отправлено!",
+        "errorMsg": "Произошла ошибка. Проверьте, нажали ли вы /start в боте.",
+        "netErrorMsg": "Нет соединения с интернетом!",
+        "phoneError": "Пожалуйста, введите номер телефона полностью!"
     },
     "stats": {
         "studentsTitle": "Активные ученики",
