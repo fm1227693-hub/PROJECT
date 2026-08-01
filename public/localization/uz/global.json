@@ -68,8 +68,20 @@
         "deleteSuccess": "Muvaffaqiyatli o'chirildi"
     },
     "footer": {
-        "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblarni egallang va sifatli ta'lim oling, o'z yo'lingizni toping.",
-        "rights": "Barcha huquqlar himoyalangan."
+        "description": "Kelajagingizni biz bilan birga quring. Zamonaviy kasblarni egallang va sifatli taʼlim oling.",
+        "quickLinks": "Tezkor havolalar",
+        "contactTitle": "Aloqa",
+        "hoursTitle": "Ish vaqti",
+        "address": "Buxoro shahar, Buxoro viloyati",
+        "everyday": "Har kuni",
+        "privacy": "Maxfiylik siyosati",
+        "terms": "Foydalanish shartlari",
+        "links": {
+            "home": "Bosh sahifa",
+            "about": "Biz haqimizda",
+            "levelTest": "Daraja testi",
+            "ieltsPractice": "IELTS Practice"
+        }
     },
     "home": {
         "badge": "Optimum School of English",
@@ -121,7 +133,7 @@
         "emptyMessage": "Hozircha o'quvchilar natijalari yuklanmagan",
         "errorMessage": "Ma'lumotlarni yuklashda xatolik yuz berdi!"
     },
-                        "stats": {
+    "stats": {
         "studentsTitle": "Faol o'quvchilar",
         "lessonsTitle": "Jami darslar",
         "speakingTitle": "Suhbat klublari",
@@ -189,13 +201,17 @@
     },
     "navbar": {
         "home": "Bosh sahifa",
+        "about": "Biz haqimizda",
+        "aboutUs": "Biz haqimizda",
+        "mentors": "Mentorlar",
         "statistic": "Statistika",
         "achievements": "Yutuqlar",
-        "about": "Biz haqimizda",
+        "testAndGames": "Test va o'yinlar",
+        "levelTest": "Daraja testi",
+        "ieltsPractice": "IELTS Practice",
+        "games": "O'yinlar",
         "register": "Ro'yxatdan o'tish",
-        "dashboard": "Boshqaruv",
-        "selectLang": "Tilni tanlang:",
-        "Mentorlar": "Mentorlar"
+        "dashboard": "Boshqaruv"
     },
     "mentorsPage": {
         "badge": "Professional jamoa",

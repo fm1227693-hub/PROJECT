@@ -25,7 +25,7 @@ const wordsList = [
     { word: 'opportunity', hint: 'A set of circumstances that makes it possible to do something' }
 ];
 
-export default function Game() {
+export default function Games() {
     const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [userInput, setUserInput] = useState('');

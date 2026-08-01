@@ -67,10 +67,6 @@
         "addBtnTitle": "Добавить новый курс",
         "deleteSuccess": "Успешно удалено"
     },
-    "footer": {
-        "description": "Стройте своё будущее вместе с нами. Получая современные профессии и качественное образование, найдите свой путь.",
-        "rights": "Все права защищены."
-    },
     "home": {
         "badge": "Optimum School of English",
         "titlePrefix": "Изучите английский с нуля",
@@ -201,13 +197,33 @@
     },
     "navbar": {
         "home": "Главная страница",
+        "about": "О нас",
+        "aboutUs": "О нас",
+        "mentors": "Менторы",
         "statistic": "Статистика",
         "achievements": "Достижения",
-        "about": "О нас",
+        "testAndGames": "Тесты и игры",
+        "levelTest": "Тест уровня",
+        "ieltsPractice": "IELTS Practice",
+        "games": "Игры",
         "register": "Регистрация",
-        "dashboard": "Управление",
-        "selectLang": "Выберите язык:",
-        "Mentorlar": "Менторы"
+        "dashboard": "Управление"
+    },
+    "footer": {
+        "description": "Стройте свое будущее вместе с нами. Осваивайте современные профессии и получайте качественное образование.",
+        "quickLinks": "Быстрые ссылки",
+        "contactTitle": "Контакты",
+        "hoursTitle": "График работы",
+        "address": "город Бухара, Бухарская область",
+        "everyday": "Каждый день",
+        "privacy": "Политика конфиденциальности",
+        "terms": "Условия использования",
+        "links": {
+            "home": "Главная",
+            "about": "О нас",
+            "levelTest": "Тест на уровень",
+            "ieltsPractice": "Практика IELTS"
+        }
     },
     "mentorsPage": {
         "badge": "Профессиональная команда",

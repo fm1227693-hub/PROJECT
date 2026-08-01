@@ -10,12 +10,9 @@ import Admin from "./components/Admin";
 import Register from "./components/Register";
 import Mentorstats from "./components/Mentorstats";
 import IeltsPracticeApp from "./components/IeltsPractiseApp";
-import Game from "./components/Game";
-import Game1 from "./components/Game1";
-import Game2 from "./components/Game2";
-import Game3 from "./components/Game3";
 import LevelTest from "./components/LevelTest";
 import Pricing from "./components/Pricing";
+import Gamess from "./components/Gamess";
 
 // Sahifa o'zgarganda tepaga chiqarish uchun yordamchi funksiya
 function ScrollToTop() {
@@ -81,12 +78,9 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/level-test" element={<LevelTest />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/gamess" element={<Gamess />} />
+          <Route path="/ieltspractiseapp" element={<IeltsPracticeApp />} />
         </Routes>
-        <IeltsPracticeApp className="mt-10" />
-        <Game />
-        <Game1 />
-        <Game2 />
-        <Game3 />
         <Footer />
       </div>
 

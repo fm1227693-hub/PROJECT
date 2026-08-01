@@ -68,8 +68,20 @@
         "deleteSuccess": "Successfully deleted"
     },
     "footer": {
-        "description": "Build your future with us. Gain modern professions and quality education, and find your own path.",
-        "rights": "All rights reserved."
+        "description": "Build your future with us. Master modern professions and get quality education.",
+        "quickLinks": "Quick Links",
+        "contactTitle": "Contact",
+        "hoursTitle": "Working Hours",
+        "address": "Bukhara city, Bukhara region",
+        "everyday": "Every day",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Use",
+        "links": {
+            "home": "Home",
+            "about": "About Us",
+            "levelTest": "Level Test",
+            "ieltsPractice": "IELTS Practice"
+        }
     },
     "home": {
         "badge": "Optimum School of English",
@@ -189,13 +201,17 @@
     },
     "navbar": {
         "home": "Home",
+        "about": "About us",
+        "aboutUs": "About us",
+        "mentors": "Mentors",
         "statistic": "Statistics",
         "achievements": "Achievements",
-        "about": "About Us",
+        "testAndGames": "Tests & Games",
+        "levelTest": "Level test",
+        "ieltsPractice": "IELTS Practice",
+        "games": "Games",
         "register": "Register",
-        "dashboard": "Dashboard",
-        "selectLang": "Select Language:",
-        "Mentorlar": "Mentors"
+        "dashboard": "Dashboard"
     },
     "mentorsPage": {
         "badge": "Professional Team",
