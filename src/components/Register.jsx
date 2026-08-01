@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Register() {
     const { t } = useTranslation();
-    
+
     const [formData, setFormData] = useState({
         fullName: '',
         phone: '',
@@ -14,9 +14,11 @@ export default function Register() {
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null); // { message, type: 'success' | 'error' }
 
-    // Botingiz tokeni va Chat ID raqamingiz
+    // Botingiz tokeni
     const BOT_TOKEN = "8800216213:AAGmRhvFeu0bmzYcGxVAgMT-LEiqAEJ1WnI";
-    const CHAT_ID = "6383523156";
+
+    // Adminlar (Sizning va Ruhilloning Telegram ID raqamlaringiz)
+    const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
 
     const showToast = (message, type = 'success') => {
         setToast({ message, type });
@@ -27,7 +29,7 @@ export default function Register() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        
+
         if (name === 'phone') {
             const numbers = value.replace(/\D/g, '').slice(0, 9);
             setFormData({ ...formData, phone: numbers });
@@ -38,7 +40,7 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (formData.phone.length < 9) {
             showToast(t('register.phoneError'), "error");
             return;
@@ -55,19 +57,25 @@ export default function Register() {
         `;
 
         try {
-            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'Markdown'
-                }),
-            });
+            // Ikkala adminga ham bir vaqtning o'zida xabar yuborish
+            const promises = ADMIN_CHAT_IDS.map(chatId =>
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    }),
+                })
+            );
 
-            if (response.ok) {
+            const responses = await Promise.all(promises);
+            const allSuccess = responses.every(res => res.ok);
+
+            if (allSuccess) {
                 showToast(t('register.successMsg'), "success");
                 setFormData({ fullName: '', phone: '', course: t('register.courseName') });
             } else {
@@ -83,7 +91,7 @@ export default function Register() {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-[#030712] dark:via-[#070b14] dark:to-[#0f172a] font-['Plus_Jakarta_Sans',sans-serif] relative overflow-hidden">
-            
+
             {/* Toast Xabarnoma */}
             <AnimatePresence>
                 {toast && (
@@ -103,7 +111,7 @@ export default function Register() {
                 )}
             </AnimatePresence>
 
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -123,14 +131,14 @@ export default function Register() {
                         <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.fullNameLabel')}</label>
                         <div className="relative flex items-center">
                             <FaUser className="absolute left-4 text-gray-400" />
-                            <input 
-                                type="text" 
-                                name="fullName" 
-                                placeholder={t('register.fullNamePlaceholder')} 
-                                value={formData.fullName} 
+                            <input
+                                type="text"
+                                name="fullName"
+                                placeholder={t('register.fullNamePlaceholder')}
+                                value={formData.fullName}
                                 onChange={handleChange}
                                 className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
-                                required 
+                                required
                             />
                         </div>
                     </div>
@@ -142,14 +150,14 @@ export default function Register() {
                             <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
                                 +998
                             </div>
-                            <input 
-                                type="tel" 
-                                name="phone" 
-                                placeholder="901234567" 
-                                value={formData.phone} 
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="901234567"
+                                value={formData.phone}
                                 onChange={handleChange}
                                 className="w-full pl-24 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
-                                required 
+                                required
                             />
                         </div>
                     </div>
@@ -158,19 +166,19 @@ export default function Register() {
                         <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.courseLabel')}</label>
                         <div className="relative flex items-center">
                             <FaBookOpen className="absolute left-4 text-gray-400" />
-                            <input 
-                                type="text" 
-                                value={t('register.courseName')} 
+                            <input
+                                type="text"
+                                value={t('register.courseName')}
                                 disabled
                                 className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-100 dark:bg-white/[0.02] border border-gray-200/80 dark:border-white/10 text-sm text-gray-600 dark:text-gray-400 cursor-not-allowed"
                             />
                         </div>
                     </div>
 
-                    <motion.button 
+                    <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        type="submit" 
+                        type="submit"
                         disabled={loading}
                         className="w-full py-4 rounded-2xl bg-[#c41e30] text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-70"
                     >
