@@ -111,7 +111,7 @@ export default function App() {
           </div>
 
           {/* Kichkina imzo */}
-          <p className="absolute bottom-4 left-5 text-[5px] sm:text-[0.1px] text-slate-300 dark:text-slate-700 tracking-widest select-none">
+          <p className="absolute bottom-4 left-5 text-[5px] sm:text-[0.01px] text-slate-300 dark:text-slate-700 tracking-widest select-none">
             Feruz
           </p>
         </div>
