@@ -42,7 +42,7 @@ export default function Mentorstats() {
     const BOT_TOKEN = "8746561523:AAFkkkdkPw1t4JyRJDGkr1QTfKQKnwUcef4";
 
     // Admin Chat ID (rasmdan olindi: 6383523156)
-    const ADMIN_CHAT_IDS = ["6383523156"];
+    const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
 
     useEffect(() => {
         AOS.init({
@@ -130,7 +130,7 @@ export default function Mentorstats() {
 
     const renderModal = () => (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 transition-all duration-300">
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
