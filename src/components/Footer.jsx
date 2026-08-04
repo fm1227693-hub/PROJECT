@@ -99,7 +99,7 @@ export default function Footer() {
                         <Link
                             key={link.to}
                             to={link.to}
-                            className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium py-1"
+                            className="text-sm hover:text-red-600 dark:hover:text-red-400 transition-colors font-medium py-1"
                         >
                             {link.label}
                         </Link>
@@ -109,16 +109,16 @@ export default function Footer() {
                 {/* 3. Aloqa maʼlumotlari */}
                 <FooterSection title={t('footer.contactTitle')}>
                     <div className="flex items-start gap-3 group">
-                        <FaMapMarkerAlt className="mt-1 text-blue-600 dark:text-blue-400 shrink-0 text-sm" />
+                        <FaMapMarkerAlt className="mt-1 text-red-600 dark:text-red-400 shrink-0 text-sm" />
                         <span className="text-sm leading-snug">
                             {t('footer.address')}
                         </span>
                     </div>
                     <a
                         href="tel:+998900829979"
-                        className="flex items-center gap-3 group hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="flex items-center gap-3 group hover:text-red-600 dark:hover:text-red-400 transition-colors"
                     >
-                        <FaPhoneAlt className="text-blue-600 dark:text-blue-400 shrink-0 text-xs" />
+                        <FaPhoneAlt className="text-red-600 dark:text-red-400 shrink-0 text-xs" />
                         <span className="text-sm font-medium tracking-wide">+998 90 082 99 79</span>
                     </a>
                 </FooterSection>
@@ -126,7 +126,7 @@ export default function Footer() {
                 {/* 4. Ish vaqti */}
                 <FooterSection title={t('footer.hoursTitle')} noBorder>
                     <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 p-3 rounded-xl border border-gray-100 dark:border-gray-800 sm:bg-transparent sm:p-0 sm:border-none">
-                        <FaClock className="text-blue-600 dark:text-blue-400 shrink-0 text-sm" />
+                        <FaClock className="text-red-600 dark:text-red-400 shrink-0 text-sm" />
                         <div className="flex flex-col sm:flex-row sm:gap-3">
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {t('footer.everyday')}
@@ -147,10 +147,10 @@ export default function Footer() {
                 </span>
 
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
-                    <a href="#privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <a href="#privacy" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">
                         {t('footer.privacy')}
                     </a>
-                    <a href="#terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <a href="#terms" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">
                         {t('footer.terms')}
                     </a>
                 </div>

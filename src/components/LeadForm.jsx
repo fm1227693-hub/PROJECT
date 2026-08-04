@@ -11,12 +11,8 @@ export default function LeadForm() {
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState('')
 
-    // Telegram Bot sozlamalari (1-bot va 2-bot uchun ma'lumotlar)
     const BOT_TOKEN = "8722121979:AAFh-CGYP26-mjBW3-iM1lqboGAEeATB1hA"
-    const CHAT_ID = "6383523156"
-
-    // Yangi qo'shilgan ID va token qismi (kerak bo'lsa ishlatish uchun)
-    const SECOND_BOT_CHAT_ID = "334572168"
+    const CHAT_ID = "334572168" // Yangi kiritilgan ID
 
     const handlePhoneChange = (e) => {
         const value = e.target.value
@@ -131,8 +127,8 @@ export default function LeadForm() {
                             )}
                         </div>
 
-                        {/* O'ng Forma qismi */}
-                        <div className={`lg:w-1/2 w-full max-w-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-500 ${isOpen ? 'opacity-100 scale-100' : 'hidden lg:block'}`}>
+                        {/* O'ng Forma qismi (Faqat "Hozirdan yozilish" bosilgandagina chiqadi) */}
+                        <div className={`lg:w-1/2 w-full max-w-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-500 ${isOpen ? 'opacity-100 scale-100 block' : 'hidden'}`}>
                             {success ? (
                                 <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
                                     <FaCheckCircle className="text-emerald-500 text-5xl animate-bounce" />
@@ -143,15 +139,13 @@ export default function LeadForm() {
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="flex items-center justify-between mb-2">
                                         <h3 className="text-xl font-black text-gray-900 dark:text-white">Bepul darsga yozilish</h3>
-                                        {isOpen && (
-                                            <button 
-                                                type="button" 
-                                                onClick={() => setIsOpen(false)}
-                                                className="lg:hidden text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 cursor-pointer"
-                                            >
-                                                <FaTimes />
-                                            </button>
-                                        )}
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setIsOpen(false)}
+                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 cursor-pointer"
+                                        >
+                                            <FaTimes />
+                                        </button>
                                     </div>
 
                                     {error && (

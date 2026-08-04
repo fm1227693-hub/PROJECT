@@ -14,6 +14,9 @@ import LevelTest from "./components/LevelTest";
 import Pricing from "./components/Pricing";
 import Gamess from "./components/Gamess";
 import FAQ from "./components/FAQ";
+import ConsultationBooking from "./components/ConsultationBooking";
+import Flashcards from "./components/Flashcard";
+import LeadForm from "./components/LeadForm";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -148,7 +151,10 @@ export default function App() {
           <Route path="/gamess" element={<Gamess />} />
           <Route path="/ieltspractiseapp" element={<IeltsPracticeApp />} />
           <Route path="/faqat" element={<FAQ />} />
+          <Route path="/form" element={<LeadForm />} />
         </Routes>
+        {/* <ConsultationBooking/>
+        <Flashcards/> */}
         <Footer />
       </div>
 

@@ -1,0 +1,135 @@
+import React, { useState } from 'react';
+
+const mentors = [
+  { id: 1, name: 'Zamirgor Omiqova', role: 'IELTS 8.5 Expert' },
+  { id: 2, name: 'Gulasal', role: 'IELTS 9.0 Certified' },
+  { id: 3, name: 'Ruxillo Asrorov', role: 'English Teacher & IELTS Expert' }
+];
+
+const timeSlots = ['10:00 - 10:15', '11:00 - 11:15', '14:00 - 14:15', '16:00 - 16:15', '18:00 - 18:15'];
+
+export default function ConsultationBooking() {
+  const [selectedMentor, setSelectedMentor] = useState(mentors[0].name);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [studentName, setStudentName] = useState('');
+  const [studentPhone, setStudentPhone] = useState('');
+  const [successMessage, setSuccessMessage] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedDate || !selectedTime || !studentName || !studentPhone) {
+      alert("Iltimos, barcha maydonlarni to'ldiring!");
+      return;
+    }
+
+    setSuccessMessage(true);
+    setTimeout(() => {
+      setSuccessMessage(false);
+      // Formani tozalash
+      setSelectedDate('');
+      setSelectedTime('');
+      setStudentName('');
+      setStudentPhone('');
+    }, 4000);
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto p-6 bg-[#0f1016] text-white rounded-2xl border border-gray-800 shadow-xl my-10">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold mb-2">Bepul 15 daqiqalik konsultatsiya</h2>
+        <p className="text-gray-400 text-sm">Ustozni tanlang, o'zingizga qulay vaqtni belgilang va bepul maslahat oling.</p>
+      </div>
+
+      {successMessage && (
+        <div className="mb-6 p-4 bg-emerald-950 border border-emerald-600 text-emerald-300 rounded-lg text-center animate-fade-in">
+          ✅ Tabriklaymiz! Konsultatsiyaga muvaffaqiyatli yozildingiz. Tez orada siz bilan bog'lanamiz.
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Mentorlar */}
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Ustozni tanlang</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {mentors.map((m) => (
+              <button
+                type="button"
+                key={m.id}
+                onClick={() => setSelectedMentor(m.name)}
+                className={`p-3 rounded-xl border text-left transition ${
+                  selectedMentor === m.name
+                    ? 'border-red-600 bg-red-600/10 text-white'
+                    : 'border-gray-800 bg-[#161821] text-gray-400 hover:border-gray-700'
+                }`}
+              >
+                <div className="font-semibold text-sm">{m.name}</div>
+                <div className="text-xs text-gray-500 mt-1">{m.role}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Sana va Vaqt */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Sanani tanlang</label>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="w-full bg-[#161821] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-600"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Vaqtni tanlang (15 daqiqa)</label>
+            <select
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              className="w-full bg-[#161821] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-600"
+            >
+              <option value="">Vaqtni tanlang</option>
+              {timeSlots.map((time, index) => (
+                <option key={index} value={time}>{time}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Shaxsiy ma'lumotlar */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Ismingiz</label>
+            <input
+              type="text"
+              placeholder="Alisher"
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+              className="w-full bg-[#161821] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-600"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Telefon raqamingiz</label>
+            <input
+              type="tel"
+              placeholder="+998 90 123 45 67"
+              value={studentPhone}
+              onChange={(e) => setStudentPhone(e.target.value)}
+              className="w-full bg-[#161821] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-600"
+            />
+          </div>
+        </div>
+
+        {/* Tugma */}
+        <button
+          type="submit"
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-red-600/20"
+        >
+          Konsultatsiyani Bron Qilish
+        </button>
+      </form>
+    </div>
+  );
+}
