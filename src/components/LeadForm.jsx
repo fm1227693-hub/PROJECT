@@ -12,7 +12,9 @@ export default function LeadForm() {
     const [error, setError] = useState('')
 
     const BOT_TOKEN = "8722121979:AAFh-CGYP26-mjBW3-iM1lqboGAEeATB1hA"
-    const CHAT_ID = "334572168" // Yangi kiritilgan ID
+    
+    // Ikkita admin chat ID lari massiv ko'rinishida
+    const CHAT_IDS = ["334572168", "6383523156"]
 
     const handlePhoneChange = (e) => {
         const value = e.target.value
@@ -41,21 +43,25 @@ export default function LeadForm() {
         const message = `🎯 Yangi murojaat (Optimum):\n\n👤 Ism: ${name}\n📞 Tel: +998${phone}`
 
         try {
-            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML'
-                }),
-            })
+            // Har bir chat ID ga alohida so'rov yaratib, ularni bir vaqtning o'zida yuboramiz
+            const promises = CHAT_IDS.map(chatId =>
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    }),
+                })
+            )
 
-            const data = await response.json()
+            const responses = await Promise.all(promises)
+            const allSuccess = responses.every(res => res.ok)
 
-            if (data.ok) {
+            if (allSuccess) {
                 setSuccess(true)
                 setName('')
                 setPhone('')
