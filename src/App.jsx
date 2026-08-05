@@ -35,7 +35,7 @@ export default function App() {
     // 5 soniya (5000ms) qilib belgilandi
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

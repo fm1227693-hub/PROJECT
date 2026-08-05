@@ -10,6 +10,12 @@ import {
     HiPhone 
 } from 'react-icons/hi'
 
+// Rasmda ko'rsatilgan Premier School manzili uchun doimiy (constant) ma'lumotlar
+const FIXED_LOCATION = {
+    embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3071.0124155!2d64.410986!3d39.7647863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f5007c3f9d243a7%3A0x3c52dea5c997b375!2sPremier%20School!5e0!3m2!1suz!2suz!4v1650000000000!5m2!1suz!2suz",
+    addressText: "Namozgoh St, Bukhara"
+}
+
 export default function AboutUs() {
     const { t } = useTranslation()
 
@@ -129,7 +135,7 @@ export default function AboutUs() {
 
             </div>
 
-            {/* 3-Bo'lim: Manzil va Rasm */}
+            {/* 3-Bo'lim: Manzil va Premier School Xaritasi */}
             <div
                 data-aos="fade-up"
                 data-aos-duration="900"
@@ -169,17 +175,23 @@ export default function AboutUs() {
                         </a>
                     </div>
                 </div>
+
+                {/* Premier School xaritasi (Dark mode filtr bilan) */}
                 <div className="relative w-full h-64 sm:h-72 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-800 group">
-                    <img
-                        src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop"
-                        alt={t('aboutUs.imageAlt')}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-gray-950/10 to-transparent"></div>
+                    <iframe
+                        title="Premier School Map"
+                        src={FIXED_LOCATION.embedUrl}
+                        className="w-full h-full border-0 filter invert-[90%] hue-rotate-180 contrast-125 saturate-50 opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                        allowFullScreen=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-gray-950/10 to-transparent pointer-events-none"></div>
+
                     <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 bg-gray-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-lg border border-gray-800 flex items-center gap-2.5 transition-transform duration-300 group-hover:-translate-y-1">
-                        <span className="text-lg font-black text-red-400">100%</span>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 leading-tight">
-                            {t('aboutUs.stat1Label')}
+                            {FIXED_LOCATION.addressText}
                         </span>
                     </div>
                 </div>
@@ -215,4 +227,4 @@ export default function AboutUs() {
 
         </div>
     )
-}
+}   
