@@ -3,7 +3,7 @@ import Comments from './Comments'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import toast, { Toaster } from 'react-hot-toast'
-import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync } from 'react-icons/fa'
+import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -11,6 +11,9 @@ export default function AdminORG() {
     const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'comments'
     const [leads, setLeads] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
+    const [statusFilter, setStatusFilter] = useState('all')
+    const [typeFilter, setTypeFilter] = useState('all')
+    const [sortOrder, setSortOrder] = useState('newest')
     const [loadingLeads, setLoadingLeads] = useState(false)
 
     const loadLeads = async () => {
@@ -62,11 +65,59 @@ export default function AdminORG() {
         }
     }
 
-    const filteredLeads = leads.filter(lead => 
-        lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        lead.phone?.includes(searchTerm) ||
-        lead.type?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    const exportToCSV = () => {
+        if (leads.length === 0) {
+            toast.error("Yuklab olish uchun murojaatlar mavjud emas!")
+            return
+        }
+
+        const headers = ["F.I.O", "Telefon raqami", "Murojaat turi", "Kelgan vaqti", "Status"]
+        const rows = leads.map(l => [
+            `"${(l.name || '').replace(/"/g, '""')}"`,
+            `"${(l.phone || '').replace(/"/g, '""')}"`,
+            `"${(l.type || '').replace(/"/g, '""')}"`,
+            `"${(l.date || '').replace(/"/g, '""')}"`,
+            `"${(l.status || 'Kutilmoqda').replace(/"/g, '""')}"`
+        ])
+
+        const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(e => e.join(","))].join("\n")
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.setAttribute("href", url)
+        link.setAttribute("download", `murojaatlar_optimum_${new Date().toISOString().slice(0, 10)}.csv`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        toast.success("Excel (CSV) fayli yuklab olindi!")
+    }
+
+    // Analytics calculations
+    const totalCount = leads.length
+    const acceptedCount = leads.filter(l => l.status === 'Qabul qilindi').length
+    const rejectedCount = leads.filter(l => l.status === 'Rad etildi').length
+    const pendingCount = leads.filter(l => l.status === 'Kutilmoqda' || !l.status).length
+
+    const getPercent = (count) => totalCount > 0 ? Math.round((count / totalCount) * 100) : 0
+
+    // Filter and Sort logic
+    const filteredLeads = leads
+        .filter(lead => {
+            const matchesSearch = lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                lead.phone?.includes(searchTerm) ||
+                lead.type?.toLowerCase().includes(searchTerm.toLowerCase())
+            
+            const matchesStatus = statusFilter === 'all' || lead.status === statusFilter || (statusFilter === 'Kutilmoqda' && !lead.status)
+            const matchesType = typeFilter === 'all' || lead.type?.toLowerCase().includes(typeFilter.toLowerCase())
+
+            return matchesSearch && matchesStatus && matchesType
+        })
+        .sort((a, b) => {
+            if (sortOrder === 'oldest') {
+                return (a.id || 0) - (b.id || 0)
+            }
+            return (b.id || 0) - (a.id || 0)
+        })
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
@@ -83,73 +134,217 @@ export default function AdminORG() {
                                 Admin Boshqaruv Paneli
                             </h1>
                             <p className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400">
-                                Telegram bot va sayt orqali tushgan murojaatlarni boshqarish
+                                Telegram bot va sayt orqali tushgan murojaatlarni boshqarish va tahlil qilish
                             </p>
                         </div>
                     </div>
 
-                    <Link
-                        to="/"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 font-bold text-xs sm:text-sm transition-all border border-red-500/20 cursor-pointer active:scale-95"
-                    >
-                        <FaSignOutAlt />
-                        <span>Chiqish</span>
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={loadLeads}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs sm:text-sm transition-all border border-gray-200 dark:border-gray-700 cursor-pointer active:scale-95"
+                            title="Yangilash"
+                        >
+                            <FaSync className={loadingLeads ? "animate-spin" : ""} />
+                            <span className="hidden xs:inline">Yangilash</span>
+                        </button>
+
+                        <Link
+                            to="/"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 font-bold text-xs sm:text-sm transition-all border border-red-500/20 cursor-pointer active:scale-95"
+                        >
+                            <FaSignOutAlt />
+                            <span>Chiqish</span>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Analytics Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {/* Total Leads Card */}
+                    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-black uppercase text-gray-500 dark:text-gray-400 tracking-wider">Jami Murojaatlar</span>
+                            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
+                                <FaUsers />
+                            </div>
+                        </div>
+                        <div>
+                            <span className="text-3xl font-black text-gray-900 dark:text-white">{totalCount}</span>
+                            <span className="text-xs font-bold text-gray-400 ml-2">ta ariza</span>
+                        </div>
+                        <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-indigo-600 h-full rounded-full w-full" />
+                        </div>
+                    </div>
+
+                    {/* Pending Leads Card */}
+                    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-black uppercase text-amber-500 tracking-wider">Kutilmoqda</span>
+                            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg">
+                                <FaHourglassHalf />
+                            </div>
+                        </div>
+                        <div className="flex items-baseline justify-between">
+                            <span className="text-3xl font-black text-gray-900 dark:text-white">{pendingCount}</span>
+                            <span className="text-xs font-bold text-amber-500">{getPercent(pendingCount)}%</span>
+                        </div>
+                        <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-amber-500 h-full rounded-full transition-all duration-500" style={{ width: `${getPercent(pendingCount)}%` }} />
+                        </div>
+                    </div>
+
+                    {/* Accepted Leads Card */}
+                    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-black uppercase text-emerald-500 tracking-wider">Qabul Qilindi</span>
+                            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+                                <FaCheckCircle />
+                            </div>
+                        </div>
+                        <div className="flex items-baseline justify-between">
+                            <span className="text-3xl font-black text-gray-900 dark:text-white">{acceptedCount}</span>
+                            <span className="text-xs font-bold text-emerald-500">{getPercent(acceptedCount)}%</span>
+                        </div>
+                        <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${getPercent(acceptedCount)}%` }} />
+                        </div>
+                    </div>
+
+                    {/* Rejected Leads Card */}
+                    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-black uppercase text-rose-500 tracking-wider">Rad Etildi</span>
+                            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg">
+                                <FaTimesCircle />
+                            </div>
+                        </div>
+                        <div className="flex items-baseline justify-between">
+                            <span className="text-3xl font-black text-gray-900 dark:text-white">{rejectedCount}</span>
+                            <span className="text-xs font-bold text-rose-500">{getPercent(rejectedCount)}%</span>
+                        </div>
+                        <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                            <div className="bg-rose-500 h-full rounded-full transition-all duration-500" style={{ width: `${getPercent(rejectedCount)}%` }} />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex items-center gap-3 border-b border-gray-200 dark:border-gray-800 pb-4">
-                    <button
-                        onClick={() => setActiveTab('leads')}
-                        className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer ${
-                            activeTab === 'leads'
-                                ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
-                                : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
-                        }`}
-                    >
-                        <FaInbox className="text-base" />
-                        <span>Murojaatlar ({leads.length})</span>
-                    </button>
+                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-4">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setActiveTab('leads')}
+                            className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer ${
+                                activeTab === 'leads'
+                                    ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
+                                    : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
+                            }`}
+                        >
+                            <FaInbox className="text-base" />
+                            <span>Murojaatlar ({leads.length})</span>
+                        </button>
 
-                    <button
-                        onClick={() => setActiveTab('comments')}
-                        className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer ${
-                            activeTab === 'comments'
-                                ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
-                                : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
-                        }`}
-                    >
-                        <FaCommentDots className="text-base" />
-                        <span>Izohlar va Mahsulotlar</span>
-                    </button>
+                        <button
+                            onClick={() => setActiveTab('comments')}
+                            className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer ${
+                                activeTab === 'comments'
+                                    ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
+                                    : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
+                            }`}
+                        >
+                            <FaCommentDots className="text-base" />
+                            <span>Izohlar va Mahsulotlar</span>
+                        </button>
+                    </div>
+
+                    {activeTab === 'leads' && (
+                        <button
+                            onClick={exportToCSV}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/20 cursor-pointer active:scale-95"
+                        >
+                            <FaFileCsv className="text-base" />
+                            <span className="hidden sm:inline">Excel (CSV) yuklab olish</span>
+                        </button>
+                    )}
                 </div>
 
                 {/* Tab 1: Murojaatlar */}
                 {activeTab === 'leads' && (
                     <div className="space-y-6">
-                        {/* Search Bar */}
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div className="relative w-full sm:w-80">
+                        {/* Search and Filters Bar */}
+                        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-4 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-md">
+                            
+                            {/* Search Input */}
+                            <div className="relative flex-1">
                                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
                                 <input
                                     type="text"
                                     placeholder="Ism yoki telefon bo'yicha qidiruv..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
+                                    className="w-full pl-11 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
                                 />
                             </div>
+
+                            {/* Filters */}
+                            <div className="flex flex-wrap items-center gap-3">
+                                {/* Status Filter */}
+                                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
+                                    <FaFilter className="text-xs text-red-600" />
+                                    <span>Status:</span>
+                                    <select
+                                        value={statusFilter}
+                                        onChange={(e) => setStatusFilter(e.target.value)}
+                                        className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
+                                    >
+                                        <option value="all">Barchasi</option>
+                                        <option value="Kutilmoqda">⏳ Kutilmoqda</option>
+                                        <option value="Qabul qilindi">✓ Qabul qilindi</option>
+                                        <option value="Rad etildi">✕ Rad etildi</option>
+                                    </select>
+                                </div>
+
+                                {/* Type Filter */}
+                                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
+                                    <span>Turi:</span>
+                                    <select
+                                        value={typeFilter}
+                                        onChange={(e) => setTypeFilter(e.target.value)}
+                                        className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
+                                    >
+                                        <option value="all">Barchasi</option>
+                                        <option value="Bepul maslahat">Bepul maslahat</option>
+                                        <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
+                                        <option value="Konsultatsiya">Konsultatsiya</option>
+                                    </select>
+                                </div>
+
+                                {/* Sort Order */}
+                                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
+                                    <span>Tartib:</span>
+                                    <select
+                                        value={sortOrder}
+                                        onChange={(e) => setSortOrder(e.target.value)}
+                                        className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
+                                    >
+                                        <option value="newest">Eng yangilari</option>
+                                        <option value="oldest">Eng eskilari</option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
 
-                        {/* Leads Cards / Table */}
+                        {/* Leads Cards */}
                         {filteredLeads.length === 0 ? (
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-12 rounded-3xl border border-gray-200 dark:border-gray-800 text-center space-y-3">
                                 <FaInbox className="text-5xl text-gray-400 mx-auto" />
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                                    Hozircha hech qanday murojaat yo'q
+                                    Mos keladigan murojaat topilmadi
                                 </h3>
                                 <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
-                                    Sayt va Telegram bot orqali foydalanuvchilar qoldirgan ism va telefon raqamlari shu yerda ko'rinadi.
+                                    Qidiruv so'rovi yoki belgilangan filtrlar bo'yicha ma'lumot yo'q.
                                 </p>
                             </div>
                         ) : (
