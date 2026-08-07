@@ -85,48 +85,53 @@ export default function Home() {
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             className="max-w-7xl pt-24 sm:pt-28 lg:pt-32 mx-auto px-3 sm:px-6 lg:px-8 select-none transition-colors duration-200"
         >
-            {/* Asosiy Banner Qismi */}
+            {/* Asosiy Banner Qismi - Ultra-Premium Glassmorphism */}
             <div
                 data-aos="fade-down"
                 data-aos-duration="800"
-                className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 p-5 sm:p-10 md:p-14 rounded-3xl sm:rounded-[2.5rem] shadow-2xl border border-gray-200/80 dark:border-gray-800/80 overflow-hidden relative"
+                className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center glass-card p-6 sm:p-12 md:p-16 rounded-[2.5rem] sm:rounded-[3rem] relative overflow-hidden group transition-all duration-500"
             >
-                <div className="absolute -top-24 -right-24 w-96 h-96 bg-red-500/10 dark:bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-rose-500/10 dark:bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                {/* Dynamic Lighting Backdrop */}
+                <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-gradient-to-br from-red-600/20 via-rose-500/10 to-transparent rounded-full blur-[130px] pointer-events-none animate-pulse-slow"></div>
+                <div className="absolute -bottom-32 -left-32 w-[450px] h-[450px] bg-gradient-to-tr from-amber-500/15 via-red-500/10 to-transparent rounded-full blur-[130px] pointer-events-none animate-pulse-slow"></div>
 
                 {/* Left Content */}
                 <div
                     data-aos="fade-right"
                     data-aos-duration="900"
-                    className="flex flex-col justify-center space-y-5 lg:w-1/2 text-left relative z-10 w-full"
+                    className="flex flex-col justify-center space-y-6 lg:w-1/2 text-left relative z-10 w-full"
                 >
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl text-xs font-black w-fit shadow-lg shadow-red-600/25 tracking-wide">
-                        <FaFire className="w-3.5 h-3.5 animate-pulse" />
-                        {t('home.badge')}
+                    <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-red-600/90 via-rose-600 to-red-700 text-white rounded-full text-xs font-extrabold w-fit shadow-lg shadow-red-600/30 tracking-wider uppercase border border-white/20">
+                        <FaFire className="w-3.5 h-3.5 animate-bounce text-amber-300" />
+                        <span>{t('home.badge')}</span>
                     </div>
 
-                    <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 dark:text-white leading-[1.15]">
-                        {t('home.titlePrefix')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">{t('home.titleHighlight')}</span>
+                    <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 dark:text-white leading-[1.12] font-heading">
+                        {t('home.titlePrefix')}{' '}
+                        <span className="text-red-600 dark:text-red-500">
+                            {t('home.titleHighlight')}
+                        </span>
                     </h1>
 
                     <p className="text-sm sm:text-lg text-gray-600 dark:text-gray-300 font-medium leading-relaxed">
                         {t('home.description')}
                     </p>
 
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-3">
                         <Link
                             to="/form"
-                            className="px-6 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black rounded-2xl shadow-xl shadow-red-600/25 transition-all duration-300 flex items-center justify-center gap-3 text-sm group cursor-pointer"
+                            className="relative group px-8 py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-xl shadow-red-600/30 hover:shadow-2xl hover:shadow-red-600/50 transition-all duration-300 flex items-center justify-center gap-3 text-sm cursor-pointer hover:-translate-y-0.5 active:scale-95 overflow-hidden"
                         >
-                            <span>Bepul kursimizga hozir yoziling</span>
-                            <FaArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
+                            <span className="relative z-10">{t('home.enrollBtn', 'Bepul darsga yozilish')}</span>
+                            <FaArrowRight className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-1.5 transition-transform" />
                         </Link>
                         
                         <Link
                             to="/about"
-                            className="px-6 py-3.5 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-900 dark:text-white font-bold rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300 text-sm text-center cursor-pointer"
+                            className="px-8 py-4 bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-800 text-gray-900 dark:text-white font-extrabold rounded-2xl border border-gray-200/90 dark:border-white/10 shadow-sm hover:shadow-lg transition-all duration-300 text-sm text-center cursor-pointer hover:-translate-y-0.5 active:scale-95 backdrop-blur-md"
                         >
-                            Batafsil ma'lumot
+                            {t('home.moreInfoBtn', "Batafsil ma'lumot")}
                         </Link>
                     </div>
                 </div>

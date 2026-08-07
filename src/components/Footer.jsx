@@ -26,7 +26,7 @@ export default function Footer() {
         { label: t('footer.links.home'), to: '/' },
         { label: t('footer.links.about'), to: '/about' },
         { label: t('footer.links.levelTest'), to: '/level-test' },
-        { label: t('footer.links.ieltsPractice'), to: '/ieltspractiseapp' },
+        { label: t('footer.links.ieltsPractice'), to: '/ielts-practice' },
     ]
 
     const socials = [

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import AOS from 'aos';
@@ -25,6 +26,7 @@ const staticMentorsData = [
 ];
 
 export default function Mentorstats() {
+    const { t } = useTranslation();
     const [modal, setModal] = useState(false);
     const [selectedMentor, setSelectedMentor] = useState("");
     const [activeMentorDetail, setActiveMentorDetail] = useState(null);
@@ -265,7 +267,7 @@ export default function Mentorstats() {
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-sky-500/20 active:scale-95"
                             >
-                                <span>💬</span> Telegram orqali bog'lanish
+                                <span>💬</span> {t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}
                             </a>
                         </div>
 
@@ -314,7 +316,7 @@ export default function Mentorstats() {
                                     }}
                                     className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 active:scale-95 text-white font-semibold px-10 py-4 text-sm rounded-2xl transition-all duration-200 w-full sm:w-auto cursor-pointer shadow-xl shadow-red-600/25"
                                 >
-                                    Bog'lanish
+                                    {t('mentors.contactBtn', 'Bog\'lanish')}
                                 </button>
                             </div>
                         </div>

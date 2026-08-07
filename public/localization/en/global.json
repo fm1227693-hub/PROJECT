@@ -87,7 +87,9 @@
         "badge": "Optimum School of English",
         "titlePrefix": "Learn English from scratch",
         "titleHighlight": "to perfection",
-        "description": "Join our intensive courses now, built on professional teachers, live speaking clubs, and international standards."
+        "description": "Join our intensive courses now, built on professional teachers, live speaking clubs, and international standards.",
+        "enrollBtn": "Enroll for free",
+        "moreInfoBtn": "Learn more"
     },
     "mentors": {
         "sectionTitle": "Our Experienced Mentors",
@@ -494,5 +496,25 @@
         "a3": "Active participation in every class is recommended. If you cannot attend or struggle with a topic, our experienced assistant teachers will help you outside of class hours, re-explain the covered topics, and assist you with practical exercises.",
         "q4": "Is a certificate awarded after completing the course?",
         "a4": "Yes, graduates who successfully complete the course receive a special certificate, and top students are provided with practical assistance in finding a job."
+    },
+    "leadForm": {
+        "backBtn": "Go back",
+        "badge": "Free Consultation",
+        "titlePrefix": "Start learning English",
+        "titleHighlight": "today!",
+        "description": "Leave your name and phone number. Our specialists will contact you promptly, sign you up for a free lesson, and answer all your questions.",
+        "applyNowBtn": "Enroll Now",
+        "formTitle": "Sign up for a free lesson",
+        "nameLabel": "Your Name",
+        "namePlaceholder": "e.g. Aziz",
+        "phoneLabel": "Your Phone Number",
+        "submitBtn": "Reserve a Spot",
+        "submitting": "Submitting...",
+        "successTitle": "Your application has been received!",
+        "successDesc": "Our managers will contact you shortly.",
+        "errorAllFields": "Please fill in all fields!",
+        "errorPhoneDigits": "Please enter all 9 digits!",
+        "errorGeneric": "An error occurred. Please try again.",
+        "errorNetwork": "Please check your internet connection."
     }
 }

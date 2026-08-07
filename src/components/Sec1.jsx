@@ -41,30 +41,31 @@ export default function Sec1() {
     ]
 
     return (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 mb-12 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 mb-12 select-none transition-colors duration-300">
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"
-                className="relative bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border border-gray-100/80 dark:border-gray-800 rounded-3xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-center overflow-hidden"
+                className="relative glass-panel rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-center overflow-hidden"
             >
-                {/* Dekorativ nur */}
-                <div className="pointer-events-none absolute -top-20 -right-20 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
+                {/* Decorative glow */}
+                <div className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-red-600/15 to-transparent rounded-full blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-rose-500/15 to-transparent rounded-full blur-3xl" />
 
                 {items.map((item, index) => (
                     <div
                         key={item.label}
-                        className={`relative flex items-center justify-between ${index < items.length - 1 ? 'lg:border-r lg:border-gray-100 dark:lg:border-gray-800' : ''} lg:pr-6 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-gray-50/80 dark:hover:bg-gray-900/50 group`}
+                        className={`relative flex items-center justify-between ${index < items.length - 1 ? 'lg:border-r lg:border-gray-200/60 dark:lg:border-white/10' : ''} lg:pr-6 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/50 dark:hover:bg-white/[0.04] group border border-transparent hover:border-red-500/20`}
                     >
                         <div className="flex flex-col">
-                            <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight block group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">{item.value}</span>
-                            <span className="text-sm font-bold text-red-500 dark:text-red-400 block mt-0.5">{item.label}</span>
-                            <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 block mt-1">{item.change}</span>
+                            <span className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight block group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors duration-300 font-heading">{item.value}</span>
+                            <span className="text-xs sm:text-sm font-extrabold text-red-600 dark:text-red-400 block mt-1 tracking-wide">{item.label}</span>
+                            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 block mt-0.5 tracking-wider font-mono">{item.change}</span>
                         </div>
-                        <div className="w-24 h-12 flex items-center transform group-hover:scale-105 transition-transform duration-300">
+                        <div className="w-24 h-12 flex items-center transform group-hover:scale-110 transition-transform duration-300">
                             <svg className="w-full h-full" viewBox="0 0 100 40" fill="none">
                                 <defs>
                                     <linearGradient id={`sparklineGradRed${index}`} x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#ef4444" stopOpacity="0.2" />
+                                        <stop offset="0%" stopColor="#ef4444" stopOpacity="0.3" />
                                         <stop offset="100%" stopColor="#ef4444" stopOpacity="0.0" />
                                     </linearGradient>
                                 </defs>

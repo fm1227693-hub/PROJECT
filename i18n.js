@@ -15,9 +15,8 @@ i18n
     .use(initReactI18next)
     .init({
         resources,
-        lng: localStorage.getItem("lng") || "en",
-        fallbackLng: "en", // <--- SHU YERNI TO'G'RILANG
-
+        lng: localStorage.getItem("lng") || "uz",
+        fallbackLng: "uz",
         interpolation: {
             escapeValue: false
         }

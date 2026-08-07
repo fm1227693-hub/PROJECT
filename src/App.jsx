@@ -84,10 +84,7 @@ export default function App() {
 
             {/* Nom (Muxamedov Feruz) */}
             <div className="flex flex-col items-center gap-2">
-              <h1
-                className="text-2xl sm:text-3xl font-black tracking-wider bg-gradient-to-r from-slate-900 via-red-600 to-slate-900 dark:from-white dark:via-red-400 dark:to-white bg-clip-text text-transparent bg-[length:200%_auto]"
-                style={{ animation: "shimmer 2.5s linear infinite" }}
-              >
+              <h1 className="text-2xl sm:text-3xl font-black tracking-wider text-red-600 dark:text-red-500">
                 OPTIMUM
               </h1>
               <p className="text-[11px] sm:text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-[0.3em] uppercase">
@@ -144,13 +141,13 @@ export default function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/enter" element={<Admin />} />
-          <Route path="/static" element={<Mentorstats />} />
+          <Route path="/mentor-stats" element={<Mentorstats />} />
           <Route path="/register" element={<Register />} />
           <Route path="/level-test" element={<LevelTest />} />
           <Route path="/pricing" element={<Pricing />} />
-          <Route path="/gamess" element={<Gamess />} />
-          <Route path="/ieltspractiseapp" element={<IeltsPracticeApp />} />
-          <Route path="/faqat" element={<FAQ />} />
+          <Route path="/games" element={<Gamess />} />
+          <Route path="/ielts-practice" element={<IeltsPracticeApp />} />
+          <Route path="/faq" element={<FAQ />} />
           <Route path="/form" element={<LeadForm />} />
         </Routes>
         {/* <ConsultationBooking/>

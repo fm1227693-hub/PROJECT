@@ -87,7 +87,9 @@
         "badge": "Optimum School of English",
         "titlePrefix": "Ingliz tilini noldan",
         "titleHighlight": "mukammallikkacha o'rganing",
-        "description": "Professional o'qituvchilar, jonli suhbat klublari va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling."
+        "description": "Professional o'qituvchilar, jonli suhbat klublari va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling.",
+        "enrollBtn": "Bepul darsga yozilish",
+        "moreInfoBtn": "Batafsil ma'lumot"
     },
     "mentors": {
         "sectionTitle": "Bizning tajribali mentorlarimiz",
@@ -494,5 +496,25 @@
         "a3": "Har bir darsda faol qatnashish tavsiya etiladi. Agar darsga kela olmay qolsangiz yoki qaysidir mavzuni tushunmay qiynalsangiz, markazimizdagi tajribali assistent o'qituvchilar darsdan tashqari vaqtlarda sizga yaqindan yordam berib, o'tilgan mavzularni qaytadan tushuntirib berishadi va amaliy mashqlarni bajarishda ko'maklashishadi.",
         "q4": "Kurs tugatgandan keyin sertifikat beriladimi?",
         "a4": "Ha, kursni muvaffaqiyatli tamomlagan bitiruvchilarga maxsus sertifikat beriladi va eng yaxshi o'quvchilarga ish topishda amaliy yordam ko'rsatiladi."
+    },
+    "leadForm": {
+        "backBtn": "Orqaga qaytish",
+        "badge": "Bepul maslahat",
+        "titlePrefix": "Ingliz tilini o'rganishni",
+        "titleHighlight": "bugun boshlang!",
+        "description": "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.",
+        "applyNowBtn": "Hozirdan yozilish",
+        "formTitle": "Bepul darsga yozilish",
+        "nameLabel": "Ismingiz",
+        "namePlaceholder": "Masalan: Aziz",
+        "phoneLabel": "Telefon raqamingiz",
+        "submitBtn": "Joy band qilish",
+        "submitting": "Yuborilmoqda...",
+        "successTitle": "Murojaatingiz qabul qilindi!",
+        "successDesc": "Tez orada operatorlarimiz siz bilan bog'lanishadi.",
+        "errorAllFields": "Iltimos, barcha maydonlarni to'ldiring!",
+        "errorPhoneDigits": "Iltimos, 9 ta raqamni to'liq kiriting!",
+        "errorGeneric": "Xatolik yuz berdi. Qaytadan urinib ko'ring.",
+        "errorNetwork": "Internet aloqasini tekshiring."
     }
 }

@@ -139,13 +139,29 @@ export default function Navbar() {
             >
                 <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 shrink-0">
+                        {/* Custom 3-Line Animated Morphing Hamburger Button */}
                         <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.85 }}
-                            onClick={() => { setMenuOpen(true); setAboutDropdownOpen(false); setTestsDropdownOpen(false); }}
-                            className="md:hidden w-9 h-9 flex items-center justify-center rounded-full text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => { setMenuOpen((v) => !v); setAboutDropdownOpen(false); setTestsDropdownOpen(false); }}
+                            className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/80 dark:bg-white/[0.06] border border-gray-200/80 dark:border-white/10 shadow-sm cursor-pointer relative z-[110]"
+                            aria-label="Toggle Navigation Menu"
                         >
-                            <FaBars className="w-4 h-4" />
+                            <motion.span
+                                animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }}
+                                transition={{ duration: 0.25, ease: "easeInOut" }}
+                                className="w-5 h-[2.5px] bg-slate-700 dark:bg-white rounded-full origin-center"
+                            />
+                            <motion.span
+                                animate={{ opacity: menuOpen ? 0 : 1, scaleX: menuOpen ? 0 : 1 }}
+                                transition={{ duration: 0.2, ease: "easeInOut" }}
+                                className="w-5 h-[2.5px] bg-slate-700 dark:bg-white rounded-full origin-center"
+                            />
+                            <motion.span
+                                animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -7 : 0 }}
+                                transition={{ duration: 0.25, ease: "easeInOut" }}
+                                className="w-5 h-[2.5px] bg-slate-700 dark:bg-white rounded-full origin-center"
+                            />
                         </motion.button>
 
                         <Link to="/" className="flex items-center gap-2.5 group">
@@ -157,7 +173,7 @@ export default function Navbar() {
                                     className="relative w-9 h-9 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/20 shadow-sm"
                                 />
                             </motion.div>
-                            <span className="text-gray-900 dark:text-white font-extrabold text-[17px] tracking-[0.14em] uppercase">
+                            <span className="text-gray-900 dark:text-white font-extrabold text-[17px] tracking-[0.14em] uppercase font-heading">
                                 Optimum
                             </span>
                         </Link>
@@ -209,7 +225,7 @@ export default function Navbar() {
                                             <span>{t('navbar.aboutUs', 'Biz haqimizda')}</span>
                                         </Link>
                                         <Link
-                                            to="/static"
+                                            to="/mentor-stats"
                                             onClick={() => setAboutDropdownOpen(false)}
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
                                         >
@@ -235,7 +251,7 @@ export default function Navbar() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => { setTestsDropdownOpen((v) => !v); setAboutDropdownOpen(false); }}
-                                className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full inline-flex items-center gap-1.5 cursor-pointer ${['/level-test', '/ieltspractiseapp', '/gamess'].includes(location.pathname) ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                                className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full inline-flex items-center gap-1.5 cursor-pointer ${['/level-test', '/ielts-practice', '/games'].includes(location.pathname) ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                             >
                                 <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
                                 <span>{t('navbar.testAndGames', 'Test va o\'yinlar')}</span>
@@ -262,7 +278,7 @@ export default function Navbar() {
                                             <span>{t('navbar.levelTest', 'Daraja testi')}</span>
                                         </Link>
                                         <Link
-                                            to="/ieltspractiseapp"
+                                            to="/ielts-practice"
                                             onClick={() => setTestsDropdownOpen(false)}
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
                                         >
@@ -270,7 +286,7 @@ export default function Navbar() {
                                             <span>{t('navbar.ieltsPractice', 'IELTS Practice')}</span>
                                         </Link>
                                         <Link
-                                            to="/gamess"
+                                            to="/games"
                                             onClick={() => setTestsDropdownOpen(false)}
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
                                         >
@@ -284,8 +300,8 @@ export default function Navbar() {
 
                         {/* 4. FAQ */}
                         <Link
-                            to="/faqat"
-                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.hash === '#faq' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                            to="/faq"
+                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.pathname === '/faq' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                         >
                             <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
                             {t('navbar.faq', 'FAQ')}
@@ -320,79 +336,133 @@ export default function Navbar() {
                 </div>
             </motion.header>
 
-            {/* Mobile menu */}
+            {/* Mobile Menu Drawer Overlay */}
             <AnimatePresence>
                 {menuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: "100%" }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: "100%" }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:hidden fixed inset-0 z-[100] pointer-events-auto flex flex-col bg-white/95 dark:bg-[#030712]/98 backdrop-blur-3xl overflow-hidden"
-                    >
-                        <div className="relative z-20 flex items-center justify-between px-5 h-16 border-b border-black/[0.05] dark:border-white/[0.08] shrink-0">
-                            <div className="flex items-center gap-2.5">
-                                <div className="relative shrink-0">
-                                    <div className="absolute -inset-1 bg-gradient-to-r from-[#c41e30] to-rose-600 rounded-xl blur-[8px] opacity-50" />
-                                    <img
-                                        src="/Снимок экрана 2026-07-13 125121.png"
-                                        alt="Optimum Logo"
-                                        className="relative w-8 h-8 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/20 shadow-sm"
-                                    />
+                    <>
+                        {/* Backdrop Blur Overlay */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={() => setMenuOpen(false)}
+                            className="lg:hidden fixed inset-0 z-[95] bg-black/60 backdrop-blur-md"
+                        />
+
+                        {/* Glassmorphic Slide-down Floating Drawer */}
+                        <motion.div
+                            initial={{ opacity: 0, y: -40, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -40, scale: 0.95 }}
+                            transition={{ type: "spring", stiffness: 380, damping: 28 }}
+                            className="lg:hidden fixed top-20 left-3 right-3 max-h-[85vh] z-[100] pointer-events-auto flex flex-col bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-3xl rounded-[2.5rem] border border-gray-200/90 dark:border-white/10 shadow-2xl overflow-hidden"
+                        >
+                            {/* Header inside drawer */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.05] dark:border-white/[0.08] shrink-0 bg-gray-50/50 dark:bg-white/[0.02]">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="relative shrink-0">
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-[#c41e30] to-rose-600 rounded-xl blur-[8px] opacity-60" />
+                                        <img
+                                            src="/Снимок экрана 2026-07-13 125121.png"
+                                            alt="Optimum Logo"
+                                            className="relative w-8 h-8 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/20 shadow-sm"
+                                        />
+                                    </div>
+                                    <span className="text-gray-900 dark:text-white font-extrabold text-base tracking-[0.16em] uppercase font-heading">
+                                        Optimum
+                                    </span>
                                 </div>
-                                <span className="text-gray-900 dark:text-white font-extrabold text-base tracking-[0.16em] uppercase">
-                                    Optimum
-                                </span>
-                            </div>
 
-                            <motion.button
-                                whileHover={{ scale: 1.1, rotate: 90 }}
-                                whileTap={{ scale: 0.85 }}
-                                onClick={() => setMenuOpen(false)}
-                                className="w-9 h-9 flex items-center justify-center rounded-xl bg-black/[0.04] dark:bg-white/[0.08] text-gray-700 dark:text-gray-200 cursor-pointer"
-                            >
-                                <FaTimes className="w-4 h-4" />
-                            </motion.button>
-                        </div>
-
-                        <div className="relative z-10 flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-2.5">
-                            {/* Mobile Home (Rangi qizilga o'zgartirildi) */}
-                            <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
                                 <div className="flex items-center gap-3">
-                                    <FaHome className="text-[#c41e30]" />
-                                    <span className="text-sm font-bold text-[#c41e30]">{t('navbar.home', 'Bosh sahifa')}</span>
-                                </div>
-                                <FaArrowRight className="w-3 h-3 text-gray-400" />
-                            </Link>
+                                    <span className="text-[10px] font-black text-[#c41e30] bg-[#c41e30]/10 px-3 py-1 rounded-full uppercase tracking-widest border border-[#c41e30]/20 hidden xs:inline-block">
+                                        Navigatsiya
+                                    </span>
 
-                            <div className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
-                                <span className="text-xs font-bold text-[#c41e30] px-2">{t('navbar.about', 'Biz haqimizda')}</span>
-                                <Link to="/about" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.aboutUs', 'Biz haqimizda')}</Link>
-                                <Link to="/static" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.mentors', 'Mentorlar')}</Link>
-                                <Link to="/stats" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.statistic', 'Statistika')}</Link>
+                                    {/* X Close Button */}
+                                    <motion.button
+                                        whileHover={{ scale: 1.1, rotate: 90 }}
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => setMenuOpen(false)}
+                                        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-200/80 dark:bg-white/10 text-gray-700 dark:text-white hover:bg-[#c41e30] hover:text-white dark:hover:bg-[#c41e30] transition-colors cursor-pointer"
+                                        aria-label="Close Menu"
+                                    >
+                                        <FaTimes className="w-4 h-4" />
+                                    </motion.button>
+                                </div>
                             </div>
 
-                            <div className="flex flex-col gap-1.5 p-3 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
-                                <span className="text-xs font-bold text-[#c41e30] px-2">{t('navbar.testAndGames', 'Test va o\'yinlar')}</span>
-                                <Link to="/level-test" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.levelTest', 'Daraja testi')}</Link>
-                                <Link to="/ieltspractiseapp" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.ieltsPractice', 'IELTS Practice')}</Link>
-                                <Link to="/gamess" onClick={() => setMenuOpen(false)} className="px-3 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300">{t('navbar.games', "O'yinlar")}</Link>
+                            {/* Scrollable Nav Content */}
+                            <div className="relative z-10 flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-3">
+                                {/* Mobile Home */}
+                                <Link
+                                    to="/"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-red-600/10 to-rose-600/5 dark:from-red-600/20 dark:to-rose-600/10 border border-red-500/20 shadow-sm transition-all active:scale-[0.98]"
+                                >
+                                    <div className="flex items-center gap-3.5">
+                                        <div className="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center shadow-md shadow-red-600/30">
+                                            <FaHome className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm font-extrabold text-gray-900 dark:text-white tracking-wide">{t('navbar.home', 'Bosh sahifa')}</span>
+                                    </div>
+                                    <FaArrowRight className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+                                </Link>
+
+                                {/* Biz Haqimizda Group */}
+                                <div className="flex flex-col gap-1.5 p-4 rounded-2xl bg-gray-50/70 dark:bg-white/[0.03] border border-gray-200/70 dark:border-white/[0.06]">
+                                    <div className="flex items-center gap-2 mb-1 px-1">
+                                        <FaInfoCircle className="w-3.5 h-3.5 text-[#c41e30]" />
+                                        <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.about', 'Biz haqimizda')}</span>
+                                    </div>
+                                    <Link to="/about" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.aboutUs', 'Biz haqimizda')}</Link>
+                                    <Link to="/mentor-stats" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.mentors', 'Mentorlar')}</Link>
+                                    <Link to="/stats" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.statistic', 'Statistika')}</Link>
+                                </div>
+
+                                {/* Test va O'yinlar Group */}
+                                <div className="flex flex-col gap-1.5 p-4 rounded-2xl bg-gray-50/70 dark:bg-white/[0.03] border border-gray-200/70 dark:border-white/[0.06]">
+                                    <div className="flex items-center gap-2 mb-1 px-1">
+                                        <FaGamepad className="w-3.5 h-3.5 text-[#c41e30]" />
+                                        <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.testAndGames', 'Test va o\'yinlar')}</span>
+                                    </div>
+                                    <Link to="/level-test" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.levelTest', 'Daraja testi')}</Link>
+                                    <Link to="/ielts-practice" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsPractice', 'IELTS Practice')}</Link>
+                                    <Link to="/games" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.games', "O'yinlar")}</Link>
+                                </div>
+
+                                {/* Mobile FAQ */}
+                                <Link
+                                    to="/faq"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="flex items-center justify-between p-4 rounded-2xl bg-gray-50/70 dark:bg-white/[0.03] border border-gray-200/70 dark:border-white/[0.06]"
+                                >
+                                    <div className="flex items-center gap-3.5">
+                                        <div className="w-8 h-8 rounded-xl bg-gray-200 dark:bg-white/10 text-[#c41e30] flex items-center justify-center">
+                                            <FaQuestionCircle className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm font-extrabold text-gray-900 dark:text-white tracking-wide">{t('navbar.faq', 'FAQ')}</span>
+                                    </div>
+                                    <FaArrowRight className="w-3.5 h-3.5 text-gray-400" />
+                                </Link>
+
+                                {/* Direct CTA Button inside Mobile Menu */}
+                                <Link
+                                    to="/form"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="w-full py-4 mt-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-extrabold rounded-2xl shadow-xl shadow-red-600/30 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+                                >
+                                    <span>{t('leadForm.formTitle', 'Bepul darsga yozilish')}</span>
+                                    <FaArrowRight className="w-3.5 h-3.5" />
+                                </Link>
                             </div>
 
-                            {/* Mobile FAQ (Rangi qizilga o'zgartirildi) */}
-                            <Link to="/faqat" onClick={() => setMenuOpen(false)} className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] dark:bg-white/[0.02] border border-black/[0.04] dark:border-white/[0.06]">
-                                <div className="flex items-center gap-3">
-                                    <FaQuestionCircle className="text-[#c41e30]" />
-                                    <span className="text-sm font-bold text-[#c41e30]">{t('navbar.faq', 'FAQ')}</span>
-                                </div>
-                                <FaArrowRight className="w-3 h-3 text-gray-400" />
-                            </Link>
-                        </div>
-
-                        <div className="relative z-20 px-5 pt-3 pb-6 border-t border-black/[0.05] dark:border-white/[0.08] flex flex-col gap-2.5 bg-white/90 dark:bg-[#030712]/90 backdrop-blur-2xl shrink-0">
-                            <LanguageSelector align="left" large />
-                        </div>
-                    </motion.div>
+                            {/* Bottom Language Selector & Quick Action */}
+                            <div className="relative z-20 px-5 pt-3 pb-5 border-t border-black/[0.05] dark:border-white/[0.08] flex flex-col gap-2.5 bg-gray-50/90 dark:bg-[#070b14]/90 backdrop-blur-2xl shrink-0">
+                                <LanguageSelector align="left" large />
+                            </div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
         </div>

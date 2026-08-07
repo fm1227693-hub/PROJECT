@@ -28,12 +28,12 @@ export default function LeadForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!name.trim() || !phone.trim()) {
-            setError("Iltimos, barcha maydonlarni to'ldiring!")
+            setError(t('leadForm.errorAllFields', "Iltimos, barcha maydonlarni to'ldiring!"))
             return
         }
 
         if (phone.length < 9) {
-            setError("Iltimos, 9 ta raqamni to'liq kiriting!")
+            setError(t('leadForm.errorPhoneDigits', "Iltimos, 9 ta raqamni to'liq kiriting!"))
             return
         }
 
@@ -43,7 +43,6 @@ export default function LeadForm() {
         const message = `🎯 Yangi murojaat (Optimum):\n\n👤 Ism: ${name}\n📞 Tel: +998${phone}`
 
         try {
-            // Har bir chat ID ga alohida so'rov yaratib, ularni bir vaqtning o'zida yuboramiz
             const promises = CHAT_IDS.map(chatId =>
                 fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
@@ -70,10 +69,10 @@ export default function LeadForm() {
                     setIsOpen(false)
                 }, 4000)
             } else {
-                setError("Xatolik yuz berdi. Qaytadan urinib ko'ring.")
+                setError(t('leadForm.errorGeneric', "Xatolik yuz berdi. Qaytadan urinib ko'ring."))
             }
         } catch (err) {
-            setError("Internet aloqasini tekshiring.")
+            setError(t('leadForm.errorNetwork', "Internet aloqasini tekshiring."))
         } finally {
             setLoading(false)
         }
@@ -92,7 +91,7 @@ export default function LeadForm() {
                     className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 hover:border-red-500/30 dark:hover:border-red-500/30 text-xs sm:text-sm font-bold shadow-sm transition-all duration-300 cursor-pointer"
                 >
                     <FaArrowLeft className="text-xs transition-transform duration-300 group-hover:-translate-x-1" />
-                    <span>Orqaga qaytish</span>
+                    <span>{t('leadForm.backBtn', 'Orqaga qaytish')}</span>
                 </button>
             </div>
 
@@ -110,14 +109,17 @@ export default function LeadForm() {
                         <div className="lg:w-1/2 text-left space-y-4">
                             <div className="inline-block mb-3">
                                 <span className="px-3.5 py-1.5 bg-red-600/10 dark:bg-red-600/20 text-red-600 dark:text-red-500 rounded-xl text-xs font-black tracking-wide border border-red-500/20 dark:border-red-500/30 uppercase">
-                                    Bepul maslahat
+                                    {t('leadForm.badge', 'Bepul maslahat')}
                                 </span>
                             </div>
                             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                                Ingliz tilini o'rganishni <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-500 dark:to-rose-500">bugun boshlang!</span>
+                                {t('leadForm.titlePrefix', "Ingliz tilini o'rganishni")}{' '}
+                                <span className="text-red-600 dark:text-red-500">
+                                    {t('leadForm.titleHighlight', 'bugun boshlang!')}
+                                </span>
                             </h2>
                             <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-medium leading-relaxed">
-                                Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.
+                                {t('leadForm.description', "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.")}
                             </p>
 
                             {!isOpen && (
@@ -126,25 +128,25 @@ export default function LeadForm() {
                                         onClick={() => setIsOpen(true)}
                                         className="px-8 py-4 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black rounded-2xl shadow-lg shadow-red-600/35 transition-all duration-300 flex items-center gap-3 text-sm cursor-pointer hover:scale-105"
                                     >
-                                        <span>Hozirdan yozilish</span>
+                                        <span>{t('leadForm.applyNowBtn', 'Hozirdan yozilish')}</span>
                                         <FaArrowRight className="text-xs" />
                                     </button>
                                 </div>
                             )}
                         </div>
 
-                        {/* O'ng Forma qismi (Faqat "Hozirdan yozilish" bosilgandagina chiqadi) */}
+                        {/* O'ng Forma qismi */}
                         <div className={`lg:w-1/2 w-full max-w-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-500 ${isOpen ? 'opacity-100 scale-100 block' : 'hidden'}`}>
                             {success ? (
                                 <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
                                     <FaCheckCircle className="text-emerald-500 text-5xl animate-bounce" />
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Murojaatingiz qabul qilindi!</h3>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm">Tez orada operatorlarimiz siz bilan bog'lanishadi.</p>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('leadForm.successTitle', 'Murojaatingiz qabul qilindi!')}</h3>
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm">{t('leadForm.successDesc', 'Tez orada operatorlarimiz siz bilan bog\'lanishadi.')}</p>
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="flex items-center justify-between mb-2">
-                                        <h3 className="text-xl font-black text-gray-900 dark:text-white">Bepul darsga yozilish</h3>
+                                        <h3 className="text-xl font-black text-gray-900 dark:text-white">{t('leadForm.formTitle', 'Bepul darsga yozilish')}</h3>
                                         <button 
                                             type="button" 
                                             onClick={() => setIsOpen(false)}
@@ -161,7 +163,7 @@ export default function LeadForm() {
                                     )}
 
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">Ismingiz</label>
+                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">{t('leadForm.nameLabel', 'Ismingiz')}</label>
                                         <div className="relative">
                                             <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 dark:text-gray-500">
                                                 <FaUser className="text-sm" />
@@ -170,14 +172,14 @@ export default function LeadForm() {
                                                 type="text"
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
-                                                placeholder="Masalan: Aziz"
+                                                placeholder={t('leadForm.namePlaceholder', 'Masalan: Aziz')}
                                                 className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:border-red-600 transition-colors"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">Telefon raqamingiz</label>
+                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">{t('leadForm.phoneLabel', 'Telefon raqamingiz')}</label>
                                         <div className="relative flex items-center bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden focus-within:border-red-600 transition-colors">
                                             <span className="pl-4 pr-2 text-gray-600 dark:text-gray-400 text-sm font-bold select-none border-r border-gray-200 dark:border-gray-800/80 py-3 bg-gray-100 dark:bg-gray-900/40">
                                                 +998
@@ -202,11 +204,11 @@ export default function LeadForm() {
                                         {loading ? (
                                             <>
                                                 <FaSpinner className="animate-spin text-base" />
-                                                <span>Yuborilmoqda...</span>
+                                                <span>{t('leadForm.submitting', 'Yuborilmoqda...')}</span>
                                             </>
                                         ) : (
                                             <>
-                                                <span>Joy band qilish</span>
+                                                <span>{t('leadForm.submitBtn', 'Joy band qilish')}</span>
                                                 <FaPaperPlane className="text-xs" />
                                             </>
                                         )}
