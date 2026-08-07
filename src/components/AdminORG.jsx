@@ -3,13 +3,32 @@ import Comments from './Comments'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import toast, { Toaster } from 'react-hot-toast'
-import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes } from 'react-icons/fa'
+import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 export default function AdminORG() {
     const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'comments'
     const [leads, setLeads] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
+    const [loadingLeads, setLoadingLeads] = useState(false)
+
+    const loadLeads = async () => {
+        setLoadingLeads(true)
+        try {
+            const res = await axios.get('https://project-3gpc.onrender.com/products')
+            const remoteLeads = res.data.filter(item => item.isLead || (item.name && item.phone && !item.title))
+            const sortedLeads = [...remoteLeads].reverse()
+            setLeads(sortedLeads)
+            localStorage.setItem('admin_leads', JSON.stringify(sortedLeads))
+        } catch (e) {
+            console.error(e)
+            const stored = JSON.parse(localStorage.getItem('admin_leads') || '[]')
+            setLeads(stored)
+        } finally {
+            setLoadingLeads(false)
+        }
+    }
 
     useEffect(() => {
         AOS.init({
@@ -17,22 +36,30 @@ export default function AdminORG() {
             offset: 80,
         })
         loadLeads()
+
+        // Har 5 soniyada barcha qurilmalar orasida ma'lumotni sinxronlash
+        const interval = setInterval(() => {
+            loadLeads()
+        }, 5000)
+
+        return () => clearInterval(interval)
     }, [])
 
-    const loadLeads = () => {
-        const stored = JSON.parse(localStorage.getItem('admin_leads') || '[]')
-        setLeads(stored)
-    }
+    const updateLeadStatus = async (id, newStatus) => {
+        const targetLead = leads.find(item => item.id === id)
+        const updatedItem = targetLead ? { ...targetLead, status: newStatus } : null
 
-    const updateLeadStatus = (id, newStatus) => {
-        const updated = leads.map(item => {
-            if (item.id === id) {
-                return { ...item, status: newStatus }
+        const updatedList = leads.map(item => item.id === id ? { ...item, status: newStatus } : item)
+        setLeads(updatedList)
+        localStorage.setItem('admin_leads', JSON.stringify(updatedList))
+
+        if (targetLead && id) {
+            try {
+                await axios.put(`https://project-3gpc.onrender.com/products/${id}`, updatedItem)
+            } catch (e) {
+                console.error(e)
             }
-            return item
-        })
-        setLeads(updated)
-        localStorage.setItem('admin_leads', JSON.stringify(updated))
+        }
         
         if (newStatus === 'Qabul qilindi') {
             toast.success("So'rov qabul qilindi!")

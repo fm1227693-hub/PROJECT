@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 export default function Register() {
     const { t } = useTranslation();
@@ -70,13 +71,20 @@ export default function Register() {
 
             if (allSuccess) {
                 const newLead = {
-                    id: Date.now(),
+                    isLead: true,
                     name: formData.fullName,
                     phone: `+998 ${formData.phone}`,
                     type: `Ro'yxatdan o'tish (${t('register.courseName')})`,
                     date: new Date().toLocaleString('uz-UZ'),
                     status: 'Kutilmoqda'
                 }
+
+                try {
+                    await axios.post('https://project-3gpc.onrender.com/products', newLead);
+                } catch (err) {
+                    console.error("API error:", err);
+                }
+
                 const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
                 localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
 

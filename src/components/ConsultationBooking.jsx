@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 const mentors = [
   { id: 1, name: 'Zamirgor Omiqova', role: 'IELTS 8.5 Expert' },
@@ -28,13 +29,20 @@ export default function ConsultationBooking() {
     }
 
     const newLead = {
-      id: Date.now(),
+      isLead: true,
       name: studentName,
       phone: studentPhone.startsWith('+') ? studentPhone : `+998 ${studentPhone.replace(/\D/g, '')}`,
       type: `Konsultatsiya (${selectedMentor} - ${selectedDate} ${selectedTime})`,
       date: new Date().toLocaleString('uz-UZ'),
       status: 'Kutilmoqda'
     };
+
+    try {
+      await axios.post('https://project-3gpc.onrender.com/products', newLead);
+    } catch (err) {
+      console.error("API error:", err);
+    }
+
     const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]');
     localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]));
 

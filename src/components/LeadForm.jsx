@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaSpinner, FaArrowRight, FaTimes, FaArrowLeft } from 'react-icons/fa'
+import axios from 'axios'
 
 export default function LeadForm() {
     const { t } = useTranslation()
@@ -62,13 +63,20 @@ export default function LeadForm() {
 
             if (allSuccess) {
                 const newLead = {
-                    id: Date.now(),
+                    isLead: true,
                     name: name,
                     phone: `+998 ${phone}`,
                     type: t('leadForm.badge', 'Bepul maslahat'),
                     date: new Date().toLocaleString('uz-UZ'),
                     status: 'Kutilmoqda'
                 }
+
+                try {
+                    await axios.post('https://project-3gpc.onrender.com/products', newLead)
+                } catch (err) {
+                    console.error("API error:", err)
+                }
+
                 const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
                 localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
 
