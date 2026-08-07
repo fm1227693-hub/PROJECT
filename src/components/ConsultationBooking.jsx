@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
@@ -11,6 +12,7 @@ const mentors = [
 const timeSlots = ['10:00 - 10:15', '11:00 - 11:15', '14:00 - 14:15', '16:00 - 16:15', '18:00 - 18:15'];
 
 export default function ConsultationBooking() {
+  const { t } = useTranslation();
   const [selectedMentor, setSelectedMentor] = useState(mentors[0].name);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -75,22 +77,22 @@ export default function ConsultationBooking() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-[#0f1016] text-white rounded-2xl border border-gray-800 shadow-xl my-10">
+    <div className="max-w-2xl mx-auto p-6 bg-[#0f1016] text-white rounded-2xl border border-gray-800 shadow-xl my-10 font-['Plus_Jakarta_Sans',sans-serif]">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-2">Bepul 15 daqiqalik konsultatsiya</h2>
-        <p className="text-gray-400 text-sm">Ustozni tanlang, o'zingizga qulay vaqtni belgilang va bepul maslahat oling.</p>
+        <h2 className="text-2xl font-bold mb-2">{t('consultationBooking.title', "Bepul 15 daqiqalik konsultatsiya")}</h2>
+        <p className="text-gray-400 text-sm">{t('consultationBooking.subtitle', "Ustozni tanlang, o'zingizga qulay vaqtni belgilang va bepul maslahat oling.")}</p>
       </div>
 
       {successMessage && (
         <div className="mb-6 p-4 bg-emerald-950 border border-emerald-600 text-emerald-300 rounded-lg text-center animate-fade-in">
-          Tabriklaymiz! Konsultatsiyaga muvaffaqiyatli yozildingiz. Tez orada siz bilan bog'lanamiz.
+          {t('consultationBooking.successMessage', "Tabriklaymiz! Konsultatsiyaga muvaffaqiyatli yozildingiz. Tez orada siz bilan bog'lanamiz.")}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Mentorlar */}
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Ustozni tanlang</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">{t('consultationBooking.selectMentor', "Ustozni tanlang")}</label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {mentors.map((m) => (
               <button
@@ -113,7 +115,7 @@ export default function ConsultationBooking() {
         {/* Sana va Vaqt */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Sanani tanlang</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">{t('consultationBooking.selectDateTime', "Sanani tanlang")}</label>
             <input
               type="date"
               value={selectedDate}
@@ -123,13 +125,13 @@ export default function ConsultationBooking() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Vaqtni tanlang (15 daqiqa)</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">{t('consultationBooking.selectDateTime', "Vaqtni tanlang (15 daqiqa)")}</label>
             <select
               value={selectedTime}
               onChange={(e) => setSelectedTime(e.target.value)}
               className="w-full bg-[#161821] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-600"
             >
-              <option value="">Vaqtni tanlang</option>
+              <option value="">{t('consultationBooking.selectDateTime', "Vaqtni tanlang")}</option>
               {timeSlots.map((time, index) => (
                 <option key={index} value={time}>{time}</option>
               ))}
@@ -140,7 +142,7 @@ export default function ConsultationBooking() {
         {/* Shaxsiy ma'lumotlar */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Ismingiz</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">{t('consultationBooking.nameLabel', "Ismingiz")}</label>
             <input
               type="text"
               placeholder="Alisher"
@@ -151,7 +153,7 @@ export default function ConsultationBooking() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Telefon raqamingiz</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">{t('consultationBooking.phoneLabel', "Telefon raqamingiz")}</label>
             <input
               type="tel"
               placeholder="+998 90 123 45 67"
@@ -165,9 +167,9 @@ export default function ConsultationBooking() {
         {/* Tugma */}
         <button
           type="submit"
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-red-600/20"
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl transition shadow-lg shadow-red-600/20 cursor-pointer"
         >
-          Konsultatsiyani Bron Qilish
+          {t('consultationBooking.submitBtn', "Bron qilish")}
         </button>
       </form>
       <Toaster position="top-right" />

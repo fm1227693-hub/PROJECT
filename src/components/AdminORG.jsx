@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Comments from './Comments'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import toast, { Toaster } from 'react-hot-toast'
-import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers } from 'react-icons/fa'
+import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 export default function AdminORG() {
+    const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'comments'
     const [leads, setLeads] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -15,6 +17,21 @@ export default function AdminORG() {
     const [typeFilter, setTypeFilter] = useState('all')
     const [sortOrder, setSortOrder] = useState('newest')
     const [loadingLeads, setLoadingLeads] = useState(false)
+    const [deleteModalLead, setDeleteModalLead] = useState(null)
+
+    const handleDeleteLead = async (id) => {
+        const updatedList = leads.filter(item => item.id !== id)
+        setLeads(updatedList)
+        localStorage.setItem('admin_leads', JSON.stringify(updatedList))
+
+        try {
+            await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedList)
+        } catch (e) {
+            console.error(e)
+        }
+        toast.success(t('adminPanel.deleteSuccess', "Murojaat o'chirildi!"))
+        setDeleteModalLead(null)
+    }
 
     const loadLeads = async () => {
         setLoadingLeads(true)
@@ -131,10 +148,10 @@ export default function AdminORG() {
                         </div>
                         <div>
                             <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-                                Admin Boshqaruv Paneli
+                                {t('adminPanel.title', "Admin Boshqaruv Paneli")}
                             </h1>
                             <p className="text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400">
-                                Telegram bot va sayt orqali tushgan murojaatlarni boshqarish va tahlil qilish
+                                {t('adminPanel.subtitle', "Telegram bot va sayt orqali tushgan murojaatlarni boshqarish va tahlil qilish")}
                             </p>
                         </div>
                     </div>
@@ -143,10 +160,10 @@ export default function AdminORG() {
                         <button
                             onClick={loadLeads}
                             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs sm:text-sm transition-all border border-gray-200 dark:border-gray-700 cursor-pointer active:scale-95"
-                            title="Yangilash"
+                            title={t('adminPanel.refreshBtn', "Yangilash")}
                         >
                             <FaSync className={loadingLeads ? "animate-spin" : ""} />
-                            <span className="hidden xs:inline">Yangilash</span>
+                            <span className="hidden xs:inline">{t('adminPanel.refreshBtn', "Yangilash")}</span>
                         </button>
 
                         <Link
@@ -154,7 +171,7 @@ export default function AdminORG() {
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 font-bold text-xs sm:text-sm transition-all border border-red-500/20 cursor-pointer active:scale-95"
                         >
                             <FaSignOutAlt />
-                            <span>Chiqish</span>
+                            <span>{t('adminPanel.exitBtn', "Chiqish")}</span>
                         </Link>
                     </div>
                 </div>
@@ -164,14 +181,15 @@ export default function AdminORG() {
                     {/* Total Leads Card */}
                     <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-black uppercase text-gray-500 dark:text-gray-400 tracking-wider">Jami Murojaatlar</span>
+                            <span className="text-xs font-black uppercase text-gray-500 dark:text-gray-400 tracking-wider">
+                                {t('adminPanel.totalLeads', "Jami Murojaatlar")}
+                            </span>
                             <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
                                 <FaUsers />
                             </div>
                         </div>
                         <div>
                             <span className="text-3xl font-black text-gray-900 dark:text-white">{totalCount}</span>
-                            <span className="text-xs font-bold text-gray-400 ml-2">ta ariza</span>
                         </div>
                         <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                             <div className="bg-indigo-600 h-full rounded-full w-full" />
@@ -181,7 +199,9 @@ export default function AdminORG() {
                     {/* Pending Leads Card */}
                     <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-black uppercase text-amber-500 tracking-wider">Kutilmoqda</span>
+                            <span className="text-xs font-black uppercase text-amber-500 tracking-wider">
+                                {t('adminPanel.pending', "Kutilmoqda")}
+                            </span>
                             <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg">
                                 <FaHourglassHalf />
                             </div>
@@ -198,7 +218,9 @@ export default function AdminORG() {
                     {/* Accepted Leads Card */}
                     <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-black uppercase text-emerald-500 tracking-wider">Qabul Qilindi</span>
+                            <span className="text-xs font-black uppercase text-emerald-500 tracking-wider">
+                                {t('adminPanel.accepted', "Qabul Qilindi")}
+                            </span>
                             <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
                                 <FaCheckCircle />
                             </div>
@@ -215,7 +237,9 @@ export default function AdminORG() {
                     {/* Rejected Leads Card */}
                     <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-black uppercase text-rose-500 tracking-wider">Rad Etildi</span>
+                            <span className="text-xs font-black uppercase text-rose-500 tracking-wider">
+                                {t('adminPanel.rejected', "Rad Etildi")}
+                            </span>
                             <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg">
                                 <FaTimesCircle />
                             </div>
@@ -242,7 +266,7 @@ export default function AdminORG() {
                             }`}
                         >
                             <FaInbox className="text-base" />
-                            <span>Murojaatlar ({leads.length})</span>
+                            <span>{t('adminPanel.murojaatlarTab', "Murojaatlar")} ({leads.length})</span>
                         </button>
 
                         <button
@@ -254,7 +278,7 @@ export default function AdminORG() {
                             }`}
                         >
                             <FaCommentDots className="text-base" />
-                            <span>O'quvchilar Izohlari</span>
+                            <span>{t('adminPanel.commentsTab', "O'quvchilar Izohlari")}</span>
                         </button>
                     </div>
 
@@ -264,7 +288,7 @@ export default function AdminORG() {
                             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/20 cursor-pointer active:scale-95"
                         >
                             <FaFileCsv className="text-base" />
-                            <span className="hidden sm:inline">Excel (CSV) yuklab olish</span>
+                            <span className="hidden sm:inline">{t('adminPanel.exportCsvBtn', "Excel (CSV) yuklab olish")}</span>
                         </button>
                     )}
                 </div>
@@ -280,7 +304,7 @@ export default function AdminORG() {
                                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
                                 <input
                                     type="text"
-                                    placeholder="Ism yoki telefon bo'yicha qidiruv..."
+                                    placeholder={t('adminPanel.searchPlaceholder', "Ism yoki telefon bo'yicha qidiruv...")}
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="w-full pl-11 pr-4 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
@@ -292,44 +316,44 @@ export default function AdminORG() {
                                 {/* Status Filter */}
                                 <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
                                     <FaFilter className="text-xs text-red-600" />
-                                    <span>Status:</span>
+                                    <span>{t('adminPanel.statusLabel', "Status:")}</span>
                                     <select
                                         value={statusFilter}
                                         onChange={(e) => setStatusFilter(e.target.value)}
                                         className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
                                     >
-                                        <option value="all">Barchasi</option>
-                                        <option value="Kutilmoqda">Kutilmoqda</option>
-                                        <option value="Qabul qilindi">Qabul qilindi</option>
-                                        <option value="Rad etildi">Rad etildi</option>
+                                        <option value="all">{t('adminPanel.allOptions', "Barchasi")}</option>
+                                        <option value="Kutilmoqda">{t('adminPanel.pending', "Kutilmoqda")}</option>
+                                        <option value="Qabul qilindi">{t('adminPanel.accepted', "Qabul qilindi")}</option>
+                                        <option value="Rad etildi">{t('adminPanel.rejected', "Rad etildi")}</option>
                                     </select>
                                 </div>
 
                                 {/* Type Filter */}
                                 <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                    <span>Turi:</span>
+                                    <span>{t('adminPanel.typeLabel', "Turi:")}</span>
                                     <select
                                         value={typeFilter}
                                         onChange={(e) => setTypeFilter(e.target.value)}
                                         className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
                                     >
-                                        <option value="all">Barchasi</option>
-                                        <option value="Bepul maslahat">Bepul maslahat</option>
-                                        <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
-                                        <option value="Konsultatsiya">Konsultatsiya</option>
+                                        <option value="all">{t('adminPanel.allOptions', "Barchasi")}</option>
+                                        <option value="Bepul maslahat">{t('adminPanel.typeFreeConsultation', "Bepul maslahat")}</option>
+                                        <option value="Ro'yxatdan o'tish">{t('adminPanel.typeRegister', "Ro'yxatdan o'tish")}</option>
+                                        <option value="Konsultatsiya">{t('adminPanel.typeConsultation', "Konsultatsiya")}</option>
                                     </select>
                                 </div>
 
                                 {/* Sort Order */}
                                 <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                    <span>Tartib:</span>
+                                    <span>{t('adminPanel.sortLabel', "Tartib:")}</span>
                                     <select
                                         value={sortOrder}
                                         onChange={(e) => setSortOrder(e.target.value)}
                                         className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
                                     >
-                                        <option value="newest">Eng yangilari</option>
-                                        <option value="oldest">Eng eskilari</option>
+                                        <option value="newest">{t('adminPanel.newest', "Eng yangilari")}</option>
+                                        <option value="oldest">{t('adminPanel.oldest', "Eng eskilari")}</option>
                                     </select>
                                 </div>
                             </div>
@@ -341,10 +365,10 @@ export default function AdminORG() {
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-12 rounded-3xl border border-gray-200 dark:border-gray-800 text-center space-y-3">
                                 <FaInbox className="text-5xl text-gray-400 mx-auto" />
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                                    Mos keladigan murojaat topilmadi
+                                    {t('adminPanel.noLeadsTitle', "Mos keladigan murojaat topilmadi")}
                                 </h3>
                                 <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
-                                    Qidiruv so'rovi yoki belgilangan filtrlar bo'yicha ma'lumot yo'q.
+                                    {t('adminPanel.noLeadsDesc', "Qidiruv so'rovi yoki belgilangan filtrlar bo'yicha ma'lumot yo'q.")}
                                 </p>
                             </div>
                         ) : (
@@ -367,8 +391,16 @@ export default function AdminORG() {
                                                         ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
                                                         : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                                                 }`}>
-                                                    {lead.status === 'Qabul qilindi' ? 'Qabul qilindi' : lead.status === 'Rad etildi' ? 'Rad etildi' : 'Kutilmoqda'}
+                                                    {lead.status === 'Qabul qilindi' ? t('adminPanel.accepted', "Qabul qilindi") : lead.status === 'Rad etildi' ? t('adminPanel.rejected', "Rad etildi") : t('adminPanel.pending', "Kutilmoqda")}
                                                 </span>
+
+                                                <button
+                                                    onClick={() => setDeleteModalLead(lead)}
+                                                    className="w-7 h-7 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-red-600 hover:text-white flex items-center justify-center text-xs font-bold text-gray-500 transition-all cursor-pointer active:scale-95 ml-1"
+                                                    title="O'chirish"
+                                                >
+                                                    <FaTimes />
+                                                </button>
                                             </div>
 
                                             <div>
@@ -402,7 +434,7 @@ export default function AdminORG() {
                                                 }`}
                                             >
                                                 <FaCheck />
-                                                <span>Accept</span>
+                                                <span>{t('adminPanel.acceptBtn', "Accept")}</span>
                                             </button>
 
                                             <button
@@ -415,7 +447,7 @@ export default function AdminORG() {
                                                 }`}
                                             >
                                                 <FaTimes />
-                                                <span>Reject</span>
+                                                <span>{t('adminPanel.rejectBtn', "Reject")}</span>
                                             </button>
                                         </div>
                                     </div>
@@ -433,6 +465,40 @@ export default function AdminORG() {
                 )}
 
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {deleteModalLead && (
+                <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
+                    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-5">
+                        <div className="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-2xl mx-auto">
+                            <FaTrash />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white">
+                                {t('adminPanel.deleteConfirmTitle', "Rostdan ham ushbu murojaatni o'chirmoqchimisiz?")}
+                            </h3>
+                            <p className="text-xs font-bold text-red-600 dark:text-red-400 mt-2">
+                                {deleteModalLead.name} {deleteModalLead.phone ? `(${deleteModalLead.phone})` : ''}
+                            </p>
+                        </div>
+                        <div className="flex items-center justify-center gap-3 pt-2">
+                            <button
+                                onClick={() => setDeleteModalLead(null)}
+                                className="px-5 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 dark:hover:bg-gray-700 transition cursor-pointer"
+                            >
+                                {t('adminPanel.noBtn', "Yo'q, bekor qilish")}
+                            </button>
+                            <button
+                                onClick={() => handleDeleteLead(deleteModalLead.id)}
+                                className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs shadow-lg shadow-red-600/30 hover:scale-105 transition cursor-pointer"
+                            >
+                                {t('adminPanel.yesBtn', "Ha, o'chirilsin")}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <Toaster position="top-right" />
         </div>
     )

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaHeart, FaRegHeart, FaPaperPlane, FaTrash, FaCheckCircle, FaUserCircle, FaSync, FaChevronDown, FaChevronUp, FaTimes, FaEnvelope, FaAt, FaComments, FaCommentDots } from 'react-icons/fa'
 import toast from 'react-hot-toast'
@@ -7,6 +8,7 @@ import axios from 'axios'
 const API_URL = 'https://jsonblob.com/api/jsonBlob/019fdb65-5567-75af-ba93-74e706ff9f88'
 
 export default function TikTokComments({ isAdmin = false, defaultOpen = false }) {
+    const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(isAdmin ? true : defaultOpen)
     const [comments, setComments] = useState([])
     const [usernameInput, setUsernameInput] = useState('')
@@ -156,7 +158,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                     className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all cursor-pointer border border-red-400/30"
                 >
                     <FaComments className="text-base animate-bounce" />
-                    <span>Izohlarni ko'rish va qoldirish</span>
+                    <span>{t('studentComments.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
                     <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-mono font-bold">
                         {comments.length}
                     </span>
@@ -177,10 +179,10 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                     </div>
                     <div>
                         <h2 className="text-lg sm:text-xl font-black tracking-tight">
-                            O'quvchilar Izohlari va Natijalari
+                            {t('studentComments.title', "O'quvchilar Izohlari va Natijalari")}
                         </h2>
                         <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">
-                            O'quvchilar izohlari ({comments.length} ta izoh)
+                            {t('studentComments.subtitle', "O'quvchilar izohlari ({{count}} ta izoh)", { count: comments.length })}
                         </p>
                     </div>
                 </div>
@@ -211,8 +213,12 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                 {comments.length === 0 ? (
                     <div className="py-12 text-center space-y-3">
                         <FaCommentDots className="text-4xl animate-bounce text-gray-400 mx-auto" />
-                        <h4 className="text-base font-bold text-gray-700 dark:text-gray-300">Hozircha izohlar yo'q</h4>
-                        <p className="text-xs text-gray-500">Birinchi bo'lib Username va Gmail pochta orqali izohingizni qoldiring!</p>
+                        <h4 className="text-base font-bold text-gray-700 dark:text-gray-300">
+                            {t('studentComments.noComments', "Hozircha izohlar yo'q")}
+                        </h4>
+                        <p className="text-xs text-gray-500">
+                            {t('studentComments.beFirst', "Birinchi bo'lib Username va Gmail pochta orqali izohingizni qoldiring!")}
+                        </p>
                     </div>
                 ) : (
                     <AnimatePresence initial={false}>
@@ -328,7 +334,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                             name="username"
                             id="user-username-input"
                             autoComplete="username"
-                            placeholder="Username (masalan: @azizbek)"
+                            placeholder={t('studentComments.usernamePlaceholder', "Username (masalan: @azizbek)")}
                             value={usernameInput}
                             onChange={(e) => setUsernameInput(e.target.value)}
                             onInput={(e) => setUsernameInput(e.target.value)}
@@ -346,7 +352,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                             name="email"
                             id="user-email-input"
                             autoComplete="email"
-                            placeholder="Gmail pochta (azizbek@gmail.com)"
+                            placeholder={t('studentComments.emailPlaceholder', "Gmail pochta (azizbek@gmail.com)")}
                             value={emailInput}
                             onChange={(e) => setEmailInput(e.target.value)}
                             onInput={(e) => setEmailInput(e.target.value)}
@@ -374,7 +380,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                 <div className="relative flex items-center">
                     <input
                         type="text"
-                        placeholder="Izohingizni yozing..."
+                        placeholder={t('studentComments.textPlaceholder', "Izohingizni yozing...")}
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
