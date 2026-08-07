@@ -71,6 +71,7 @@ export default function Register() {
 
             if (allSuccess) {
                 const newLead = {
+                    id: Date.now(),
                     isLead: true,
                     name: formData.fullName,
                     phone: `+998 ${formData.phone}`,
@@ -80,13 +81,16 @@ export default function Register() {
                 }
 
                 try {
-                    await axios.post('https://project-3gpc.onrender.com/products', newLead);
+                    const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d')
+                    const currentLeads = Array.isArray(res.data) ? res.data : []
+                    const updatedLeads = [newLead, ...currentLeads]
+                    await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedLeads)
+                    localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
                 } catch (err) {
-                    console.error("API error:", err);
+                    console.error("API error:", err)
+                    const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
+                    localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
                 }
-
-                const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
-                localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
 
                 showToast(t('register.successMsg'), "success");
                 setFormData({ fullName: '', phone: '', course: t('register.courseName') });

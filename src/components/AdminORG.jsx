@@ -16,11 +16,10 @@ export default function AdminORG() {
     const loadLeads = async () => {
         setLoadingLeads(true)
         try {
-            const res = await axios.get('https://project-3gpc.onrender.com/products')
-            const remoteLeads = res.data.filter(item => item.isLead || (item.name && item.phone && !item.title))
-            const sortedLeads = [...remoteLeads].reverse()
-            setLeads(sortedLeads)
-            localStorage.setItem('admin_leads', JSON.stringify(sortedLeads))
+            const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d')
+            const remoteLeads = Array.isArray(res.data) ? res.data : []
+            setLeads(remoteLeads)
+            localStorage.setItem('admin_leads', JSON.stringify(remoteLeads))
         } catch (e) {
             console.error(e)
             const stored = JSON.parse(localStorage.getItem('admin_leads') || '[]')
@@ -37,28 +36,23 @@ export default function AdminORG() {
         })
         loadLeads()
 
-        // Har 5 soniyada barcha qurilmalar orasida ma'lumotni sinxronlash
+        // Har 3 soniyada barcha qurilmalar (telefon, PC) orasida murojaatlarni real-vaqtda yangilash
         const interval = setInterval(() => {
             loadLeads()
-        }, 5000)
+        }, 3000)
 
         return () => clearInterval(interval)
     }, [])
 
     const updateLeadStatus = async (id, newStatus) => {
-        const targetLead = leads.find(item => item.id === id)
-        const updatedItem = targetLead ? { ...targetLead, status: newStatus } : null
-
         const updatedList = leads.map(item => item.id === id ? { ...item, status: newStatus } : item)
         setLeads(updatedList)
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
-        if (targetLead && id) {
-            try {
-                await axios.put(`https://project-3gpc.onrender.com/products/${id}`, updatedItem)
-            } catch (e) {
-                console.error(e)
-            }
+        try {
+            await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedList)
+        } catch (e) {
+            console.error(e)
         }
         
         if (newStatus === 'Qabul qilindi') {
