@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap } from 'react-icons/fa'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -306,6 +306,15 @@ export default function Navbar() {
                             <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
                             {t('navbar.faq', 'FAQ')}
                         </Link>
+
+                        {/* 5. Admin Panel */}
+                        <Link
+                            to="/enter"
+                            className={`group relative px-3.5 py-1.5 text-[12px] font-bold tracking-wide transition-all duration-200 whitespace-nowrap rounded-full flex items-center gap-1.5 border border-red-500/20 bg-red-600/10 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white shadow-sm ${location.pathname === '/enter' ? 'ring-2 ring-red-500/50' : ''}`}
+                        >
+                            <FaUserShield className="w-3.5 h-3.5" />
+                            <span>Admin</span>
+                        </Link>
                     </nav>
 
                     <div className="flex items-center gap-2.5 shrink-0">
@@ -444,6 +453,21 @@ export default function Navbar() {
                                         <span className="text-sm font-extrabold text-gray-900 dark:text-white tracking-wide">{t('navbar.faq', 'FAQ')}</span>
                                     </div>
                                     <FaArrowRight className="w-3.5 h-3.5 text-gray-400" />
+                                </Link>
+
+                                {/* Mobile Admin Panel Link */}
+                                <Link
+                                    to="/enter"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="flex items-center justify-between p-4 rounded-2xl bg-red-600/10 border border-red-500/20 text-red-600 dark:text-red-400"
+                                >
+                                    <div className="flex items-center gap-3.5">
+                                        <div className="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center shadow-md shadow-red-600/30">
+                                            <FaUserShield className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm font-extrabold tracking-wide">Admin Panel</span>
+                                    </div>
+                                    <FaArrowRight className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
                                 </Link>
 
                                 {/* Direct CTA Button inside Mobile Menu */}

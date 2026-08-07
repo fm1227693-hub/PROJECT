@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const mentors = [
   { id: 1, name: 'Zamirgor Omiqova', role: 'IELTS 8.5 Expert' },
@@ -16,17 +17,44 @@ export default function ConsultationBooking() {
   const [studentPhone, setStudentPhone] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
 
-  const handleSubmit = (e) => {
+  const BOT_TOKEN = "8800216213:AAGmRhvFeu0bmzYcGxVAgMT-LEiqAEJ1WnI";
+  const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedDate || !selectedTime || !studentName || !studentPhone) {
-      alert("Iltimos, barcha maydonlarni to'ldiring!");
+      toast.error("Iltimos, barcha maydonlarni to'ldiring!");
       return;
+    }
+
+    const newLead = {
+      id: Date.now(),
+      name: studentName,
+      phone: studentPhone.startsWith('+') ? studentPhone : `+998 ${studentPhone.replace(/\D/g, '')}`,
+      type: `Konsultatsiya (${selectedMentor} - ${selectedDate} ${selectedTime})`,
+      date: new Date().toLocaleString('uz-UZ'),
+      status: 'Yangi'
+    };
+    const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]');
+    localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]));
+
+    const message = `📅 Yangi Konsultatsiya Bron Qilindi!\n\n👤 Ism: ${studentName}\n📞 Tel: ${studentPhone}\n👨‍🏫 Mentor: ${selectedMentor}\n📆 Sana: ${selectedDate}\n⏰ Vaqt: ${selectedTime}`;
+
+    try {
+      ADMIN_CHAT_IDS.forEach(chatId => {
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: message })
+        }).catch(err => console.error(err));
+      });
+    } catch (err) {
+      console.error(err);
     }
 
     setSuccessMessage(true);
     setTimeout(() => {
       setSuccessMessage(false);
-      // Formani tozalash
       setSelectedDate('');
       setSelectedTime('');
       setStudentName('');
@@ -130,6 +158,7 @@ export default function ConsultationBooking() {
           Konsultatsiyani Bron Qilish
         </button>
       </form>
+      <Toaster position="top-right" />
     </div>
   );
 }

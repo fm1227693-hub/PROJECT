@@ -69,6 +69,17 @@ export default function Register() {
             const allSuccess = responses.every(res => res.ok);
 
             if (allSuccess) {
+                const newLead = {
+                    id: Date.now(),
+                    name: formData.fullName,
+                    phone: `+998 ${formData.phone}`,
+                    type: `Ro'yxatdan o'tish (${t('register.courseName')})`,
+                    date: new Date().toLocaleString('uz-UZ'),
+                    status: 'Yangi'
+                }
+                const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
+                localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
+
                 showToast(t('register.successMsg'), "success");
                 setFormData({ fullName: '', phone: '', course: t('register.courseName') });
             } else {

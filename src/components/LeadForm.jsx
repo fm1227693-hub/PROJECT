@@ -61,6 +61,17 @@ export default function LeadForm() {
             const allSuccess = responses.every(res => res.ok)
 
             if (allSuccess) {
+                const newLead = {
+                    id: Date.now(),
+                    name: name,
+                    phone: `+998 ${phone}`,
+                    type: t('leadForm.badge', 'Bepul maslahat'),
+                    date: new Date().toLocaleString('uz-UZ'),
+                    status: 'Yangi'
+                }
+                const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
+                localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
+
                 setSuccess(true)
                 setName('')
                 setPhone('')
