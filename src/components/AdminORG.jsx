@@ -254,7 +254,7 @@ export default function AdminORG() {
                             }`}
                         >
                             <FaCommentDots className="text-base" />
-                            <span>Izohlar va Mahsulotlar</span>
+                            <span>O'quvchilar Izohlari</span>
                         </button>
                     </div>
 
@@ -299,9 +299,9 @@ export default function AdminORG() {
                                         className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
                                     >
                                         <option value="all">Barchasi</option>
-                                        <option value="Kutilmoqda">⏳ Kutilmoqda</option>
-                                        <option value="Qabul qilindi">✓ Qabul qilindi</option>
-                                        <option value="Rad etildi">✕ Rad etildi</option>
+                                        <option value="Kutilmoqda">Kutilmoqda</option>
+                                        <option value="Qabul qilindi">Qabul qilindi</option>
+                                        <option value="Rad etildi">Rad etildi</option>
                                     </select>
                                 </div>
 
@@ -367,7 +367,7 @@ export default function AdminORG() {
                                                         ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
                                                         : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                                                 }`}>
-                                                    {lead.status === 'Qabul qilindi' ? '✓ Qabul qilindi' : lead.status === 'Rad etildi' ? '✕ Rad etildi' : '⏳ Kutilmoqda'}
+                                                    {lead.status === 'Qabul qilindi' ? 'Qabul qilindi' : lead.status === 'Rad etildi' ? 'Rad etildi' : 'Kutilmoqda'}
                                                 </span>
                                             </div>
 

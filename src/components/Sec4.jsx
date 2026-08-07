@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { FaBullseye, FaChalkboardTeacher } from 'react-icons/fa'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -46,7 +47,7 @@ export default function Sec4() {
                         {/* 1-blok */}
                         <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-900/40 hover:shadow-lg group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
                             <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
-                                🎯
+                                <FaBullseye className="text-lg" />
                             </div>
                             <div>
                                 <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
@@ -61,7 +62,7 @@ export default function Sec4() {
                         {/* 2-blok */}
                         <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-900/40 hover:shadow-lg group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
                             <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
-                                👨‍🏫
+                                <FaChalkboardTeacher className="text-lg" />
                             </div>
                             <div>
                                 <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">

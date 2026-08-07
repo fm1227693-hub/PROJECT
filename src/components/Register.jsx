@@ -49,7 +49,7 @@ export default function Register() {
 
         setLoading(true);
 
-        const message = `🔔 @optimum_kurs_bot orqali yangi ro'yxatdan o'tish!\n\n👤 F.I.O: ${formData.fullName}\n📞 Telefon: +998 ${formData.phone}\n📚 Kurs: ${t('register.courseName')}`;
+        const message = `@optimum_kurs_bot orqali yangi ro'yxatdan o'tish!\n\nF.I.O: ${formData.fullName}\nTelefon: +998 ${formData.phone}\nKurs: ${t('register.courseName')}`;
 
         try {
             // Har bir chat ID ga alohida so'rov yaratib, ularni bir vaqtning o'zida yuboramiz

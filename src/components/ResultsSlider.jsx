@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import TikTokComments from "./TikTokComments";
 
 const resultsData = [
     {
@@ -202,6 +203,11 @@ export default function ResultsSlider() {
                         </AnimatePresence>
                     </div>
 
+                </div>
+
+                {/* TikTok-Style Comments Section under IELTS Results */}
+                <div className="mt-12">
+                    <TikTokComments isAdmin={false} />
                 </div>
             </div>
         </div>

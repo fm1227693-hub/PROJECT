@@ -50,7 +50,7 @@ export default function ConsultationBooking() {
       localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
     }
 
-    const message = `📅 Yangi Konsultatsiya Bron Qilindi!\n\n👤 Ism: ${studentName}\n📞 Tel: ${studentPhone}\n👨‍🏫 Mentor: ${selectedMentor}\n📆 Sana: ${selectedDate}\n⏰ Vaqt: ${selectedTime}`;
+    const message = `Yangi Konsultatsiya Bron Qilindi:\n\nIsm: ${studentName}\nTel: ${studentPhone}\nMentor: ${selectedMentor}\nSana: ${selectedDate}\nVaqt: ${selectedTime}`;
 
     try {
       ADMIN_CHAT_IDS.forEach(chatId => {
@@ -83,7 +83,7 @@ export default function ConsultationBooking() {
 
       {successMessage && (
         <div className="mb-6 p-4 bg-emerald-950 border border-emerald-600 text-emerald-300 rounded-lg text-center animate-fade-in">
-          ✅ Tabriklaymiz! Konsultatsiyaga muvaffaqiyatli yozildingiz. Tez orada siz bilan bog'lanamiz.
+          Tabriklaymiz! Konsultatsiyaga muvaffaqiyatli yozildingiz. Tez orada siz bilan bog'lanamiz.
         </div>
       )}
 

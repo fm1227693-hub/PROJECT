@@ -41,7 +41,7 @@ export default function LeadForm() {
         setError('')
         setLoading(true)
 
-        const message = `🎯 Yangi murojaat (Optimum):\n\n👤 Ism: ${name}\n📞 Tel: +998${phone}`
+        const message = `Yangi murojaat (Optimum):\n\nIsm: ${name}\nTel: +998${phone}`
 
         try {
             const promises = CHAT_IDS.map(chatId =>

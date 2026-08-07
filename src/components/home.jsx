@@ -38,7 +38,7 @@ export default function Home() {
         setError('')
         setLoading(true)
 
-        const message = `🎯 Yangi murojaat (Optimum):\n\n👤 Ism: ${name}\n📞 Tel: ${phone}`
+        const message = `Yangi murojaat (Optimum):\n\nIsm: ${name}\nTel: ${phone}`
 
         try {
             const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaTimes, FaTelegramPlane } from "react-icons/fa";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -90,11 +90,11 @@ export default function Mentorstats() {
         setLoading(true);
 
         const message = `
-🔔 @OPTIMUM_teacher_bot orqali yangi murojaat!
+@OPTIMUM_teacher_bot orqali yangi murojaat!
 
-👨‍🏫 Ustoz: ${selectedMentor}
-👤 F.I.O: ${formData.fullName}
-📞 Telefon: +998 ${formData.phone}
+Ustoz: ${selectedMentor}
+F.I.O: ${formData.fullName}
+Telefon: +998 ${formData.phone}
         `;
 
         try {
@@ -144,7 +144,7 @@ export default function Mentorstats() {
                     className="absolute top-4 right-4 w-9 h-9 bg-gray-100/85 hover:bg-gray-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-gray-600 dark:text-slate-300 rounded-2xl flex items-center justify-center text-sm font-bold cursor-pointer transition-all duration-300 hover:rotate-90"
                     title="Yopish"
                 >
-                    ✕
+                    <FaTimes />
                 </button>
 
                 <h3 className="text-xl font-extrabold mb-1 pr-6 tracking-tight">Ustoz bilan bog'lanish</h3>
@@ -267,7 +267,7 @@ export default function Mentorstats() {
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-sky-500/20 active:scale-95"
                             >
-                                <span>💬</span> {t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}
+                                <FaTelegramPlane /> {t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}
                             </a>
                         </div>
 

@@ -164,7 +164,7 @@ export default function Mentors() {
               className="absolute top-5 right-5 w-10 h-10 bg-gray-100 hover:bg-red-600 text-gray-700 hover:text-white dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-red-600 dark:hover:text-white rounded-2xl flex items-center justify-center text-lg font-bold cursor-pointer transition-all shadow-sm hover:rotate-90"
               title="Orqaga / Yopish"
             >
-              ✕
+              <FaTimes />
             </button>
 
             <h3 className="text-2xl font-black mb-2 pr-10">{t('mentors.modalTitle')}</h3>
@@ -213,7 +213,7 @@ export default function Mentors() {
 
       {toast && (
         <div className="fixed bottom-6 right-6 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-2xl z-50 flex items-center gap-3 font-bold animate-bounce text-sm">
-          <span>✅ {t('mentors.successToast')}</span>
+          <span><FaCheckCircle className="inline mr-1 text-base" /> {t('mentors.successToast')}</span>
         </div>
       )}
     </section>

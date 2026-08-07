@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
+import { FaTimes, FaCheckCircle } from 'react-icons/fa'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -314,7 +315,7 @@ export default function Sec3() {
                 onClick={() => setModal(false)}
                 className="absolute top-4 right-4 w-8 h-8 bg-slate-100 dark:bg-white/10 rounded-xl flex items-center justify-center text-sm font-bold"
               >
-                ✕
+                <FaTimes />
               </motion.button>
               <h3 className="text-lg sm:text-xl font-bold mb-1 pr-6">{t('sec3.modalTitle')}</h3>
               <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mb-5">
@@ -367,7 +368,7 @@ export default function Sec3() {
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             className="fixed bottom-5 right-5 bg-emerald-600 text-white px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl shadow-2xl z-50 text-xs sm:text-sm font-medium flex items-center gap-3"
           >
-            <span className="animate-bounce">✅</span>
+            <FaCheckCircle className="text-xl text-white" />
             <span>{t('sec3.successToast')}</span>
           </motion.div>
         )}

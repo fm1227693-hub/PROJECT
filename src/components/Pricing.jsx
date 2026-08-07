@@ -119,7 +119,7 @@ export default function Pricing() {
 
                                 {isMatched && (
                                     <p className="text-[11px] xs:text-xs font-bold text-red-400 mb-3 xs:mb-4 -mt-2 xs:-mt-4">
-                                        {t('pricing.recommendedInline') || "✓ Sizning darajangiz uchun tavsiya etiladi"}
+                                        {t('pricing.recommendedInline') || "Sizning darajangiz uchun tavsiya etiladi"}
                                     </p>
                                 )}
 
