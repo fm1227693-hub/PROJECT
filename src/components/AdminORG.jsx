@@ -3,7 +3,7 @@ import Comments from './Comments'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import toast, { Toaster } from 'react-hot-toast'
-import { FaUserCheck, FaTrash, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt } from 'react-icons/fa'
+import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 export default function AdminORG() {
@@ -24,30 +24,21 @@ export default function AdminORG() {
         setLeads(stored)
     }
 
-    const handleDeleteLead = (id) => {
-        const updated = leads.filter(item => item.id !== id)
-        setLeads(updated)
-        localStorage.setItem('admin_leads', JSON.stringify(updated))
-        toast.success("Murojaat muvaffaqiyatli o'chirildi!")
-    }
-
-    const handleClearAll = () => {
-        setLeads([])
-        localStorage.setItem('admin_leads', JSON.stringify([]))
-        toast.success("Barcha murojaatlar tozalandi!")
-    }
-
-    const toggleStatus = (id) => {
+    const updateLeadStatus = (id, newStatus) => {
         const updated = leads.map(item => {
             if (item.id === id) {
-                const nextStatus = item.status === 'Bog\'lanildi' ? 'Yangi' : 'Bog\'lanildi'
-                return { ...item, status: nextStatus }
+                return { ...item, status: newStatus }
             }
             return item
         })
         setLeads(updated)
         localStorage.setItem('admin_leads', JSON.stringify(updated))
-        toast.success("Status yangilandi!")
+        
+        if (newStatus === 'Qabul qilindi') {
+            toast.success("So'rov qabul qilindi!")
+        } else if (newStatus === 'Rad etildi') {
+            toast.error("So'rov rad etildi!")
+        }
     }
 
     const filteredLeads = leads.filter(lead => 
@@ -115,7 +106,7 @@ export default function AdminORG() {
                 {/* Tab 1: Murojaatlar */}
                 {activeTab === 'leads' && (
                     <div className="space-y-6">
-                        {/* Search & Actions Bar */}
+                        {/* Search Bar */}
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                             <div className="relative w-full sm:w-80">
                                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
@@ -127,15 +118,6 @@ export default function AdminORG() {
                                     className="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
                                 />
                             </div>
-
-                            {leads.length > 0 && (
-                                <button
-                                    onClick={handleClearAll}
-                                    className="w-full sm:w-auto px-4 py-3 bg-rose-600/10 hover:bg-rose-600/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 rounded-2xl font-bold text-xs transition-all cursor-pointer active:scale-95"
-                                >
-                                    Barcha murojaatlarni tozalash
-                                </button>
-                            )}
                         </div>
 
                         {/* Leads Cards / Table */}
@@ -162,16 +144,15 @@ export default function AdminORG() {
                                                     {lead.type || "Murojaat"}
                                                 </span>
 
-                                                <button
-                                                    onClick={() => toggleStatus(lead.id)}
-                                                    className={`px-3 py-1 rounded-full text-[11px] font-bold cursor-pointer transition-colors ${
-                                                        lead.status === 'Bog\'lanildi'
-                                                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                                                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                                                    }`}
-                                                >
-                                                    {lead.status === 'Bog\'lanildi' ? '✓ Bog\'lanildi' : '● Yangi'}
-                                                </button>
+                                                <span className={`px-3 py-1 rounded-full text-[11px] font-bold ${
+                                                    lead.status === 'Qabul qilindi'
+                                                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                                                        : lead.status === 'Rad etildi'
+                                                        ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                                                        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                                                }`}>
+                                                    {lead.status === 'Qabul qilindi' ? '✓ Qabul qilindi' : lead.status === 'Rad etildi' ? '✕ Rad etildi' : '⏳ Kutilmoqda'}
+                                                </span>
                                             </div>
 
                                             <div>
@@ -193,13 +174,32 @@ export default function AdminORG() {
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center justify-end pt-3 border-t border-gray-100 dark:border-gray-800">
+                                        {/* Action Buttons: Accept and Reject */}
+                                        <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
                                             <button
-                                                onClick={() => handleDeleteLead(lead.id)}
-                                                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600/10 hover:bg-rose-600 text-rose-600 hover:text-white text-xs font-bold transition-all cursor-pointer active:scale-95"
+                                                onClick={() => updateLeadStatus(lead.id, 'Qabul qilindi')}
+                                                disabled={lead.status === 'Qabul qilindi'}
+                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
+                                                    lead.status === 'Qabul qilindi'
+                                                        ? 'bg-emerald-500/20 text-emerald-600 cursor-not-allowed opacity-60'
+                                                        : 'bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-500/20'
+                                                }`}
                                             >
-                                                <FaTrash />
-                                                <span>O'chirish</span>
+                                                <FaCheck />
+                                                <span>Accept</span>
+                                            </button>
+
+                                            <button
+                                                onClick={() => updateLeadStatus(lead.id, 'Rad etildi')}
+                                                disabled={lead.status === 'Rad etildi'}
+                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
+                                                    lead.status === 'Rad etildi'
+                                                        ? 'bg-rose-500/20 text-rose-600 cursor-not-allowed opacity-60'
+                                                        : 'bg-rose-600/10 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-500/20'
+                                                }`}
+                                            >
+                                                <FaTimes />
+                                                <span>Reject</span>
                                             </button>
                                         </div>
                                     </div>

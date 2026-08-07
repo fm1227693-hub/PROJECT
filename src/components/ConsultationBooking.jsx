@@ -33,7 +33,7 @@ export default function ConsultationBooking() {
       phone: studentPhone.startsWith('+') ? studentPhone : `+998 ${studentPhone.replace(/\D/g, '')}`,
       type: `Konsultatsiya (${selectedMentor} - ${selectedDate} ${selectedTime})`,
       date: new Date().toLocaleString('uz-UZ'),
-      status: 'Yangi'
+      status: 'Kutilmoqda'
     };
     const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]');
     localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]));

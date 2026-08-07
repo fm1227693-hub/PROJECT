@@ -75,7 +75,7 @@ export default function Register() {
                     phone: `+998 ${formData.phone}`,
                     type: `Ro'yxatdan o'tish (${t('register.courseName')})`,
                     date: new Date().toLocaleString('uz-UZ'),
-                    status: 'Yangi'
+                    status: 'Kutilmoqda'
                 }
                 const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
                 localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))

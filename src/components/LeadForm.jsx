@@ -67,7 +67,7 @@ export default function LeadForm() {
                     phone: `+998 ${phone}`,
                     type: t('leadForm.badge', 'Bepul maslahat'),
                     date: new Date().toLocaleString('uz-UZ'),
-                    status: 'Yangi'
+                    status: 'Kutilmoqda'
                 }
                 const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
                 localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
