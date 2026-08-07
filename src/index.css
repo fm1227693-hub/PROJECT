@@ -27,36 +27,59 @@
   border: 2px solid rgba(3, 7, 18, 0.8);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(225, 29, 72, 0.8);
+  background: rgba(225, 29, 72, 0.85);
 }
 
 /* Custom Glassmorphism & Glow Effects */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(225, 29, 72, 0.12);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.05);
 }
 
 .dark .glass-panel {
   background: rgba(7, 11, 20, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.5);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(243, 244, 246, 0.7) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(229, 231, 235, 0.8);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 20px 45px -15px rgba(225, 29, 72, 0.06);
 }
 
 .dark .glass-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(7, 11, 20, 0.9) 100%);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(135deg, rgba(13, 19, 34, 0.82) 0%, rgba(7, 11, 20, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.65);
+}
+
+.glass-input {
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  transition: all 0.3s ease;
+}
+
+.dark .glass-input {
+  background: rgba(10, 15, 28, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus, .dark .glass-input:focus {
+  border-color: rgba(225, 29, 72, 0.6);
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
 }
 
 .glow-red {
@@ -73,11 +96,90 @@
   border-color: rgba(225, 29, 72, 0.4);
 }
 
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(1.05); }
+/* Advanced Dynamic Animated Aurora & Mesh Keyframes */
+@keyframes aurora-flow-1 {
+  0% {
+    transform: translate(0%, 0%) rotate(0deg) scale(1);
+    opacity: 0.35;
+  }
+  33% {
+    transform: translate(5%, 8%) rotate(120deg) scale(1.15);
+    opacity: 0.55;
+  }
+  66% {
+    transform: translate(-6%, 4%) rotate(240deg) scale(0.95);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(0%, 0%) rotate(360deg) scale(1);
+    opacity: 0.35;
+  }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 6s ease-in-out infinite;
+@keyframes aurora-flow-2 {
+  0% {
+    transform: translate(0%, 0%) rotate(0deg) scale(1.1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-8%, -10%) rotate(-180deg) scale(1.25);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(0%, 0%) rotate(-360deg) scale(1.1);
+    opacity: 0.3;
+  }
+}
+
+@keyframes float-orb {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-25px) scale(1.08);
+  }
+}
+
+@keyframes shimmer-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-aurora-1 {
+  animation: aurora-flow-1 22s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: aurora-flow-2 28s ease-in-out infinite;
+}
+
+.animate-float-orb {
+  animation: float-orb 10s ease-in-out infinite;
+}
+
+/* Luxury Glowing Shimmer Border */
+.shimmer-border {
+  position: relative;
+}
+
+.shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, rgba(225,29,72,0.6), rgba(244,63,94,0.1), rgba(251,113,133,0.6), rgba(225,29,72,0.6));
+  background-size: 200% 200%;
+  animation: shimmer-border 6s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events-none: true;
 }

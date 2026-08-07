@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Link } from "react-router-dom";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
@@ -17,6 +17,8 @@ import FAQ from "./components/FAQ";
 import ConsultationBooking from "./components/ConsultationBooking";
 import Flashcards from "./components/Flashcard";
 import LeadForm from "./components/LeadForm";
+
+import BackgroundCanvas from "./components/BackgroundCanvas";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -41,7 +43,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-white dark:bg-[#030712] transition-colors duration-300 overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-hidden font-sans">
 
       {/* Keyframe animatsiyalar */}
       <style>{`
@@ -114,22 +116,36 @@ export default function App() {
         </div>
       )}
 
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-100 dark:from-[#030712] dark:via-[#050912] dark:to-[#0a0f1c]" />
+      {/* Interactive Particle Mesh & Light Node Canvas */}
+      <BackgroundCanvas />
+
+      {/* Master Luxury Ambient Background Layers */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        {/* Base Gradient Canvas */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-slate-100/90 to-white dark:from-[#030712] dark:via-[#060a14] dark:to-[#090d1a] transition-colors duration-500" />
+
+        {/* Glow Radial Grid Matrix */}
         <div
-          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.15]"
+          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.16]"
           style={{
             backgroundImage:
-              "radial-gradient(circle, rgba(100,116,139,0.25) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
+              "radial-gradient(circle, rgba(225,29,72,0.35) 1.2px, transparent 1.2px)",
+            backgroundSize: "36px 36px",
           }}
         />
-        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-gradient-to-br from-purple-500/25 via-indigo-500/15 to-transparent rounded-full blur-[160px]" />
-        <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-500/20 via-cyan-400/10 to-transparent rounded-full blur-[150px]" />
-        <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-gradient-to-l from-fuchsia-500/10 to-transparent rounded-full blur-[140px]" />
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[400px] bg-gradient-to-t from-amber-400/10 via-orange-400/5 to-transparent rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100 dark:from-[#020509] to-transparent" />
-        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/60 dark:from-[#030712]/80 to-transparent" />
+
+        {/* Dynamic Rotating Aurora Beams */}
+        <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/30 via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1" />
+        <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/25 via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2" />
+        <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/25 via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s]" />
+
+        {/* Floating Glowing Neon Rings */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-500/15 rounded-full blur-sm animate-float-orb" />
+        <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s]" />
+
+        {/* Smooth Edge Fade Overlays */}
+        <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100/90 dark:from-[#020509] to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/80 dark:from-[#030712]/90 to-transparent pointer-events-none" />
       </div>
 
       <div className="relative z-10">
@@ -155,13 +171,30 @@ export default function App() {
         <Footer />
       </div>
 
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Bottom Floating Quick Action Badges */}
+      <div className="fixed bottom-6 left-6 z-50 hidden sm:flex items-center gap-3">
+        <Link
+          to="/level-test"
+          className="group relative flex items-center gap-2.5 px-5 py-3 rounded-full bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 font-extrabold text-xs shadow-2xl shadow-red-600/30 backdrop-blur-xl border border-red-500/40 hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden"
+        >
+          <span className="relative z-10 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+            <span>Darajangni aniqla</span>
+          </span>
+          <span className="text-xs group-hover:translate-x-1 transition-transform relative z-10">→</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-red-600/20 to-rose-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+        </Link>
+      </div>
+
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
         <a
           href="tel:+998910829979"
-          className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 animate-bounce cursor-pointer border-2 border-white/20 dark:border-slate-800"
+          className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full flex items-center justify-center shadow-2xl shadow-red-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer border-2 border-white/30 dark:border-slate-800 group"
           title="Qo'ng'iroq qilish">
+          
+          <div className="absolute inset-0 rounded-full border border-red-500 animate-ping opacity-75" />
 
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 relative z-10 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
           </svg>
         </a>

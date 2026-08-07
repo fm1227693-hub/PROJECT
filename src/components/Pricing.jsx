@@ -42,8 +42,8 @@ export default function Pricing() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-950 dark:to-black px-3 xs:px-4 pt-20 xs:pt-24 pb-12 xs:pb-16 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
-            <div className="absolute top-0 right-0 w-72 h-72 bg-red-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="min-h-screen bg-transparent px-3 xs:px-4 pt-24 xs:pt-28 pb-16 xs:pb-20 transition-colors duration-300 relative font-['Plus_Jakarta_Sans',sans-serif]">
+            <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="max-w-6xl mx-auto relative z-10">
 
@@ -58,13 +58,13 @@ export default function Pricing() {
                 </button>
 
                 <div data-aos="fade-up" data-aos-duration="700" className="text-center max-w-2xl mx-auto mb-10 xs:mb-14">
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block">
+                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1 rounded-full inline-block border border-red-500/20 shadow-sm">
                         {t('pricing.badge') || 'Natijaga erishish'}
                     </span>
                     <h2 className="text-2xl xs:text-3xl md:text-4xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight">
                         {t('pricing.title') || "O'zingizga mos kursni tanlang"}
                     </h2>
-                    <p className="text-gray-500 dark:text-gray-400 mt-2.5 xs:mt-3 font-medium text-xs xs:text-sm md:text-base px-2">
+                    <p className="text-gray-600 dark:text-gray-300 mt-2.5 xs:mt-3 font-medium text-xs xs:text-sm md:text-base px-2">
                         {levelLabel
                             ? (t('pricing.descriptionWithLevel') || 'Sizning darajangiz: {{level}}. Quyidagi tarif sizga mos keladi.').replace('{{level}}', levelLabel)
                             : t('pricing.description') || 'Darajangizga mos tarifni tanlab, biz bilan bog\'laning.'}
@@ -74,9 +74,9 @@ export default function Pricing() {
                         <div
                             data-aos="fade-up"
                             data-aos-delay="100"
-                            className="mt-4 xs:mt-5 inline-flex items-center gap-2 bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 px-3.5 xs:px-4 py-2 xs:py-2.5 rounded-2xl animate-pulse-soft"
+                            className="mt-4 xs:mt-5 inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2.5 rounded-2xl animate-pulse-slow"
                         >
-                            <span className="text-xs xs:text-sm font-bold text-red-700 dark:text-red-400">
+                            <span className="text-xs xs:text-sm font-bold text-red-600 dark:text-red-400">
                                 {(t('pricing.recommendationText') || "Sizga {{price}} so'mlik kurs tavsiya etiladi")
                                     .replace('{{price}}', matchedPlan.price)}
                             </span>
@@ -93,9 +93,9 @@ export default function Pricing() {
                                 data-aos="fade-up"
                                 data-aos-delay={idx * 100}
                                 data-aos-duration="700"
-                                className={`relative rounded-2xl xs:rounded-3xl p-5 xs:p-8 border transition-all duration-300 hover:-translate-y-1 ${isMatched
-                                    ? 'bg-gray-950 dark:bg-white border-gray-950 dark:border-white shadow-2xl scale-[1.02] xs:scale-[1.03]'
-                                    : 'bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800/80 shadow-md hover:shadow-xl'
+                                className={`relative rounded-2xl xs:rounded-3xl p-6 xs:p-8 transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl ${isMatched
+                                    ? 'bg-gradient-to-b from-red-950/90 to-slate-900/90 border-2 border-red-500/60 shadow-2xl shadow-red-600/20 text-white scale-[1.02] xs:scale-[1.03]'
+                                    : 'glass-card border border-slate-200/80 dark:border-white/10 hover:border-red-500/40 shadow-lg'
                                     }`}
                             >
                                 {isMatched && (

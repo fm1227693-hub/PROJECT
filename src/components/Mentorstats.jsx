@@ -231,7 +231,7 @@ Telefon: +998 ${formData.phone}
 
     if (activeMentorDetail) {
         return (
-            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-[#060417] dark:via-[#090623] dark:to-[#050314] min-h-screen py-12 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
+            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-transparent min-h-screen py-16 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
                 <div className="max-w-2xl mx-auto">
                     <div className="sticky top-6 z-20 mb-6">
                         <button
@@ -331,7 +331,7 @@ Telefon: +998 ${formData.phone}
 
     return (
         <div className="font-['Plus_Jakarta_Sans',sans-serif] pt-10">
-            <section className="bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-[#060417] dark:via-[#090623] dark:to-[#050314] py-20 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
+            <section className="bg-transparent py-20 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
                 <div className="max-w-4xl mx-auto" data-aos="fade-up">
                     <div className="text-center mb-14">
                         <span className="text-xs font-extrabold text-red-600 dark:text-red-400 uppercase tracking-widest bg-red-50 dark:bg-red-500/10 px-4 py-1.5 rounded-full border border-red-100 dark:border-red-500/20 inline-block mb-3 shadow-sm">

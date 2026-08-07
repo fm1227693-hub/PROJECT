@@ -79,10 +79,10 @@ export default function Products() {
     const activeStudent = resultsData[currentIndex];
 
     return (
-        <div className="pt-30 font-['Plus_Jakarta_Sans',sans-serif]">
-            <div className="w-full max-w-5xl mx-auto p-6 bg-slate-900 dark:bg-[#090623] border border-slate-800 rounded-3xl shadow-2xl text-white mt-0 mb-10 transition-colors duration-200">
+        <div className="pt-28 pb-12 font-['Plus_Jakarta_Sans',sans-serif] px-4">
+            <div className="w-full max-w-5xl mx-auto p-6 sm:p-10 glass-card rounded-[2.5rem] shadow-2xl border border-slate-200/80 dark:border-white/10 mt-0 mb-10 transition-all duration-300 relative overflow-hidden">
                 {/* Sarlavha */}
-                <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-8">
                     Ba'zi o'quvchilarimizning natijalari
                 </h2>
 

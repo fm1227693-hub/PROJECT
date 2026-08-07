@@ -120,11 +120,11 @@ export default function LeadForm() {
 
             {/* Asosiy Forma qismi */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6 select-none">
-                <div className="relative bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-900 dark:text-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors duration-300">
+                <div className="relative glass-card p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] shadow-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden transition-all duration-300">
                     
                     {/* Orqa fon nur effekti */}
-                    <div className="absolute -top-32 -right-32 w-80 h-80 bg-red-600/10 dark:bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
-                    <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-rose-600/10 dark:bg-rose-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-red-600/20 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+                    <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
 
                     <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
                         

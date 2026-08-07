@@ -106,7 +106,7 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-[#030712] dark:via-[#070b14] dark:to-[#0f172a] font-['Plus_Jakarta_Sans',sans-serif] relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4 pt-24 pb-16 bg-transparent font-['Plus_Jakarta_Sans',sans-serif] relative overflow-hidden">
 
             {/* Toast Xabarnoma */}
             <AnimatePresence>
@@ -131,7 +131,7 @@ export default function Register() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="w-full max-w-lg bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-2xl rounded-3xl p-8 sm:p-10 shadow-xl border border-gray-200/80 dark:border-white/10 relative overflow-hidden"
+                className="w-full max-w-lg glass-card rounded-3xl p-8 sm:p-10 shadow-2xl border border-slate-200/80 dark:border-white/10 relative overflow-hidden"
             >
                 <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
                     <div className="text-center space-y-2">

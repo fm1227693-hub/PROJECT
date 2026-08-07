@@ -137,7 +137,7 @@ export default function AdminORG() {
         })
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-transparent text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto space-y-8">
                 
                 {/* Admin Header Bar */}
