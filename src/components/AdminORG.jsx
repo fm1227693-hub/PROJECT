@@ -15,6 +15,7 @@ export default function AdminORG() {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
     const [typeFilter, setTypeFilter] = useState('all')
+    const [sortOrder, setSortOrder] = useState('newest')
     const [loadingLeads, setLoadingLeads] = useState(false)
     const [deleteModalLead, setDeleteModalLead] = useState(null)
     const [showAddLeadModal, setShowAddLeadModal] = useState(false)
@@ -52,10 +53,9 @@ export default function AdminORG() {
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
         try {
-            await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedList)
+            await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
             toast.success("Murojaat muvaffaqiyatli ro'yxatga olindi!")
         } catch (e) {
-            console.error(e)
             toast.success("Murojaat saqlandi!")
         }
 
@@ -70,9 +70,9 @@ export default function AdminORG() {
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
         try {
-            await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedList)
+            await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
         } catch (e) {
-            console.error(e)
+            // silent catch for local storage fallback
         }
         toast.success(t('adminPanel.deleteSuccess', "Murojaat o'chirildi!"))
         setDeleteModalLead(null)
@@ -81,12 +81,17 @@ export default function AdminORG() {
     const loadLeads = async () => {
         setLoadingLeads(true)
         try {
-            const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d')
-            const remoteLeads = Array.isArray(res.data) ? res.data : []
-            setLeads(remoteLeads)
-            localStorage.setItem('admin_leads', JSON.stringify(remoteLeads))
+            const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', {
+                validateStatus: status => status < 500
+            })
+            if (res.status === 200 && Array.isArray(res.data)) {
+                setLeads(res.data)
+                localStorage.setItem('admin_leads', JSON.stringify(res.data))
+            } else {
+                const stored = JSON.parse(localStorage.getItem('admin_leads') || '[]')
+                setLeads(stored)
+            }
         } catch (e) {
-            console.error(e)
             const stored = JSON.parse(localStorage.getItem('admin_leads') || '[]')
             setLeads(stored)
         } finally {
@@ -115,9 +120,9 @@ export default function AdminORG() {
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
         try {
-            await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedList)
+            await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
         } catch (e) {
-            console.error(e)
+            // silent catch
         }
         
         if (newStatus === 'Qabul qilindi') {
@@ -368,19 +373,20 @@ export default function AdminORG() {
 
                             {/* Filters */}
                             <div className="flex flex-wrap items-center gap-3">
-                                {/* Status Filter */}
+                                {/* Type Filter */}
                                 <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
                                     <FaFilter className="text-xs text-red-600" />
-                                    <span>{t('adminPanel.statusLabel', "Status:")}</span>
+                                    <span>{t('adminPanel.typeLabel', "Turi:")}</span>
                                     <select
-                                        value={statusFilter}
-                                        onChange={(e) => setStatusFilter(e.target.value)}
+                                        value={typeFilter}
+                                        onChange={(e) => setTypeFilter(e.target.value)}
                                         className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
                                     >
                                         <option value="all">{t('adminPanel.allOptions', "Barchasi")}</option>
-                                        <option value="Kutilmoqda">{t('adminPanel.pending', "Kutilmoqda")}</option>
-                                        <option value="Qabul qilindi">{t('adminPanel.accepted', "Qabul qilindi")}</option>
-                                        <option value="Rad etildi">{t('adminPanel.rejected', "Rad etildi")}</option>
+                                        <option value="Bepul maslahat">{t('adminPanel.typeFreeConsultation', "Bepul maslahat")}</option>
+                                        <option value="Ro'yxatdan o'tish">{t('adminPanel.typeRegister', "Ro'yxatdan o'tish")}</option>
+                                        <option value="Konsultatsiya">{t('adminPanel.typeConsultation', "Konsultatsiya")}</option>
+                                        <option value="БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ">БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ</option>
                                     </select>
                                 </div>
 
@@ -481,31 +487,35 @@ export default function AdminORG() {
 
                                         {/* Action Buttons: Accept and Reject */}
                                         <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
-                                            <button
-                                                onClick={() => updateLeadStatus(lead.id, 'Qabul qilindi')}
-                                                disabled={lead.status === 'Qabul qilindi'}
-                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
-                                                    lead.status === 'Qabul qilindi'
-                                                        ? 'bg-emerald-500/20 text-emerald-600 cursor-not-allowed opacity-60'
-                                                        : 'bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-500/20'
-                                                }`}
-                                            >
-                                                <FaCheck />
-                                                <span>{t('adminPanel.acceptBtn', "Accept")}</span>
-                                            </button>
+                                            {lead.status !== 'Rad etildi' && (
+                                                <button
+                                                    onClick={() => updateLeadStatus(lead.id, 'Qabul qilindi')}
+                                                    disabled={lead.status === 'Qabul qilindi'}
+                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
+                                                        lead.status === 'Qabul qilindi'
+                                                            ? 'bg-emerald-500/20 text-emerald-600 cursor-not-allowed opacity-60'
+                                                            : 'bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-500/20'
+                                                    }`}
+                                                >
+                                                    <FaCheck />
+                                                    <span>{t('adminPanel.acceptBtn', "Accept")}</span>
+                                                </button>
+                                            )}
 
-                                            <button
-                                                onClick={() => updateLeadStatus(lead.id, 'Rad etildi')}
-                                                disabled={lead.status === 'Rad etildi'}
-                                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
-                                                    lead.status === 'Rad etildi'
-                                                        ? 'bg-rose-500/20 text-rose-600 cursor-not-allowed opacity-60'
-                                                        : 'bg-rose-600/10 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-500/20'
-                                                }`}
-                                            >
-                                                <FaTimes />
-                                                <span>{t('adminPanel.rejectBtn', "Reject")}</span>
-                                            </button>
+                                            {lead.status !== 'Qabul qilindi' && (
+                                                <button
+                                                    onClick={() => updateLeadStatus(lead.id, 'Rad etildi')}
+                                                    disabled={lead.status === 'Rad etildi'}
+                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
+                                                        lead.status === 'Rad etildi'
+                                                            ? 'bg-rose-500/20 text-rose-600 cursor-not-allowed opacity-60'
+                                                            : 'bg-rose-600/10 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-500/20'
+                                                    }`}
+                                                >
+                                                    <FaTimes />
+                                                    <span>{t('adminPanel.rejectBtn', "Reject")}</span>
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -610,37 +620,20 @@ export default function AdminORG() {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
-                                        {t('adminPanel.typeLabel', "Murojaat turi")}
-                                    </label>
-                                    <select
-                                        value={newLeadType}
-                                        onChange={(e) => setNewLeadType(e.target.value)}
-                                        className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
-                                    >
-                                        <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
-                                        <option value="Bepul maslahat">Bepul maslahat</option>
-                                        <option value="Konsultatsiya">Konsultatsiya</option>
-                                        <option value="БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ">БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
-                                        {t('adminPanel.statusLabel', "Status")}
-                                    </label>
-                                    <select
-                                        value={newLeadStatus}
-                                        onChange={(e) => setNewLeadStatus(e.target.value)}
-                                        className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
-                                    >
-                                        <option value="Qabul qilindi">Qabul qilindi</option>
-                                        <option value="Kutilmoqda">Kutilmoqda</option>
-                                        <option value="Rad etildi">Rad etildi</option>
-                                    </select>
-                                </div>
+                            <div>
+                                <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
+                                    {t('adminPanel.typeLabel', "Murojaat turi")}
+                                </label>
+                                <select
+                                    value={newLeadType}
+                                    onChange={(e) => setNewLeadType(e.target.value)}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
+                                >
+                                    <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
+                                    <option value="Bepul maslahat">Bepul maslahat</option>
+                                    <option value="Konsultatsiya">Konsultatsiya</option>
+                                    <option value="БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ">БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ</option>
+                                </select>
                             </div>
 
                             <div className="flex items-center justify-end gap-3 pt-3">

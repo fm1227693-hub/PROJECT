@@ -73,10 +73,10 @@ export default function LeadForm() {
                 }
 
                 try {
-                    const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d')
+                    const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71')
                     const currentLeads = Array.isArray(res.data) ? res.data : []
                     const updatedLeads = [newLead, ...currentLeads]
-                    await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedLeads)
+                    await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedLeads)
                     localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
                 } catch (err) {
                     console.error("API error:", err)

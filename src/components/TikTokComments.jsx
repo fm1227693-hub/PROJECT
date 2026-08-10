@@ -5,7 +5,7 @@ import { FaHeart, FaRegHeart, FaPaperPlane, FaTrash, FaCheckCircle, FaUserCircle
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
-const API_URL = 'https://jsonblob.com/api/jsonBlob/019fdb65-5567-75af-ba93-74e706ff9f88'
+const API_URL = 'https://jsonblob.com/api/jsonBlob/019fe9cb-03f4-7d5f-9c48-8445da12300c'
 
 export default function TikTokComments({ isAdmin = false, defaultOpen = false }) {
     const { t } = useTranslation()
@@ -30,12 +30,15 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
     const loadComments = async () => {
         setLoading(true)
         try {
-            const res = await axios.get(API_URL)
-            const list = Array.isArray(res.data) ? res.data : []
-            setComments(list)
-            localStorage.setItem('tiktok_comments', JSON.stringify(list))
+            const res = await axios.get(API_URL, { validateStatus: status => status < 500 })
+            if (res.status === 200 && Array.isArray(res.data)) {
+                setComments(res.data)
+                localStorage.setItem('tiktok_comments', JSON.stringify(res.data))
+            } else {
+                const stored = JSON.parse(localStorage.getItem('tiktok_comments') || '[]')
+                setComments(stored)
+            }
         } catch (e) {
-            console.error(e)
             const stored = JSON.parse(localStorage.getItem('tiktok_comments') || '[]')
             setComments(stored)
         } finally {
