@@ -26,11 +26,11 @@ export default function Sec3() {
     },
     {
       id: 'ruxillo',
-      name: 'Ruhillo Asrorov',
+      name: 'Ruxillo Asrorov',
       image: '/photo_2026-07-23_23-14-12.jpg',
       score: '8.0',
       cert: 'IELTS 8',
-      experience: '6+',
+      experience: '4+',
       students: '200+',
       quote: t('ruxillo.description'),
       telegram: 'https://t.me/rukhillo',

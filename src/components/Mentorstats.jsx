@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaTimes, FaTelegramPlane } from "react-icons/fa";
+import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaTimes, FaTelegramPlane, FaStar, FaGraduationCap, FaArrowRight, FaClock, FaAward } from "react-icons/fa";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -12,7 +12,7 @@ const staticMentorsData = [
         role: "English Teacher & IELTS Expert",
         experience: "4+ yil tajriba",
         bio: "Ingliz tili va IELTS imtihoniga tayyorlash bo'yicha yuqori darajadagi malakali mutaxassis.",
-        skills: ["IELTS 8.0+", "CEFR C1", "Grammar & Speaking", "Business English"],
+        skills: ["IELTS 8.0+", "IELTS 8.0", "Grammar & Speaking", "Business English"],
         image: "/photo_2026-07-23_23-14-12.jpg",
         telegram: "https://t.me/rukhillo",
         birthYear: 2005,
@@ -82,8 +82,9 @@ export default function Mentorstats() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (formData.phone.length < 9) {
-            showToast("Iltimos, telefon raqamni to'liq kiriting!", "error");
+        const cleanPhone = formData.phone.replace(/\D/g, '');
+        if (cleanPhone.length !== 9) {
+            showToast("Telefon raqami ro'ppa-rosa 9 ta raqamdan iborat bo'lishi kerak!", "error");
             return;
         }
 
@@ -116,15 +117,15 @@ Telefon: +998 ${formData.phone}
             const allSuccess = responses.every(res => res.ok);
 
             if (allSuccess) {
-                showToast("Muvaffaqiyatli yuborildi!", "success");
+                showToast(t('sec3.successToast', "Muvaffaqiyatli yuborildi!"), "success");
                 setFormData({ fullName: '', phone: '' });
                 setModal(false);
             } else {
-                showToast("Xatolik yuz berdi. Qaytadan urinib ko'ring.", "error");
+                showToast(t('addComment.errorOccurred', "Xatolik yuz berdi. Qaytadan urinib ko'ring."), "error");
             }
         } catch (error) {
             console.error("Xatolik:", error);
-            showToast("Tarmoqda xatolik yuz berdi.", "error");
+            showToast(t('addComment.errorOccurred', "Tarmoqda xatolik yuz berdi."), "error");
         } finally {
             setLoading(false);
         }
@@ -147,21 +148,25 @@ Telefon: +998 ${formData.phone}
                     <FaTimes />
                 </button>
 
-                <h3 className="text-xl font-extrabold mb-1 pr-6 tracking-tight">Ustoz bilan bog'lanish</h3>
+                <h3 className="text-xl font-extrabold mb-1 pr-6 tracking-tight">
+                    {t('sec3.modalTitle', "Ustoz bilan bog'lanish")}
+                </h3>
                 <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">
-                    Tanlangan ustoz: <span className="text-[#c41e30] font-semibold">{selectedMentor}</span>
+                    {t('sec3.selectedTeacher', "Tanlangan ustoz:")} <span className="text-[#c41e30] font-semibold">{selectedMentor}</span>
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">Ismingiz</label>
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">
+                            {t('sec3.nameLabel', "Ismingiz")}
+                        </label>
                         <div className="relative flex items-center">
                             <FaUser className="absolute left-4 text-gray-400" />
                             <input
                                 type="text"
                                 name="fullName"
                                 required
-                                placeholder="Ismingizni kiriting"
+                                placeholder={t('sec3.namePlaceholder', "Ismingizni kiriting")}
                                 value={formData.fullName}
                                 onChange={handleChange}
                                 className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30] transition-all"
@@ -170,7 +175,9 @@ Telefon: +998 ${formData.phone}
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">Telefon raqamingiz</label>
+                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">
+                            {t('sec3.phoneLabel', "Telefon raqamingiz")}
+                        </label>
                         <div className="relative flex items-center">
                             <FaPhoneAlt className="absolute left-4 text-gray-400 z-10" />
                             <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
@@ -179,10 +186,14 @@ Telefon: +998 ${formData.phone}
                             <input
                                 type="tel"
                                 name="phone"
+                                maxLength={9}
                                 required
                                 placeholder="901234567"
                                 value={formData.phone}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                    const val = e.target.value.replace(/\D/g, '').slice(0, 9);
+                                    setFormData(prev => ({ ...prev, phone: val }));
+                                }}
                                 className="w-full pl-24 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30] transition-all"
                             />
                         </div>
@@ -199,7 +210,7 @@ Telefon: +998 ${formData.phone}
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         ) : (
                             <>
-                                <span>Yuborish</span>
+                                <span>{t('sec3.submitBtn', "Yuborish")}</span>
                                 <FaPaperPlane className="w-3.5 h-3.5" />
                             </>
                         )}
@@ -231,95 +242,158 @@ Telefon: +998 ${formData.phone}
 
     if (activeMentorDetail) {
         return (
-            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-transparent min-h-screen py-16 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
-                <div className="max-w-2xl mx-auto">
-                    <div className="sticky top-6 z-20 mb-6">
+            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-transparent min-h-screen py-12 px-4 md:px-8 text-white transition-colors">
+                <div className="max-w-3xl mx-auto space-y-6">
+                    
+                    {/* Back button */}
+                    <div className="sticky top-6 z-30">
                         <button
                             onClick={() => setActiveMentorDetail(null)}
-                            className="inline-flex items-center gap-2 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-gray-200/80 dark:border-slate-800/80 hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-800 dark:text-slate-200 px-4.5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-200 cursor-pointer shadow-lg shadow-black/5 active:scale-95 group"
+                            className="inline-flex items-center gap-2.5 bg-slate-900/90 hover:bg-slate-800 text-white backdrop-blur-2xl border border-white/15 hover:border-red-500/50 px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer shadow-2xl active:scale-95 group"
                         >
-                            <span className="transition-transform duration-200 group-hover:-translate-x-1">←</span> Orqaga qaytish
+                            <span className="text-red-500 text-lg transition-transform group-hover:-translate-x-1">←</span>
+                            <span>{t('mentorsPage.backBtn', "Orqaga qaytish")}</span>
                         </button>
                     </div>
 
-                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200/80 dark:border-slate-800/80 rounded-[32px] p-6 sm:p-10 shadow-2xl shadow-black/5 transition-all duration-300">
-                        <div className="flex flex-col items-center text-center mb-8">
-                            <div className="relative group mb-5">
-                                <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-rose-600 rounded-[28px] blur opacity-30 group-hover:opacity-75 transition duration-500"></div>
-                                <div className="relative overflow-hidden rounded-[24px] border border-gray-200 dark:border-slate-700 shadow-xl">
-                                    <img
-                                        src={activeMentorDetail.image}
-                                        alt={activeMentorDetail.name}
-                                        className="w-44 h-44 sm:w-52 sm:h-52 object-cover transition-transform duration-700 group-hover:scale-105"
-                                    />
+                    {/* Main Detail Glass Card */}
+                    <div className="relative overflow-hidden bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-[#070b14]/95 backdrop-blur-3xl border border-white/10 rounded-[40px] p-6 sm:p-10 shadow-2xl shadow-black/60 space-y-8">
+                        
+                        {/* Ambient glow lights */}
+                        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-red-600/25 via-rose-600/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
+
+                        {/* Profile Header */}
+                        <div className="flex flex-col items-center text-center relative z-10 space-y-4">
+                            <div className="relative group/avatar">
+                                <div className="absolute -inset-3 bg-gradient-to-tr from-red-600 via-rose-600 to-red-700 rounded-[36px] blur-xl opacity-45 group-hover/avatar:opacity-85 transition duration-700 animate-pulse" />
+                                <div className="relative p-1 rounded-[30px] bg-gradient-to-tr from-red-600 via-rose-600 to-red-700 shadow-2xl w-48 h-48 sm:w-56 sm:h-56">
+                                    <div className="w-full h-full rounded-[26px] overflow-hidden bg-slate-950">
+                                        <img
+                                            src={activeMentorDetail.image}
+                                            alt={activeMentorDetail.name}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover/avatar:scale-105"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-slate-950/95 border border-red-500/40 backdrop-blur-md rounded-full flex items-center gap-1.5 shadow-xl text-[11px] font-black text-rose-400 whitespace-nowrap">
+                                    <FaStar className="text-red-500 text-xs shrink-0 animate-spin-slow" />
+                                    <span>{t('mentorsPage.topMentor', "TOP MENTOR")}</span>
                                 </div>
                             </div>
-                            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1">{activeMentorDetail.name}</h1>
-                            <p className="text-red-600 dark:text-red-400 font-semibold text-base mb-3">{activeMentorDetail.role}</p>
 
-                            <span className="text-xs bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 px-4 py-1.5 rounded-xl font-bold border border-red-100 dark:border-red-500/20 mb-4 shadow-sm">
-                                {activeMentorDetail.experience}
-                            </span>
+                            <div className="pt-2">
+                                <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight flex items-center justify-center gap-2.5">
+                                    <span>{activeMentorDetail.name}</span>
+                                    <FaCheckCircle className="text-red-500 text-xl shrink-0" />
+                                </h1>
+                                <p className="text-sm font-extrabold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-red-600 mt-1">
+                                    {t('mentorsPage.role', activeMentorDetail.role)}
+                                </p>
+                            </div>
+
+                            <div className="inline-flex items-center gap-2 text-xs font-black px-4 py-1.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/30 shadow-inner">
+                                <FaClock className="text-red-400 text-xs" />
+                                <span>{t('mentorsPage.experience', activeMentorDetail.experience)}</span>
+                            </div>
 
                             <a
                                 href={activeMentorDetail.telegram}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-md shadow-sky-500/20 active:scale-95"
+                                className="relative group/tg overflow-hidden inline-flex items-center gap-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs sm:text-sm font-black px-7 py-3.5 rounded-2xl transition-all duration-300 shadow-xl shadow-red-600/30 active:scale-95 border border-red-400/30"
                             >
-                                <FaTelegramPlane /> {t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover/tg:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
+                                <FaTelegramPlane className="text-base group-hover/tg:rotate-12 transition-transform" />
+                                <span>{t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}</span>
                             </a>
                         </div>
 
-                        <div className="border-t border-gray-100 dark:border-slate-800/80 pt-8 space-y-8">
-                            <div className="flex justify-center gap-8 text-sm bg-gray-50/60 dark:bg-slate-800/40 p-4 rounded-2xl border border-gray-200/60 dark:border-slate-700/50">
-                                <div><span className="text-gray-400 font-medium">Tug'ilgan yil:</span> <strong className="text-gray-900 dark:text-white font-bold ml-1">{activeMentorDetail.birthYear}</strong></div>
-                                <div className="text-gray-300 dark:text-slate-700">•</div>
-                                <div><span className="text-gray-400 font-medium">Yosh:</span> <strong className="text-gray-900 dark:text-white font-bold ml-1">{activeMentorDetail.age} yosh</strong></div>
-                            </div>
-
+                        {/* Birth & Age Info Pill Bar */}
+                        <div className="flex justify-center items-center gap-6 sm:gap-10 text-xs sm:text-sm bg-slate-950/70 p-4 rounded-2xl border border-red-500/20 shadow-inner">
                             <div>
-                                <h4 className="text-xs font-extrabold text-gray-400 dark:text-slate-500 mb-2 uppercase tracking-widest">Haqida</h4>
-                                <p className="text-gray-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-medium">
-                                    {activeMentorDetail.fullBio}
-                                </p>
+                                <span className="text-slate-400 font-medium">{t('mentorsPage.birthYear', "Tug'ilgan yil:")}</span>
+                                <strong className="text-white font-extrabold ml-1.5">{activeMentorDetail.birthYear}</strong>
                             </div>
-
+                            <div className="text-red-500">•</div>
                             <div>
-                                <h4 className="text-xs font-extrabold text-gray-400 dark:text-slate-500 mb-3 uppercase tracking-widest">Mutaxassislik yo'nalishlari</h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {activeMentorDetail.skills && activeMentorDetail.skills.map((skill, index) => (
-                                        <span key={index} className="bg-gray-100/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 text-xs px-4 py-2 rounded-xl font-semibold border border-gray-200 dark:border-slate-700/80 transition-all hover:border-red-500/40 hover:shadow-sm">
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 className="text-xs font-extrabold text-gray-400 dark:text-slate-500 mb-4 uppercase tracking-widest">Olingan sertifikatlar</h4>
-                                <div className="space-y-3.5">
-                                    {activeMentorDetail.certificates.map((cert, index) => (
-                                        <div key={index} className="bg-gray-50/50 dark:bg-slate-800/40 border border-gray-200/80 dark:border-slate-700/60 p-5 rounded-2xl transition-all duration-300 hover:border-red-500/50 hover:shadow-lg hover:bg-white dark:hover:bg-slate-800">
-                                            <h5 className="font-extrabold text-base sm:text-lg text-gray-900 dark:text-white mb-1">{cert.title}</h5>
-                                            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-semibold">{cert.issuedBy} • {cert.year}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="pt-4 text-center">
-                                <button
-                                    onClick={() => {
-                                        setSelectedMentor(activeMentorDetail.name);
-                                        setModal(true);
-                                    }}
-                                    className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 active:scale-95 text-white font-semibold px-10 py-4 text-sm rounded-2xl transition-all duration-200 w-full sm:w-auto cursor-pointer shadow-xl shadow-red-600/25"
-                                >
-                                    {t('mentors.contactBtn', 'Bog\'lanish')}
-                                </button>
+                                <span className="text-slate-400 font-medium">{t('mentorsPage.age', "Yosh:")}</span>
+                                <strong className="text-white font-extrabold ml-1.5">{activeMentorDetail.age} {t('mentorsPage.yearsOld', "yosh")}</strong>
                             </div>
                         </div>
+
+                        {/* Bio / About */}
+                        <div className="space-y-3">
+                            <h4 className="text-xs font-black text-red-400 uppercase tracking-widest flex items-center gap-2">
+                                <span>{t('mentorsPage.aboutHeading', "Haqida")}</span>
+                            </h4>
+                            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-slate-300 text-xs sm:text-sm leading-relaxed font-medium">
+                                <p>{t('mentorsPage.fullBio', activeMentorDetail.fullBio)}</p>
+                            </div>
+                        </div>
+
+                        {/* Skills */}
+                        <div className="space-y-3">
+                            <h4 className="text-xs font-black text-red-400 uppercase tracking-widest">
+                                {t('mentorsPage.specializations', "Mutaxassislik yo'nalishlari")}
+                            </h4>
+                            <div className="flex flex-wrap gap-2.5">
+                                {activeMentorDetail.skills && activeMentorDetail.skills.map((skill, index) => (
+                                    <span
+                                        key={index}
+                                        className="inline-flex items-center gap-1.5 bg-slate-800/90 text-slate-200 text-xs px-4 py-2 rounded-xl font-extrabold border border-white/10 shadow-md"
+                                    >
+                                        <FaGraduationCap className="text-red-400 text-xs shrink-0" />
+                                        <span>{skill}</span>
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Certificates */}
+                        <div className="space-y-3.5">
+                            <h4 className="text-xs font-black text-red-400 uppercase tracking-widest flex items-center gap-2">
+                                <FaAward className="text-rose-400" />
+                                <span>{t('mentorsPage.certificates', "Olingan sertifikatlar")}</span>
+                            </h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                {activeMentorDetail.certificates.map((cert, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-slate-950/80 border border-red-500/25 p-5 rounded-2xl transition-all duration-300 hover:border-red-500/60 hover:shadow-xl shadow-lg relative group/cert"
+                                    >
+                                        <div className="flex items-start justify-between gap-2 mb-2">
+                                            <div className="w-8 h-8 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center text-sm font-bold shrink-0">
+                                                <FaAward />
+                                            </div>
+                                            <span className="px-2.5 py-1 bg-red-500/10 text-red-400 rounded-full text-[10px] font-black border border-red-500/20">
+                                                {cert.year}
+                                            </span>
+                                        </div>
+                                        <h5 className="font-extrabold text-sm sm:text-base text-white mb-1 group-hover/cert:text-red-400 transition-colors">
+                                            {cert.title}
+                                        </h5>
+                                        <p className="text-xs text-slate-400 font-semibold">{cert.issuedBy}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Bottom CTA Button */}
+                        <div className="pt-4 text-center">
+                            <button
+                                onClick={() => {
+                                    setSelectedMentor(activeMentorDetail.name);
+                                    setModal(true);
+                                }}
+                                className="w-full relative group/bcta overflow-hidden py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-sm shadow-2xl shadow-red-600/40 cursor-pointer active:scale-95 transition-all border border-red-400/30"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover/bcta:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
+                                <span>{t('mentors.contactBtn', "Bog'lanish")}</span>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -332,76 +406,160 @@ Telefon: +998 ${formData.phone}
     return (
         <div className="font-['Plus_Jakarta_Sans',sans-serif] pt-10">
             <section className="bg-transparent py-20 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
-                <div className="max-w-4xl mx-auto" data-aos="fade-up">
+                <div className="max-w-5xl mx-auto" data-aos="fade-up">
                     <div className="text-center mb-14">
                         <span className="text-xs font-extrabold text-red-600 dark:text-red-400 uppercase tracking-widest bg-red-50 dark:bg-red-500/10 px-4 py-1.5 rounded-full border border-red-100 dark:border-red-500/20 inline-block mb-3 shadow-sm">
-                            Mentorlar
+                            {t('mentorsPage.badge', "Mentorlar")}
                         </span>
-                        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Bizning Mentor</h2>
+                        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+                            {t('mentorsPage.title', "Bizning Mentor")}
+                        </h2>
                         <p className="text-gray-500 dark:text-slate-400 text-sm md:text-base max-w-lg mx-auto font-medium">
-                            Tajribali ingliz tili mutaxassisidan xalqaro darajadagi bilimlarni o'rganing.
+                            {t('mentorsPage.subtitle', "Tajribali ingliz tili mutaxassisidan xalqaro darajadagi bilimlarni o'rganing.")}
                         </p>
                     </div>
 
-                    <div className="max-w-md mx-auto">
+                    <div className="max-w-5xl mx-auto">
                         {mentorsData.map((mentor) => (
                             <div
                                 key={mentor.id}
-                                data-aos="zoom-in"
-                                data-aos-duration="500"
-                                className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200/80 dark:border-slate-800/80 rounded-[32px] p-6 sm:p-8 text-center shadow-2xl shadow-black/5 transition-all duration-300 hover:shadow-3xl hover:border-red-500/40 group"
+                                data-aos="fade-up"
+                                data-aos-duration="700"
+                                className="relative overflow-hidden bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-[#070b14]/95 backdrop-blur-3xl border border-white/10 hover:border-red-500/50 rounded-[40px] p-6 sm:p-10 shadow-2xl shadow-black/50 transition-all duration-500 group"
                             >
-                                <div className="relative mb-5 mx-auto w-44 h-44 sm:w-52 sm:h-52">
-                                    <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-rose-600 rounded-[28px] blur opacity-25 group-hover:opacity-60 transition duration-500"></div>
-                                    <div className="relative overflow-hidden rounded-[24px] border border-gray-200 dark:border-slate-700 shadow-md w-full h-full">
-                                        <img
-                                            src={mentor.image}
-                                            alt={mentor.name}
-                                            className="w-full h-full object-cover cursor-pointer transition-transform duration-700 group-hover:scale-105"
-                                            onClick={() => setActiveMentorDetail(mentor)}
-                                        />
+                                {/* Background Ambient Lights */}
+                                <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-red-600/25 via-rose-600/15 to-transparent rounded-full blur-3xl group-hover:from-red-600/40 transition-all duration-700 pointer-events-none" />
+                                <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-rose-600/20 via-red-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                                <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
+
+                                <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 relative z-10">
+                                    
+                                    {/* Left Column: Photo Showcase */}
+                                    <div className="w-full lg:w-5/12 flex flex-col items-center">
+                                        <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-full lg:h-80 group/photo">
+                                            {/* Neon Glow Aura */}
+                                            <div className="absolute -inset-3 bg-gradient-to-tr from-red-600 via-rose-600 to-red-700 rounded-[36px] blur-xl opacity-40 group-hover/photo:opacity-85 transition duration-700 animate-pulse" />
+                                            
+                                            {/* Photo Container */}
+                                            <div className="relative w-full h-full p-1.5 rounded-[32px] bg-gradient-to-tr from-red-600 via-rose-600 to-red-700 shadow-2xl overflow-hidden">
+                                                <div className="w-full h-full rounded-[28px] overflow-hidden bg-slate-950">
+                                                    <img
+                                                        src={mentor.image}
+                                                        alt={mentor.name}
+                                                        className="w-full h-full object-cover cursor-pointer transition-transform duration-700 group-hover/photo:scale-105"
+                                                        onClick={() => setActiveMentorDetail(mentor)}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Top Floating Badge */}
+                                            <div className="absolute top-4 left-4 px-3.5 py-1.5 bg-slate-950/90 border border-red-500/40 backdrop-blur-md rounded-full flex items-center gap-1.5 shadow-xl text-[11px] font-black text-rose-400">
+                                                <FaStar className="text-red-500 text-xs shrink-0 animate-spin-slow" />
+                                                <span>{t('mentorsPage.topMentor', "TOP MENTOR")}</span>
+                                            </div>
+
+                                            {/* Bottom Floating Experience Badge */}
+                                            <div className="absolute -bottom-3 right-4 px-4 py-2 bg-slate-950/95 border border-red-500/50 backdrop-blur-md rounded-2xl flex items-center gap-2 shadow-2xl text-xs font-black text-white">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+                                                <FaClock className="text-red-400 text-xs" />
+                                                <span>{t('mentorsPage.experience', mentor.experience)}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <h3
-                                    onClick={() => setActiveMentorDetail(mentor)}
-                                    className="text-xl sm:text-2xl font-extrabold cursor-pointer hover:text-red-500 transition-colors duration-200 mb-1 tracking-tight"
-                                >
-                                    {mentor.name}
-                                </h3>
+                                    {/* Right Column: Bio, Stats & Actions */}
+                                    <div className="w-full lg:w-7/12 flex flex-col text-left space-y-5">
+                                        
+                                        <div>
+                                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                                                <span className="px-3 py-1 bg-red-500/10 border border-red-500/30 rounded-full text-[11px] font-black uppercase tracking-wider text-red-400">
+                                                    {t('mentorsPage.ieltsExpert', "IELTS 8.0 Expert")}
+                                                </span>
+                                                <span className="px-3 py-1 bg-rose-500/10 border border-rose-500/30 rounded-full text-[11px] font-black uppercase tracking-wider text-rose-400 flex items-center gap-1">
+                                                    <FaAward className="text-xs" /> {t('mentorsPage.officialCertified', "Official Certified")}
+                                                </span>
+                                            </div>
 
-                                <p className="text-red-600 dark:text-red-400 text-sm font-semibold mb-2.5">{mentor.role}</p>
+                                            <h3
+                                                onClick={() => setActiveMentorDetail(mentor)}
+                                                className="text-3xl sm:text-4xl font-black text-white cursor-pointer hover:text-red-400 transition-colors tracking-tight flex items-center gap-2.5"
+                                            >
+                                                <span>{mentor.name}</span>
+                                                <FaCheckCircle className="text-red-500 text-xl shrink-0" title="Tasdiqlangan mutaxassis" />
+                                            </h3>
 
-                                <span className="inline-block text-xs bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 px-3.5 py-1.5 rounded-xl font-bold border border-red-100 dark:border-red-500/20 mb-4 shadow-sm">
-                                    {mentor.experience}
-                                </span>
+                                            <p className="text-sm font-extrabold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-red-600 mt-1">
+                                                {t('mentorsPage.role', mentor.role)}
+                                            </p>
+                                        </div>
 
-                                <p className="text-gray-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 font-medium">{mentor.bio}</p>
+                                        {/* Bio Quote Card */}
+                                        <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-slate-300 text-xs sm:text-sm font-medium leading-relaxed relative">
+                                            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-slate-900 border border-white/10 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-400">
+                                                {t('mentorsPage.aboutHeading', "Mutaxassis Haqida")}
+                                            </span>
+                                            <p className="pt-1">{t('mentorsPage.bio', mentor.bio)}</p>
+                                        </div>
 
-                                <div className="flex flex-wrap justify-center gap-2 mb-8">
-                                    {mentor.skills && mentor.skills.map((skill, i) => (
-                                        <span key={i} className="bg-gray-100/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 text-xs px-3.5 py-1.5 rounded-xl font-semibold border border-gray-200 dark:border-slate-700/80 transition hover:border-red-500/40">
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
+                                        {/* Quick Stats Grid */}
+                                        <div className="grid grid-cols-3 gap-3 py-1">
+                                            <div className="p-3 rounded-2xl bg-slate-950/60 border border-red-500/20 text-center">
+                                                <p className="text-lg sm:text-xl font-black text-rose-400">8.0+</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-400">{t('mentorsPage.ieltsLevel', "IELTS Daraja")}</p>
+                                            </div>
+                                            <div className="p-3 rounded-2xl bg-slate-950/60 border border-red-500/20 text-center">
+                                                <p className="text-lg sm:text-xl font-black text-red-500">4+ Yil</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-400">{t('mentorsPage.experienceLabel', "Tajriba")}</p>
+                                            </div>
+                                            <div className="p-3 rounded-2xl bg-slate-950/60 border border-red-500/20 text-center">
+                                                <p className="text-lg sm:text-xl font-black text-rose-500">100%</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-400">{t('mentorsPage.guaranteed', "Kafolatlangan")}</p>
+                                            </div>
+                                        </div>
 
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => setActiveMentorDetail(mentor)}
-                                        className="flex-1 bg-gray-100/80 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-800 dark:text-white text-xs font-bold py-3.5 rounded-2xl transition-all duration-200 cursor-pointer active:scale-95 border border-gray-200/50 dark:border-slate-700/50"
-                                    >
-                                        Batafsil
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            setSelectedMentor(mentor.name);
-                                            setModal(true);
-                                        }}
-                                        className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 active:scale-95 text-white text-xs font-bold py-3.5 rounded-2xl transition-all duration-200 cursor-pointer shadow-lg shadow-red-600/25"
-                                    >
-                                        Bog'lanish
-                                    </button>
+                                        {/* Skills Chips */}
+                                        <div>
+                                            <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">
+                                                {t('mentorsPage.specializations', "Mutaxassislik yo'nalishlari:")}
+                                            </p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {mentor.skills && mentor.skills.map((skill, i) => (
+                                                    <span
+                                                        key={i}
+                                                        className="inline-flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 text-xs px-3.5 py-1.5 rounded-xl font-extrabold border border-white/10 hover:border-red-500/50 hover:text-white transition-all duration-300 shadow-md hover:-translate-y-0.5"
+                                                    >
+                                                        <FaGraduationCap className="text-red-400 text-xs shrink-0" />
+                                                        <span>{skill}</span>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Action Buttons */}
+                                        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                                            <button
+                                                onClick={() => setActiveMentorDetail(mentor)}
+                                                className="flex-1 px-6 py-4 rounded-2xl bg-white/[0.06] hover:bg-white/[0.14] text-white text-xs sm:text-sm font-black transition-all duration-300 cursor-pointer active:scale-95 border border-white/15 hover:border-white/30 flex items-center justify-center gap-2 backdrop-blur-md shadow-lg group/btn"
+                                            >
+                                                <span>{t('mentorsPage.detailsBtn', "Batafsil ma'lumot")}</span>
+                                                <FaArrowRight className="text-xs group-hover/btn:translate-x-1 transition-transform" />
+                                            </button>
+                                            
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedMentor(mentor.name);
+                                                    setModal(true);
+                                                }}
+                                                className="flex-1 relative group/call overflow-hidden px-6 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs sm:text-sm font-black transition-all duration-300 cursor-pointer active:scale-95 shadow-xl shadow-red-600/35 hover:shadow-2xl hover:shadow-red-600/60 flex items-center justify-center gap-2.5 border border-red-400/30"
+                                            >
+                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover/call:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
+                                                <FaTelegramPlane className="text-sm group-hover/call:rotate-12 transition-transform" />
+                                                <span>{t('mentors.contactBtn', "Bog'lanish")}</span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
                                 </div>
                             </div>
                         ))}

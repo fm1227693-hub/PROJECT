@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import {
@@ -8,12 +8,18 @@ import {
     FaMapMarkerAlt,
     FaPhoneAlt,
     FaClock,
+    FaShieldAlt,
+    FaFileContract,
+    FaTimes,
+    FaCheckCircle,
 } from 'react-icons/fa'
+import { motion, AnimatePresence } from 'framer-motion'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
 export default function Footer() {
     const { t } = useTranslation()
+    const [activeModal, setActiveModal] = useState(null) // 'privacy' | 'terms' | null
 
     useEffect(() => {
         AOS.init({
@@ -150,14 +156,157 @@ export default function Footer() {
                 </span>
 
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
-                    <a href="#privacy" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                    <Link
+                        to="/privacy-policy"
+                        className="hover:text-red-600 dark:hover:text-red-400 transition-colors text-xs font-medium"
+                    >
                         {t('footer.privacy')}
-                    </a>
-                    <a href="#terms" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                    </Link>
+                    <Link
+                        to="/terms-of-use"
+                        className="hover:text-red-600 dark:hover:text-red-400 transition-colors text-xs font-medium"
+                    >
                         {t('footer.terms')}
-                    </a>
+                    </Link>
                 </div>
             </div>
+
+            {/* Privacy & Terms Modals */}
+            <AnimatePresence>
+                {activeModal && (
+                    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-2xl">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            transition={{ duration: 0.3 }}
+                            className="relative w-full max-w-2xl max-h-[85vh] bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-y-auto flex flex-col justify-between gap-6"
+                        >
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setActiveModal(null)}
+                                className="absolute top-5 right-5 w-9 h-9 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-500 hover:text-gray-900 dark:hover:text-white flex items-center justify-center text-sm font-bold transition-all hover:scale-105 cursor-pointer"
+                            >
+                                <FaTimes />
+                            </button>
+
+                            {/* Header */}
+                            <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-5">
+                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-xl shadow-lg shadow-red-600/30 shrink-0">
+                                    {activeModal === 'privacy' ? <FaShieldAlt /> : <FaFileContract />}
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-black text-gray-950 dark:text-white tracking-tight">
+                                        {activeModal === 'privacy' ? t('footer.privacyModal.title') : t('footer.termsModal.title')}
+                                    </h3>
+                                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">
+                                        {activeModal === 'privacy' ? t('footer.privacyModal.subtitle') : t('footer.termsModal.subtitle')}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Body Content */}
+                            <div className="space-y-5 text-left text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                                {activeModal === 'privacy' ? (
+                                    <>
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.privacyModal.sec1Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.privacyModal.sec1Desc')}
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.privacyModal.sec2Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.privacyModal.sec2Desc')}
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.privacyModal.sec3Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.privacyModal.sec3Desc')}
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.privacyModal.sec4Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.privacyModal.sec4Desc')}
+                                            </p>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.termsModal.sec1Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.termsModal.sec1Desc')}
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.termsModal.sec2Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.termsModal.sec2Desc')}
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.termsModal.sec3Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.termsModal.sec3Desc')}
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
+                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
+                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                {t('footer.termsModal.sec4Title')}
+                                            </h4>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                {t('footer.termsModal.sec4Desc')}
+                                            </p>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Footer Action */}
+                            <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+                                <button
+                                    onClick={() => setActiveModal(null)}
+                                    className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-extrabold text-xs shadow-lg shadow-red-600/30 hover:scale-105 transition cursor-pointer"
+                                >
+                                    {activeModal === 'privacy' ? t('footer.privacyModal.closeBtn') : t('footer.termsModal.closeBtn')}
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </footer>
     )
 }

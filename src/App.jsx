@@ -17,6 +17,9 @@ import FAQ from "./components/FAQ";
 import ConsultationBooking from "./components/ConsultationBooking";
 import Flashcards from "./components/Flashcard";
 import LeadForm from "./components/LeadForm";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import TermsOfUse from "./components/TermsOfUse";
+import SpeakingAssessor from "./components/SpeakingAssessor";
 
 import BackgroundCanvas from "./components/BackgroundCanvas";
 
@@ -165,6 +168,9 @@ export default function App() {
           <Route path="/ielts-practice" element={<IeltsPracticeApp />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/form" element={<LeadForm />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-use" element={<TermsOfUse />} />
+          <Route path="/speaking-assessor" element={<SpeakingAssessor />} />
         </Routes>
         {/* <ConsultationBooking/>
         <Flashcards/> */}

@@ -26,7 +26,7 @@ export default function ConsultationBooking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedDate || !selectedTime || !studentName || !studentPhone) {
-      toast.error("Iltimos, barcha maydonlarni to'ldiring!");
+      toast.error(t('consultationBooking.fillAllError', "Iltimos, barcha maydonlarni to'ldiring!"));
       return;
     }
 

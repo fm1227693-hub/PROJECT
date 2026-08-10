@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 // O'quvchilar ma'lumotlari bazasi
 const resultsData = [
@@ -44,6 +45,7 @@ const resultsData = [
 ];
 
 export default function Products() {
+    const { t } = useTranslation();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
 
@@ -83,7 +85,7 @@ export default function Products() {
             <div className="w-full max-w-5xl mx-auto p-6 sm:p-10 glass-card rounded-[2.5rem] shadow-2xl border border-slate-200/80 dark:border-white/10 mt-0 mb-10 transition-all duration-300 relative overflow-hidden">
                 {/* Sarlavha */}
                 <h2 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-8">
-                    Ba'zi o'quvchilarimizning natijalari
+                    {t('resultsSlider.title', "Ba'zi o'quvchilarimizning natijalari")}
                 </h2>
 
                 {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}

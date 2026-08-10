@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import Comments from './Comments'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import toast, { Toaster } from 'react-hot-toast'
-import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers, FaTrash } from 'react-icons/fa'
+import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers, FaTrash, FaHeadset, FaChevronDown, FaUserShield } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -27,14 +27,18 @@ export default function AdminORG() {
     const handleCreateLead = async (e) => {
         e.preventDefault()
 
-        if (!newLeadName.trim() || !newLeadPhone.trim()) {
-            toast.error("Iltimos, F.I.O va telefon raqamini kiriting!")
+        if (!newLeadName.trim()) {
+            toast.error(t('adminPanel.fillNameError', "Iltimos, F.I.O ni kiriting!"))
             return
         }
 
-        const formattedPhone = newLeadPhone.trim().startsWith('+') 
-            ? newLeadPhone.trim() 
-            : `+998 ${newLeadPhone.trim()}`
+        const cleanDigits = newLeadPhone.replace(/\D/g, '')
+        if (cleanDigits.length !== 9) {
+            toast.error(t('adminPanel.phoneError9Digits', "Telefon raqami ro'ppa-rosa 9 ta raqamdan iborat bo'lishi kerak! (Masalan: 901234567)"))
+            return
+        }
+
+        const formattedPhone = `+998 ${cleanDigits}`
 
         const now = new Date()
         const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
@@ -54,9 +58,9 @@ export default function AdminORG() {
 
         try {
             await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
-            toast.success("Murojaat muvaffaqiyatli ro'yxatga olindi!")
+            toast.success(t('adminPanel.leadRegisteredSuccess', "Murojaat muvaffaqiyatli ro'yxatga olindi!"))
         } catch (e) {
-            toast.success("Murojaat saqlandi!")
+            toast.success(t('adminPanel.leadSavedSuccess', "Murojaat saqlandi!"))
         }
 
         setNewLeadName('')
@@ -115,7 +119,13 @@ export default function AdminORG() {
     }, [])
 
     const updateLeadStatus = async (id, newStatus) => {
-        const updatedList = leads.map(item => item.id === id ? { ...item, status: newStatus } : item)
+        const updatedList = leads.map(l => {
+            if (l.id === id) {
+                return { ...l, status: newStatus }
+            }
+            return l
+        })
+
         setLeads(updatedList)
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
@@ -126,15 +136,15 @@ export default function AdminORG() {
         }
         
         if (newStatus === 'Qabul qilindi') {
-            toast.success("So'rov qabul qilindi!")
+            toast.success(t('adminPanel.requestAccepted', "So'rov qabul qilindi!"))
         } else if (newStatus === 'Rad etildi') {
-            toast.error("So'rov rad etildi!")
+            toast.error(t('adminPanel.requestRejected', "So'rov rad etildi!"))
         }
     }
 
     const exportToCSV = () => {
         if (leads.length === 0) {
-            toast.error("Yuklab olish uchun murojaatlar mavjud emas!")
+            toast.error(t('adminPanel.noDataToExport', "Yuklab olish uchun murojaatlar mavjud emas!"))
             return
         }
 
@@ -156,7 +166,7 @@ export default function AdminORG() {
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-        toast.success("Excel (CSV) fayli yuklab olindi!")
+        toast.success(t('adminPanel.csvExportSuccess', "Excel (CSV) fayli yuklab olindi!"))
     }
 
     // Analytics calculations
@@ -186,6 +196,63 @@ export default function AdminORG() {
             return (b.id || 0) - (a.id || 0)
         })
 
+    const CustomSelect = ({ value, onChange, options, labelIcon, labelText }) => {
+        const [open, setOpen] = useState(false)
+        const ref = useRef(null)
+
+        useEffect(() => {
+            const handleClickOutside = (e) => {
+                if (ref.current && !ref.current.contains(e.target)) {
+                    setOpen(false)
+                }
+            }
+            document.addEventListener('mousedown', handleClickOutside)
+            return () => document.removeEventListener('mousedown', handleClickOutside)
+        }, [])
+
+        const selectedOption = options.find(o => o.value === value) || options[0]
+
+        return (
+            <div className={`relative inline-block text-left ${open ? 'z-50' : 'z-10'}`} ref={ref}>
+                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
+                    {labelIcon}
+                    {labelText && <span>{labelText}</span>}
+                    <button
+                        type="button"
+                        onClick={() => setOpen(!open)}
+                        className="flex items-center justify-between gap-2 px-3.5 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 hover:border-red-500/50 rounded-xl text-xs font-extrabold text-gray-900 dark:text-white transition-all cursor-pointer shadow-sm active:scale-95 min-w-[130px]"
+                    >
+                        <span className="truncate">{selectedOption.label}</span>
+                        <FaChevronDown className={`w-2.5 h-2.5 text-red-500 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+                    </button>
+                </div>
+
+                {open && (
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[100] flex flex-col gap-1 animate-fade-in">
+                        {options.map((opt) => (
+                            <button
+                                key={opt.value}
+                                type="button"
+                                onClick={() => {
+                                    onChange(opt.value)
+                                    setOpen(false)
+                                }}
+                                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                                    value === opt.value
+                                        ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-md'
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
+                                }`}
+                            >
+                                <span>{opt.label}</span>
+                                {value === opt.value && <FaCheck className="text-xs shrink-0" />}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+        )
+    }
+
     return (
         <div className="min-h-screen bg-transparent text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto space-y-8">
@@ -193,8 +260,8 @@ export default function AdminORG() {
                 {/* Admin Header Bar */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/30 shrink-0 aspect-square">
-                            <FaUserCheck />
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-xl shadow-lg shadow-red-600/30">
+                            <FaUserShield />
                         </div>
                         <div>
                             <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
@@ -258,7 +325,7 @@ export default function AdminORG() {
                         </div>
                         <div className="flex items-baseline justify-between">
                             <span className="text-3xl font-black text-gray-900 dark:text-white">{pendingCount}</span>
-                            <span className="text-xs font-bold text-amber-500">{getPercent(pendingCount)}%</span>
+                            <span className="text-xs font-extrabold text-amber-500">{getPercent(pendingCount)}%</span>
                         </div>
                         <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                             <div className="bg-amber-500 h-full rounded-full transition-all duration-500" style={{ width: `${getPercent(pendingCount)}%` }} />
@@ -277,7 +344,7 @@ export default function AdminORG() {
                         </div>
                         <div className="flex items-baseline justify-between">
                             <span className="text-3xl font-black text-gray-900 dark:text-white">{acceptedCount}</span>
-                            <span className="text-xs font-bold text-emerald-500">{getPercent(acceptedCount)}%</span>
+                            <span className="text-xs font-extrabold text-emerald-500">{getPercent(acceptedCount)}%</span>
                         </div>
                         <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                             <div className="bg-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: `${getPercent(acceptedCount)}%` }} />
@@ -296,7 +363,7 @@ export default function AdminORG() {
                         </div>
                         <div className="flex items-baseline justify-between">
                             <span className="text-3xl font-black text-gray-900 dark:text-white">{rejectedCount}</span>
-                            <span className="text-xs font-bold text-rose-500">{getPercent(rejectedCount)}%</span>
+                            <span className="text-xs font-extrabold text-rose-500">{getPercent(rejectedCount)}%</span>
                         </div>
                         <div className="w-full bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                             <div className="bg-rose-500 h-full rounded-full transition-all duration-500" style={{ width: `${getPercent(rejectedCount)}%` }} />
@@ -357,7 +424,7 @@ export default function AdminORG() {
                 {activeTab === 'leads' && (
                     <div className="space-y-6">
                         {/* Search and Filters Bar */}
-                        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-4 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-md">
+                        <div className="relative z-30 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-4 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-md">
                             
                             {/* Search Input */}
                             <div className="relative flex-1">
@@ -373,50 +440,43 @@ export default function AdminORG() {
 
                             {/* Filters */}
                             <div className="flex flex-wrap items-center gap-3">
-                                {/* Type Filter */}
-                                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                    <FaFilter className="text-xs text-red-600" />
-                                    <span>{t('adminPanel.typeLabel', "Turi:")}</span>
-                                    <select
-                                        value={typeFilter}
-                                        onChange={(e) => setTypeFilter(e.target.value)}
-                                        className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
-                                    >
-                                        <option value="all">{t('adminPanel.allOptions', "Barchasi")}</option>
-                                        <option value="Bepul maslahat">{t('adminPanel.typeFreeConsultation', "Bepul maslahat")}</option>
-                                        <option value="Ro'yxatdan o'tish">{t('adminPanel.typeRegister', "Ro'yxatdan o'tish")}</option>
-                                        <option value="Konsultatsiya">{t('adminPanel.typeConsultation', "Konsultatsiya")}</option>
-                                        <option value="БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ">БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ</option>
-                                    </select>
-                                </div>
+                                {/* Status Filter */}
+                                <CustomSelect
+                                    value={statusFilter}
+                                    onChange={setStatusFilter}
+                                    labelIcon={<FaFilter className="text-xs text-red-600" />}
+                                    labelText={t('adminPanel.statusLabel', "Status:")}
+                                    options={[
+                                        { value: 'all', label: t('adminPanel.allOptions', "Barchasi") },
+                                        { value: 'Kutilmoqda', label: t('adminPanel.pending', "Kutilmoqda") },
+                                        { value: 'Qabul qilindi', label: t('adminPanel.accepted', "Qabul Qilindi") },
+                                        { value: 'Rad etildi', label: t('adminPanel.rejected', "Rad Etildi") }
+                                    ]}
+                                />
 
                                 {/* Type Filter */}
-                                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                    <span>{t('adminPanel.typeLabel', "Turi:")}</span>
-                                    <select
-                                        value={typeFilter}
-                                        onChange={(e) => setTypeFilter(e.target.value)}
-                                        className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
-                                    >
-                                        <option value="all">{t('adminPanel.allOptions', "Barchasi")}</option>
-                                        <option value="Bepul maslahat">{t('adminPanel.typeFreeConsultation', "Bepul maslahat")}</option>
-                                        <option value="Ro'yxatdan o'tish">{t('adminPanel.typeRegister', "Ro'yxatdan o'tish")}</option>
-                                        <option value="Konsultatsiya">{t('adminPanel.typeConsultation', "Konsultatsiya")}</option>
-                                    </select>
-                                </div>
+                                <CustomSelect
+                                    value={typeFilter}
+                                    onChange={setTypeFilter}
+                                    labelText={t('adminPanel.typeLabel', "Turi:")}
+                                    options={[
+                                        { value: 'all', label: t('adminPanel.allOptions', "Barchasi") },
+                                        { value: "Bepul maslahat", label: t('adminPanel.typeFreeConsult', "Bepul maslahat") },
+                                        { value: "Ro'yxatdan o'tish", label: t('adminPanel.typeRegister', "Ro'yxatdan o'tish") },
+                                        { value: "Konsultatsiya", label: t('adminPanel.typeConsult', "Konsultatsiya") }
+                                    ]}
+                                />
 
                                 {/* Sort Order */}
-                                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                    <span>{t('adminPanel.sortLabel', "Tartib:")}</span>
-                                    <select
-                                        value={sortOrder}
-                                        onChange={(e) => setSortOrder(e.target.value)}
-                                        className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
-                                    >
-                                        <option value="newest">{t('adminPanel.newest', "Eng yangilari")}</option>
-                                        <option value="oldest">{t('adminPanel.oldest', "Eng eskilari")}</option>
-                                    </select>
-                                </div>
+                                <CustomSelect
+                                    value={sortOrder}
+                                    onChange={setSortOrder}
+                                    labelText={t('adminPanel.sortLabel', "Tartib:")}
+                                    options={[
+                                        { value: 'newest', label: t('adminPanel.newest', "Eng yangilari") },
+                                        { value: 'oldest', label: t('adminPanel.oldest', "Eng eskilari") }
+                                    ]}
+                                />
                             </div>
 
                         </div>
@@ -598,7 +658,7 @@ export default function AdminORG() {
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder="Masalan: Azizbek Karimov"
+                                    placeholder={t('adminPanel.namePlaceholder', "Masalan: Azizbek Karimov")}
                                     value={newLeadName}
                                     onChange={(e) => setNewLeadName(e.target.value)}
                                     className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
@@ -610,30 +670,65 @@ export default function AdminORG() {
                                 <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
                                     {t('adminPanel.phoneLabel', "Telefon raqami")}
                                 </label>
-                                <input
-                                    type="text"
-                                    placeholder="901234567 yoki +998901234567"
-                                    value={newLeadPhone}
-                                    onChange={(e) => setNewLeadPhone(e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
-                                    required
-                                />
+                                <div className="relative flex items-center">
+                                    <span className="absolute left-4 font-extrabold text-xs sm:text-sm text-gray-500 dark:text-gray-400 select-none pointer-events-none">
+                                        +998
+                                    </span>
+                                    <input
+                                        type="text"
+                                        maxLength={9}
+                                        placeholder="901234567"
+                                        value={newLeadPhone}
+                                        onChange={(e) => {
+                                            const val = e.target.value.replace(/\D/g, '').slice(0, 9);
+                                            setNewLeadPhone(val);
+                                        }}
+                                        className="w-full pl-16 pr-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-extrabold tracking-wider focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             <div>
-                                <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
-                                    {t('adminPanel.typeLabel', "Murojaat turi")}
+                                <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-2">
+                                    {t('adminPanel.leadTypeLabel', "Murojaat turi")}
                                 </label>
-                                <select
-                                    value={newLeadType}
-                                    onChange={(e) => setNewLeadType(e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
-                                >
-                                    <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
-                                    <option value="Bepul maslahat">Bepul maslahat</option>
-                                    <option value="Konsultatsiya">Konsultatsiya</option>
-                                    <option value="БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ">БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ</option>
-                                </select>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                    {[
+                                        { value: "Ro'yxatdan o'tish", label: t('adminPanel.typeRegister', "Ro'yxatdan o'tish"), icon: FaUserCheck },
+                                        { value: "Bepul maslahat", label: t('adminPanel.typeFreeConsult', "Bepul maslahat"), icon: FaHeadset },
+                                        { value: "Konsultatsiya", label: t('adminPanel.typeConsult', "Konsultatsiya"), icon: FaCalendarAlt }
+                                    ].map((item) => {
+                                        const isSelected = newLeadType === item.value;
+                                        const Icon = item.icon;
+                                        return (
+                                            <button
+                                                key={item.value}
+                                                type="button"
+                                                onClick={() => setNewLeadType(item.value)}
+                                                className={`relative p-3 rounded-2xl border text-left transition-all duration-300 cursor-pointer flex flex-col justify-between gap-2.5 ${
+                                                    isSelected
+                                                        ? 'bg-gradient-to-br from-red-600/20 via-rose-600/10 to-red-600/5 border-red-500 text-white shadow-lg shadow-red-600/25 scale-[1.02]'
+                                                        : 'bg-gray-50 dark:bg-gray-950/80 border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:border-red-500/40 hover:text-white'
+                                                }`}
+                                            >
+                                                <div className="flex items-center justify-between w-full">
+                                                    <div className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs transition-colors ${
+                                                        isSelected ? 'bg-red-600 text-white shadow-md' : 'bg-gray-200 dark:bg-gray-800 text-gray-400'
+                                                    }`}>
+                                                        <Icon />
+                                                    </div>
+                                                    {isSelected && (
+                                                        <FaCheckCircle className="text-red-500 text-xs shrink-0" />
+                                                    )}
+                                                </div>
+                                                <span className="text-xs font-black leading-tight">
+                                                    {item.label}
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             </div>
 
                             <div className="flex items-center justify-end gap-3 pt-3">
@@ -642,13 +737,13 @@ export default function AdminORG() {
                                     onClick={() => setShowAddLeadModal(false)}
                                     className="px-5 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 dark:hover:bg-gray-700 transition cursor-pointer"
                                 >
-                                    Bekor qilish
+                                    {t('addComment.cancelBtn', "Bekor qilish")}
                                 </button>
                                 <button
                                     type="submit"
                                     className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs shadow-lg shadow-red-600/30 hover:scale-105 transition cursor-pointer"
                                 >
-                                    Saqlash
+                                    {t('addComment.saveBtn', "Saqlash")}
                                 </button>
                             </div>
                         </form>

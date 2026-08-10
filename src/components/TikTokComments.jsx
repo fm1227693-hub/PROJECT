@@ -66,7 +66,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
         const finalName = domName.trim()
 
         if (!finalName || !text.trim()) {
-            toast.error("Iltimos, ismingiz va izohni to'liq kiriting!")
+            toast.error(t('studentComments.fillError', "Iltimos, ismingiz va izohni to'liq kiriting!"))
             return
         }
 
@@ -97,7 +97,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
 
         try {
             await axios.put(API_URL, updatedList)
-            toast.success("Izohingiz qo'shildi!")
+            toast.success(t('studentComments.addSuccess', "Izohingiz qo'shildi!"))
         } catch (err) {
             console.error(err)
         } finally {
@@ -135,7 +135,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
 
         try {
             await axios.put(API_URL, updatedList)
-            toast.success("Izoh o'chirildi!")
+            toast.success(t('studentComments.deleteSuccess', "Izoh o'chirildi!"))
         } catch (e) {
             console.error(e)
         }
