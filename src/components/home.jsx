@@ -120,11 +120,11 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-3">
                         <Link
                             to="/form"
-                            className="relative group px-8 py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-xl shadow-red-600/30 hover:shadow-2xl hover:shadow-red-600/50 transition-all duration-300 flex items-center justify-center gap-3 text-sm cursor-pointer hover:-translate-y-0.5 active:scale-95 overflow-hidden"
+                            className="relative group px-5 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-xl shadow-red-600/30 hover:shadow-2xl hover:shadow-red-600/50 transition-all duration-300 flex items-center justify-center gap-2.5 text-xs sm:text-sm cursor-pointer hover:-translate-y-0.5 active:scale-95 overflow-hidden text-center"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
-                            <span className="relative z-10">{t('home.enrollBtn', 'Bepul darsga yozilish')}</span>
-                            <FaArrowRight className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-1.5 transition-transform" />
+                            <span className="relative z-10 text-center">{t('home.enrollBtn', 'Bepul darsga yozilish')}</span>
+                            <FaArrowRight className="w-3.5 h-3.5 relative z-10 group-hover:translate-x-1.5 transition-transform shrink-0" />
                         </Link>
                         
                         <Link

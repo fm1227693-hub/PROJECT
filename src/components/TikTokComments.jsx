@@ -11,8 +11,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(isAdmin ? true : defaultOpen)
     const [comments, setComments] = useState([])
-    const [usernameInput, setUsernameInput] = useState('')
-    const [emailInput, setEmailInput] = useState('')
+    const [nameInput, setNameInput] = useState('')
     const [text, setText] = useState('')
     const [score, setScore] = useState('IELTS 7.5')
     const [loading, setLoading] = useState(false)
@@ -59,34 +58,26 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
         e.preventDefault()
 
         // Read directly from DOM input elements as foolproof fallback for browser autofill selection
-        const domEmail = document.getElementById('user-email-input')?.value || emailInput
-        const domUsername = document.getElementById('user-username-input')?.value || usernameInput
+        const domName = document.getElementById('user-name-input')?.value || nameInput
 
-        const finalEmail = domEmail.trim()
-        const finalUsername = domUsername.trim()
+        const finalName = domName.trim()
 
-        if (!finalUsername || !finalEmail || !text.trim()) {
-            toast.error("Iltimos, Username, Gmail va izohni to'liq kiriting!")
-            return
-        }
-
-        if (!finalEmail.includes('@') || !finalEmail.includes('.')) {
-            toast.error("Iltimos, to'g'ri Gmail / Email manzilini kiriting!")
+        if (!finalName || !text.trim()) {
+            toast.error("Iltimos, ismingiz va izohni to'liq kiriting!")
             return
         }
 
         setSubmitting(true)
-        const formattedUsername = finalUsername.startsWith('@') 
-            ? finalUsername 
-            : `@${finalUsername.toLowerCase().replace(/\s+/g, '_')}`
+        const formattedUsername = finalName.startsWith('@') 
+            ? finalName 
+            : `@${finalName.toLowerCase().replace(/\s+/g, '_')}`
 
-        const displayName = finalUsername.replace(/^@/, '')
+        const displayName = finalName.replace(/^@/, '')
 
         const newComment = {
             id: Date.now(),
             name: displayName,
             username: formattedUsername,
-            email: finalEmail,
             avatarGradient: avatarGradients[Math.floor(Math.random() * avatarGradients.length)],
             text: text.trim(),
             score: score,
@@ -99,8 +90,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
         setComments(updatedList)
         localStorage.setItem('tiktok_comments', JSON.stringify(updatedList))
         setText('')
-        setEmailInput('')
-        setUsernameInput('')
+        setNameInput('')
 
         try {
             await axios.put(API_URL, updatedList)
@@ -217,7 +207,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                             {t('studentComments.noComments', "Hozircha izohlar yo'q")}
                         </h4>
                         <p className="text-xs text-gray-500">
-                            {t('studentComments.beFirst', "Birinchi bo'lib Username va Gmail pochta orqali izohingizni qoldiring!")}
+                            {t('studentComments.beFirst', "Birinchi bo'lib ismingiz bilan izohingizni qoldiring!")}
                         </p>
                     </div>
                 ) : (
@@ -254,12 +244,6 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                                             <span className="text-[11px] font-mono text-gray-400">
                                                 {comment.username}
                                             </span>
-                                            {comment.email && (
-                                                <span className="text-[10px] text-gray-400 flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-md">
-                                                    <FaEnvelope className="text-[9px] text-red-500" />
-                                                    {comment.email}
-                                                </span>
-                                            )}
                                             {comment.score && (
                                                 <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600/10 to-rose-600/10 border border-red-500/20 text-[#c41e30] dark:text-red-400 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
                                                     <FaCheckCircle className="text-[9px]" />
@@ -326,55 +310,22 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                 onSubmit={handleAddComment}
                 className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl p-4 sm:p-5 rounded-b-3xl border-b border-x border-gray-200 dark:border-gray-800 shadow-xl space-y-3"
             >
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="relative flex items-center">
-                        <FaAt className="absolute left-3.5 text-gray-400 text-xs" />
-                        <input
-                            type="text"
-                            name="username"
-                            id="user-username-input"
-                            autoComplete="username"
-                            placeholder={t('studentComments.usernamePlaceholder', "Username (masalan: @azizbek)")}
-                            value={usernameInput}
-                            onChange={(e) => setUsernameInput(e.target.value)}
-                            onInput={(e) => setUsernameInput(e.target.value)}
-                            onSelect={(e) => setUsernameInput(e.target.value)}
-                            onBlur={(e) => setUsernameInput(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
-                            required
-                        />
-                    </div>
-
-                    <div className="relative flex items-center">
-                        <FaEnvelope className="absolute left-3.5 text-gray-400 text-xs" />
-                        <input
-                            type="email"
-                            name="email"
-                            id="user-email-input"
-                            autoComplete="email"
-                            placeholder={t('studentComments.emailPlaceholder', "Gmail pochta (azizbek@gmail.com)")}
-                            value={emailInput}
-                            onChange={(e) => setEmailInput(e.target.value)}
-                            onInput={(e) => setEmailInput(e.target.value)}
-                            onSelect={(e) => setEmailInput(e.target.value)}
-                            onBlur={(e) => setEmailInput(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
-                            required
-                        />
-                    </div>
-
-                    <select
-                        value={score}
-                        onChange={(e) => setScore(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer h-[42px]"
-                    >
-                        <option value="IELTS 7.0">IELTS 7.0</option>
-                        <option value="IELTS 7.5">IELTS 7.5</option>
-                        <option value="IELTS 8.0">IELTS 8.0</option>
-                        <option value="IELTS 8.5">IELTS 8.5</option>
-                        <option value="IELTS 9.0">IELTS 9.0</option>
-                        <option value="O'quvchi">O'quvchi</option>
-                    </select>
+                <div className="relative flex items-center">
+                    <FaUserCircle className="absolute left-3.5 text-gray-400 text-sm" />
+                    <input
+                        type="text"
+                        name="name"
+                        id="user-name-input"
+                        autoComplete="name"
+                        placeholder={t('studentComments.namePlaceholder', "Ismingiz (masalan: Azizbek)")}
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.target.value)}
+                        onInput={(e) => setNameInput(e.target.value)}
+                        onSelect={(e) => setNameInput(e.target.value)}
+                        onBlur={(e) => setNameInput(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
+                        required
+                    />
                 </div>
 
                 <div className="relative flex items-center">

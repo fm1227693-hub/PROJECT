@@ -474,10 +474,10 @@ export default function Navbar() {
                                 <Link
                                     to="/form"
                                     onClick={() => setMenuOpen(false)}
-                                    className="w-full py-4 mt-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-extrabold rounded-2xl shadow-xl shadow-red-600/30 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+                                    className="w-full px-5 py-3.5 mt-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-extrabold rounded-2xl shadow-xl shadow-red-600/30 flex items-center justify-center gap-2 text-xs sm:text-sm uppercase tracking-wider text-center"
                                 >
-                                    <span>{t('leadForm.formTitle', 'Bepul darsga yozilish')}</span>
-                                    <FaArrowRight className="w-3.5 h-3.5" />
+                                    <span className="text-center">{t('leadForm.formTitle', 'Bepul darsga yozilish')}</span>
+                                    <FaArrowRight className="w-3.5 h-3.5 shrink-0" />
                                 </Link>
                             </div>
 

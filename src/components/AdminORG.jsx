@@ -15,9 +15,54 @@ export default function AdminORG() {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
     const [typeFilter, setTypeFilter] = useState('all')
-    const [sortOrder, setSortOrder] = useState('newest')
     const [loadingLeads, setLoadingLeads] = useState(false)
     const [deleteModalLead, setDeleteModalLead] = useState(null)
+    const [showAddLeadModal, setShowAddLeadModal] = useState(false)
+    const [newLeadName, setNewLeadName] = useState('')
+    const [newLeadPhone, setNewLeadPhone] = useState('')
+    const [newLeadType, setNewLeadType] = useState("Ro'yxatdan o'tish")
+    const [newLeadStatus, setNewLeadStatus] = useState("Qabul qilindi")
+
+    const handleCreateLead = async (e) => {
+        e.preventDefault()
+
+        if (!newLeadName.trim() || !newLeadPhone.trim()) {
+            toast.error("Iltimos, F.I.O va telefon raqamini kiriting!")
+            return
+        }
+
+        const formattedPhone = newLeadPhone.trim().startsWith('+') 
+            ? newLeadPhone.trim() 
+            : `+998 ${newLeadPhone.trim()}`
+
+        const now = new Date()
+        const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
+
+        const newLead = {
+            id: Date.now(),
+            name: newLeadName.trim(),
+            phone: formattedPhone,
+            type: newLeadType || "Ro'yxatdan o'tish",
+            status: newLeadStatus || "Qabul qilindi",
+            date: formattedDate
+        }
+
+        const updatedList = [newLead, ...leads]
+        setLeads(updatedList)
+        localStorage.setItem('admin_leads', JSON.stringify(updatedList))
+
+        try {
+            await axios.put('https://jsonblob.com/api/jsonBlob/019fdafb-c0ff-7d54-90a5-65c7a5b3b38d', updatedList)
+            toast.success("Murojaat muvaffaqiyatli ro'yxatga olindi!")
+        } catch (e) {
+            console.error(e)
+            toast.success("Murojaat saqlandi!")
+        }
+
+        setNewLeadName('')
+        setNewLeadPhone('')
+        setShowAddLeadModal(false)
+    }
 
     const handleDeleteLead = async (id) => {
         const updatedList = leads.filter(item => item.id !== id)
@@ -143,7 +188,7 @@ export default function AdminORG() {
                 {/* Admin Header Bar */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/30">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/30 shrink-0 aspect-square">
                             <FaUserCheck />
                         </div>
                         <div>
@@ -156,22 +201,22 @@ export default function AdminORG() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 shrink-0">
                         <button
                             onClick={loadLeads}
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs sm:text-sm transition-all border border-gray-200 dark:border-gray-700 cursor-pointer active:scale-95"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs sm:text-sm transition-all border border-gray-200 dark:border-gray-700 cursor-pointer active:scale-95 shrink-0 whitespace-nowrap"
                             title={t('adminPanel.refreshBtn', "Yangilash")}
                         >
                             <FaSync className={loadingLeads ? "animate-spin" : ""} />
-                            <span className="hidden xs:inline">{t('adminPanel.refreshBtn', "Yangilash")}</span>
+                            <span className="hidden xs:inline whitespace-nowrap">{t('adminPanel.refreshBtn', "Yangilash")}</span>
                         </button>
 
                         <Link
                             to="/"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 font-bold text-xs sm:text-sm transition-all border border-red-500/20 cursor-pointer active:scale-95"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 font-bold text-xs sm:text-sm transition-all border border-red-500/20 cursor-pointer active:scale-95 shrink-0 whitespace-nowrap"
                         >
                             <FaSignOutAlt />
-                            <span>{t('adminPanel.exitBtn', "Chiqish")}</span>
+                            <span className="whitespace-nowrap">{t('adminPanel.exitBtn', "Chiqish")}</span>
                         </Link>
                     </div>
                 </div>
@@ -184,7 +229,7 @@ export default function AdminORG() {
                             <span className="text-xs font-black uppercase text-gray-500 dark:text-gray-400 tracking-wider">
                                 {t('adminPanel.totalLeads', "Jami Murojaatlar")}
                             </span>
-                            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
+                            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg shrink-0 aspect-square">
                                 <FaUsers />
                             </div>
                         </div>
@@ -202,7 +247,7 @@ export default function AdminORG() {
                             <span className="text-xs font-black uppercase text-amber-500 tracking-wider">
                                 {t('adminPanel.pending', "Kutilmoqda")}
                             </span>
-                            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg">
+                            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-lg shrink-0 aspect-square">
                                 <FaHourglassHalf />
                             </div>
                         </div>
@@ -221,7 +266,7 @@ export default function AdminORG() {
                             <span className="text-xs font-black uppercase text-emerald-500 tracking-wider">
                                 {t('adminPanel.accepted', "Qabul Qilindi")}
                             </span>
-                            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+                            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg shrink-0 aspect-square">
                                 <FaCheckCircle />
                             </div>
                         </div>
@@ -240,7 +285,7 @@ export default function AdminORG() {
                             <span className="text-xs font-black uppercase text-rose-500 tracking-wider">
                                 {t('adminPanel.rejected', "Rad Etildi")}
                             </span>
-                            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg">
+                            <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg shrink-0 aspect-square">
                                 <FaTimesCircle />
                             </div>
                         </div>
@@ -255,41 +300,51 @@ export default function AdminORG() {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-4">
-                    <div className="flex items-center gap-3">
+                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 border-b border-gray-200 dark:border-gray-800 pb-4 overflow-x-auto min-w-0 no-scrollbar">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                         <button
                             onClick={() => setActiveTab('leads')}
-                            className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer ${
+                            className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                                 activeTab === 'leads'
                                     ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
                                     : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
                             }`}
                         >
-                            <FaInbox className="text-base" />
-                            <span>{t('adminPanel.murojaatlarTab', "Murojaatlar")} ({leads.length})</span>
+                            <FaInbox className="text-base shrink-0" />
+                            <span className="whitespace-nowrap">{t('adminPanel.murojaatlarTab', "Murojaatlar")} ({leads.length})</span>
                         </button>
 
                         <button
                             onClick={() => setActiveTab('comments')}
-                            className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer ${
+                            className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                                 activeTab === 'comments'
                                     ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
                                     : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
                             }`}
                         >
-                            <FaCommentDots className="text-base" />
-                            <span>{t('adminPanel.commentsTab', "O'quvchilar Izohlari")}</span>
+                            <FaCommentDots className="text-base shrink-0" />
+                            <span className="whitespace-nowrap">{t('adminPanel.commentsTab', "O'quvchilar Izohlari")}</span>
                         </button>
                     </div>
 
                     {activeTab === 'leads' && (
-                        <button
-                            onClick={exportToCSV}
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/20 cursor-pointer active:scale-95"
-                        >
-                            <FaFileCsv className="text-base" />
-                            <span className="hidden sm:inline">{t('adminPanel.exportCsvBtn', "Excel (CSV) yuklab olish")}</span>
-                        </button>
+                        <div className="flex items-center gap-2.5 shrink-0 ml-auto sm:ml-0 flex-wrap">
+                            <button
+                                onClick={() => setShowAddLeadModal(true)}
+                                className="inline-flex shrink-0 items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md shadow-red-600/30 cursor-pointer active:scale-95 whitespace-nowrap"
+                            >
+                                <FaUserCheck className="text-base shrink-0" />
+                                <span>{t('adminPanel.addLeadBtn', "+ Ro'yxatdan o'tkazish")}</span>
+                            </button>
+
+                            <button
+                                onClick={exportToCSV}
+                                className="inline-flex shrink-0 items-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-emerald-600/20 cursor-pointer active:scale-95 whitespace-nowrap"
+                            >
+                                <FaFileCsv className="text-base shrink-0" />
+                                <span className="hidden sm:inline whitespace-nowrap">{t('adminPanel.exportCsvBtn', "Excel (CSV) yuklab olish")}</span>
+                            </button>
+                        </div>
                     )}
                 </div>
 
@@ -379,27 +434,29 @@ export default function AdminORG() {
                                         className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-lg flex flex-col justify-between gap-4 hover:border-red-500/30 transition-all group"
                                     >
                                         <div className="space-y-3">
-                                            <div className="flex items-center justify-between gap-2">
-                                                <span className="px-3 py-1 bg-red-600/10 text-red-600 dark:text-red-400 rounded-full text-[11px] font-black uppercase tracking-wider border border-red-500/20">
-                                                    {lead.type || "Murojaat"}
-                                                </span>
+                                            <div className="flex items-start justify-between gap-2 min-w-0">
+                                                <div className="flex flex-wrap items-center gap-1.5 min-w-0 flex-1">
+                                                    <span className="px-2.5 py-1 bg-red-600/10 text-red-600 dark:text-red-400 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider border border-red-500/20 whitespace-nowrap shrink-0 max-w-full truncate" title={lead.type || "Murojaat"}>
+                                                        {lead.type || "Murojaat"}
+                                                    </span>
 
-                                                <span className={`px-3 py-1 rounded-full text-[11px] font-bold ${
-                                                    lead.status === 'Qabul qilindi'
-                                                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                                                        : lead.status === 'Rad etildi'
-                                                        ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
-                                                        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                                                }`}>
-                                                    {lead.status === 'Qabul qilindi' ? t('adminPanel.accepted', "Qabul qilindi") : lead.status === 'Rad etildi' ? t('adminPanel.rejected', "Rad etildi") : t('adminPanel.pending', "Kutilmoqda")}
-                                                </span>
+                                                    <span className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold whitespace-nowrap shrink-0 ${
+                                                        lead.status === 'Qabul qilindi'
+                                                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                                                            : lead.status === 'Rad etildi'
+                                                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                                                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                                                    }`}>
+                                                        {lead.status === 'Qabul qilindi' ? t('adminPanel.accepted', "Qabul qilindi") : lead.status === 'Rad etildi' ? t('adminPanel.rejected', "Rad etildi") : t('adminPanel.pending', "Kutilmoqda")}
+                                                    </span>
+                                                </div>
 
                                                 <button
                                                     onClick={() => setDeleteModalLead(lead)}
-                                                    className="w-7 h-7 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-red-600 hover:text-white flex items-center justify-center text-xs font-bold text-gray-500 transition-all cursor-pointer active:scale-95 ml-1"
+                                                    className="w-7 h-7 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-red-600 hover:text-white flex items-center justify-center text-xs font-bold text-gray-500 transition-all cursor-pointer active:scale-95 shrink-0 aspect-square mt-0.5"
                                                     title="O'chirish"
                                                 >
-                                                    <FaTimes />
+                                                    <FaTimes className="shrink-0" />
                                                 </button>
                                             </div>
 
@@ -495,6 +552,113 @@ export default function AdminORG() {
                                 {t('adminPanel.yesBtn', "Ha, o'chirilsin")}
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add New Lead / Student Registration Modal */}
+            {showAddLeadModal && (
+                <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
+                    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-5 relative">
+                        <button
+                            onClick={() => setShowAddLeadModal(false)}
+                            className="absolute top-5 right-5 w-8 h-8 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-white flex items-center justify-center text-sm font-bold cursor-pointer"
+                        >
+                            &times;
+                        </button>
+
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl font-bold shrink-0">
+                                <FaUserCheck />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-black text-gray-900 dark:text-white">
+                                    {t('adminPanel.addLeadTitle', "Ro'yxatdan o'tkazish")}
+                                </h3>
+                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                                    {t('adminPanel.addLeadSubtitle', "Yangi murojaat yoki o'quvchi ma'lumotlarini kiriting")}
+                                </p>
+                            </div>
+                        </div>
+
+                        <form onSubmit={handleCreateLead} className="space-y-4 pt-2">
+                            <div>
+                                <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
+                                    {t('adminPanel.nameLabel', "F.I.O (Ismi va Familiyasi)")}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Masalan: Azizbek Karimov"
+                                    value={newLeadName}
+                                    onChange={(e) => setNewLeadName(e.target.value)}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
+                                    {t('adminPanel.phoneLabel', "Telefon raqami")}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="901234567 yoki +998901234567"
+                                    value={newLeadPhone}
+                                    onChange={(e) => setNewLeadPhone(e.target.value)}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
+                                    required
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
+                                        {t('adminPanel.typeLabel', "Murojaat turi")}
+                                    </label>
+                                    <select
+                                        value={newLeadType}
+                                        onChange={(e) => setNewLeadType(e.target.value)}
+                                        className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
+                                    >
+                                        <option value="Ro'yxatdan o'tish">Ro'yxatdan o'tish</option>
+                                        <option value="Bepul maslahat">Bepul maslahat</option>
+                                        <option value="Konsultatsiya">Konsultatsiya</option>
+                                        <option value="БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ">БЕСПЛАТНАЯ КОНСУЛЬТАЦИЯ</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-extrabold text-gray-700 dark:text-gray-300 mb-1.5">
+                                        {t('adminPanel.statusLabel', "Status")}
+                                    </label>
+                                    <select
+                                        value={newLeadStatus}
+                                        onChange={(e) => setNewLeadStatus(e.target.value)}
+                                        className="w-full px-3 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs font-bold text-gray-900 dark:text-white focus:outline-none focus:border-red-600 cursor-pointer"
+                                    >
+                                        <option value="Qabul qilindi">Qabul qilindi</option>
+                                        <option value="Kutilmoqda">Kutilmoqda</option>
+                                        <option value="Rad etildi">Rad etildi</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-end gap-3 pt-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowAddLeadModal(false)}
+                                    className="px-5 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 dark:hover:bg-gray-700 transition cursor-pointer"
+                                >
+                                    Bekor qilish
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs shadow-lg shadow-red-600/30 hover:scale-105 transition cursor-pointer"
+                                >
+                                    Saqlash
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
