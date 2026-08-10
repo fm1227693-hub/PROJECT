@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, useLocation, Link } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
@@ -172,19 +172,6 @@ export default function App() {
       </div>
 
       {/* Bottom Floating Quick Action Badges */}
-      <div className="fixed bottom-6 left-6 z-50 hidden sm:flex items-center gap-3">
-        <Link
-          to="/level-test"
-          className="group relative flex items-center gap-2.5 px-5 py-3 rounded-full bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 font-extrabold text-xs shadow-2xl shadow-red-600/30 backdrop-blur-xl border border-red-500/40 hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden"
-        >
-          <span className="relative z-10 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-            <span>Darajangni aniqla</span>
-          </span>
-          <span className="text-xs group-hover:translate-x-1 transition-transform relative z-10">→</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-red-600/20 to-rose-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-        </Link>
-      </div>
 
       <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
         <a
