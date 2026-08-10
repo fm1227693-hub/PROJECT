@@ -95,13 +95,16 @@ export default function SpeakingAssessor() {
     const currentQuestion = currentPrompts[selectedQuestionIndex] || currentPrompts[0]
 
     const [micError, setMicError] = useState(null)
+    const [micVolume, setMicVolume] = useState(0)
+    const audioContextRef = useRef(null)
 
-    // Mobile Compatible Speech Recognition Setup
+    // Mobile Compatible Speech Recognition & Audio Volume Setup
     const startRecording = async () => {
         setTranscript('')
         setAudioUrl(null)
         setAnalysisResult(null)
         setMicError(null)
+        setMicVolume(0)
         audioChunksRef.current = []
 
         // 1. Mobile & Web Audio Stream Capture
@@ -118,6 +121,36 @@ export default function SpeakingAssessor() {
                     autoGainControl: true,
                 }
             })
+
+            // Web Audio API Real-time Volume Analyzer
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext
+                if (AudioCtx) {
+                    const audioContext = new AudioCtx()
+                    audioContextRef.current = audioContext
+                    const analyser = audioContext.createAnalyser()
+                    analyser.fftSize = 256
+                    const source = audioContext.createMediaStreamSource(stream)
+                    source.connect(analyser)
+
+                    const dataArray = new Uint8Array(analyser.frequencyBinCount)
+                    const updateVolume = () => {
+                        if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive') return
+                        analyser.getByteFrequencyData(dataArray)
+                        let sum = 0
+                        for (let i = 0; i < dataArray.length; i++) {
+                            sum += dataArray[i]
+                        }
+                        const avg = sum / dataArray.length
+                        const vol = Math.min(100, Math.round((avg / 64) * 100))
+                        setMicVolume(vol)
+                        requestAnimationFrame(updateVolume)
+                    }
+                    updateVolume()
+                }
+            } catch (e) {
+                console.warn("AudioContext volume analyzer error:", e)
+            }
 
             // Determine mobile supported mimeType (iOS Safari vs Android Chrome)
             let options = {}
@@ -472,26 +505,32 @@ export default function SpeakingAssessor() {
 
                     {/* Microphone Recording Console */}
                     <div className="flex flex-col items-center justify-center p-8 rounded-3xl bg-gradient-to-b from-gray-50/50 to-gray-100/50 dark:from-gray-950/50 dark:to-gray-900/50 border border-gray-200/80 dark:border-gray-800/80 space-y-6">
-                        {/* Audio Waveform Indicator */}
-                        <div className="flex items-center justify-center gap-1.5 h-12">
-                            {[0.4, 0.8, 1.2, 0.6, 1.0, 0.5, 0.9, 0.7, 1.1, 0.4].map((delay, i) => (
-                                <motion.div
-                                    key={i}
-                                    animate={{
-                                        height: isRecording ? [12, 40, 16, 48, 12] : 12,
-                                    }}
-                                    transition={{
-                                        duration: 0.8,
-                                        repeat: Infinity,
-                                        repeatType: 'mirror',
-                                        delay: delay * 0.2,
-                                    }}
-                                    className={`w-1.5 rounded-full transition-colors ${
-                                        isRecording ? 'bg-gradient-to-t from-red-600 to-rose-400' : 'bg-gray-300 dark:bg-gray-700'
-                                    }`}
-                                />
-                            ))}
-                        </div>
+                        {/* Live Audio Volume Meter */}
+                        {isRecording && (
+                            <div className="w-full max-w-xs space-y-1 text-center">
+                                <div className="flex items-center justify-between text-[11px] font-extrabold text-gray-500 dark:text-gray-400">
+                                    <span className="flex items-center gap-1.5">
+                                        <FaVolumeUp className={micVolume > 10 ? "text-emerald-500 animate-pulse" : "text-gray-400"} />
+                                        <span>{t('speakingAssessor.micVolumeLabel', 'Mikrofon ovoz kuchi:')}</span>
+                                    </span>
+                                    <span className={`font-mono ${micVolume > 10 ? 'text-emerald-500 font-bold' : 'text-amber-500'}`}>
+                                        {micVolume}%
+                                    </span>
+                                </div>
+                                <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full transition-all duration-100 ${
+                                            micVolume > 40
+                                                ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
+                                                : micVolume > 10
+                                                ? 'bg-gradient-to-r from-emerald-500 to-lime-400'
+                                                : 'bg-amber-500'
+                                        }`}
+                                        style={{ width: `${Math.max(5, micVolume)}%` }}
+                                    />
+                                </div>
+                            </div>
+                        )}
 
                         {/* Timer */}
                         <div className="flex items-center gap-2 font-mono text-xl font-black text-gray-900 dark:text-white">

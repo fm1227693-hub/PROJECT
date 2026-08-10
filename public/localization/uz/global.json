@@ -138,6 +138,7 @@
         "micAlertTitle": "Mikrofon Xatoligi!",
         "micNotSupported": "Brauzeringiz mikrofon yozishni qo'llab-quvvatlamaydi. Chrome yoki Safari orqali kiring.",
         "micDenied": "Mikrofonga ruxsat berilmadi. Telefonda brauzeringiz manzil qatoridagi qulf (🔒) belgisini bosing -> Mikrofon -> Ruxsat Berish (Allow) ni tanlang.",
+        "micVolumeLabel": "Mikrofon ovoz kuchi:",
         "startRecord": "Ovoz yozishni boshlash",
         "stopRecord": "To'xtatish",
         "analyzing": "AI Tahlil qilmoqda...",

@@ -138,6 +138,7 @@
         "micAlertTitle": "Microphone Error!",
         "micNotSupported": "Your browser does not support audio recording. Please use Chrome or Safari.",
         "micDenied": "Microphone access denied. Please click the lock icon (🔒) in your browser address bar -> Microphone -> Allow.",
+        "micVolumeLabel": "Mic Volume Input:",
         "startRecord": "Start Voice Recording",
         "stopRecord": "Stop Recording",
         "analyzing": "AI Analyzing...",
