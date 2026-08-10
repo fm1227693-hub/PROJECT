@@ -94,58 +94,92 @@ export default function SpeakingAssessor() {
     const currentPrompts = prompts[activePart] || prompts.part1
     const currentQuestion = currentPrompts[selectedQuestionIndex] || currentPrompts[0]
 
-    // Speech Recognition Setup
+    const [micError, setMicError] = useState(null)
+
+    // Mobile Compatible Speech Recognition Setup
     const startRecording = async () => {
         setTranscript('')
         setAudioUrl(null)
         setAnalysisResult(null)
+        setMicError(null)
         audioChunksRef.current = []
 
-        // Web Speech API
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition()
-            recognition.continuous = true
-            recognition.interimResults = true
-            recognition.lang = 'en-US'
-
-            recognition.onresult = (event) => {
-                let currentText = ''
-                for (let i = 0; i < event.results.length; i++) {
-                    currentText += event.results[i][0].transcript + ' '
-                }
-                setTranscript(currentText)
-            }
-
-            recognition.onerror = (e) => {
-                console.error("Speech recognition error:", e)
-            }
-
-            recognition.start()
-            recognitionRef.current = recognition
-        }
-
-        // Media Stream Audio Recording
+        // 1. Mobile & Web Audio Stream Capture
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-            const mediaRecorder = new MediaRecorder(stream)
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                setMicError(t('speakingAssessor.micNotSupported', "Brauzeringiz mikrofon yozishni qo'llab-quvvatlamaydi. Chrome yoki Safari orqali kiring."))
+                return
+            }
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true,
+                }
+            })
+
+            // Determine mobile supported mimeType (iOS Safari vs Android Chrome)
+            let options = {}
+            if (typeof MediaRecorder !== 'undefined') {
+                if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                    options = { mimeType: 'audio/webm;codecs=opus' }
+                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                    options = { mimeType: 'audio/mp4' }
+                } else if (MediaRecorder.isTypeSupported('audio/aac')) {
+                    options = { mimeType: 'audio/aac' }
+                }
+            }
+
+            const mediaRecorder = new MediaRecorder(stream, options)
             mediaRecorderRef.current = mediaRecorder
 
             mediaRecorder.ondataavailable = (e) => {
-                if (e.data.size > 0) {
+                if (e.data && e.data.size > 0) {
                     audioChunksRef.current.push(e.data)
                 }
             }
 
             mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+                const blobType = options.mimeType || 'audio/webm'
+                const audioBlob = new Blob(audioChunksRef.current, { type: blobType })
                 const url = URL.createObjectURL(audioBlob)
                 setAudioUrl(url)
             }
 
-            mediaRecorder.start()
+            mediaRecorder.start(250) // Slice chunks every 250ms for mobile reliability
         } catch (err) {
-            console.warn("Microphone stream not available:", err)
+            console.error("Microphone access error:", err)
+            setMicError(t('speakingAssessor.micDenied', "Mikrofonga ruxsat berilmadi. Telefonda brauzeringiz sozlamalaridan Mikrofon -> Ruxsat Berish (Allow) ni tanlang."))
+            return
+        }
+
+        // 2. Web Speech API (Mobile Safari / Android Chrome)
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        if (SpeechRecognition) {
+            try {
+                const recognition = new SpeechRecognition()
+                recognition.continuous = true
+                recognition.interimResults = true
+                recognition.lang = 'en-US'
+
+                recognition.onresult = (event) => {
+                    let currentText = ''
+                    for (let i = 0; i < event.results.length; i++) {
+                        currentText += event.results[i][0].transcript + ' '
+                    }
+                    setTranscript(currentText)
+                }
+
+                recognition.onerror = (e) => {
+                    console.warn("Mobile speech recognition warning:", e)
+                }
+
+                recognition.start()
+                recognitionRef.current = recognition
+            } catch (e) {
+                console.warn("SpeechRecognition init error on mobile:", e)
+            }
         }
 
         setIsRecording(true)
@@ -418,6 +452,16 @@ export default function SpeakingAssessor() {
                             {t('speakingAssessor.promptTip', "Maslahat: kamida 30-45 soniya davomida erkin, tushunarli va ravon gapirishga harakat qiling.")}
                         </p>
                     </div>
+
+                    {/* Microphone Error Alert on Mobile */}
+                    {micError && (
+                        <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-bold space-y-1">
+                            <p className="flex items-center gap-2 text-sm font-extrabold">
+                                <span>⚠️ {t('speakingAssessor.micAlertTitle', "Mikrofon Xatoligi!")}</span>
+                            </p>
+                            <p className="leading-relaxed text-[11px] font-medium">{micError}</p>
+                        </div>
+                    )}
 
                     {/* Microphone Recording Console */}
                     <div className="flex flex-col items-center justify-center p-8 rounded-3xl bg-gradient-to-b from-gray-50/50 to-gray-100/50 dark:from-gray-950/50 dark:to-gray-900/50 border border-gray-200/80 dark:border-gray-800/80 space-y-6">
