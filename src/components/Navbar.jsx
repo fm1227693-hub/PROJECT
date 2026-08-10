@@ -443,6 +443,13 @@ export default function Navbar() {
                                         <FaGamepad className="w-3.5 h-3.5 text-[#c41e30]" />
                                         <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.testAndGames', 'Test va o\'yinlar')}</span>
                                     </div>
+                                    <Link to="/speaking-assessor" onClick={() => setMenuOpen(false)} className="px-3 py-2.5 rounded-xl text-xs font-extrabold text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/20 flex items-center justify-between shadow-sm active:scale-[0.98]">
+                                        <div className="flex items-center gap-2">
+                                            <FaMicrophone className="w-3.5 h-3.5 text-red-600 dark:text-red-400 animate-pulse" />
+                                            <span>{t('navbar.aiSpeaking', 'AI Speaking Test')}</span>
+                                        </div>
+                                        <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-sm">NEW</span>
+                                    </Link>
                                     <Link to="/level-test" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.levelTest', 'Daraja testi')}</Link>
                                     <Link to="/ielts-practice" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsPractice', 'IELTS Practice')}</Link>
                                     <Link to="/games" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.games', "O'yinlar")}</Link>
