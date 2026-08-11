@@ -631,7 +631,11 @@
         "tip12": "Compare the 30-year transformation of the town map by directions (north, south, east, west) and infrastructure.",
         "tip13": "Highlight the technologies derived from space exploration and attention to Earth's problems using high-level syntax.",
         "tip14": "Argue the difference between punishment and rehabilitation and its impact on crime reduction.",
-        "tip15": "Write the coffee production stages chronologically and in the passive voice (is roasted, are packaged)."
+        "tip15": "Write the coffee production stages chronologically and in the passive voice (is roasted, are packaged).",
+        "allOptions": "All",
+        "minutes": "minutes",
+        "startTask": "Start Task",
+        "targetBand": "Target Band"
     },
     "ieltsWriting": {
         "task1Type": "Task 1 (Academic)",

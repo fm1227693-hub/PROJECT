@@ -840,7 +840,7 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
                                         {prompt.type}
                                     </span>
                                     <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
-                                        Target Band {prompt.bandLevel}
+                                        {t('ieltsWritingAssessor.targetBand', 'Target Band')} {prompt.bandLevel}
                                     </span>
                                 </div>
 
@@ -856,11 +856,11 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
                             <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs font-bold text-gray-500 dark:text-gray-400">
                                 <span className="flex items-center gap-1.5">
                                     <FaClock className="text-red-500" />
-                                    <span>{prompt.timeLimit / 60} daqiqa</span>
+                                    <span>{prompt.timeLimit / 60} {t('ieltsWritingAssessor.minutes', 'daqiqa')}</span>
                                 </span>
 
                                 <span className="text-red-600 dark:text-red-400 font-black flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                    <span>Topshiriqni boshlash</span>
+                                    <span>{t('ieltsWritingAssessor.startTask', 'Topshiriqni boshlash')}</span>
                                     <FaChevronRight className="text-[10px]" />
                                 </span>
                             </div>

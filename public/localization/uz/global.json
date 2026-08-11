@@ -710,6 +710,10 @@
         "tip12": "Shahar xaritasining 30 yillik transformatsiyasini yo'nalishlar (shimol, janub, sharq, g'arb) va infratuzilma bo'yicha taqqoslang.",
         "tip13": "Fazoni o'rganishdan olingan texnologiyalar va Yerdagi muammolarga e'tiborni murakkab sintaksis orqali yoritib bering.",
         "tip14": "Jinoyatchilarni jazolash va ularni qayta tarbiyalash o'rtasidagi farqni va uning jinoyatchilikni kamaytirishdagi o'rnini dalillang.",
-        "tip15": "Qahva ishlab chiqarish bosqichlarini xronologik tartibda va majhul nisbatda (is roasted, are packaged) yozing."
+        "tip15": "Qahva ishlab chiqarish bosqichlarini xronologik tartibda va majhul nisbatda (is roasted, are packaged) yozing.",
+        "allOptions": "Barchasi",
+        "minutes": "daqiqa",
+        "startTask": "Topshiriqni boshlash",
+        "targetBand": "Maqsadli Band"
     }
 }
