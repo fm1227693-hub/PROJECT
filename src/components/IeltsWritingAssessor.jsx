@@ -795,7 +795,7 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
                         <span>{t('ieltsWritingAssessor.backToLevels', "Darajalarga qaytish")}</span>
                     </button>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         {['All', '5.0', '6.0', '7.0', '8.0', '9.0'].map((b) => (
                             <button
                                 key={b}
