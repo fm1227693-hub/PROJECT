@@ -254,7 +254,7 @@ export default function Navbar() {
                                 className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full inline-flex items-center gap-1.5 cursor-pointer ${['/level-test', '/ielts-practice', '/games'].includes(location.pathname) ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                             >
                                 <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
-                                <span>{t('navbar.testAndGames', 'Test va o\'yinlar')}</span>
+                                <span>{t('navbar.testAndGames', "Mock Testlar va O'yinlar")}</span>
                                 <motion.div animate={{ rotate: testsDropdownOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                                     <FaChevronDown className="w-2.5 h-2.5 opacity-60" />
                                 </motion.div>
@@ -270,6 +270,14 @@ export default function Navbar() {
                                         className="absolute left-0 top-full mt-2 w-52 bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1"
                                     >
                                         <Link
+                                            to="/ielts-writing"
+                                            onClick={() => setTestsDropdownOpen(false)}
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                        >
+                                            <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30]" />
+                                            <span>{t('navbar.ieltsWriting', 'AI IELTS Writing')}</span>
+                                        </Link>
+                                        <Link
                                             to="/level-test"
                                             onClick={() => setTestsDropdownOpen(false)}
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
@@ -283,7 +291,7 @@ export default function Navbar() {
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
                                         >
                                             <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30]" />
-                                            <span>{t('navbar.ieltsPractice', 'IELTS Practice')}</span>
+                                            <span>{t('navbar.ieltsPractice', 'Reading & Speaking')}</span>
                                         </Link>
                                         <Link
                                             to="/games"
@@ -433,10 +441,17 @@ export default function Navbar() {
                                 <div className="flex flex-col gap-1.5 p-4 rounded-2xl bg-gray-50/70 dark:bg-white/[0.03] border border-gray-200/70 dark:border-white/[0.06]">
                                     <div className="flex items-center gap-2 mb-1 px-1">
                                         <FaGamepad className="w-3.5 h-3.5 text-[#c41e30]" />
-                                        <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.testAndGames', 'Test va o\'yinlar')}</span>
+                                        <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.testAndGames', "Mock Testlar va O'yinlar")}</span>
                                     </div>
+                                    <Link to="/ielts-writing" onClick={() => setMenuOpen(false)} className="px-3 py-2.5 rounded-xl text-xs font-extrabold text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/20 flex items-center justify-between shadow-sm active:scale-[0.98]">
+                                        <div className="flex items-center gap-2">
+                                            <FaGraduationCap className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+                                            <span>{t('navbar.ieltsWriting', 'AI IELTS Writing')}</span>
+                                        </div>
+                                        <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-sm">NEW</span>
+                                    </Link>
                                     <Link to="/level-test" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.levelTest', 'Daraja testi')}</Link>
-                                    <Link to="/ielts-practice" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsPractice', 'IELTS Practice')}</Link>
+                                    <Link to="/ielts-practice" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsPractice', 'Reading & Speaking')}</Link>
                                     <Link to="/games" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.games', "O'yinlar")}</Link>
                                 </div>
 

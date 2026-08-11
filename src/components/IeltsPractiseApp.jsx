@@ -784,7 +784,7 @@ export default function IeltsPracticeApp() {
               <FaBookOpen className="h-9 w-9 text-red-300" />
             </div>
             <h1 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">
-              {t("ieltsEngine.heroTitle", "IELTS Testlar")}
+              {t("ieltsEngine.heroTitle", "Reading & Speaking Amaliyoti")}
             </h1>
             <p className="mb-10 max-w-md text-base text-slate-400 sm:text-lg">
               {t("ieltsEngine.heroSub", "Reading, Grammar va Speaking bo'yicha darajangizga mos testlarni yeching. Har bir daraja va har bir qism (Part) — o'zining noyob mavzusi.")}
