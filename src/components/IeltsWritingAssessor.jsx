@@ -34,7 +34,7 @@ export default function IeltsWritingAssessor() {
         {
             id: 't2_b5_1',
             title: t('ieltsWriting.p1Title', 'Task 2: Mobile Phones in Schools'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '5.0',
             suggestedWords: 250,
@@ -53,7 +53,7 @@ In conclusion, although mobile phones can cause classroom distractions if unmoni
         {
             id: 't1_b5_2',
             title: t('ieltsWriting.p2Title', 'Task 1: Line Graph - Public Transport Passengers'),
-            type: 'Task 1 (Academic)',
+            type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
             bandLevel: '5.0',
             suggestedWords: 150,
@@ -72,7 +72,7 @@ Conversely, metro train usage started at 8 million passengers in 2000 before exp
         {
             id: 't2_b6_3',
             title: t('ieltsWriting.p3Title', 'Task 2: Online Learning vs Traditional Classrooms'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '6.0',
             suggestedWords: 250,
@@ -93,7 +93,7 @@ In conclusion, while distance education provides flexible study schedules and co
         {
             id: 't2_b7_4',
             title: t('ieltsWriting.p4Title', 'Task 2: Artificial Intelligence & Future Job Market'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '6.0',
             suggestedWords: 250,
@@ -112,7 +112,7 @@ In conclusion, although AI automation will inevitably disrupt traditional job ma
         {
             id: 't1_b7_5',
             title: t('ieltsWriting.p5Title', 'Task 1: Bar Chart - University Graduates Employment'),
-            type: 'Task 1 (Academic)',
+            type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
             bandLevel: '6.0',
             suggestedWords: 150,
@@ -131,7 +131,7 @@ Conversely, Southern European nations recorded lower numbers. Italy saw a modera
         {
             id: 't2_b7_6',
             title: t('ieltsWriting.p6Title', 'Task 2: Higher Education vs Early Employment'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '7.0',
             suggestedWords: 250,
@@ -150,7 +150,7 @@ To summarize, while securing early employment provides practical experience and 
         {
             id: 't1_b7_7',
             title: t('ieltsWriting.p7Title', 'Task 1: Process Diagram - Water Recycling System'),
-            type: 'Task 1 (Academic)',
+            type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
             bandLevel: '7.0',
             suggestedWords: 150,
@@ -169,7 +169,7 @@ In the third stage, clarified liquid is transferred to aeration tanks where bene
         {
             id: 't2_b7_8',
             title: t('ieltsWriting.p8Title', 'Task 2: Environmental Protection Responsibility'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '7.0',
             suggestedWords: 250,
@@ -190,7 +190,7 @@ In conclusion, addressing environmental crisis is not a singular responsibility.
         {
             id: 't2_b8_9',
             title: t('ieltsWriting.p9Title', 'Task 2: Universal Basic Income & Wealth Inequality'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '8.0',
             suggestedWords: 250,
@@ -209,7 +209,7 @@ In summary, although Universal Basic Income presents a visionary remedy for weal
         {
             id: 't1_b8_10',
             title: t('ieltsWriting.p10Title', 'Task 1: Pie Charts - Global Energy Projections'),
-            type: 'Task 1 (Academic)',
+            type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
             bandLevel: '8.0',
             suggestedWords: 150,
@@ -228,7 +228,7 @@ By 2035, this distribution is anticipated to shift dramatically. Solar and wind 
         {
             id: 't2_b9_11',
             title: t('ieltsWriting.p11Title', 'Task 2: Preservation of Minority Languages'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '9.0',
             suggestedWords: 250,
@@ -247,7 +247,7 @@ In conclusion, although economic pragmatism favors global linguistic standardiza
         {
             id: 't1_b9_12',
             title: t('ieltsWriting.p12Title', 'Task 1: Map Comparison - Urban Redevelopment'),
-            type: 'Task 1 (Academic)',
+            type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
             bandLevel: '9.0',
             suggestedWords: 150,
@@ -266,7 +266,7 @@ In the southern half of the town, the original 1995 fishing port and warehouse s
         {
             id: 't2_b9_13',
             title: t('ieltsWriting.p13Title', 'Task 2: Space Exploration Funding vs Poverty'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '9.0',
             suggestedWords: 250,
@@ -285,7 +285,7 @@ In conclusion, although the urgency of global poverty demands substantial financ
         {
             id: 't2_b8_14',
             title: t('ieltsWriting.p14Title', 'Task 2: Criminal Rehabilitation vs Punishment'),
-            type: 'Task 2 (Essay)',
+            type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
             bandLevel: '8.0',
             suggestedWords: 250,
@@ -304,7 +304,7 @@ In conclusion, while prisons must enforce accountability, focusing solely on pun
         {
             id: 't1_b6_15',
             title: t('ieltsWriting.p15Title', 'Task 1: Process Diagram - Coffee Production'),
-            type: 'Task 1 (Academic)',
+            type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
             bandLevel: '5.0',
             suggestedWords: 150,
