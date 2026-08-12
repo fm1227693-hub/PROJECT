@@ -437,7 +437,7 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
         'make': ['create', 'foster', 'generate', 'produce']
     }
 
-    // Normalized AI Examiner Evaluation Engine
+    // Simulate AI Examiner Evaluation Engine using Local Logic
     const runAIWritingAnalysis = () => {
         const text = essayText.trim()
         const minWords = selectedPrompt.suggestedWords
@@ -471,6 +471,7 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
 
         setIsAnalyzing(true)
 
+        // Simulate network delay for "AI" processing
         setTimeout(() => {
             const lowerText = text.toLowerCase()
             const cleanWords = wordsArray.map(w => w.toLowerCase().replace(/[^a-z]/g, '')).filter(Boolean)
@@ -504,7 +505,6 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
 
             // --- 1. TASK RESPONSE (TR) CALCULATION ---
             let trScore = 5.0
-
             if (wordRatio >= 1.0) {
                 trScore = 6.0
                 if (wordCount >= minWords + 40) trScore += 0.5
@@ -536,7 +536,6 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
 
             // --- 2. COHERENCE & COHESION (CC) CALCULATION ---
             let ccScore = 5.0
-
             if (paragraphs.length === 1) {
                 ccScore = Math.min(5.0, ccScore)
             } else if (paragraphs.length >= 3 && paragraphs.length <= 5) {
@@ -560,7 +559,6 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
 
             // --- 3. LEXICAL RESOURCE (LR) CALCULATION ---
             let lrScore = 5.0
-
             if (foundCollocations.length >= 5) lrScore += 2.5
             else if (foundCollocations.length >= 3) lrScore += 1.5
             else if (foundCollocations.length >= 1) lrScore += 0.5
@@ -576,7 +574,6 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
 
             // --- 4. GRAMMATICAL RANGE & ACCURACY (GRA) CALCULATION ---
             let graScore = 5.0
-
             const complexClauses = ['which', 'that', 'although', 'whereas', 'despite', 'because', 'if', 'since', 'unless', 'provided that', 'not only', 'even though']
             const foundClauses = complexClauses.filter(clause => lowerText.includes(clause))
             if (foundClauses.length >= 4) graScore += 2.0
@@ -588,7 +585,6 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
 
             graScore = Math.min(9.0, Math.max(3.0, graScore))
 
-            // Official IELTS Rounding Rule (.25 and .75 thresholds)
             const rawAverage = (trScore + ccScore + lrScore + graScore) / 4
             const floorVal = Math.floor(rawAverage)
             const remainder = rawAverage - floorVal
@@ -664,7 +660,7 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
             })
 
             setIsAnalyzing(false)
-        }, 800)
+        }, 1200)
     }
 
     /* ==================== SCREEN 1: BAND LEVEL SELECTION ==================== */
