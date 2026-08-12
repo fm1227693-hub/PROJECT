@@ -140,8 +140,8 @@ export default function Home() {
                         grabCursor={true}
                         loop={true}
                         cubeEffect={{
-                            shadow: true,
-                            slideShadows: true,
+                            shadow: false,
+                            slideShadows: false,
                             shadowOffset: 20,
                             shadowScale: 0.90,
                         }}
@@ -151,7 +151,7 @@ export default function Home() {
                         }}
                         pagination={{ clickable: true }}
                         modules={[Pagination, Autoplay, EffectCube]}
-                        className="w-[260px] h-[260px] xs:w-[290px] xs:h-[290px] sm:w-[360px] sm:h-[360px] rounded-2xl sm:rounded-[2rem] shadow-2xl max-w-full"
+                        className="w-[260px] h-[260px] xs:w-[290px] xs:h-[290px] sm:w-[360px] sm:h-[360px] rounded-2xl sm:rounded-[2rem] max-w-full"
                     >
                         <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-transparent">
                             <div className="h-full w-full relative group">
