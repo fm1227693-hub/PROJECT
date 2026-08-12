@@ -160,7 +160,7 @@ export default function Home() {
                         modules={[Pagination, Autoplay, EffectCube]}
                         className="w-[260px] h-[260px] xs:w-[290px] xs:h-[290px] sm:w-[360px] sm:h-[360px] rounded-2xl sm:rounded-[2rem] shadow-2xl max-w-full"
                     >
-                        <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white dark:bg-gray-950">
+                        <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-transparent">
                             <div className="h-full w-full relative group">
                                 <img
                                     src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=800&fit=crop"
@@ -175,7 +175,7 @@ export default function Home() {
                             </div>
                         </SwiperSlide>
 
-                        <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white dark:bg-gray-950">
+                        <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-transparent">
                             <div className="h-full w-full relative group">
                                 <img
                                     src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&h=800&fit=crop"
@@ -190,7 +190,7 @@ export default function Home() {
                             </div>
                         </SwiperSlide>
 
-                        <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white dark:bg-gray-950">
+                        <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-transparent">
                             <div className="h-full w-full relative group">
                                 <img
                                     src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&h=800&fit=crop"

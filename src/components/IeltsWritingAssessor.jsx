@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import axios from 'axios'
 import {
     FaEdit,
     FaClock,
@@ -52,6 +53,7 @@ In conclusion, although mobile phones can cause classroom distractions if unmoni
         },
         {
             id: 't1_b5_2',
+            imageUrl: 'https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=800&fit=crop',
             title: t('ieltsWriting.p2Title', 'Task 1: Line Graph - Public Transport Passengers'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -111,6 +113,7 @@ In conclusion, although AI automation will inevitably disrupt traditional job ma
         },
         {
             id: 't1_b7_5',
+            imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&fit=crop',
             title: t('ieltsWriting.p5Title', 'Task 1: Bar Chart - University Graduates Employment'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -149,6 +152,7 @@ To summarize, while securing early employment provides practical experience and 
         },
         {
             id: 't1_b7_7',
+            imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&fit=crop',
             title: t('ieltsWriting.p7Title', 'Task 1: Process Diagram - Water Recycling System'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -208,6 +212,7 @@ In summary, although Universal Basic Income presents a visionary remedy for weal
         },
         {
             id: 't1_b8_10',
+            imageUrl: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&fit=crop',
             title: t('ieltsWriting.p10Title', 'Task 1: Pie Charts - Global Energy Projections'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -246,6 +251,7 @@ In conclusion, although economic pragmatism favors global linguistic standardiza
         },
         {
             id: 't1_b9_12',
+            imageUrl: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&fit=crop',
             title: t('ieltsWriting.p12Title', 'Task 1: Map Comparison - Urban Redevelopment'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -438,7 +444,80 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
     }
 
     // Simulate AI Examiner Evaluation Engine using Local Logic
-    const runAIWritingAnalysis = () => {
+
+    const runAIWritingAnalysis = async () => {
+        const text = essayText.trim()
+        const minWords = selectedPrompt.suggestedWords
+
+        if (wordCount < 15) {
+            runLocalWritingAnalysis();
+            return;
+        }
+
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        
+        if (!apiKey || apiKey === 'YOUR_API_KEY_HERE') {
+            runLocalWritingAnalysis();
+            return;
+        }
+
+        setIsAnalyzing(true);
+        try {
+            const prompt = `You are an expert IELTS examiner. Grade the following ${selectedPrompt.taskType} essay.
+Band Level: ${selectedPrompt.bandLevel}
+Prompt: ${selectedPrompt.question}
+
+Essay:
+${text}
+
+Respond STRICTLY in the following JSON format:
+{
+  "taskResponse": 7.0,
+  "coherence": 7.0,
+  "lexical": 7.0,
+  "grammar": 7.0,
+  "overallBand": 7.0,
+  "strengths": ["strength 1", "strength 2"],
+  "improvements": ["improvement 1", "improvement 2"],
+  "foundCollocations": ["collocation1"],
+  "foundConnectors": ["connector1"],
+  "overusedWordsDetected": [{"word":"good","count":3,"synonyms":["beneficial"]}]
+}`;
+
+            const response = await axios.post(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { response_mime_type: "application/json" }
+                }
+            );
+
+            const resultText = response.data.candidates[0].content.parts[0].text;
+            const parsed = JSON.parse(resultText);
+            
+            setAnalysisResult({
+                underLength: false,
+                overallBand: parsed.overallBand,
+                taskResponse: parsed.taskResponse,
+                coherence: parsed.coherence,
+                lexical: parsed.lexical,
+                grammar: parsed.grammar,
+                wordCount: wordCount,
+                minRequired: minWords,
+                foundCollocations: parsed.foundCollocations || [],
+                foundConnectors: parsed.foundConnectors || [],
+                overusedWordsDetected: parsed.overusedWordsDetected || [],
+                strengths: parsed.strengths || [],
+                improvements: parsed.improvements || []
+            });
+            setIsAnalyzing(false);
+        } catch (error) {
+            console.error("AI Evaluation failed, falling back to local:", error);
+            runLocalWritingAnalysis();
+        }
+    };
+
+    const runLocalWritingAnalysis = () => {
         const text = essayText.trim()
         const minWords = selectedPrompt.suggestedWords
 
@@ -940,6 +1019,12 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
                         "{selectedPrompt.promptText}"
                     </div>
 
+                    {selectedPrompt.imageUrl && (
+                        <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-md">
+                            <img src={selectedPrompt.imageUrl} alt="Task Graphic" className="w-full max-h-[350px] object-cover" />
+                        </div>
+                    )}
+
                     {/* Key Collocations Badge */}
                     <div className="space-y-2">
                         <span className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 block tracking-wider">
@@ -1006,6 +1091,12 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
                             <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-950/80 border border-gray-200 dark:border-gray-800 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-relaxed italic">
                                 "{selectedPrompt.promptText}"
                             </div>
+
+                            {selectedPrompt.imageUrl && (
+                                <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-md mt-4">
+                                    <img src={selectedPrompt.imageUrl} alt="Task Graphic" className="w-full max-h-[350px] object-cover" />
+                                </div>
+                            )}
 
                             {/* Load Model Answer Button */}
                             <button
