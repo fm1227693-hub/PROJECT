@@ -279,7 +279,7 @@ In the southern half of the town, the original 1995 fishing port and warehouse s
             timeLimit: 40 * 60,
             promptText: t('ieltsWriting.p13Prompt', 'Governments spend billions of dollars on space exploration programs. Some believe this expenditure is justified, while others argue it should be redirected to alleviate poverty. Discuss both views.'),
             keyCollocations: ['terrestrial poverty alleviation', 'frontiers of human knowledge', 'spin-off technologies', 'pressing humanitarian crises'],
-            structureTip: 'Koinot izlanishlaridan olingan texnologiyalar va Yerdagi muammolarga e\'tiborni yuqori darajadagi sintaksis bilan yoriting.',
+            structureTip: t('ieltsWritingAssessor.tip13', 'Koinot izlanishlaridan olingan texnologiyalar va Yerdagi muammolarga e\'tiborni yuqori darajadagi sintaksis bilan yoriting.'),
             sampleAnswer: `Astronomical research and space exploration initiatives receive billions of dollars in state funding annually. In light of persistent global challenges such as extreme poverty, malnutrition, and climate change, critics assert that space budgets represent an unjustified luxury. However, supporters contend that extraterrestrial exploration drives technological innovation that ultimately benefits all humanity. I believe that while immediate poverty alleviation is vital, space research yields irreplaceable long-term scientific advancements.
 
 Opponents of space expenditure argue that allocating astronomical sums to interplanetary missions is unethical when millions of human beings lack basic sustenance. From a humanitarian standpoint, government revenues ought to prioritize immediate terrestrial crises—such as expanding clean water access, eradicating preventable diseases, and building schools in impoverished nations. Redirecting NASA and ESA budgets towards global humanitarian aid could immediately lift millions out of extreme poverty.
@@ -298,7 +298,7 @@ In conclusion, although the urgency of global poverty demands substantial financ
             timeLimit: 40 * 60,
             promptText: t('ieltsWriting.p14Prompt', 'Some believe the primary purpose of prison should be to punish criminals, while others argue it should be to rehabilitate them. Discuss both views and give your opinion.'),
             keyCollocations: ['recidivism rates', 'punitive measures', 'reintegration into society', 'vocational training'],
-            structureTip: 'Jazo berish va qayta tarbiyalash (Rehabilitation) o\'rtasidagi farqni va jinoyatning kamayishiga ta\'sirini dalillang.',
+            structureTip: t('ieltsWritingAssessor.tip14', 'Jazo berish va qayta tarbiyalash (Rehabilitation) o\'rtasidagi farqni va jinoyatning kamayishiga ta\'sirini dalillang.'),
             sampleAnswer: `The question of how judicial systems should handle convicted offenders remains a subject of debate worldwide. While proponents of retributive justice argue that prison should serve primarily as a punitive deterrent, advocates of reformative justice maintain that rehabilitation is essential to reduce crime rates permanently. I firmly believe that rehabilitation must be the core objective of modern penal systems.
 
 On the one hand, supporters of strict punishment argue that harsh prison sentences act as a strong deterrent against crime. If potential offenders realize that committing illegal acts will result in severe loss of personal liberty and austere living conditions, they are less likely to break the law. Furthermore, for victims of serious crimes, punitive sentences provide a sense of retribution and public justice.
@@ -317,7 +317,7 @@ In conclusion, while prisons must enforce accountability, focusing solely on pun
             timeLimit: 20 * 60,
             promptText: t('ieltsWriting.p15Prompt', 'The diagram illustrates the process of coffee production from coffee bean harvesting to retail packaging. Describe the stages involved.'),
             keyCollocations: ['sequential stages', 'harvested and sorted', 'roasted at high temperatures', 'vacuum-sealed packaging'],
-            structureTip: 'Kofe tayyorlash bosqichlarini xronologik tartibda va nisbat shaklida (is roasted, are packaged) yozing.',
+            structureTip: t('ieltsWritingAssessor.tip15', 'Kofe tayyorlash bosqichlarini xronologik tartibda va nisbat shaklida (is roasted, are packaged) yozing.'),
             sampleAnswer: `The diagram illustrates the sequential stages involved in the manufacturing of commercial coffee, from the harvesting of ripe coffee cherries to the final distribution of packaged coffee.
 
 Overall, the coffee production process consists of eleven distinct stages, which can be categorized into three main phases: agricultural harvesting, industrial roasting and grinding, and commercial packaging.
@@ -537,10 +537,10 @@ Respond STRICTLY in the following JSON format:
                     foundConnectors: [],
                     overusedWordsDetected: [],
                     strengths: [
-                        t('ieltsWriting.underLengthTitle', 'Insho hajmi juda kam (Kamida 15 ta so\'z talab qilinadi). Ball: 0.0')
+                        t('ieltsWritingAssessor.underLengthTitle', 'Insho hajmi juda kam (Kamida 15 ta so\'z talab qilinadi). Ball: 0.0')
                     ],
                     improvements: [
-                        t('ieltsWriting.underLengthTip', `IELTS mezoniga ko'ra ${selectedPrompt.type} uchun kamida ${minWords} ta so'zdan iborat insho yozing.`)
+                        t('ieltsWritingAssessor.underLengthTip', `IELTS mezoniga ko'ra ${selectedPrompt.type} uchun kamida ${minWords} ta so'zdan iborat insho yozing.`)
                     ]
                 })
                 setIsAnalyzing(false)
@@ -682,9 +682,9 @@ Respond STRICTLY in the following JSON format:
             const improvements = []
 
             if (wordCount >= minWords) {
-                strengths.push(t('ieltsWriting.strWordCount', `So'zlar soni talabi to'liq bajarildi (${wordCount}/${minWords} so'z).`))
+                strengths.push(t('ieltsWritingAssessor.strWordCount', `So'zlar soni talabi to'liq bajarildi (${wordCount}/${minWords} so'z).`))
             } else {
-                improvements.push(t('ieltsWriting.impWordCount', `So'zlar soni yetarli emas (${wordCount}/${minWords}). IELTS mezonida kam so'z yozish ballni pasaytiradi.`))
+                improvements.push(t('ieltsWritingAssessor.impWordCount', `So'zlar soni yetarli emas (${wordCount}/${minWords}). IELTS mezonida kam so'z yozish ballni pasaytiradi.`))
             }
 
             if (foundCollocations.length > 0) {
@@ -765,7 +765,7 @@ Respond STRICTLY in the following JSON format:
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-black uppercase tracking-widest"
                     >
                         <FaGraduationCap className="text-sm" />
-                        <span>IELTS BAND 5.0 - 9.0 WRITING SUITE</span>
+                        <span>{t('ieltsWritingAssessor.suiteTitle', 'IELTS BAND 5.0 - 9.0 WRITING SUITE')}</span>
                     </motion.div>
 
                     <motion.h1
@@ -774,7 +774,7 @@ Respond STRICTLY in the following JSON format:
                         transition={{ delay: 0.1 }}
                         className="text-4xl sm:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-tight"
                     >
-                        {t('ieltsWriting.heroTitle', 'IELTS Writing Assessor & Simulator')}
+                        {t('ieltsWritingAssessor.heroTitle', 'IELTS Writing Assessor & Simulator')}
                     </motion.h1>
 
                     <motion.p
@@ -783,7 +783,7 @@ Respond STRICTLY in the following JSON format:
                         transition={{ delay: 0.2 }}
                         className="text-sm sm:text-base font-medium text-gray-600 dark:text-gray-400 leading-relaxed"
                     >
-                        O'zingizga mos IELTS Band darajasini tanlang (15 ta rasmiy mavzu). Namuna insholarni o'rganing, o'zingiz yozib ko'ring va sun'iy intellekt tahlilidan o'ting.
+                        {t('ieltsWritingAssessor.suiteDesc', "O'zingizga mos IELTS Band darajasini tanlang (15 ta rasmiy mavzu). Namuna insholarni o'rganing, o'zingiz yozib ko'ring va sun'iy intellekt tahlilidan o'ting.")}
                     </motion.p>
                 </div>
 
@@ -1009,7 +1009,7 @@ Respond STRICTLY in the following JSON format:
                                 {selectedPrompt.title} — Band 8.5 / 9.0 Namuna Insho
                             </h3>
                             <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">
-                                Rasmiy IELTS imtihoni uchun tayyorlangan ideal namuna javob va kalit so'zlar:
+                                {t('ieltsWritingAssessor.idealSample', "Rasmiy IELTS imtihoni uchun tayyorlangan ideal namuna javob va kalit so'zlar:")}
                             </p>
                         </div>
                     </div>
@@ -1028,7 +1028,7 @@ Respond STRICTLY in the following JSON format:
                     {/* Key Collocations Badge */}
                     <div className="space-y-2">
                         <span className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 block tracking-wider">
-                            Ushbu inshodagi B2/C1 Kalit Akademik Iboralar:
+                            {t('ieltsWritingAssessor.keyCollocationsLabel', "Ushbu inshodagi B2/C1 Kalit Akademik Iboralar:")}
                         </span>
                         <div className="flex flex-wrap gap-2">
                             {selectedPrompt.keyCollocations.map((col, idx) => (
@@ -1042,12 +1042,12 @@ Respond STRICTLY in the following JSON format:
                     {/* Structure Tip */}
                     <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-800 dark:text-emerald-300 flex items-start gap-2">
                         <FaLightbulb className="text-emerald-500 text-base flex-shrink-0 mt-0.5" />
-                        <span><strong>Tuzilish maslahati:</strong> {selectedPrompt.structureTip}</span>
+                        <span><strong>{t('ieltsWritingAssessor.structureTipLabel', "Tuzilish maslahati:")}</strong> {selectedPrompt.structureTip}</span>
                     </div>
 
                     {/* Full Model Answer */}
                     <div className="p-6 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h4 className="text-xs font-black uppercase tracking-wider text-gray-500">Namuna Insho Matni:</h4>
+                        <h4 className="text-xs font-black uppercase tracking-wider text-gray-500">{t('ieltsWritingAssessor.sampleTextLabel', "Namuna Insho Matni:")}</h4>
                         <p className="text-sm font-sans leading-relaxed text-gray-800 dark:text-gray-200 whitespace-pre-line font-normal">
                             {selectedPrompt.sampleAnswer}
                         </p>
@@ -1117,7 +1117,7 @@ Respond STRICTLY in the following JSON format:
                                     <FaClock className={isTimerRunning ? "text-red-500 animate-pulse text-lg" : "text-gray-400 text-lg"} />
                                     <div>
                                         <span className="text-[10px] font-bold text-gray-400 block uppercase tracking-wider">
-                                            {t('ieltsWriting.timerLabel', 'Imtihon Taymeri:')}
+                                            {t('ieltsWritingAssessor.timerLabel', 'Imtihon Taymeri:')}
                                         </span>
                                         <span className="font-mono text-xl font-black text-white">
                                             {formatTimer(timerSeconds)}
@@ -1135,7 +1135,7 @@ Respond STRICTLY in the following JSON format:
                                         }`}
                                     >
                                         {isTimerRunning ? <FaPause /> : <FaPlay />}
-                                        <span>{isTimerRunning ? t('ieltsWriting.pauseBtn', 'Pauza') : t('ieltsWriting.startTimerBtn', 'Vaqtni Boshlash')}</span>
+                                        <span>{isTimerRunning ? t('ieltsWritingAssessor.pauseBtn', 'Pauza') : t('ieltsWritingAssessor.startTimerBtn', 'Vaqtni Boshlash')}</span>
                                     </button>
 
                                     <button
@@ -1160,7 +1160,7 @@ Respond STRICTLY in the following JSON format:
                             <div className="flex items-center justify-between">
                                 <span className="text-xs font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
                                     <FaEdit className="text-red-500" />
-                                    <span>{t('ieltsWriting.editorLabel', 'Insho Matni (IELTS Writing Textarea):')}</span>
+                                    <span>{t('ieltsWritingAssessor.editorLabel', 'Insho Matni (IELTS Writing Textarea):')}</span>
                                 </span>
 
                                 <span className={`text-xs font-extrabold px-3 py-1 rounded-full border ${
@@ -1168,7 +1168,7 @@ Respond STRICTLY in the following JSON format:
                                         ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
                                         : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
                                 }`}>
-                                    {wordCount} / {selectedPrompt.suggestedWords} {t('ieltsWriting.words', "so'z")}
+                                    {wordCount} / {selectedPrompt.suggestedWords} {t('ieltsWritingAssessor.words', "so'z")}
                                 </span>
                             </div>
 
@@ -1180,7 +1180,7 @@ Respond STRICTLY in the following JSON format:
                                         setIsTimerRunning(true);
                                     }
                                 }}
-                                placeholder={t('ieltsWriting.placeholder', "Inshoingizni bu yerga yozing... IELTS mezoniga mos holda kirish, asosiy paragraflar va xulosalarni shakllantiring.")}
+                                placeholder={t('ieltsWritingAssessor.placeholder', "Inshoingizni bu yerga yozing... IELTS mezoniga mos holda kirish, asosiy paragraflar va xulosalarni shakllantiring.")}
                                 rows={14}
                                 className="w-full p-4 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-sans font-normal text-gray-900 dark:text-gray-100 focus:outline-none focus:border-red-500/60 transition leading-relaxed resize-none shadow-inner"
                             />
@@ -1188,11 +1188,11 @@ Respond STRICTLY in the following JSON format:
                             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
                                 <div className="flex items-center gap-4 text-xs font-medium text-gray-500 dark:text-gray-400">
                                     <div>
-                                        <span>{t('ieltsWriting.totalChars', 'Belgilar soni:')} </span>
+                                        <span>{t('ieltsWritingAssessor.charCount', 'Belgilar soni:')} </span>
                                         <span className="font-bold text-gray-800 dark:text-gray-200">{charCount}</span>
                                     </div>
                                     {copiedToast && (
-                                        <span className="text-emerald-500 font-bold animate-pulse">Nusxa olindi!</span>
+                                        <span className="text-emerald-500 font-bold animate-pulse">{t('ieltsWritingAssessor.copied', "Nusxa olindi!")}</span>
                                     )}
                                 </div>
 
@@ -1215,7 +1215,7 @@ Respond STRICTLY in the following JSON format:
                                         disabled={!essayText}
                                         className="px-4 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs transition cursor-pointer disabled:opacity-40"
                                     >
-                                        {t('ieltsWriting.clearBtn', 'Tozalash')}
+                                        {t('ieltsWritingAssessor.clearBtn', 'Tozalash')}
                                     </button>
 
                                     <button
@@ -1251,10 +1251,10 @@ Respond STRICTLY in the following JSON format:
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-black text-gray-900 dark:text-white">
-                                        {t('ieltsWriting.resultTitle', 'Sizning IELTS Writing Natijangiz')}
+                                        {t('ieltsWritingAssessor.resultTitle', 'Sizning IELTS Writing Natijangiz')}
                                     </h3>
                                     <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">
-                                        {analysisResult.wordCount} {t('ieltsWriting.words', "so'z")} | {selectedPrompt.type}
+                                        {analysisResult.wordCount} {t('ieltsWritingAssessor.words', "so'z")} | {selectedPrompt.type}
                                     </p>
                                 </div>
                             </div>
@@ -1279,7 +1279,7 @@ Respond STRICTLY in the following JSON format:
                                 <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                                     <div className="bg-red-600 h-full rounded-full" style={{ width: `${(analysisResult.taskResponse / 9) * 100}%` }} />
                                 </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWriting.trDesc', 'Mavzu talabi va so\'z hajmi qamrovi.')}</p>
+                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.trDesc', 'Mavzu talabi va so\'z hajmi qamrovi.')}</p>
                             </div>
 
                             <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
@@ -1290,7 +1290,7 @@ Respond STRICTLY in the following JSON format:
                                 <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                                     <div className="bg-rose-600 h-full rounded-full" style={{ width: `${(analysisResult.coherence / 9) * 100}%` }} />
                                 </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWriting.ccDesc', 'Mantiqiy izchillik va bog\'lovchilar.')}</p>
+                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.ccDesc', 'Mantiqiy izchillik va bog\'lovchilar.')}</p>
                             </div>
 
                             <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
@@ -1301,7 +1301,7 @@ Respond STRICTLY in the following JSON format:
                                 <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                                     <div className="bg-amber-500 h-full rounded-full" style={{ width: `${(analysisResult.lexical / 9) * 100}%` }} />
                                 </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWriting.lrDesc', 'Akademik iboralar va so\'z boyligi.')}</p>
+                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.lrDesc', 'Akademik iboralar va so\'z boyligi.')}</p>
                             </div>
 
                             <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
@@ -1312,7 +1312,7 @@ Respond STRICTLY in the following JSON format:
                                 <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
                                     <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${(analysisResult.grammar / 9) * 100}%` }} />
                                 </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWriting.graDesc', 'Grammatik aniqlik va murakkab gaplar.')}</p>
+                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.graDesc', 'Grammatik aniqlik va murakkab gaplar.')}</p>
                             </div>
                         </div>
 
@@ -1321,7 +1321,7 @@ Respond STRICTLY in the following JSON format:
                             <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-3">
                                 <h4 className="text-xs font-black uppercase tracking-wider text-gray-600 dark:text-gray-400 flex items-center gap-2">
                                     <FaSpellCheck className="text-red-500" />
-                                    <span>Topilgan C1/C2 Akademik Ibora (Collocations):</span>
+                                    <span>{t('ieltsWritingAssessor.foundCollocations', "Topilgan C1/C2 Akademik Ibora (Collocations):")}</span>
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {analysisResult.foundCollocations && analysisResult.foundCollocations.length > 0 ? (
@@ -1331,7 +1331,7 @@ Respond STRICTLY in the following JSON format:
                                             </span>
                                         ))
                                     ) : (
-                                        <span className="text-xs text-gray-400 italic">Akademik collocations topilmadi.</span>
+                                        <span className="text-xs text-gray-400 italic">{t('ieltsWritingAssessor.noCollocations', "Akademik collocations topilmadi.")}</span>
                                     )}
                                 </div>
                             </div>
@@ -1339,7 +1339,7 @@ Respond STRICTLY in the following JSON format:
                             <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-3">
                                 <h4 className="text-xs font-black uppercase tracking-wider text-gray-600 dark:text-gray-400 flex items-center gap-2">
                                     <FaChartLine className="text-amber-500" />
-                                    <span>Topilgan Mantiqiy Bog'lovchilar (Connectors):</span>
+                                    <span>{t('ieltsWritingAssessor.foundConnectors', "Topilgan Mantiqiy Bog'lovchilar (Connectors):")}</span>
                                 </h4>
                                 <div className="flex flex-wrap gap-2">
                                     {analysisResult.foundConnectors && analysisResult.foundConnectors.length > 0 ? (
@@ -1349,7 +1349,7 @@ Respond STRICTLY in the following JSON format:
                                             </span>
                                         ))
                                     ) : (
-                                        <span className="text-xs text-gray-400 italic">Mantiqiy o'tish so'zlari topilmadi.</span>
+                                        <span className="text-xs text-gray-400 italic">{t('ieltsWritingAssessor.noConnectors', "Mantiqiy o'tish so'zlari topilmadi.")}</span>
                                     )}
                                 </div>
                             </div>
@@ -1360,7 +1360,7 @@ Respond STRICTLY in the following JSON format:
                             <div className="p-5 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-3">
                                 <h4 className="text-xs font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-2">
                                     <FaExclamationTriangle />
-                                    <span>Ko'p Takrorlangan So'zlar va Ularning Sinonimlari:</span>
+                                    <span>{t('ieltsWritingAssessor.overusedWords', "Ko'p Takrorlangan So'zlar va Ularning Sinonimlari:")}</span>
                                 </h4>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                     {analysisResult.overusedWordsDetected.map((item, idx) => (
@@ -1382,7 +1382,7 @@ Respond STRICTLY in the following JSON format:
                             <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-3">
                                 <h4 className="flex items-center gap-2 text-sm font-extrabold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
                                     <FaCheckCircle />
-                                    <span>{t('ieltsWriting.strengthsTitle', 'Kuchli Tomonlaringiz')}</span>
+                                    <span>{t('ieltsWritingAssessor.strengthsTitle', 'Kuchli Tomonlaringiz')}</span>
                                 </h4>
                                 <ul className="space-y-2">
                                     {analysisResult.strengths.map((str, i) => (
@@ -1397,7 +1397,7 @@ Respond STRICTLY in the following JSON format:
                             <div className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-3">
                                 <h4 className="flex items-center gap-2 text-sm font-extrabold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
                                     <FaLightbulb />
-                                    <span>{t('ieltsWriting.improveTitle', 'Yaxshilash Uchun Tavsiyalar')}</span>
+                                    <span>{t('ieltsWritingAssessor.improveTitle', 'Yaxshilash Uchun Tavsiyalar')}</span>
                                 </h4>
                                 <ul className="space-y-2">
                                     {analysisResult.improvements.map((imp, i) => (

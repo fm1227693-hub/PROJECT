@@ -127,13 +127,13 @@ export default function Navbar() {
     )
 
     return (
-        <div className={`fixed top-0 left-0 w-full z-50 font-['Plus_Jakarta_Sans',sans-serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 pt-3 sm:pt-4' : 'px-0 pt-0'}`}>
+        <div className={`fixed top-0 left-0 w-full z-50 font-['Plus_Jakarta_Sans',sans-serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'}`}>
             <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 className={`mx-auto transition-all duration-500 pointer-events-auto relative ${scrolled
-                    ? 'max-w-6xl rounded-2xl bg-white/80 dark:bg-[#030712]/80 backdrop-blur-2xl border border-gray-200/70 dark:border-white/[0.09] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]'
+                    ? 'max-w-[1216px] rounded-2xl bg-white/80 dark:bg-[#030712]/80 backdrop-blur-2xl border border-gray-200/70 dark:border-white/[0.09] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]'
                     : 'max-w-full rounded-none bg-white/40 dark:bg-[#030712]/30 backdrop-blur-md border-b border-transparent'
                 }`}
             >
