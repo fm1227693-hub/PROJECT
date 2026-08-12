@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 const TELEGRAM_USERNAME = 'optimum_school'
 const PHONE_NUMBER = '+998 90 082 99 79'
@@ -26,9 +24,7 @@ export default function Pricing() {
     const levelLabel = location.state?.levelLabel || null
     const matchedPlan = levelKey ? getPlanForLevel(levelKey) : null
 
-    useEffect(() => {
-        AOS.init({ once: true, offset: 60, duration: 700 })
-    }, [])
+    
 
     const contactTelegram = (planId) => {
         const text = encodeURIComponent(

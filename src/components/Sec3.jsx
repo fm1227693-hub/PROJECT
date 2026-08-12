@@ -2,15 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaTimes, FaCheckCircle } from 'react-icons/fa'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function Sec3() {
   const { t, i18n } = useTranslation()
 
-  useEffect(() => {
-    AOS.init({ once: true, offset: 80, duration: 700, easing: 'ease-out-cubic' })
-  }, [])
+  
 
   const teachers = [
     {

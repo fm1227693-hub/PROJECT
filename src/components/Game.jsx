@@ -81,9 +81,8 @@ export default function Games() {
             className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
         >
             {/* Sarlavha qismi */}
-            <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
+            <div 
+                data-aos="fade-down" 
                 className="text-center mb-6"
             >
                 <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-[11px] font-black mb-3 shadow-sm">
@@ -96,14 +95,12 @@ export default function Games() {
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 px-2">
                     {t('games.wordScramble.description')}
                 </p>
-            </motion.div>
+            </div>
 
             {/* Asosiy O'yin Kartasi */}
-            <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-800/80 rounded-3xl p-5 sm:p-7 shadow-2xl relative overflow-hidden"
+            <div 
+                data-aos="fade-up" data-aos-delay="200"
+                className="w-full glass-card border border-gray-200/60 dark:border-gray-800/80 rounded-3xl p-5 sm:p-7 shadow-2xl relative overflow-hidden"
             >
                 {!isCompleted ? (
                     <div>
@@ -222,7 +219,7 @@ export default function Games() {
                         </motion.button>
                     </motion.div>
                 )}
-            </motion.div>
+            </div>
         </div>
     );
 }

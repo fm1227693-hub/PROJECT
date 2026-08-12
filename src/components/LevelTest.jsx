@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 const QUESTIONS = [
     { id: 1, level: 1, q: "'She ___ a doctor.'", options: ['is', 'are', 'am', 'be'], answer: 0 },
@@ -86,9 +84,7 @@ export default function LevelTest() {
     const [direction, setDirection] = useState('next')
     const timerRef = useRef(null)
 
-    useEffect(() => {
-        AOS.init({ once: true, offset: 60, duration: 700 })
-    }, [])
+    
 
     useEffect(() => {
         if (stage !== 'test' || finished) return

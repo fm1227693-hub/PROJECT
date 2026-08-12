@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 import { 
     HiLightningBolt, 
     HiCheckCircle, 
@@ -19,13 +17,7 @@ const FIXED_LOCATION = {
 export default function AboutUs() {
     const { t } = useTranslation()
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 80,
-            duration: 800,
-        })
-    }, [])
+    
 
     return (
         <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-sans text-gray-900 dark:text-white transition-colors duration-200">

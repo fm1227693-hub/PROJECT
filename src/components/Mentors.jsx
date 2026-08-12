@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 const staticMentorsData = [
   {
@@ -28,12 +26,7 @@ export default function Mentors() {
     phone: "",
   });
 
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      offset: 100,
-    });
-  }, []);
+  
 
   // JSON dan tarjima qilingan mentorlar massivini olish
   const translatedMentors = t('mentors.list', { returnObjects: true }) || [];

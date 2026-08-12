@@ -1,18 +1,11 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaBullseye, FaChalkboardTeacher } from 'react-icons/fa'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function Sec4() {
     const { t } = useTranslation()
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 100,
-        })
-    }, [])
+    
 
     return (
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200 overflow-hidden">

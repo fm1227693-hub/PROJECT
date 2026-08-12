@@ -14,19 +14,12 @@ import {
     FaCheckCircle,
 } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function Footer() {
     const { t } = useTranslation()
     const [activeModal, setActiveModal] = useState(null) // 'privacy' | 'terms' | null
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 50,
-        })
-    }, [])
+    
 
     const quickLinks = [
         { label: t('footer.links.home'), to: '/' },

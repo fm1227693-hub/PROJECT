@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaTimes, FaTelegramPlane, FaStar, FaGraduationCap, FaArrowRight, FaClock, FaAward } from "react-icons/fa";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 const staticMentorsData = [
     {
@@ -46,12 +44,7 @@ export default function Mentorstats() {
     // Admin Chat ID (rasmdan olindi: 6383523156)
     const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 100,
-        });
-    }, []);
+    
 
     useEffect(() => {
         window.scrollTo(0, 0);

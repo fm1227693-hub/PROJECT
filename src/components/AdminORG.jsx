@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import Comments from './Comments'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 import toast, { Toaster } from 'react-hot-toast'
 import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers, FaTrash, FaHeadset, FaChevronDown, FaUserShield } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -104,10 +102,7 @@ export default function AdminORG() {
     }
 
     useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 80,
-        })
+        
         loadLeads()
 
         // Har 3 soniyada barcha qurilmalar (telefon, PC) orasida murojaatlarni real-vaqtda yangilash

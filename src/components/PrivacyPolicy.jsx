@@ -2,15 +2,13 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { FaShieldAlt, FaLock, FaUserCheck, FaServer, FaArrowLeft, FaHome, FaCheckCircle } from 'react-icons/fa'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function PrivacyPolicy() {
     const { t } = useTranslation()
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        AOS.init({ once: true, offset: 50 })
+        
     }, [])
 
     return (

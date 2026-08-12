@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import AdminORG from './AdminORG'
 import toast, { Toaster } from 'react-hot-toast'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 import { Link } from 'react-router-dom'
 import { FaArrowLeft } from 'react-icons/fa'
 
@@ -12,12 +10,7 @@ export default function Admin() {
     const [cod, setCod] = useState('')
     const [kirish, setKirish] = useState(false)
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 80,
-        })
-    }, [])
+    
 
     const alo = () => {
         if (cod === '88888888') {

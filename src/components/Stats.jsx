@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function Stats() {
     const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('1m');
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 100,
-            duration: 800,
-        })
-    }, [])
+    
 
     const dataConfig = {
         '1m': {

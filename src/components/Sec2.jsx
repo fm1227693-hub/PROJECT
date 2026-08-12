@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function Sec2() {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    useEffect(() => {
-        AOS.init({ once: true, offset: 80, duration: 700 })
-    }, [])
+    
 
     return (
         <div className="max-w-7xl mx-auto px-4 xs:px-5 sm:px-6 lg:px-8 mt-16 xs:mt-20 sm:mt-24 mb-16 xs:mb-20 sm:mb-24 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">

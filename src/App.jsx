@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { inView, animate, AnimatePresence, motion } from "framer-motion";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
@@ -35,6 +36,7 @@ function ScrollToTop() {
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     // 5 soniya (5000ms) qilib belgilandi
@@ -44,6 +46,53 @@ export default function App() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Premium Framer Motion global scroll reveal (Robust dynamic version)
+  useEffect(() => {
+    if (isLoading) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const type = el.getAttribute('data-aos');
+          const delayAttr = el.getAttribute('data-aos-delay');
+          const delayMs = delayAttr ? parseInt(delayAttr, 10) / 1000 : 0;
+          
+          // Premium Apple-like ease-out (fast start, smooth deceleration). Slowed down for a more majestic feel.
+          const options = { duration: 1.2, delay: delayMs * 1.5, ease: [0.22, 1, 0.36, 1] };
+          
+          // Execute Premium Framer Motion directly on the DOM nodes
+          if (type === 'fade-up') animate(el, { opacity: [0, 1], y: [40, 0] }, options);
+          else if (type === 'fade-down') animate(el, { opacity: [0, 1], y: [-40, 0] }, options);
+          else if (type === 'fade-left') animate(el, { opacity: [0, 1], x: [40, 0] }, options);
+          else if (type === 'fade-right') animate(el, { opacity: [0, 1], x: [-40, 0] }, options);
+          else if (type === 'zoom-in') animate(el, { opacity: [0, 1], scale: [0.9, 1] }, options);
+          else animate(el, { opacity: [0, 1], y: [30, 0] }, options);
+          
+          observer.unobserve(el);
+          el.removeAttribute('data-aos'); // Prevent duplicate observing
+        }
+      });
+    }, { rootMargin: "0px 0px -50px 0px" });
+
+    // Catch currently mounted elements
+    const observeAll = () => {
+      document.querySelectorAll("[data-aos]").forEach(el => observer.observe(el));
+    };
+    observeAll();
+
+    // Catch dynamically mounted elements (e.g. from React Router or AnimatePresence)
+    const mutationObserver = new MutationObserver(() => {
+      observeAll();
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, [isLoading, location.pathname]);
 
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-hidden font-sans">
@@ -154,27 +203,37 @@ export default function App() {
       <div className="relative z-10">
         <Navbar />
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/stats" element={<Stats />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/enter" element={<Admin />} />
-          <Route path="/mentor-stats" element={<Mentorstats />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/level-test" element={<LevelTest />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/games" element={<Gamess />} />
-          <Route path="/ielts-practice" element={<IeltsPracticeApp />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/form" element={<LeadForm />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/ielts-writing" element={<IeltsWritingAssessor />} />
-        </Routes>
-        {/* <ConsultationBooking/>
-        <Flashcards/> */}
-        <Footer />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Main />} />
+              <Route path="/stats" element={<Stats />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/enter" element={<Admin />} />
+              <Route path="/mentor-stats" element={<Mentorstats />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/level-test" element={<LevelTest />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/games" element={<Gamess />} />
+              <Route path="/ielts-practice" element={<IeltsPracticeApp />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/form" element={<LeadForm />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-use" element={<TermsOfUse />} />
+              <Route path="/ielts-writing" element={<IeltsWritingAssessor />} />
+            </Routes>
+            {/* <ConsultationBooking/>
+            <Flashcards/> */}
+            <Footer />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Bottom Floating Quick Action Badges */}

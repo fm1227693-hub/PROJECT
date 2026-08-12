@@ -11,8 +11,6 @@ import 'swiper/css/pagination';
 import './home.css';
 
 import { Pagination, Autoplay, EffectCube } from 'swiper/modules';
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 
 export default function Home() {
     const { t } = useTranslation()
@@ -73,12 +71,7 @@ export default function Home() {
         }
     }
 
-    useEffect(() => {
-        AOS.init({
-            once: true,
-            offset: 50,
-        })
-    }, [])
+    
 
     return (
         <div 
