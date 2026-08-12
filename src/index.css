@@ -175,21 +175,26 @@
   border-color: rgba(225, 29, 72, 1);
 }
 
-/* Mobile Performance Optimizations (Zero lag on phones) */
+/* GLOBAL MOBILE PERFORMANCE OVERRIDE (Zero lag on phones) */
 @media (max-width: 768px) {
-  .glass-panel, .dark .glass-panel,
-  .glass-card, .dark .glass-card,
-  .glass-input, .dark .glass-input {
+  /* Oynali (Glass) xiralashishni hamma joyda butunlay o'chirish */
+  * {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
   
-  .dark .glass-panel, .dark .glass-card {
-    background: rgba(7, 12, 22, 0.98) !important;
+  /* Ilova ichidagi qotishga sabab bo'luvchi yirik blur effektlarini o'chirish */
+  .blur-sm, .blur-md, .blur-lg, .blur-xl, .blur-2xl, .blur-3xl, .blur-\[170px\], .blur-\[180px\] {
+    filter: none !important;
   }
   
-  .glass-panel, .glass-card {
-    background: rgba(250, 252, 255, 0.98) !important;
+  /* Xiralashish o'chgandan keyin matn o'qilishini ta'minlash uchun fonni to'qlashtirish */
+  .dark .glass-panel, .dark .glass-card, .dark .bg-black\/50, .dark .bg-slate-900\/50, .dark .bg-slate-950\/60 {
+    background-color: rgba(7, 12, 22, 0.98) !important;
+  }
+  
+  .glass-panel, .glass-card, .bg-white\/50, .bg-white\/60, .bg-white\/70 {
+    background-color: rgba(250, 252, 255, 0.98) !important;
   }
 
   .shimmer-border {

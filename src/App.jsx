@@ -137,14 +137,23 @@ export default function App() {
           }}
         />
 
-        {/* Dynamic Rotating Aurora Beams */}
-        <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/30 via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1" />
-        <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/25 via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2" />
-        <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/25 via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s]" />
+        {/* Dynamic Rotating Aurora Beams (Optimized for Mobile & PC) */}
+        <div 
+          className="absolute top-[-20%] left-[-15%] w-[120vw] md:w-[800px] h-[120vw] md:h-[800px] animate-aurora-1 opacity-60" 
+          style={{ background: 'radial-gradient(circle, rgba(220,38,38,0.15) 0%, rgba(244,63,94,0.05) 40%, transparent 70%)' }}
+        />
+        <div 
+          className="absolute top-[20%] right-[-20%] w-[110vw] md:w-[750px] h-[110vw] md:h-[750px] animate-aurora-2 opacity-60" 
+          style={{ background: 'radial-gradient(circle, rgba(225,29,72,0.12) 0%, rgba(245,158,11,0.05) 40%, transparent 70%)' }}
+        />
+        <div 
+          className="absolute bottom-[-20%] left-[10%] w-[130vw] md:w-[850px] h-[130vw] md:h-[850px] animate-aurora-1 [animation-delay:5s] opacity-60" 
+          style={{ background: 'radial-gradient(circle, rgba(220,38,38,0.12) 0%, rgba(244,63,94,0.05) 40%, transparent 70%)' }}
+        />
 
         {/* Floating Glowing Neon Rings */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-500/15 rounded-full blur-sm animate-float-orb" />
-        <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[90vw] md:w-[700px] h-[40vw] md:h-[350px] border border-red-500/10 rounded-full animate-float-orb shadow-[0_0_40px_rgba(239,68,68,0.1)]" />
+        <div className="absolute top-2/3 left-1/3 w-[70vw] md:w-[500px] h-[30vw] md:h-[250px] border border-rose-500/10 rounded-full animate-float-orb [animation-delay:3s] shadow-[0_0_30px_rgba(244,63,94,0.1)]" />
 
         {/* Smooth Edge Fade Overlays */}
         <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100/90 dark:from-[#020509] to-transparent pointer-events-none" />
