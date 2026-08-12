@@ -32,33 +32,33 @@
 
 /* Custom Glassmorphism & Glow Effects */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(225, 29, 72, 0.12);
   box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.05);
 }
 
 .dark .glass-panel {
-  background: rgba(7, 11, 20, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(7, 11, 20, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.5);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(229, 231, 235, 0.9);
   box-shadow: 0 20px 45px -15px rgba(225, 29, 72, 0.06);
 }
 
 .dark .glass-card {
-  background: linear-gradient(135deg, rgba(13, 19, 34, 0.9) 0%, rgba(7, 11, 20, 0.95) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: linear-gradient(135deg, rgba(13, 19, 34, 0.82) 0%, rgba(7, 11, 20, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.65);
 }
@@ -141,13 +141,14 @@
 }
 
 @keyframes shimmer-border {
-  0%, 100% {
-    box-shadow: 0 0 15px 0px rgba(225, 29, 72, 0.15);
-    border-color: rgba(225, 29, 72, 0.2);
+  0% {
+    background-position: 0% 50%;
   }
   50% {
-    box-shadow: 0 0 25px 4px rgba(225, 29, 72, 0.45);
-    border-color: rgba(225, 29, 72, 0.7);
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
@@ -163,42 +164,22 @@
   animation: float-orb 10s ease-in-out infinite;
 }
 
-/* Optimized Luxury Breathing Glow Border */
+/* Luxury Glowing Shimmer Border */
 .shimmer-border {
-  border: 1px solid rgba(225, 29, 72, 0.2);
-  animation: shimmer-border 4s ease-in-out infinite;
-  transition: all 0.3s ease;
+  position: relative;
 }
 
-.shimmer-border:hover {
-  box-shadow: 0 0 35px 8px rgba(225, 29, 72, 0.55);
-  border-color: rgba(225, 29, 72, 1);
-}
-
-/* GLOBAL MOBILE PERFORMANCE OVERRIDE (Zero lag on phones) */
-@media (max-width: 768px) {
-  /* Oynali (Glass) xiralashishni hamma joyda butunlay o'chirish */
-  * {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-  
-  /* Ilova ichidagi qotishga sabab bo'luvchi yirik blur effektlarini o'chirish */
-  .blur-sm, .blur-md, .blur-lg, .blur-xl, .blur-2xl, .blur-3xl, .blur-\[170px\], .blur-\[180px\] {
-    filter: none !important;
-  }
-  
-  /* Xiralashish o'chgandan keyin matn o'qilishini ta'minlash uchun fonni to'qlashtirish */
-  .dark .glass-panel, .dark .glass-card, .dark .bg-black\/50, .dark .bg-slate-900\/50, .dark .bg-slate-950\/60 {
-    background-color: rgba(7, 12, 22, 0.98) !important;
-  }
-  
-  .glass-panel, .glass-card, .bg-white\/50, .bg-white\/60, .bg-white\/70 {
-    background-color: rgba(250, 252, 255, 0.98) !important;
-  }
-
-  .shimmer-border {
-    animation: none !important;
-    box-shadow: none !important;
-  }
+.shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, rgba(225,29,72,0.6), rgba(244,63,94,0.1), rgba(251,113,133,0.6), rgba(225,29,72,0.6));
+  background-size: 200% 200%;
+  animation: shimmer-border 6s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events-none: true;
 }
