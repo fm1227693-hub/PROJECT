@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaArrowLeft } from 'react-icons/fa';
+import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { IMaskInput } from 'react-imask';
 
 export default function Register() {
     const { t } = useTranslation();
@@ -32,26 +33,22 @@ export default function Register() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === 'phone') {
-            const numbers = value.replace(/\D/g, '').slice(0, 9);
-            setFormData({ ...formData, phone: numbers });
-        } else {
-            setFormData({ ...formData, [name]: value });
-        }
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (formData.phone.length < 9) {
+        const digitsOnly = formData.phone.replace(/\D/g, '');
+
+        if (!formData.fullName.trim() || digitsOnly.length < 9) {
             showToast(t('register.phoneError'), "error");
             return;
         }
 
         setLoading(true);
 
-        const message = `@optimum_kurs_bot orqali yangi ro'yxatdan o'tish!\n\nF.I.O: ${formData.fullName}\nTelefon: +998 ${formData.phone}\nKurs: ${t('register.courseName')}`;
+        const message = `🆕 Yangi o'quvchi ro'yxatdan o'tdi:\n👤 Ism: ${formData.fullName}\n📱 Tel: +998${digitsOnly}\n📖 Kurs: ${t('register.courseName')}`;
 
         try {
             // Har bir chat ID ga alohida so'rov yaratib, ularni bir vaqtning o'zida yuboramiz
@@ -76,8 +73,8 @@ export default function Register() {
                     id: Date.now(),
                     isLead: true,
                     name: formData.fullName,
-                    phone: `+998 ${formData.phone}`,
-                    type: `Ro'yxatdan o'tish (${t('register.courseName')})`,
+                    phone: `+998 ${digitsOnly}`,
+                    type: t('register.courseName'),
                     date: new Date().toLocaleString('uz-UZ'),
                     status: 'Kutilmoqda'
                 }
@@ -182,12 +179,12 @@ export default function Register() {
                             <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
                                 +998
                             </div>
-                            <input
-                                type="tel"
+                            <IMaskInput
+                                mask="(00) 000-00-00"
                                 name="phone"
-                                placeholder="901234567"
+                                placeholder="(90) 123-45-67"
                                 value={formData.phone}
-                                onChange={handleChange}
+                                onAccept={(value) => handleChange({ target: { name: 'phone', value } })}
                                 className="w-full pl-24 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
                                 required
                             />

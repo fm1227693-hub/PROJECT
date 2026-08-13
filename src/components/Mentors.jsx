@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { FaTimes } from 'react-icons/fa';
+import { IMaskInput } from 'react-imask';
 
 const staticMentorsData = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=400&auto=format&fit=crop",
     telegram: "https://t.me/username1",
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=400&auto=format&fit=crop",
     telegram: "https://t.me/username2",
   },
 ];
@@ -182,15 +184,20 @@ export default function Mentors() {
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1 uppercase tracking-wider">{t('mentors.phoneLabel')}</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  placeholder="+998 90 123 45 67"
-                  className="w-full bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-800 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-red-500 transition-colors text-sm"
-                />
+                <div className="flex items-center w-full bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-800 rounded-xl overflow-hidden focus-within:border-red-500 transition-colors">
+                  <span className="pl-4 pr-2 text-gray-500 dark:text-slate-400 text-sm font-bold border-r border-gray-300 dark:border-slate-800 py-3 bg-gray-100 dark:bg-slate-900">
+                    +998
+                  </span>
+                  <IMaskInput
+                    mask="(00) 000-00-00"
+                    name="phone"
+                    value={formData.phone}
+                    onAccept={(value) => handleChange({ target: { name: 'phone', value } })}
+                    required
+                    placeholder="(90) 123-45-67"
+                    className="w-full bg-transparent px-4 py-3 text-gray-900 dark:text-white focus:outline-none text-sm"
+                  />
+                </div>
               </div>
 
               <button

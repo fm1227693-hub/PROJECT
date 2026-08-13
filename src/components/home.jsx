@@ -151,7 +151,7 @@ export default function Home() {
                         }}
                         pagination={{ clickable: true }}
                         modules={[Pagination, Autoplay, EffectCube]}
-                        className="w-[260px] h-[260px] xs:w-[290px] xs:h-[290px] sm:w-[360px] sm:h-[360px] rounded-2xl sm:rounded-[2rem] max-w-full"
+                        className="w-[280px] h-[280px] xs:w-[340px] xs:h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[480px] lg:h-[480px] xl:w-[520px] xl:h-[520px] rounded-2xl sm:rounded-[2rem] max-w-full"
                     >
                         <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-transparent">
                             <div className="h-full w-full relative group">

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaSpinner, FaArrowRight, FaTimes, FaArrowLeft } from 'react-icons/fa'
 import axios from 'axios'
+import { IMaskInput } from 'react-imask';
 
 export default function LeadForm() {
     const { t } = useTranslation()
@@ -17,15 +18,6 @@ export default function LeadForm() {
     // Ikkita admin chat ID lari massiv ko'rinishida
     const CHAT_IDS = ["334572168", "6383523156"]
 
-    const handlePhoneChange = (e) => {
-        const value = e.target.value
-        const digitsOnly = value.replace(/\D/g, '')
-        
-        if (digitsOnly.length <= 9) {
-            setPhone(digitsOnly)
-        }
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!name.trim() || !phone.trim()) {
@@ -33,7 +25,8 @@ export default function LeadForm() {
             return
         }
 
-        if (phone.length < 9) {
+        const digitsOnly = phone.replace(/\D/g, '')
+        if (digitsOnly.length < 9) {
             setError(t('leadForm.errorPhoneDigits', "Iltimos, 9 ta raqamni to'liq kiriting!"))
             return
         }
@@ -41,7 +34,7 @@ export default function LeadForm() {
         setError('')
         setLoading(true)
 
-        const message = `Yangi murojaat (Optimum):\n\nIsm: ${name}\nTel: +998${phone}`
+        const message = `Yangi murojaat (Optimum):\n\nIsm: ${name}\nTel: +998${digitsOnly}`
 
         try {
             const promises = CHAT_IDS.map(chatId =>
@@ -66,7 +59,7 @@ export default function LeadForm() {
                     id: Date.now(),
                     isLead: true,
                     name: name,
-                    phone: `+998 ${phone}`,
+                    phone: `+998 ${digitsOnly}`,
                     type: t('leadForm.badge', 'Bepul maslahat'),
                     date: new Date().toLocaleString('uz-UZ'),
                     status: 'Kutilmoqda'
@@ -211,13 +204,11 @@ export default function LeadForm() {
                                             <span className="pl-4 pr-2 text-gray-600 dark:text-gray-400 text-sm font-bold select-none border-r border-gray-200 dark:border-gray-800/80 py-3 bg-gray-100 dark:bg-gray-900/40">
                                                 +998
                                             </span>
-                                            <input
-                                                type="text"
-                                                inputMode="numeric"
+                                            <IMaskInput
+                                                mask="(00) 000-00-00"
                                                 value={phone}
-                                                onChange={handlePhoneChange}
-                                                placeholder="901234567"
-                                                maxLength={9}
+                                                onAccept={(value) => setPhone(value)}
+                                                placeholder="(90) 123-45-67"
                                                 className="w-full px-4 py-3 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none"
                                             />
                                         </div>

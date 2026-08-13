@@ -53,7 +53,7 @@ In conclusion, although mobile phones can cause classroom distractions if unmoni
         },
         {
             id: 't1_b5_2',
-            imageUrl: 'https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=800&fit=crop',
+            imageUrl: 'https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=400&fit=crop',
             title: t('ieltsWriting.p2Title', 'Task 1: Line Graph - Public Transport Passengers'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -113,7 +113,7 @@ In conclusion, although AI automation will inevitably disrupt traditional job ma
         },
         {
             id: 't1_b7_5',
-            imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&fit=crop',
+            imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&fit=crop',
             title: t('ieltsWriting.p5Title', 'Task 1: Bar Chart - University Graduates Employment'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -152,7 +152,7 @@ To summarize, while securing early employment provides practical experience and 
         },
         {
             id: 't1_b7_7',
-            imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&fit=crop',
+            imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&fit=crop',
             title: t('ieltsWriting.p7Title', 'Task 1: Process Diagram - Water Recycling System'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -212,7 +212,7 @@ In summary, although Universal Basic Income presents a visionary remedy for weal
         },
         {
             id: 't1_b8_10',
-            imageUrl: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&fit=crop',
+            imageUrl: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&fit=crop',
             title: t('ieltsWriting.p10Title', 'Task 1: Pie Charts - Global Energy Projections'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -251,7 +251,7 @@ In conclusion, although economic pragmatism favors global linguistic standardiza
         },
         {
             id: 't1_b9_12',
-            imageUrl: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&fit=crop',
+            imageUrl: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&fit=crop',
             title: t('ieltsWriting.p12Title', 'Task 1: Map Comparison - Urban Redevelopment'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',

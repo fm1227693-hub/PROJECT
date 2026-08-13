@@ -1,6 +1,5 @@
 .swiper {
-    width: 100%;
-    height: 100%;
+    /* Rely on Tailwind classes for sizing */
 }
 
 .swiper-slide {
@@ -9,9 +8,6 @@
     background: transparent;
 
     /* Center slide text vertically */
-    
-    
-    
 }
 
 .swiper-slide img {
@@ -20,6 +16,7 @@
     height: 100%;
     object-fit: cover;
 }
+
 /* Custom Swiper Pagination */
 .swiper-pagination-bullet {
   background: rgba(255, 255, 255, 0.5) !important;

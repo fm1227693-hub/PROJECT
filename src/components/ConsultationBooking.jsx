@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import { IMaskInput } from 'react-imask';
 
 const mentors = [
   { id: 1, name: 'Zamirgor Omiqova', role: 'IELTS 8.5 Expert' },
@@ -34,7 +35,7 @@ export default function ConsultationBooking() {
       id: Date.now(),
       isLead: true,
       name: studentName,
-      phone: studentPhone.startsWith('+') ? studentPhone : `+998 ${studentPhone.replace(/\D/g, '')}`,
+      phone: `+998 ${studentPhone.replace(/\D/g, '')}`,
       type: `Konsultatsiya (${selectedMentor} - ${selectedDate} ${selectedTime})`,
       date: new Date().toLocaleString('uz-UZ'),
       status: 'Kutilmoqda'
@@ -157,13 +158,18 @@ export default function ConsultationBooking() {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">{t('consultationBooking.phoneLabel', "Telefon raqamingiz")}</label>
-            <input
-              type="tel"
-              placeholder="+998 90 123 45 67"
-              value={studentPhone}
-              onChange={(e) => setStudentPhone(e.target.value)}
-              className="w-full bg-[#161821] border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-600"
-            />
+            <div className="flex items-center w-full bg-[#161821] border border-gray-800 rounded-xl overflow-hidden focus-within:border-red-600 transition-colors">
+              <span className="pl-4 pr-2 text-gray-400 text-sm border-r border-gray-800 py-3 bg-[#111219]">
+                +998
+              </span>
+              <IMaskInput
+                mask="(00) 000-00-00"
+                placeholder="(90) 123-45-67"
+                value={studentPhone}
+                onAccept={(value) => setStudentPhone(value)}
+                className="w-full bg-transparent px-4 py-3 text-white focus:outline-none"
+              />
+            </div>
           </div>
         </div>
 

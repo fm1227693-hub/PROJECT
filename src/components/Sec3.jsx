@@ -35,7 +35,7 @@ export default function Sec3() {
       id: 'zarnigor',
       name: 'Zarnigor Okkanyova',
       image:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=600&auto=format&fit=crop',
       score: '8.5',
       cert: 'IELTS 8.5',
       experience: '4+',
@@ -47,7 +47,7 @@ export default function Sec3() {
       id: 'gulasal',
       name: 'Gulasal Butaeva',
       image:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=600&auto=format&fit=crop',
       score: '9.0',
       cert: 'IELTS 9.0',
       experience: '5+',
