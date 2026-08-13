@@ -83,10 +83,13 @@ export default function Register() {
                 }
 
                 try {
-                    const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71')
-                    const currentLeads = Array.isArray(res.data) ? res.data : []
+                    const res = await axios.get('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json')
+                    let currentLeads = []
+                    if (res.data !== null) {
+                        currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
+                    }
                     const updatedLeads = [newLead, ...currentLeads]
-                    await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedLeads)
+                    await axios.put('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json', updatedLeads)
                     localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
                 } catch (err) {
                     console.error("API error:", err)

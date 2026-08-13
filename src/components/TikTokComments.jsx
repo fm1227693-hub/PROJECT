@@ -5,7 +5,7 @@ import { FaHeart, FaRegHeart, FaPaperPlane, FaTrash, FaCheckCircle, FaUserCircle
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
-const API_URL = 'https://jsonblob.com/api/jsonBlob/019fe9cb-03f4-7d5f-9c48-8445da12300c'
+const API_URL = 'https://optimum-a2d13-default-rtdb.firebaseio.com/comments.json'
 
 export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     const { t } = useTranslation()
@@ -32,9 +32,13 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
         setLoading(true)
         try {
             const res = await axios.get(API_URL, { validateStatus: status => status < 500 })
-            if (res.status === 200 && Array.isArray(res.data)) {
-                setCommentsORG(res.data)
-                localStorage.setItem('tiktok_CommentsORG', JSON.stringify(res.data))
+            if (res.status === 200 && res.data !== null) {
+                const dataArray = Array.isArray(res.data) ? res.data : Object.values(res.data)
+                setCommentsORG(dataArray)
+                localStorage.setItem('tiktok_CommentsORG', JSON.stringify(dataArray))
+            } else if (res.data === null) {
+                setCommentsORG([])
+                localStorage.setItem('tiktok_CommentsORG', '[]')
             } else {
                 const stored = JSON.parse(localStorage.getItem('tiktok_CommentsORG') || '[]')
                 setCommentsORG(stored)

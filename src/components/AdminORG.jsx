@@ -55,7 +55,7 @@ export default function AdminORG() {
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
         try {
-            await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
+            await axios.put('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json', updatedList)
             toast.success(t('adminPanel.leadRegisteredSuccess', "Murojaat muvaffaqiyatli ro'yxatga olindi!"))
         } catch (e) {
             toast.success(t('adminPanel.leadSavedSuccess', "Murojaat saqlandi!"))
@@ -72,7 +72,7 @@ export default function AdminORG() {
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
         try {
-            await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
+            await axios.put('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json', updatedList)
         } catch (e) {
             // silent catch for local storage fallback
         }
@@ -83,12 +83,16 @@ export default function AdminORG() {
     const loadLeads = async () => {
         setLoadingLeads(true)
         try {
-            const res = await axios.get('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', {
+            const res = await axios.get('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json', {
                 validateStatus: status => status < 500
             })
-            if (res.status === 200 && Array.isArray(res.data)) {
-                setLeads(res.data)
-                localStorage.setItem('admin_leads', JSON.stringify(res.data))
+            if (res.status === 200 && res.data !== null) {
+                const dataArray = Array.isArray(res.data) ? res.data : Object.values(res.data)
+                setLeads(dataArray)
+                localStorage.setItem('admin_leads', JSON.stringify(dataArray))
+            } else if (res.data === null) {
+                setLeads([])
+                localStorage.setItem('admin_leads', '[]')
             } else {
                 const stored = JSON.parse(localStorage.getItem('admin_leads') || '[]')
                 setLeads(stored)
@@ -125,7 +129,7 @@ export default function AdminORG() {
         localStorage.setItem('admin_leads', JSON.stringify(updatedList))
 
         try {
-            await axios.put('https://jsonblob.com/api/jsonBlob/019fe9ca-e729-761e-a88a-c68b3bd21d71', updatedList)
+            await axios.put('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json', updatedList)
         } catch (e) {
             // silent catch
         }
