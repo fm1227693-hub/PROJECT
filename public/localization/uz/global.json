@@ -35,7 +35,8 @@
         "footerTitle": "Maqsad sari birgalikda, ishonch bilan.",
         "footerDesc": "Bizning tajribali o'qituvchilar jamoamiz o'quvchilarga doimiy qo'llab-quvvatlash ko'rsatib, yuqori sertifikatlar va erkin muloqot darajasiga erishishlariga yordam beradi.",
         "stat1Label": "Murosasiz sifat",
-        "stat2Label": "Qo'llab-quvvatlash"
+        "stat2Label": "Qo'llab-quvvatlash",
+        "openInMaps": "Xaritalarda ochish"
     },
     "addComment": {
         "editTitle": "O'quvchini tahrirlash",
@@ -193,7 +194,10 @@
         "titleHighlight": "mukammallikkacha o'rganing",
         "description": "Professional o'qituvchilar, jonli suhbat klublari va xalqaro standartlarga asoslangan intensiv kurslarimizga hoziroq qo'shiling.",
         "enrollBtn": "Bepul darsga yozilish",
-        "moreInfoBtn": "Batafsil ma'lumot"
+        "moreInfoBtn": "Batafsil ma'lumot",
+        "modernAtmosphere": "Zamonaviy Muhit",
+        "interactiveClasses": "Interaktiv Darslar",
+        "speakingClubs": "Suhbat Klublari"
     },
     "mentors": {
         "sectionTitle": "Bizning tajribali mentorlarimiz",
@@ -606,7 +610,12 @@
         "emailPlaceholder": "Gmail pochta (azizbek@gmail.com)",
         "textPlaceholder": "Izohingizni yozing...",
         "submitSuccess": "Izohingiz qo'shildi!",
-        "deleteSuccess": "Izoh o'chirildi!"
+        "deleteSuccess": "Izoh o'chirildi!",
+        "replying": "Javob yozilmoqda...",
+        "reply": "Javob berish",
+        "closeReplies": "Javoblarni yopish",
+        "viewReplies": "ta javobni ko'rish",
+        "justNow": "Hozirgina"
     },
     "adminPanel": {
         "title": "Admin Boshqaruv Paneli",
@@ -745,5 +754,8 @@
         "graDesc": "Grammatika",
         "strengthsTitle": "Yutuqlar:",
         "improveTitle": "Maslahatlar:"
+    },
+    "flashcard": {
+        "flipInstruction": "Asl holatiga qaytish uchun bosing"
     }
 }

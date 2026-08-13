@@ -580,7 +580,7 @@ export default function AdminORG() {
                 {/* Tab 2: Izohlar va Mahsulotlar */}
                 {activeTab === 'CommentsORG' && (
                     <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
-                        <CommentsORG />
+                        <CommentsORG isAdmin={true} />
                     </div>
                 )}
 

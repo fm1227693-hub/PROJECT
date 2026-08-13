@@ -35,7 +35,8 @@
         "footerTitle": "Toward the goal, together, with confidence.",
         "footerDesc": "Our team of experienced teachers provides students with continuous support, ensuring they achieve high certifications and a fluent level of communication.",
         "stat1Label": "Uncompromising Quality",
-        "stat2Label": "Support"
+        "stat2Label": "Support",
+        "openInMaps": "Open in maps"
     },
     "addComment": {
         "editTitle": "Edit Student",
@@ -115,7 +116,10 @@
         "titleHighlight": "to perfection",
         "description": "Join our intensive courses now, built on professional teachers, live speaking clubs, and international standards.",
         "enrollBtn": "Enroll for free",
-        "moreInfoBtn": "Learn more"
+        "moreInfoBtn": "Learn more",
+        "modernAtmosphere": "Modern Atmosphere",
+        "interactiveClasses": "Interactive Classes",
+        "speakingClubs": "Speaking Clubs"
     },
     "mentors": {
         "sectionTitle": "Our Experienced Mentors",
@@ -527,7 +531,12 @@
         "emailPlaceholder": "Gmail email (azizbek@gmail.com)",
         "textPlaceholder": "Write your review...",
         "submitSuccess": "Your review has been added!",
-        "deleteSuccess": "Review deleted!"
+        "deleteSuccess": "Review deleted!",
+        "replying": "Writing reply...",
+        "reply": "Reply",
+        "closeReplies": "Close replies",
+        "viewReplies": "replies",
+        "justNow": "Just now"
     },
     "adminPanel": {
         "title": "Admin Dashboard",
@@ -700,5 +709,8 @@
         "p14Prompt": "The primary purpose of prisons should be to punish criminals rather than to rehabilitate them. To what extent do you agree or disagree?",
         "p15Title": "Task 1: Process Diagram - Coffee Production",
         "p15Prompt": "The diagram illustrates the stages of commercial coffee production, from harvesting beans to final packaging. Summarize the information by reporting the main features."
+    },
+    "flashcard": {
+        "flipInstruction": "Click to flip back"
     }
 }

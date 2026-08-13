@@ -258,13 +258,13 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                     </p>
 
                                     <div className="flex items-center gap-4 text-[11px] font-semibold text-gray-400 pt-0.5">
-                                        <span>{comment.date || 'Hozirgina'}</span>
+                                        <span>{comment.date || t('studentCommentsORG.justNow')}</span>
                                         <button
                                             type="button"
                                             onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
                                             className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer transition-colors"
                                         >
-                                            Javob berish
+                                            {t('studentCommentsORG.reply')}
                                         </button>
                                         {isAdmin && (
                                             <button
@@ -272,7 +272,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                                 className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
                                             >
                                                 <FaTrash className="text-[10px]" />
-                                                <span>O'chirish</span>
+                                                <span>{t('studentCommentsORG.deleteBtn')}</span>
                                             </button>
                                         )}
                                     </div>
@@ -286,8 +286,8 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                             >
                                                 <span className="w-6 h-[1px] bg-gray-300 dark:bg-gray-700 inline-block"></span>
                                                 {expandedReplies[comment.id] 
-                                                    ? "Javoblarni yopish" 
-                                                    : `${comment.replies.length} ta javobni ko'rish`
+                                                    ? t('studentCommentsORG.closeReplies')
+                                                    : `${comment.replies.length} ${t('studentCommentsORG.viewReplies')}`
                                                 }
                                                 {expandedReplies[comment.id] ? <FaChevronUp className="text-[9px]" /> : <FaChevronDown className="text-[9px]" />}
                                             </button>
@@ -306,13 +306,13 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                                                     {reply.text}
                                                                 </p>
                                                                 <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-400 pt-1">
-                                                                    <span>{reply.date || 'Hozirgina'}</span>
+                                                                    <span>{reply.date || t('studentCommentsORG.justNow')}</span>
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
                                                                         className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer transition-colors"
                                                                     >
-                                                                        Javob berish
+                                                                        {t('studentCommentsORG.reply')}
                                                                     </button>
                                                                     {isAdmin && (
                                                                         <button
@@ -320,7 +320,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                                                             className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
                                                                         >
                                                                             <FaTrash className="text-[9px]" />
-                                                                            <span>O'chirish</span>
+                                                                            <span>{t('studentCommentsORG.deleteBtn')}</span>
                                                                         </button>
                                                                     )}
                                                                 </div>
@@ -347,7 +347,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
             >
                 {replyingTo && (
                     <div className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-2.5 sm:p-3 rounded-xl text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">
-                        <span className="flex items-center gap-2"><FaCommentDots className="text-gray-400" /> Javob yozilmoqda...</span>
+                        <span className="flex items-center gap-2"><FaCommentDots className="text-gray-400" /> {t('studentCommentsORG.replying')}</span>
                         <button type="button" onClick={() => setReplyingTo(null)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors cursor-pointer p-1">
                             <FaTimes />
                         </button>

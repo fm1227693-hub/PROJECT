@@ -187,7 +187,7 @@ export default function AboutUs() {
                         className="absolute top-4 left-4 sm:top-5 sm:left-5 bg-gray-900/80 hover:bg-gray-900 backdrop-blur-md px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-lg border border-gray-700/50 flex items-center gap-2 transition-all duration-300 hover:scale-105 z-10"
                     >
                         <span className="text-[11px] sm:text-xs font-semibold text-gray-200 flex items-center gap-2">
-                            Xaritalarda ochish <HiExternalLink className="text-gray-400 text-sm" />
+                            {t('aboutUs.openInMaps')} <HiExternalLink className="text-gray-400 text-sm" />
                         </span>
                     </a>
 

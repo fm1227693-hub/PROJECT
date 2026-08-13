@@ -35,7 +35,8 @@
         "footerTitle": "К цели вместе, с уверенностью.",
         "footerDesc": "Наша команда опытных преподавателей оказывает ученикам постоянную поддержку, обеспечивая получение высоких сертификатов и свободного уровня общения.",
         "stat1Label": "Бескомпромиссное качество",
-        "stat2Label": "Поддержка"
+        "stat2Label": "Поддержка",
+        "openInMaps": "Открыть в картах"
     },
     "addComment": {
         "editTitle": "Редактировать ученика",
@@ -73,7 +74,10 @@
         "titleHighlight": "в совершенстве",
         "description": "Присоединяйтесь прямо сейчас к нашим интенсивным курсам, основанным на профессиональных преподавателях, живых разговорных клубах и международных стандартах.",
         "enrollBtn": "Записаться бесплатно",
-        "moreInfoBtn": "Подробнее"
+        "moreInfoBtn": "Подробнее",
+        "modernAtmosphere": "Современная атмосфера",
+        "interactiveClasses": "Интерактивные занятия",
+        "speakingClubs": "Разговорные клубы"
     },
     "mentors": {
         "sectionTitle": "Наши опытные менторы",
@@ -528,7 +532,12 @@
         "emailPlaceholder": "Gmail почта (azizbek@gmail.com)",
         "textPlaceholder": "Напишите ваш отзыв...",
         "submitSuccess": "Ваш отзыв добавлен!",
-        "deleteSuccess": "Отзыв удален!"
+        "deleteSuccess": "Отзыв удален!",
+        "replying": "Пишет ответ...",
+        "reply": "Ответить",
+        "closeReplies": "Скрыть ответы",
+        "viewReplies": "ответов",
+        "justNow": "Только что"
     },
     "adminPanel": {
         "title": "Панель Управления Администратора",
@@ -701,5 +710,8 @@
         "p14Prompt": "The primary purpose of prisons should be to punish criminals rather than to rehabilitate them. To what extent do you agree or disagree?",
         "p15Title": "Task 1: Диаграмма процесса - Производство кофе",
         "p15Prompt": "The diagram illustrates the stages of commercial coffee production, from harvesting beans to final packaging. Summarize the information by reporting the main features."
+    },
+    "flashcard": {
+        "flipInstruction": "Нажмите, чтобы перевернуть"
     }
 }

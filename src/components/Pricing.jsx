@@ -90,36 +90,38 @@ export default function Pricing() {
                                 data-aos-delay={idx * 100}
                                 data-aos-duration="700"
                                 className={`relative rounded-2xl xs:rounded-3xl p-6 xs:p-8 transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl ${isMatched
-                                    ? 'bg-gradient-to-b from-red-950/90 to-slate-900/90 border-2 border-red-500/60 shadow-2xl shadow-red-600/20 text-white scale-[1.02] xs:scale-[1.03]'
+                                    ? 'bg-gradient-to-b from-red-50 to-white dark:from-red-950/90 dark:to-slate-900/90 border-2 border-red-500/60 shadow-2xl shadow-red-600/20 scale-[1.02] xs:scale-[1.03]'
                                     : 'glass-card border border-slate-200/80 dark:border-white/10 hover:border-red-500/40 shadow-lg'
                                     }`}
                             >
                                 {isMatched && (
-                                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] xs:text-[11px] font-bold uppercase tracking-widest bg-red-600 text-white px-2.5 xs:px-3 py-1 rounded-full shadow-lg shadow-red-500/30 whitespace-nowrap animate-bounce-subtle">
-                                        {t('pricing.recommendedBadge') || 'Tavsiya etiladi'}
-                                    </span>
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
+                                        <span className="inline-block text-[10px] xs:text-[11px] font-bold uppercase tracking-widest bg-red-600 text-white px-2.5 xs:px-3 py-1 rounded-full shadow-lg shadow-red-500/30 animate-bounce-subtle">
+                                            {t('pricing.recommendedBadge') || 'Tavsiya etiladi'}
+                                        </span>
+                                    </div>
                                 )}
 
-                                <p className={`text-[10px] xs:text-xs font-bold uppercase tracking-widest mb-2.5 xs:mb-3 ${isMatched ? 'text-red-500' : 'text-red-600 dark:text-red-400'}`}>
+                                <p className={`text-[10px] xs:text-xs font-bold uppercase tracking-widest mb-2.5 xs:mb-3 ${isMatched ? 'text-red-600 dark:text-red-500' : 'text-red-600 dark:text-red-400'}`}>
                                     {plan.levelsLabel}
                                 </p>
 
                                 <div className="flex items-baseline gap-1.5 mb-4 xs:mb-6">
-                                    <span className={`text-2xl xs:text-3xl font-black tracking-tight ${isMatched ? 'text-white dark:text-gray-950' : 'text-gray-900 dark:text-white'}`}>
+                                    <span className={`text-2xl xs:text-3xl font-black tracking-tight text-gray-900 dark:text-white`}>
                                         {plan.price}
                                     </span>
-                                    <span className={`text-xs xs:text-sm font-bold ${isMatched ? 'text-gray-400 dark:text-gray-500' : 'text-gray-400'}`}>
+                                    <span className={`text-xs xs:text-sm font-bold text-gray-400 dark:text-gray-500`}>
                                         {t('pricing.currency') || "so'm"}
                                     </span>
                                 </div>
 
                                 {isMatched && (
-                                    <p className="text-[11px] xs:text-xs font-bold text-red-400 mb-3 xs:mb-4 -mt-2 xs:-mt-4">
+                                    <p className="text-[11px] xs:text-xs font-bold text-red-500 dark:text-red-400 mb-3 xs:mb-4 -mt-2 xs:-mt-4">
                                         {t('pricing.recommendedInline') || "Sizning darajangiz uchun tavsiya etiladi"}
                                     </p>
                                 )}
 
-                                <p className={`text-xs xs:text-sm font-medium leading-relaxed mb-6 xs:mb-8 ${isMatched ? 'text-gray-300 dark:text-gray-600' : 'text-gray-500 dark:text-gray-400'}`}>
+                                <p className={`text-xs xs:text-sm font-medium leading-relaxed mb-6 xs:mb-8 text-gray-500 dark:text-gray-400`}>
                                     {t(`pricing.${plan.id}Desc`) ||
                                         (plan.id === 'basic'
                                             ? "Boshlang'ich bosqichdagilar uchun mustahkam fundament kursi."

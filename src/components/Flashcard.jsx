@@ -208,7 +208,7 @@ export default function Flashcards() {
             <div className="space-y-2 animate-fade-in">
               <h3 className="text-2xl font-bold text-red-500">{currentCard.uz}</h3>
               <p className="text-sm text-gray-300 font-medium">{currentCard.en} <span className="text-gray-500 font-normal">{currentCard.transcription}</span></p>
-              <p className="text-xs text-gray-500 mt-4">Asl holatiga qaytish uchun bosing</p>
+              <p className="text-xs text-gray-500 mt-4">{t('flashcard.flipInstruction')}</p>
             </div>
           )}
 

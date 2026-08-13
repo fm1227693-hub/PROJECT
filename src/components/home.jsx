@@ -162,7 +162,7 @@ export default function Home() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/20 to-transparent flex items-end p-4 sm:p-6">
                                     <span className="text-white font-extrabold text-xs sm:text-base bg-gray-900/70 backdrop-blur-md px-3.5 py-2 rounded-xl border border-gray-700/50 shadow-lg">
-                                        Modern Atmosphere
+                                        {t('home.modernAtmosphere')}
                                     </span>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@ export default function Home() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/20 to-transparent flex items-end p-4 sm:p-6">
                                     <span className="text-white font-extrabold text-xs sm:text-base bg-gray-900/70 backdrop-blur-md px-3.5 py-2 rounded-xl border border-gray-700/50 shadow-lg">
-                                        Interactive Classes
+                                        {t('home.interactiveClasses')}
                                     </span>
                                 </div>
                             </div>
@@ -192,7 +192,7 @@ export default function Home() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/20 to-transparent flex items-end p-4 sm:p-6">
                                     <span className="text-white font-extrabold text-xs sm:text-base bg-gray-900/70 backdrop-blur-md px-3.5 py-2 rounded-xl border border-gray-700/50 shadow-lg">
-                                        Speaking Clubs
+                                        {t('home.speakingClubs')}
                                     </span>
                                 </div>
                             </div>
