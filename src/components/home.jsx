@@ -76,13 +76,13 @@ export default function Home() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="max-w-7xl pt-24 sm:pt-28 lg:pt-32 mx-auto px-3 sm:px-6 lg:px-8 select-none transition-colors duration-200"
+            className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 select-none transition-colors duration-200 h-screen pt-[70px] lg:pt-[90px] pb-4 flex items-center justify-center"
         >
             {/* Asosiy Banner Qismi - Ultra-Premium Glassmorphism */}
             <div
                 data-aos="fade-down"
                 data-aos-duration="800"
-                className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center glass-card p-6 sm:p-12 md:p-16 rounded-[2.5rem] sm:rounded-[3rem] relative overflow-hidden group transition-all duration-500"
+                className="w-full flex flex-col lg:flex-row gap-6 lg:gap-16 items-center glass-card p-6 sm:p-10 lg:p-12 rounded-[2.5rem] sm:rounded-[3rem] relative overflow-hidden group transition-all duration-500 max-h-full"
             >
                 {/* Dynamic Lighting Backdrop */}
                 <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-gradient-to-br from-red-600/20 via-rose-500/10 to-transparent rounded-full blur-[130px] pointer-events-none animate-pulse-slow"></div>
@@ -151,7 +151,7 @@ export default function Home() {
                         }}
                         pagination={{ clickable: true }}
                         modules={[Pagination, Autoplay, EffectCube]}
-                        className="w-[280px] h-[280px] xs:w-[340px] xs:h-[340px] sm:w-[420px] sm:h-[420px] lg:w-[480px] lg:h-[480px] xl:w-[520px] xl:h-[520px] rounded-2xl sm:rounded-[2rem] max-w-full"
+                        className="w-[280px] h-[280px] xs:w-[320px] xs:h-[320px] sm:w-[400px] sm:h-[400px] lg:w-[420px] lg:h-[420px] xl:w-[460px] xl:h-[460px] rounded-2xl sm:rounded-[2rem] max-w-full"
                     >
                         <SwiperSlide className="rounded-2xl sm:rounded-[2rem] overflow-hidden bg-transparent">
                             <div className="h-full w-full relative group">

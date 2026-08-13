@@ -235,7 +235,7 @@ Telefon: +998 ${formData.phone}
 
     if (activeMentorDetail) {
         return (
-            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-transparent min-h-screen py-12 px-4 md:px-8 text-white transition-colors">
+            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-transparent min-h-screen flex flex-col justify-center py-6 pt-[80px] lg:pt-[100px] px-4 md:px-8 text-white transition-colors">
                 <div className="max-w-3xl mx-auto space-y-6">
                     
                     {/* Back button */}

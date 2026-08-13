@@ -89,7 +89,7 @@ export default function Sec3() {
   }
 
   return (
-    <div className="relative py-12 sm:py-16 px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="relative min-h-screen flex flex-col justify-center py-6 pt-[70px] lg:pt-[80px] px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Orqa fondagi jozibali va sekin pulslanuvchi nurlar */}
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
@@ -112,7 +112,7 @@ export default function Sec3() {
         <h2
           data-aos="fade-up"
           data-aos-delay="100"
-          className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center mb-8 sm:mb-10 px-2"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center mb-4 sm:mb-6 px-2"
         >
           {t('sec3.title')}
         </h2>
@@ -121,7 +121,7 @@ export default function Sec3() {
         <div
           data-aos="fade-up"
           data-aos-delay="150"
-          className="flex items-center justify-start md:justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-8 sm:pb-10 scrollbar-none px-2"
+          className="flex items-center justify-start md:justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 scrollbar-none px-2"
         >
           {teachers.map((teacher) => {
             const isActive = currentTeacher.id === teacher.id
@@ -172,7 +172,7 @@ export default function Sec3() {
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="mx-auto w-full max-w-sm rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl relative group border border-slate-200 dark:border-white/10"
             >
-              <div className="relative h-60 sm:h-72 bg-gradient-to-b from-indigo-800 to-purple-900 overflow-hidden">
+              <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-b from-indigo-800 to-purple-900 overflow-hidden">
                 <motion.img
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.6 }}
@@ -187,7 +187,7 @@ export default function Sec3() {
                   {currentTeacher.name.split(' ')[1]}
                 </span>
               </div>
-              <div className="px-5 pt-4 pb-5 sm:px-6 sm:pt-5 sm:pb-6 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-950">
+              <div className="px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-950">
                 <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none mb-3">
                   {currentTeacher.cert}
                 </h3>
@@ -223,7 +223,7 @@ export default function Sec3() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="grid grid-cols-2 gap-3 sm:gap-4"
+                className="grid grid-cols-2 gap-2 sm:gap-3"
               >
                 {[
                   { value: currentTeacher.score, label: t('sec3.ieltsScore') },
@@ -233,9 +233,9 @@ export default function Sec3() {
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] p-4"
+                    className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] p-3 sm:p-4"
                   >
-                    <span className="block text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
+                    <span className="block text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
                       {stat.value}
                     </span>
                     <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{stat.label}</span>
