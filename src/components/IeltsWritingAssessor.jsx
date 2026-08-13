@@ -859,17 +859,18 @@ Respond STRICTLY in the following JSON format:
     /* ==================== SCREEN 2: TOPIC SELECTION ==================== */
     if (screen === 'topics') {
         return (
+            <>
+            <button
+                onClick={() => setScreen('levels')}
+                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+            >
+                <span className="text-base xs:text-lg leading-none">←</span>
+                <span>{t('ieltsWritingAssessor.backToLevels', "Darajalarga qaytish")}</span>
+            </button>
+
             <div className="relative min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-sans">
                 {/* Header with Back Button */}
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                    <button
-                        onClick={() => setScreen('levels')}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:border-red-500/40 transition cursor-pointer"
-                    >
-                        <FaArrowLeft />
-                        <span>{t('ieltsWritingAssessor.backToLevels', "Darajalarga qaytish")}</span>
-                    </button>
-
+                <div className="flex flex-wrap items-center justify-end gap-4">
                     <div className="flex flex-wrap items-center gap-2">
                         {['All', '5.0', '6.0', '7.0', '8.0', '9.0'].map((b) => (
                             <button
@@ -943,26 +944,28 @@ Respond STRICTLY in the following JSON format:
                     ))}
                 </div>
             </div>
+            </>
         )
     }
 
     /* ==================== SCREEN 3: MAIN WRITING WORKSPACE ==================== */
     return (
-        <div className="relative min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-sans">
-            {/* Ambient Aurora Glow */}
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[650px] h-[320px] bg-gradient-to-r from-red-600/20 via-rose-500/15 to-amber-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+        <>
+            <button
+                onClick={() => setScreen('topics')}
+                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+            >
+                <span className="text-base xs:text-lg leading-none">←</span>
+                <span>{t('ieltsWritingAssessor.backToLevels', "Mavzularga qaytish")}</span>
+            </button>
 
-            {/* Top Workspace Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={() => setScreen('topics')}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:border-red-500/40 transition cursor-pointer"
-                    >
-                        <FaArrowLeft />
-                        <span>{t('ieltsWritingAssessor.backToLevels', "Mavzularga qaytish")}</span>
-                    </button>
+            <div className="relative min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-sans">
+                {/* Ambient Aurora Glow */}
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[650px] h-[320px] bg-gradient-to-r from-red-600/20 via-rose-500/15 to-amber-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
 
+                {/* Top Workspace Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+                    <div className="flex items-center gap-3">
                     <span className="text-xs font-black uppercase text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-500/20">
                         {selectedPrompt.type} | Target Band {selectedPrompt.bandLevel}
                     </span>
@@ -1413,5 +1416,6 @@ Respond STRICTLY in the following JSON format:
                 )}
             </AnimatePresence>
         </div>
+        </>
     )
 }

@@ -35,25 +35,23 @@ export default function Admin() {
             <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 dark:bg-red-500/10 rounded-full blur-3xl" />
             <div className="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 bg-indigo-500/10 dark:bg-indigo-500/10 rounded-full blur-3xl" />
 
-            {/* Orqaga qaytish tugmasi (Chap yuqori burchakda) */}
-            <div className="absolute top-6 left-6 z-50">
-                <Link
-                    to="/"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 text-xs sm:text-sm font-bold transition-all shadow-sm cursor-pointer active:scale-95"
-                >
-                    <FaArrowLeft className="w-3.5 h-3.5" />
-                    <span>{t('Orqaga', 'Orqaga')}</span>
-                </Link>
-            </div>
+            <Link
+                to="/"
+                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+            >
+                <span className="text-base xs:text-lg leading-none">←</span>
+                <span>{t('common.backBtn')}</span>
+            </Link>
+
 
             <div
                 data-aos="zoom-in"
                 data-aos-duration="600"
                 className="w-full max-w-sm mx-auto px-2 sm:px-0 relative z-10"
             >
-                <div className="flex flex-col gap-6 p-6 sm:p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200/80 dark:border-gray-800/80 transition-colors duration-200">
+                <div className="flex flex-col gap-6 p-6 sm:p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200/80 dark:border-gray-800/80 transition-colors duration-200 relative">
                     <h2 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white text-center tracking-tight">
-                        {t('admin.title', "Admin Panel")}
+                        {t('admin.title', "Admin Panel Login")}
                     </h2>
 
                     <input

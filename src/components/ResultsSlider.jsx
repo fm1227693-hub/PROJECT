@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import TikTokComments from "./TikTokComments";
+import CommentsORG from "./TikTokComments";
 
 const resultsData = [
     {
@@ -97,11 +97,10 @@ export default function ResultsSlider() {
                                     onClick={() => triggerAnimation(index)}
                                     whileHover={{ scale: 1.08 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${
-                                        isActive
-                                            ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
-                                            : "opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
-                                    }`}
+                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${isActive
+                                        ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
+                                        : "opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
+                                        }`}
                                 >
                                     <img
                                         src={student.image}
@@ -205,9 +204,9 @@ export default function ResultsSlider() {
 
                 </div>
 
-                {/* TikTok-Style Comments Section under IELTS Results */}
+                {/* TikTok-Style CommentsORG Section under IELTS Results */}
                 <div className="mt-12">
-                    <TikTokComments isAdmin={false} />
+                    <CommentsORG isAdmin={false} />
                 </div>
             </div>
         </div>

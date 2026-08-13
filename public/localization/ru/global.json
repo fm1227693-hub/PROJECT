@@ -60,7 +60,7 @@
         "emptyError": "Пожалуйста, введите",
         "wrongPassword": "Неверный пароль!"
     },
-    "comments": {
+    "CommentsORG": {
         "title": "Управление курсами",
         "deleteBtn": "Удалить",
         "editBtn": "Редактировать",
@@ -516,11 +516,11 @@
         "errorGeneric": "Произошла ошибка. Попробуйте еще раз.",
         "errorNetwork": "Проверьте подключение к интернету."
     },
-    "studentComments": {
+    "studentCommentsORG": {
         "title": "Отзывы и Результаты Студентов",
         "subtitle": "Отзывы студентов ({{count}} отзывов)",
         "viewAndLeaveBtn": "Посмотреть и оставить отзывы",
-        "noComments": "Пока нет отзывов",
+        "noCommentsORG": "Пока нет отзывов",
         "beFirst": "Будьте первым, оставьте отзыв с помощью Username и Gmail!",
         "replyBtn": "Ответить",
         "deleteBtn": "Удалить",
@@ -540,7 +540,7 @@
         "accepted": "Принято",
         "rejected": "Отклонено",
         "murojaatlarTab": "Заявки",
-        "commentsTab": "Отзывы Студентов",
+        "CommentsORGTab": "Отзывы Студентов",
         "exportCsvBtn": "Скачать Excel (CSV)",
         "searchPlaceholder": "Поиск по имени или телефону...",
         "statusLabel": "Статус:",

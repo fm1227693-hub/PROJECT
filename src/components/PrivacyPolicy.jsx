@@ -7,33 +7,35 @@ export default function PrivacyPolicy() {
     const { t } = useTranslation()
 
     useEffect(() => {
+
         window.scrollTo(0, 0)
         
     }, [])
 
     return (
-        <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-['Plus_Jakarta_Sans',sans-serif]">
-            <div className="max-w-4xl mx-auto space-y-8">
-                
-                {/* Back button & Breadcrumb */}
-                <div className="flex items-center justify-between gap-4">
-                    <Link
-                        to="/"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 font-extrabold text-xs hover:border-red-500/50 transition-all shadow-sm active:scale-95"
-                    >
-                        <FaArrowLeft className="text-red-500" />
-                        <span>{t('footer.links.home', 'Bosh sahifa')}</span>
-                    </Link>
+        <>
+            {/* Back button fixed top left */}
+            <Link
+                to="/"
+                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+            >
+                <span className="text-base xs:text-lg leading-none">←</span>
+                <span>{t('common.backBtn') || 'Orqaga'}</span>
+            </Link>
 
-                    <div className="flex items-center gap-2 text-xs font-bold text-gray-400">
+            <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-['Plus_Jakarta_Sans',sans-serif]">
+                <div className="max-w-4xl mx-auto space-y-8">
+
+
+                {/* Hero Header */}
+                <div className="relative p-8 sm:p-12 rounded-3xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden space-y-4">
+                    {/* Breadcrumb only */}
+                    <div className="flex items-center gap-2 text-xs font-bold text-gray-400 mb-6">
                         <FaHome className="text-gray-400" />
                         <span>/</span>
                         <span className="text-red-500">{t('footer.privacy', 'Maxfiylik siyosati')}</span>
                     </div>
-                </div>
 
-                {/* Hero Header */}
-                <div className="relative p-8 sm:p-12 rounded-3xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden space-y-4">
                     <div className="pointer-events-none absolute -top-20 -right-20 w-64 h-64 bg-red-600/15 rounded-full blur-3xl" />
                     
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-2xl shadow-lg shadow-red-600/30">
@@ -114,5 +116,6 @@ export default function PrivacyPolicy() {
 
             </div>
         </div>
+        </>
     )
 }

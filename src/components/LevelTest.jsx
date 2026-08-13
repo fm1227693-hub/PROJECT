@@ -176,9 +176,7 @@ export default function LevelTest() {
     const BackBtn = () => (
         <button
             onClick={handleBack}
-            data-aos="fade-right"
-            data-aos-duration="600"
-            className="fixed top-16 xs:top-20 sm:top-24 left-3 xs:left-4 sm:left-8 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer z-20 hover:-translate-x-1"
+            className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
         >
             <span className="text-base xs:text-lg leading-none">←</span>
             {t('common.backBtn') || 'Orqaga'}

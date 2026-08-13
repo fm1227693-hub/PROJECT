@@ -74,7 +74,7 @@ src/
     AddComment.jsx
     Admin.jsx
     AdminORG.jsx
-    Comments.jsx
+    CommentsORG.jsx
     Footer.jsx
     home.css
     home.jsx
@@ -2434,7 +2434,7 @@ export default function Sec2() {
 
 <file path="src/components/AdminORG.jsx">
 import React, { useEffect } from 'react'
-import Comments from './Comments'
+import CommentsORG from './CommentsORG'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -2452,7 +2452,7 @@ export default function AdminORG() {
             data-aos-duration="600"
             className="p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-950 font-sans text-left flex flex-col min-h-screen transition-colors duration-200"
         >
-            <Comments />
+            <CommentsORG />
         </div>
     )
 }
@@ -3470,7 +3470,7 @@ export default function Stats() {
         "emptyError": "Please enter a value",
         "wrongPassword": "Wrong password!"
     },
-    "comments": {
+    "CommentsORG": {
         "title": "Manage Courses",
         "deleteBtn": "Delete",
         "editBtn": "Edit",
@@ -3842,7 +3842,7 @@ export default function Stats() {
         "emptyError": "Пожалуйста, введите",
         "wrongPassword": "Неверный пароль!"
     },
-    "comments": {
+    "CommentsORG": {
         "title": "Управление курсами",
         "deleteBtn": "Удалить",
         "editBtn": "Редактировать",
@@ -4215,7 +4215,7 @@ export default function Stats() {
         "emptyError": "Iltimos, to'ldiring",
         "wrongPassword": "Parol noto'g'ri!"
     },
-    "comments": {
+    "CommentsORG": {
         "title": "Kurslarni boshqarish",
         "deleteBtn": "O'chirish",
         "editBtn": "Tahrirlash",
@@ -4788,7 +4788,7 @@ export default function Products() {
 }
 </file>
 
-<file path="src/components/Comments.jsx">
+<file path="src/components/CommentsORG.jsx">
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import AddComment from './AddComment'
@@ -4798,7 +4798,7 @@ import 'aos/dist/aos.css'
 import { FaArrowLeft } from 'react-icons/fa'
 import axios from 'axios'
 
-export default function Comments() {
+export default function CommentsORG() {
     const { t } = useTranslation()
     const [data, setData] = useState([])
     const [addModal, setAddModal] = useState(false)
@@ -4824,7 +4824,7 @@ export default function Comments() {
         if (!id) return false
         try {
             await axios.delete(`https://project-3gpc.onrender.com/products/${id}`)
-            toast.success(t('comments.deleteSuccess'))
+            toast.success(t('CommentsORG.deleteSuccess'))
             GetData()
         } catch (e) {
             console.log(e)
@@ -4858,7 +4858,7 @@ export default function Comments() {
                 data-aos-duration="600"
                 className="flex justify-center text-2xl sm:text-4xl lg:text-5xl mb-8 sm:mb-12 text-center"
             >
-                <h1 className="text-gray-900 dark:text-white font-black tracking-tight">{t('comments.title')}</h1>
+                <h1 className="text-gray-900 dark:text-white font-black tracking-tight">{t('CommentsORG.title')}</h1>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -4890,7 +4890,7 @@ export default function Comments() {
                                             onClick={() => DeleteData(co.id)}
                                             className="px-3 sm:px-4 py-2 text-xs font-bold border border-rose-300 dark:border-rose-900/50 text-rose-600 dark:text-rose-400 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer w-full active:scale-95"
                                         >
-                                            {t('comments.deleteBtn')}
+                                            {t('CommentsORG.deleteBtn')}
                                         </button>
                                         <button
                                             onClick={() => {
@@ -4899,7 +4899,7 @@ export default function Comments() {
                                             }}
                                             className="px-3 sm:px-4 py-2 text-xs font-bold border border-blue-300 dark:border-blue-900/50 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors cursor-pointer w-full active:scale-95"
                                         >
-                                            {t('comments.editBtn')}
+                                            {t('CommentsORG.editBtn')}
                                         </button>
                                     </div>
                                 </div>
@@ -4918,7 +4918,7 @@ export default function Comments() {
                         setEditId(false)
                     }}
                     className="bg-gray-900 dark:bg-white text-white dark:text-gray-950 w-14 h-14 text-center border-0 rounded-full text-3xl flex items-center justify-center hover:scale-110 shadow-xl transition-all cursor-pointer active:scale-95"
-                    title={t('comments.addBtnTitle')}
+                    title={t('CommentsORG.addBtnTitle')}
                 >
                     +
                 </button>

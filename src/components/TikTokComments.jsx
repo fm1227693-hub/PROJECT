@@ -7,11 +7,12 @@ import axios from 'axios'
 
 const API_URL = 'https://jsonblob.com/api/jsonBlob/019fe9cb-03f4-7d5f-9c48-8445da12300c'
 
-export default function TikTokComments({ isAdmin = false, defaultOpen = false }) {
+export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(isAdmin ? true : defaultOpen)
-    const [comments, setComments] = useState([])
-    const [nameInput, setNameInput] = useState('')
+    const [CommentsORG, setCommentsORG] = useState([])
+    const [replyingTo, setReplyingTo] = useState(null)
+    const [expandedReplies, setExpandedReplies] = useState({})
     const [text, setText] = useState('')
     const [score, setScore] = useState('IELTS 7.5')
     const [loading, setLoading] = useState(false)
@@ -27,31 +28,31 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
         'from-red-500 to-pink-600'
     ]
 
-    const loadComments = async () => {
+    const loadCommentsORG = async () => {
         setLoading(true)
         try {
             const res = await axios.get(API_URL, { validateStatus: status => status < 500 })
             if (res.status === 200 && Array.isArray(res.data)) {
-                setComments(res.data)
-                localStorage.setItem('tiktok_comments', JSON.stringify(res.data))
+                setCommentsORG(res.data)
+                localStorage.setItem('tiktok_CommentsORG', JSON.stringify(res.data))
             } else {
-                const stored = JSON.parse(localStorage.getItem('tiktok_comments') || '[]')
-                setComments(stored)
+                const stored = JSON.parse(localStorage.getItem('tiktok_CommentsORG') || '[]')
+                setCommentsORG(stored)
             }
         } catch (e) {
-            const stored = JSON.parse(localStorage.getItem('tiktok_comments') || '[]')
-            setComments(stored)
+            const stored = JSON.parse(localStorage.getItem('tiktok_CommentsORG') || '[]')
+            setCommentsORG(stored)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        loadComments()
+        loadCommentsORG()
 
         // Real-vaqtda sinxronlash (har 4 soniyada)
         const interval = setInterval(() => {
-            loadComments()
+            loadCommentsORG()
         }, 4000)
 
         return () => clearInterval(interval)
@@ -60,44 +61,50 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
     const handleAddComment = async (e) => {
         e.preventDefault()
 
-        // Read directly from DOM input elements as foolproof fallback for browser autofill selection
-        const domName = document.getElementById('user-name-input')?.value || nameInput
+        const finalName = "O'quvchi"
 
-        const finalName = domName.trim()
-
-        if (!finalName || !text.trim()) {
-            toast.error(t('studentComments.fillError', "Iltimos, ismingiz va izohni to'liq kiriting!"))
+        if (!text.trim()) {
+            toast.error(t('studentCommentsORG.fillError', "Iltimos, izohni to'liq kiriting!"))
             return
         }
 
         setSubmitting(true)
-        const formattedUsername = finalName.startsWith('@') 
-            ? finalName 
+        const formattedUsername = finalName.startsWith('@')
+            ? finalName
             : `@${finalName.toLowerCase().replace(/\s+/g, '_')}`
 
         const displayName = finalName.replace(/^@/, '')
 
         const newComment = {
             id: Date.now(),
-            name: displayName,
-            username: formattedUsername,
-            avatarGradient: avatarGradients[Math.floor(Math.random() * avatarGradients.length)],
             text: text.trim(),
-            score: score,
-            likesCount: 1,
-            likedByMe: false,
-            date: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) + ' · Bugun'
+            date: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) + ' · Bugun',
+            replies: []
         }
 
-        const updatedList = [newComment, ...comments]
-        setComments(updatedList)
-        localStorage.setItem('tiktok_comments', JSON.stringify(updatedList))
+        let updatedList;
+        if (replyingTo) {
+            updatedList = CommentsORG.map(c => {
+                if (c.id === replyingTo) {
+                    return { ...c, replies: [...(c.replies || []), newComment] }
+                }
+                return c
+            })
+        } else {
+            updatedList = [newComment, ...CommentsORG]
+        }
+
+        setCommentsORG(updatedList)
+        localStorage.setItem('tiktok_CommentsORG', JSON.stringify(updatedList))
         setText('')
-        setNameInput('')
+        if (replyingTo) {
+            setExpandedReplies(prev => ({ ...prev, [replyingTo]: true }))
+        }
+        setReplyingTo(null)
 
         try {
             await axios.put(API_URL, updatedList)
-            toast.success(t('studentComments.addSuccess', "Izohingiz qo'shildi!"))
+            toast.success(t('studentCommentsORG.addSuccess', "Izohingiz qo'shildi!"))
         } catch (err) {
             console.error(err)
         } finally {
@@ -106,7 +113,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
     }
 
     const toggleLike = async (id) => {
-        const updatedList = comments.map(item => {
+        const updatedList = CommentsORG.map(item => {
             if (item.id === id) {
                 const isLiked = !item.likedByMe
                 return {
@@ -118,8 +125,8 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
             return item
         })
 
-        setComments(updatedList)
-        localStorage.setItem('tiktok_comments', JSON.stringify(updatedList))
+        setCommentsORG(updatedList)
+        localStorage.setItem('tiktok_CommentsORG', JSON.stringify(updatedList))
 
         try {
             await axios.put(API_URL, updatedList)
@@ -129,13 +136,30 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
     }
 
     const handleDeleteComment = async (id) => {
-        const updatedList = comments.filter(item => item.id !== id)
-        setComments(updatedList)
-        localStorage.setItem('tiktok_comments', JSON.stringify(updatedList))
+        const updatedList = CommentsORG.filter(item => item.id !== id)
+        setCommentsORG(updatedList)
+        localStorage.setItem('tiktok_CommentsORG', JSON.stringify(updatedList))
 
         try {
             await axios.put(API_URL, updatedList)
-            toast.success(t('studentComments.deleteSuccess', "Izoh o'chirildi!"))
+            toast.success(t('studentCommentsORG.deleteSuccess', "Izoh o'chirildi!"))
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const handleDeleteReply = async (commentId, replyId) => {
+        const updatedList = CommentsORG.map(c => {
+            if (c.id === commentId) {
+                return { ...c, replies: (c.replies || []).filter(r => r.id !== replyId) }
+            }
+            return c
+        })
+        setCommentsORG(updatedList)
+        localStorage.setItem('tiktok_CommentsORG', JSON.stringify(updatedList))
+        try {
+            await axios.put(API_URL, updatedList)
+            toast.success(t('studentCommentsORG.deleteSuccess', "Izoh o'chirildi!"))
         } catch (e) {
             console.error(e)
         }
@@ -151,9 +175,9 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                     className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all cursor-pointer border border-red-400/30"
                 >
                     <FaComments className="text-base animate-bounce" />
-                    <span>{t('studentComments.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
+                    <span>{t('studentCommentsORG.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
                     <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-mono font-bold">
-                        {comments.length}
+                        {CommentsORG.length}
                     </span>
                     <FaChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
                 </motion.button>
@@ -163,7 +187,7 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
 
     return (
         <div className="w-full max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-white select-none transition-all duration-300">
-            
+
             {/* Header section */}
             <div className="flex items-center justify-between p-4 sm:p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-t-3xl border-t border-x border-gray-200 dark:border-gray-800 shadow-md">
                 <div className="flex items-center gap-3">
@@ -172,17 +196,17 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                     </div>
                     <div>
                         <h2 className="text-lg sm:text-xl font-black tracking-tight">
-                            {t('studentComments.title', "O'quvchilar Izohlari va Natijalari")}
+                            {t('studentCommentsORG.title', "O'quvchilar Izohlari va Natijalari")}
                         </h2>
                         <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">
-                            {t('studentComments.subtitle', "O'quvchilar izohlari ({{count}} ta izoh)", { count: comments.length })}
+                            {t('studentCommentsORG.subtitle', "O'quvchilar izohlari ({{count}} ta izoh)", { count: CommentsORG.length })}
                         </p>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
                     <button
-                        onClick={loadComments}
+                        onClick={loadCommentsORG}
                         className="p-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-all cursor-pointer active:scale-95"
                         title="Yangilash"
                     >
@@ -201,21 +225,21 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                 </div>
             </div>
 
-            {/* Comments Scrollable List */}
+            {/* CommentsORG Scrollable List */}
             <div className="bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border-x border-gray-200 dark:border-gray-800 max-h-[500px] overflow-y-auto p-4 sm:p-6 space-y-4 divide-y divide-gray-100 dark:divide-gray-800/60">
-                {comments.length === 0 ? (
+                {CommentsORG.length === 0 ? (
                     <div className="py-12 text-center space-y-3">
                         <FaCommentDots className="text-4xl animate-bounce text-gray-400 mx-auto" />
                         <h4 className="text-base font-bold text-gray-700 dark:text-gray-300">
-                            {t('studentComments.noComments', "Hozircha izohlar yo'q")}
+                            {t('studentCommentsORG.noCommentsORG', "Hozircha izohlar yo'q")}
                         </h4>
                         <p className="text-xs text-gray-500">
-                            {t('studentComments.beFirst', "Birinchi bo'lib ismingiz bilan izohingizni qoldiring!")}
+                            {t('studentCommentsORG.beFirst', "Birinchi bo'lib o'z izohingizni qoldiring!")}
                         </p>
                     </div>
                 ) : (
                     <AnimatePresence initial={false}>
-                        {comments.map((comment) => (
+                        {CommentsORG.map((comment) => (
                             <motion.div
                                 key={comment.id}
                                 initial={{ opacity: 0, y: 15, scale: 0.98 }}
@@ -224,84 +248,88 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                                 transition={{ duration: 0.25 }}
                                 className="pt-4 first:pt-0 flex items-start justify-between gap-3 group"
                             >
-                                <div className="flex items-start gap-3 flex-1 min-w-0">
-                                    {/* User Avatar */}
-                                    {comment.avatar ? (
-                                        <img
-                                            src={comment.avatar}
-                                            alt={comment.name}
-                                            className="w-10 h-10 rounded-full object-cover ring-2 ring-pink-500/30 shrink-0"
-                                        />
-                                    ) : (
-                                        <div className={`w-10 h-10 rounded-full bg-gradient-to-tr ${comment.avatarGradient || 'from-pink-500 to-rose-500'} flex items-center justify-center text-white font-black text-sm shadow-md shrink-0`}>
-                                            {comment.name?.charAt(0).toUpperCase()}
-                                        </div>
-                                    )}
+                                <div className="flex-1 min-w-0 space-y-1">
+                                    <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 leading-relaxed break-words">
+                                        {comment.text}
+                                    </p>
 
-                                    {/* Comment Details */}
-                                    <div className="flex-1 min-w-0 space-y-1">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <span className="font-extrabold text-xs sm:text-sm text-gray-900 dark:text-white truncate">
-                                                {comment.name}
-                                            </span>
-                                            <span className="text-[11px] font-mono text-gray-400">
-                                                {comment.username}
-                                            </span>
-                                            {comment.score && (
-                                                <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-red-600/10 to-rose-600/10 border border-red-500/20 text-[#c41e30] dark:text-red-400 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
-                                                    <FaCheckCircle className="text-[9px]" />
-                                                    {comment.score}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 leading-relaxed break-words">
-                                            {comment.text}
-                                        </p>
-
-                                        <div className="flex items-center gap-4 text-[11px] font-semibold text-gray-400 pt-0.5">
-                                            <span>{comment.date || 'Hozirgina'}</span>
-                                            <button className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer">
-                                                Javob berish
+                                    <div className="flex items-center gap-4 text-[11px] font-semibold text-gray-400 pt-0.5">
+                                        <span>{comment.date || 'Hozirgina'}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
+                                            className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer transition-colors"
+                                        >
+                                            Javob berish
+                                        </button>
+                                        {isAdmin && (
+                                            <button
+                                                onClick={() => handleDeleteComment(comment.id)}
+                                                className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                            >
+                                                <FaTrash className="text-[10px]" />
+                                                <span>O'chirish</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                    
+                                    
+                                    {comment.replies && comment.replies.length > 0 && (
+                                        <div className="mt-2">
+                                            <button
+                                                onClick={() => setExpandedReplies(prev => ({ ...prev, [comment.id]: !prev[comment.id] }))}
+                                                className="flex items-center gap-1.5 text-[11px] font-bold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                                            >
+                                                <span className="w-6 h-[1px] bg-gray-300 dark:bg-gray-700 inline-block"></span>
+                                                {expandedReplies[comment.id] 
+                                                    ? "Javoblarni yopish" 
+                                                    : `${comment.replies.length} ta javobni ko'rish`
+                                                }
+                                                {expandedReplies[comment.id] ? <FaChevronUp className="text-[9px]" /> : <FaChevronDown className="text-[9px]" />}
                                             </button>
 
-                                            {isAdmin && (
-                                                <button
-                                                    onClick={() => handleDeleteComment(comment.id)}
-                                                    className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
-                                                >
-                                                    <FaTrash className="text-[10px]" />
-                                                    <span>O'chirish</span>
-                                                </button>
-                                            )}
+                                            <AnimatePresence>
+                                                {expandedReplies[comment.id] && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, height: 0 }}
+                                                        animate={{ opacity: 1, height: 'auto' }}
+                                                        exit={{ opacity: 0, height: 0 }}
+                                                        className="space-y-3 border-l-2 border-gray-200 dark:border-gray-800 pl-3 mt-3 overflow-hidden"
+                                                    >
+                                                        {comment.replies.map(reply => (
+                                                            <div key={reply.id} className="pt-2 first:pt-0">
+                                                                <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 leading-relaxed break-words">
+                                                                    {reply.text}
+                                                                </p>
+                                                                <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-400 pt-1">
+                                                                    <span>{reply.date || 'Hozirgina'}</span>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
+                                                                        className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer transition-colors"
+                                                                    >
+                                                                        Javob berish
+                                                                    </button>
+                                                                    {isAdmin && (
+                                                                        <button
+                                                                            onClick={() => handleDeleteReply(comment.id, reply.id)}
+                                                                            className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                                                        >
+                                                                            <FaTrash className="text-[9px]" />
+                                                                            <span>O'chirish</span>
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
 
-                                {/* TikTok-Style Heart Like Button */}
-                                <div className="flex flex-col items-center justify-center shrink-0 pl-2">
-                                    <motion.button
-                                        whileTap={{ scale: 1.4 }}
-                                        onClick={() => toggleLike(comment.id)}
-                                        className="p-2 cursor-pointer transition-colors"
-                                        aria-label="Like comment"
-                                    >
-                                        {comment.likedByMe ? (
-                                            <motion.div
-                                                initial={{ scale: 0.5 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                                            >
-                                                <FaHeart className="text-lg text-rose-500 drop-shadow-[0_0_10px_rgba(244,63,94,0.6)]" />
-                                            </motion.div>
-                                        ) : (
-                                            <FaRegHeart className="text-lg text-gray-400 hover:text-rose-400 transition-colors" />
-                                        )}
-                                    </motion.button>
-                                    <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 -mt-1">
-                                        {comment.likesCount || 0}
-                                    </span>
-                                </div>
+
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -313,28 +341,20 @@ export default function TikTokComments({ isAdmin = false, defaultOpen = false })
                 onSubmit={handleAddComment}
                 className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl p-4 sm:p-5 rounded-b-3xl border-b border-x border-gray-200 dark:border-gray-800 shadow-xl space-y-3"
             >
-                <div className="relative flex items-center">
-                    <FaUserCircle className="absolute left-3.5 text-gray-400 text-sm" />
-                    <input
-                        type="text"
-                        name="name"
-                        id="user-name-input"
-                        autoComplete="name"
-                        placeholder={t('studentComments.namePlaceholder', "Ismingiz (masalan: Azizbek)")}
-                        value={nameInput}
-                        onChange={(e) => setNameInput(e.target.value)}
-                        onInput={(e) => setNameInput(e.target.value)}
-                        onSelect={(e) => setNameInput(e.target.value)}
-                        onBlur={(e) => setNameInput(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
-                        required
-                    />
-                </div>
+                {replyingTo && (
+                    <div className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-2.5 sm:p-3 rounded-xl text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">
+                        <span className="flex items-center gap-2"><FaCommentDots className="text-gray-400" /> Javob yozilmoqda...</span>
+                        <button type="button" onClick={() => setReplyingTo(null)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors cursor-pointer p-1">
+                            <FaTimes />
+                        </button>
+                    </div>
+                )}
 
                 <div className="relative flex items-center">
                     <input
                         type="text"
-                        placeholder={t('studentComments.textPlaceholder', "Izohingizni yozing...")}
+                        id="comment-input"
+                        placeholder={t('studentCommentsORG.textPlaceholder', "Izohingizni yozing...")}
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"

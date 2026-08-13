@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import Comments from './Comments'
+import CommentsORG from './TikTokComments'
 import toast, { Toaster } from 'react-hot-toast'
 import { FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, FaInbox, FaSignOutAlt, FaCheck, FaTimes, FaSync, FaFileCsv, FaFilter, FaChartBar, FaCheckCircle, FaTimesCircle, FaHourglassHalf, FaUsers, FaTrash, FaHeadset, FaChevronDown, FaUserShield } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -8,7 +8,7 @@ import axios from 'axios'
 
 export default function AdminORG() {
     const { t } = useTranslation()
-    const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'comments'
+    const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'CommentsORG'
     const [leads, setLeads] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('all')
@@ -102,7 +102,7 @@ export default function AdminORG() {
     }
 
     useEffect(() => {
-        
+
         loadLeads()
 
         // Har 3 soniyada barcha qurilmalar (telefon, PC) orasida murojaatlarni real-vaqtda yangilash
@@ -129,7 +129,7 @@ export default function AdminORG() {
         } catch (e) {
             // silent catch
         }
-        
+
         if (newStatus === 'Qabul qilindi') {
             toast.success(t('adminPanel.requestAccepted', "So'rov qabul qilindi!"))
         } else if (newStatus === 'Rad etildi') {
@@ -178,7 +178,7 @@ export default function AdminORG() {
             const matchesSearch = lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 lead.phone?.includes(searchTerm) ||
                 lead.type?.toLowerCase().includes(searchTerm.toLowerCase())
-            
+
             const matchesStatus = statusFilter === 'all' || lead.status === statusFilter || (statusFilter === 'Kutilmoqda' && !lead.status)
             const matchesType = typeFilter === 'all' || lead.type?.toLowerCase().includes(typeFilter.toLowerCase())
 
@@ -232,11 +232,10 @@ export default function AdminORG() {
                                     onChange(opt.value)
                                     setOpen(false)
                                 }}
-                                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                    value === opt.value
+                                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${value === opt.value
                                         ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-md'
                                         : 'text-gray-700 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
-                                }`}
+                                    }`}
                             >
                                 <span>{opt.label}</span>
                                 {value === opt.value && <FaCheck className="text-xs shrink-0" />}
@@ -251,7 +250,7 @@ export default function AdminORG() {
     return (
         <div className="min-h-screen bg-transparent text-gray-900 dark:text-gray-100 font-['Plus_Jakarta_Sans',sans-serif] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto space-y-8">
-                
+
                 {/* Admin Header Bar */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl">
                     <div className="flex items-center gap-4">
@@ -371,26 +370,24 @@ export default function AdminORG() {
                     <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                         <button
                             onClick={() => setActiveTab('leads')}
-                            className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer shrink-0 whitespace-nowrap ${
-                                activeTab === 'leads'
+                            className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer shrink-0 whitespace-nowrap ${activeTab === 'leads'
                                     ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
                                     : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
-                            }`}
+                                }`}
                         >
                             <FaInbox className="text-base shrink-0" />
                             <span className="whitespace-nowrap">{t('adminPanel.murojaatlarTab', "Murojaatlar")} ({leads.length})</span>
                         </button>
 
                         <button
-                            onClick={() => setActiveTab('comments')}
-                            className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer shrink-0 whitespace-nowrap ${
-                                activeTab === 'comments'
+                            onClick={() => setActiveTab('CommentsORG')}
+                            className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-extrabold text-xs sm:text-sm transition-all cursor-pointer shrink-0 whitespace-nowrap ${activeTab === 'CommentsORG'
                                     ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/30'
                                     : 'bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-800'
-                            }`}
+                                }`}
                         >
                             <FaCommentDots className="text-base shrink-0" />
-                            <span className="whitespace-nowrap">{t('adminPanel.commentsTab', "O'quvchilar Izohlari")}</span>
+                            <span className="whitespace-nowrap">{t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari")}</span>
                         </button>
                     </div>
 
@@ -420,7 +417,7 @@ export default function AdminORG() {
                     <div className="space-y-6">
                         {/* Search and Filters Bar */}
                         <div className="relative z-30 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-4 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-md">
-                            
+
                             {/* Search Input */}
                             <div className="relative flex-1">
                                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
@@ -501,13 +498,12 @@ export default function AdminORG() {
                                                         {lead.type || "Murojaat"}
                                                     </span>
 
-                                                    <span className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold whitespace-nowrap shrink-0 ${
-                                                        lead.status === 'Qabul qilindi'
+                                                    <span className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold whitespace-nowrap shrink-0 ${lead.status === 'Qabul qilindi'
                                                             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
                                                             : lead.status === 'Rad etildi'
-                                                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
-                                                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
-                                                    }`}>
+                                                                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                                                                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                                                        }`}>
                                                         {lead.status === 'Qabul qilindi' ? t('adminPanel.accepted', "Qabul qilindi") : lead.status === 'Rad etildi' ? t('adminPanel.rejected', "Rad etildi") : t('adminPanel.pending', "Kutilmoqda")}
                                                     </span>
                                                 </div>
@@ -546,11 +542,10 @@ export default function AdminORG() {
                                                 <button
                                                     onClick={() => updateLeadStatus(lead.id, 'Qabul qilindi')}
                                                     disabled={lead.status === 'Qabul qilindi'}
-                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
-                                                        lead.status === 'Qabul qilindi'
+                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${lead.status === 'Qabul qilindi'
                                                             ? 'bg-emerald-500/20 text-emerald-600 cursor-not-allowed opacity-60'
                                                             : 'bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 hover:text-white border border-emerald-500/20'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <FaCheck />
                                                     <span>{t('adminPanel.acceptBtn', "Accept")}</span>
@@ -561,11 +556,10 @@ export default function AdminORG() {
                                                 <button
                                                     onClick={() => updateLeadStatus(lead.id, 'Rad etildi')}
                                                     disabled={lead.status === 'Rad etildi'}
-                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${
-                                                        lead.status === 'Rad etildi'
+                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 ${lead.status === 'Rad etildi'
                                                             ? 'bg-rose-500/20 text-rose-600 cursor-not-allowed opacity-60'
                                                             : 'bg-rose-600/10 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-500/20'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     <FaTimes />
                                                     <span>{t('adminPanel.rejectBtn', "Reject")}</span>
@@ -580,9 +574,9 @@ export default function AdminORG() {
                 )}
 
                 {/* Tab 2: Izohlar va Mahsulotlar */}
-                {activeTab === 'comments' && (
+                {activeTab === 'CommentsORG' && (
                     <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
-                        <Comments />
+                        <CommentsORG />
                     </div>
                 )}
 
@@ -701,16 +695,14 @@ export default function AdminORG() {
                                                 key={item.value}
                                                 type="button"
                                                 onClick={() => setNewLeadType(item.value)}
-                                                className={`relative p-3 rounded-2xl border text-left transition-all duration-300 cursor-pointer flex flex-col justify-between gap-2.5 ${
-                                                    isSelected
+                                                className={`relative p-3 rounded-2xl border text-left transition-all duration-300 cursor-pointer flex flex-col justify-between gap-2.5 ${isSelected
                                                         ? 'bg-gradient-to-br from-red-600/20 via-rose-600/10 to-red-600/5 border-red-500 text-white shadow-lg shadow-red-600/25 scale-[1.02]'
                                                         : 'bg-gray-50 dark:bg-gray-950/80 border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:border-red-500/40 hover:text-white'
-                                                }`}
+                                                    }`}
                                             >
                                                 <div className="flex items-center justify-between w-full">
-                                                    <div className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs transition-colors ${
-                                                        isSelected ? 'bg-red-600 text-white shadow-md' : 'bg-gray-200 dark:bg-gray-800 text-gray-400'
-                                                    }`}>
+                                                    <div className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs transition-colors ${isSelected ? 'bg-red-600 text-white shadow-md' : 'bg-gray-200 dark:bg-gray-800 text-gray-400'
+                                                        }`}>
                                                         <Icon />
                                                     </div>
                                                     {isSelected && (

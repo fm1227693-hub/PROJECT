@@ -60,7 +60,7 @@
         "emptyError": "Iltimos, to'ldiring",
         "wrongPassword": "Parol noto'g'ri!"
     },
-    "comments": {
+    "CommentsORG": {
         "title": "Kurslarni boshqarish",
         "deleteBtn": "O'chirish",
         "editBtn": "Tahrirlash",
@@ -594,11 +594,11 @@
         "errorGeneric": "Xatolik yuz berdi. Qaytadan urinib ko'ring.",
         "errorNetwork": "Internet aloqasini tekshiring."
     },
-    "studentComments": {
+    "studentCommentsORG": {
         "title": "O'quvchilar Izohlari va Natijalari",
         "subtitle": "O'quvchilar izohlari ({{count}} ta izoh)",
         "viewAndLeaveBtn": "Izohlarni ko'rish va qoldirish",
-        "noComments": "Hozircha izohlar yo'q",
+        "noCommentsORG": "Hozircha izohlar yo'q",
         "beFirst": "Birinchi bo'lib Username va Gmail pochta orqali izohingizni qoldiring!",
         "replyBtn": "Javob berish",
         "deleteBtn": "O'chirish",
@@ -618,7 +618,7 @@
         "accepted": "Qabul Qilindi",
         "rejected": "Rad Etildi",
         "murojaatlarTab": "Murojaatlar",
-        "commentsTab": "O'quvchilar Izohlari",
+        "CommentsORGTab": "O'quvchilar Izohlari",
         "exportCsvBtn": "Excel (CSV) yuklab olish",
         "searchPlaceholder": "Ism yoki telefon bo'yicha qidiruv...",
         "statusLabel": "Status:",

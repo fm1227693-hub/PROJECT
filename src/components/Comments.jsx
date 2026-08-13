@@ -1,10 +1,10 @@
 import React from 'react'
-import TikTokComments from './TikTokComments'
+import CommentsORG from './TikTokComments'
 
-export default function Comments() {
+export default function CommentsORG() {
     return (
         <div className="w-full py-4">
-            <TikTokComments isAdmin={true} />
+            <CommentsORG isAdmin={true} />
         </div>
     )
 }

@@ -60,7 +60,7 @@
         "emptyError": "Please enter a value",
         "wrongPassword": "Wrong password!"
     },
-    "comments": {
+    "CommentsORG": {
         "title": "Manage Courses",
         "deleteBtn": "Delete",
         "editBtn": "Edit",
@@ -515,11 +515,11 @@
         "errorGeneric": "An error occurred. Please try again.",
         "errorNetwork": "Please check your internet connection."
     },
-    "studentComments": {
+    "studentCommentsORG": {
         "title": "Student Reviews & Results",
         "subtitle": "Student reviews ({{count}} reviews)",
         "viewAndLeaveBtn": "View & Leave Reviews",
-        "noComments": "No reviews yet",
+        "noCommentsORG": "No reviews yet",
         "beFirst": "Be the first to leave a review using Username and Gmail!",
         "replyBtn": "Reply",
         "deleteBtn": "Delete",
@@ -539,7 +539,7 @@
         "accepted": "Accepted",
         "rejected": "Rejected",
         "murojaatlarTab": "Applications",
-        "commentsTab": "Student Reviews",
+        "CommentsORGTab": "Student Reviews",
         "exportCsvBtn": "Download Excel (CSV)",
         "searchPlaceholder": "Search by name or phone...",
         "statusLabel": "Status:",

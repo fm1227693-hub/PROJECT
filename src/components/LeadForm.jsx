@@ -107,21 +107,22 @@ export default function LeadForm() {
 
     return (
         <>
-            {/* Navbar va komponent orasidagi Orqaga qaytish tugmasi */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32">
-                <button
-                    onClick={handleGoBack}
-                    className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 hover:border-red-500/30 dark:hover:border-red-500/30 text-xs sm:text-sm font-bold shadow-sm transition-all duration-300 cursor-pointer"
-                >
-                    <FaArrowLeft className="text-xs transition-transform duration-300 group-hover:-translate-x-1" />
-                    <span>{t('leadForm.backBtn', 'Orqaga qaytish')}</span>
-                </button>
-            </div>
+
+
+            {/* Orqaga qaytish tugmasi */}
+            <button
+                onClick={handleGoBack}
+                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+            >
+                <span className="text-base xs:text-lg leading-none">←</span>
+                <span>{t('common.backBtn') || 'Orqaga'}</span>
+            </button>
 
             {/* Asosiy Forma qismi */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6 select-none">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6 select-none pt-24 sm:pt-28 lg:pt-32">
                 <div className="relative glass-card p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] shadow-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden transition-all duration-300">
                     
+
                     {/* Orqa fon nur effekti */}
                     <div className="absolute -top-32 -right-32 w-96 h-96 bg-red-600/20 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
                     <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
