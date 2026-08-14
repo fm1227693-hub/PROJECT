@@ -19,7 +19,7 @@ export default function Register() {
     const [toast, setToast] = useState(null);
 
     // Yangi bot tokeni (@optimum_kurs_bot)
-    const BOT_TOKEN = "8800216213:AAGmRhvFeu0bmzYcGxVAgMT-LEiqAEJ1WnI";
+    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_1;
 
     // Ikkita admin chat ID lari massiv ko'rinishida
     const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
@@ -80,13 +80,13 @@ export default function Register() {
                 }
 
                 try {
-                    const res = await axios.get('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json')
+                    const res = await axios.get(import.meta.env.VITE_FIREBASE_DB_URL)
                     let currentLeads = []
                     if (res.data !== null) {
                         currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
                     }
                     const updatedLeads = [newLead, ...currentLeads]
-                    await axios.put('https://optimum-a2d13-default-rtdb.firebaseio.com/leads.json', updatedLeads)
+                    await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads)
                     localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
                 } catch (err) {
                     console.error("API error:", err)

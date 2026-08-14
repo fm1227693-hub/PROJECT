@@ -1,0 +1,47 @@
+export const readingTest1Answers = {
+  // SECTION 1
+  1: ["FALSE"],
+  2: ["TRUE"],
+  3: ["NOT GIVEN"],
+  4: ["TRUE"],
+  5: ["TRUE"],
+  6: ["NOT GIVEN"],
+  7: ["TRUE"],
+  8: ["FALSE"],
+  9: ["vibrant"],
+  10: ["polar-opposite"],
+  11: ["grainy picture"],
+  12: ["adamant"],
+  13: ["imagery hovering"],
+
+  // SECTION 2
+  14: ["C"],
+  15: ["G"],
+  16: ["B"],
+  17: ["A"],
+  18: ["H"],
+  19: ["D"],
+  20: ["E"],
+  21: ["F"],
+  22: ["perseverance"],
+  23: ["catapult"],
+  24: ["improvisation"],
+  25: ["network"],
+  26: ["C"],
+
+  // SECTION 3
+  27: ["TRUE"],
+  28: ["FALSE"],
+  29: ["NOT GIVEN"],
+  30: ["TRUE"],
+  31: ["FALSE"],
+  32: ["A"],
+  33: ["C"],
+  34: ["A"],
+  35: ["B"],
+  36: ["commercially abroad"],
+  37: ["subscription channels"],
+  38: ["icky"],
+  39: ["more ambitious"],
+  40: ["speculation"]
+};

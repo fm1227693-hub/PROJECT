@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaMicrophone } from 'react-icons/fa'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaMicrophone, FaBookOpen } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -291,13 +291,22 @@ export default function Navbar() {
                                             <span>{t('navbar.levelTest', 'Daraja testi')}</span>
                                         </Link>
                                         <Link
-                                            to="/ielts-practice"
+                                            to="/reading-tests"
                                             onClick={() => setTestsDropdownOpen(false)}
                                             data-aos="fade-left" data-aos-delay="200"
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
                                         >
-                                            <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30]" />
-                                            <span>{t('navbar.ieltsPractice', 'Reading & Speaking')}</span>
+                                            <FaBookOpen className="w-3.5 h-3.5 text-[#c41e30]" />
+                                            <span>IELTS Reading Tests</span>
+                                        </Link>
+                                        <Link
+                                            to="/listening-tests"
+                                            onClick={() => setTestsDropdownOpen(false)}
+                                            data-aos="fade-left" data-aos-delay="250"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                        >
+                                            <FaMicrophone className="w-3.5 h-3.5 text-[#c41e30]" />
+                                            <span>IELTS Listening Tests</span>
                                         </Link>
                                         <Link
                                             to="/games"
@@ -444,7 +453,8 @@ export default function Navbar() {
                                     </div>
                                     <Link to="/ielts-writing" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsWriting', 'AI IELTS Writing')}</Link>
                                     <Link to="/level-test" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.levelTest', 'Daraja testi')}</Link>
-                                    <Link to="/ielts-practice" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsPractice', 'Reading & Speaking')}</Link>
+                                    <Link to="/reading-tests" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">IELTS Reading Tests</Link>
+                                    <Link to="/listening-tests" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">IELTS Listening Tests</Link>
                                     <Link to="/games" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.games', "O'yinlar")}</Link>
                                 </div>
 

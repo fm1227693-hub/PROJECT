@@ -23,7 +23,7 @@ export default function Home() {
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState('')
 
-    const BOT_TOKEN = "8722121979:AAFh-CGYP26-mjBW3-iM1lqboGAEeATB1hA"
+    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_2
     const CHAT_ID = "6383523156"
 
     const handleSubmit = async (e) => {

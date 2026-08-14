@@ -1,0 +1,47 @@
+export const readingTest2Answers = {
+  // SECTION 1
+  1: ["FALSE"],
+  2: ["FALSE"],
+  3: ["TRUE"],
+  4: ["FALSE"],
+  5: ["NOT GIVEN"],
+  6: ["TRUE"],
+  7: ["NOT GIVEN"],
+  8: ["D"],
+  9: ["D"],
+  10: ["B"],
+  11: ["A"],
+  12: ["A"],
+  13: ["readily attack", "readily attack humans", "readily attack (humans)"],
+  14: ["balletic, mesmeric", "balletic and mesmeric", "balletic mesmeric"],
+  15: ["longest preserved specimen", "longest preserved"],
+  16: ["fearsome appearance", "fearsome"],
+
+  // SECTION 2
+  17: ["D"],
+  18: ["H"],
+  19: ["E"],
+  20: ["G"],
+  21: ["I"],
+  22: ["A"],
+  23: ["F"],
+  24: ["C"],
+  25: ["B"],
+  26: ["C"],
+  27: ["B"],
+
+  // SECTION 3
+  28: ["A"],
+  29: ["A"],
+  30: ["B"],
+  31: ["C"],
+  32: ["luminaries"],
+  33: ["downside"],
+  34: ["novel"],
+  35: ["issue"],
+  36: ["frown"],
+  37: ["TRUE"],
+  38: ["TRUE"],
+  39: ["NOT GIVEN"],
+  40: ["FALSE"]
+};

@@ -34,6 +34,7 @@ export default function IeltsWritingAssessor() {
         // --- BAND 5.0 - 6.0 LEVEL TOPICS ---
         {
             id: 't2_b5_1',
+            imageUrl: 'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=400&fit=crop',
             title: t('ieltsWriting.p1Title', 'Task 2: Mobile Phones in Schools'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -73,6 +74,7 @@ Conversely, metro train usage started at 8 million passengers in 2000 before exp
         },
         {
             id: 't2_b6_3',
+            imageUrl: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&fit=crop',
             title: t('ieltsWriting.p3Title', 'Task 2: Online Learning vs Traditional Classrooms'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -94,6 +96,7 @@ In conclusion, while distance education provides flexible study schedules and co
         // --- BAND 6.5 - 7.5 LEVEL TOPICS ---
         {
             id: 't2_b7_4',
+            imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&fit=crop',
             title: t('ieltsWriting.p4Title', 'Task 2: Artificial Intelligence & Future Job Market'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -133,6 +136,7 @@ Conversely, Southern European nations recorded lower numbers. Italy saw a modera
         },
         {
             id: 't2_b7_6',
+            imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&fit=crop',
             title: t('ieltsWriting.p6Title', 'Task 2: Higher Education vs Early Employment'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -172,6 +176,7 @@ In the third stage, clarified liquid is transferred to aeration tanks where bene
         },
         {
             id: 't2_b7_8',
+            imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&fit=crop',
             title: t('ieltsWriting.p8Title', 'Task 2: Environmental Protection Responsibility'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -193,6 +198,7 @@ In conclusion, addressing environmental crisis is not a singular responsibility.
         // --- BAND 8.0 - 9.0 LEVEL TOPICS ---
         {
             id: 't2_b8_9',
+            imageUrl: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&fit=crop',
             title: t('ieltsWriting.p9Title', 'Task 2: Universal Basic Income & Wealth Inequality'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -232,6 +238,7 @@ By 2035, this distribution is anticipated to shift dramatically. Solar and wind 
         },
         {
             id: 't2_b9_11',
+            imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&fit=crop',
             title: t('ieltsWriting.p11Title', 'Task 2: Preservation of Minority Languages'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -271,6 +278,7 @@ In the southern half of the town, the original 1995 fishing port and warehouse s
         },
         {
             id: 't2_b9_13',
+            imageUrl: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&fit=crop',
             title: t('ieltsWriting.p13Title', 'Task 2: Space Exploration Funding vs Poverty'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -290,6 +298,7 @@ In conclusion, although the urgency of global poverty demands substantial financ
         },
         {
             id: 't2_b8_14',
+            imageUrl: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&fit=crop',
             title: t('ieltsWriting.p14Title', 'Task 2: Criminal Rehabilitation vs Punishment'),
             type: t('ieltsWriting.task2Type', 'Task 2 (Essay)'),
             taskType: 'task2',
@@ -309,6 +318,7 @@ In conclusion, while prisons must enforce accountability, focusing solely on pun
         },
         {
             id: 't1_b6_15',
+            imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&fit=crop',
             title: t('ieltsWriting.p15Title', 'Task 1: Process Diagram - Coffee Production'),
             type: t('ieltsWriting.task1Type', 'Task 1 (Academic)'),
             taskType: 'task1',
@@ -329,10 +339,21 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
     ]
 
     // Navigation & State Management
-    const [screen, setScreen] = useState('levels') // 'levels' | 'topics' | 'workspace'
-    const [selectedBand, setSelectedBand] = useState('All') // 'All' | '5.0' | '6.0' | '7.0' | '8.0' | '9.0'
-    const [selectedPrompt, setSelectedPrompt] = useState(allPrompts[3]) // Default to AI prompt
-    const [workspaceTab, setWorkspaceTab] = useState('editor') // 'editor' | 'guide'
+    const [screen, setScreen] = useState('home') // 'home' | 'workspace'
+    const [selectedPrompt, setSelectedPrompt] = useState(null)
+
+    // 6 Featured prompts: 3 Task1 + 3 Task2 (hand-picked from the 15)
+    const featuredTask1 = [
+        allPrompts.find(p => p.id === 't1_b5_2'),   // Line Graph - Public Transport
+        allPrompts.find(p => p.id === 't1_b8_10'),  // Pie Charts - Global Energy
+        allPrompts.find(p => p.id === 't1_b9_12'),  // Map - Urban Redevelopment
+    ].filter(Boolean)
+
+    const featuredTask2 = [
+        allPrompts.find(p => p.id === 't2_b5_1'),   // Mobile Phones in Schools
+        allPrompts.find(p => p.id === 't2_b7_4'),   // AI & Future Job Market
+        allPrompts.find(p => p.id === 't2_b9_11'),  // Minority Languages
+    ].filter(Boolean)
 
     // Editor & Timer States
     const [essayText, setEssayText] = useState('')
@@ -345,9 +366,11 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
     // AI Analysis States
     const [isAnalyzing, setIsAnalyzing] = useState(false)
     const [analysisResult, setAnalysisResult] = useState(null)
+    const [showSampleAnswer, setShowSampleAnswer] = useState(false)
 
     // Reset timer when active prompt changes
     useEffect(() => {
+        if (!selectedPrompt) return
         setTimerSeconds(selectedPrompt.timeLimit)
         setIsTimerRunning(false)
         setTimeWarning(false)
@@ -391,10 +414,17 @@ In the subsequent industrial phase, the hulled coffee beans are roasted at high 
     const wordCount = wordsArray.length
     const charCount = essayText.length
 
-    // Filter prompts by selected Band level
-    const filteredPrompts = selectedBand === 'All'
-        ? allPrompts
-        : allPrompts.filter(p => p.bandLevel === selectedBand)
+    // Open a prompt and go to workspace
+    const openPrompt = (prompt) => {
+        setSelectedPrompt(prompt)
+        setEssayText('')
+        setAnalysisResult(null)
+        setTimerSeconds(prompt.timeLimit)
+        setIsTimerRunning(false)
+        setTimeWarning(false)
+        setShowSampleAnswer(false)
+        setScreen('workspace')
+    }
 
     // Copy Essay Text
     const copyToClipboard = () => {
@@ -720,7 +750,9 @@ Respond STRICTLY in the following JSON format:
             }
 
             const isSampleAnswer = selectedPrompt.sampleAnswer && text.toLowerCase().trim() === selectedPrompt.sampleAnswer.toLowerCase().trim();
-            const targetBand = isSampleAnswer ? parseFloat(selectedPrompt.bandLevel) : parseFloat(overallBand);
+            // Sample answers always get at least Band 7.0
+            const sampleBand = Math.max(7.0, parseFloat(selectedPrompt.bandLevel))
+            const targetBand = isSampleAnswer ? sampleBand : parseFloat(overallBand);
             
             setAnalysisResult({
                 underLength: false,
@@ -742,680 +774,439 @@ Respond STRICTLY in the following JSON format:
         }, 1200)
     }
 
-    /* ==================== SCREEN 1: BAND LEVEL SELECTION ==================== */
-    if (screen === 'levels') {
-        const levels = [
-            { level: '5.0', label: 'Band 5.0 - 5.5', desc: t('ieltsWritingAssessor.level5Desc', "Boshlang'ich IELTS Writing (B1 Level)"), count: 3, gradient: 'from-amber-500/20 to-orange-500/20', border: 'border-amber-500/30' },
-            { level: '6.0', label: 'Band 6.0 - 6.5', desc: t('ieltsWritingAssessor.level6Desc', "O'rta IELTS Writing (B2 Level)"), count: 3, gradient: 'from-rose-500/20 to-red-500/20', border: 'border-rose-500/30' },
-            { level: '7.0', label: 'Band 7.0 - 7.5', desc: t('ieltsWritingAssessor.level7Desc', "Yuqori IELTS Writing (C1 Level)"), count: 3, gradient: 'from-red-600/20 to-rose-600/20', border: 'border-red-500/40' },
-            { level: '8.0', label: 'Band 8.0 - 8.5', desc: t('ieltsWritingAssessor.level8Desc', "Professional IELTS Writing (C1+ Level)"), count: 3, gradient: 'from-purple-600/20 to-rose-600/20', border: 'border-purple-500/40' },
-            { level: '9.0', label: 'Band 9.0 Master', desc: t('ieltsWritingAssessor.level9Desc', "Ekspert IELTS Writing (C2 Level)"), count: 3, gradient: 'from-red-600/30 to-amber-500/20', border: 'border-red-600/50' }
-        ]
+    /* ==================== SCREEN 1: HOME - TOPIC CARDS ==================== */
+    if (screen === 'home') {
+        const CardGrid = ({ prompts, part, color }) => (
+            <div className="mb-12">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg text-white ${color === 'blue' ? 'bg-gradient-to-br from-blue-500 to-indigo-600' : 'bg-gradient-to-br from-red-500 to-rose-600'}`}>
+                        {part}
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-black text-gray-900 dark:text-white">
+                            {part === 1 ? 'Part 1 — Task 1 (Academic)' : 'Part 2 — Task 2 (Essay)'}
+                        </h2>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                            {part === 1 ? '20 daqiqa | Kamida 150 so\'z | Grafik, jadval, xarita tavsifi' : '40 daqiqa | Kamida 250 so\'z | Argument insho'}
+                        </p>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    {prompts.map((prompt, idx) => (
+                        <motion.div
+                            key={prompt.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            whileHover={{ scale: 1.02, y: -4 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => openPrompt(prompt)}
+                            className="cursor-pointer rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md hover:shadow-xl hover:border-red-400 dark:hover:border-red-500 transition-all duration-200 overflow-hidden group flex flex-col"
+                        >
+                            {prompt.imageUrl && (
+                                <div className="h-36 overflow-hidden">
+                                    <img src={prompt.imageUrl} alt={prompt.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                </div>
+                            )}
+                            {!prompt.imageUrl && (
+                                <div className={`h-28 flex items-center justify-center ${part === 1 ? 'bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30' : 'bg-gradient-to-br from-rose-50 to-red-100 dark:from-rose-900/30 dark:to-red-900/30'}`}>
+                                    <FaPenFancy className={`text-4xl opacity-20 ${part === 1 ? 'text-blue-600' : 'text-rose-600'}`} />
+                                </div>
+                            )}
+                            <div className="p-5 flex flex-col flex-1">
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full border ${
+                                        part === 1
+                                            ? 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400'
+                                            : 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400'
+                                    }`}>
+                                        {part === 1 ? 'Task 1' : 'Task 2'}
+                                    </span>
+                                </div>
+                                <h3 className="text-sm font-black text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors mb-2 line-clamp-2">
+                                    {prompt.title}
+                                </h3>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 italic flex-1">
+                                    "{prompt.promptText}"
+                                </p>
+                                <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+                                    <span className="flex items-center gap-1.5 text-xs font-bold text-gray-400">
+                                        <FaClock className="text-red-400" />
+                                        {prompt.timeLimit / 60} daqiqa
+                                    </span>
+                                    <span className="text-xs font-black text-red-600 dark:text-red-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                        Boshlash <FaChevronRight className="text-[9px]" />
+                                    </span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        )
 
         return (
-            <div className="relative min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 font-sans">
+            <div className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto font-sans">
                 {/* Ambient Red Glow */}
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-red-600/20 via-rose-500/15 to-amber-500/10 rounded-full blur-[150px] pointer-events-none -z-10" />
+                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-red-600/15 via-rose-500/10 to-blue-500/10 rounded-full blur-[150px] pointer-events-none -z-10" />
 
                 {/* Hero Header */}
-                <div className="text-center space-y-4 max-w-3xl mx-auto">
+                <div className="text-center space-y-4 max-w-3xl mx-auto mb-14">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-black uppercase tracking-widest"
                     >
                         <FaGraduationCap className="text-sm" />
-                        <span>{t('ieltsWritingAssessor.suiteTitle', 'IELTS BAND 5.0 - 9.0 WRITING SUITE')}</span>
+                        <span>IELTS Academic Writing Test</span>
                     </motion.div>
-
                     <motion.h1
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl sm:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-tight"
+                        className="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight"
                     >
-                        {t('ieltsWritingAssessor.heroTitle', 'IELTS Writing Assessor & Simulator')}
+                        Writing Assessor & AI Simulator
                     </motion.h1>
-
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-sm sm:text-base font-medium text-gray-600 dark:text-gray-400 leading-relaxed"
+                        className="text-sm font-medium text-gray-500 dark:text-gray-400 leading-relaxed"
                     >
-                        {t('ieltsWritingAssessor.suiteDesc', "O'zingizga mos IELTS Band darajasini tanlang (15 ta rasmiy mavzu). Namuna insholarni o'rganing, o'zingiz yozib ko'ring va sun'iy intellekt tahlilidan o'ting.")}
+                        Mavzuni tanlang, yozing va AI bilan Band baholangizni bilib oling. Part 1 — 20 daqiqa, Part 2 — 40 daqiqa.
                     </motion.p>
                 </div>
 
-                {/* Level Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {levels.map((item, idx) => (
-                        <motion.div
-                            key={idx}
-                            whileHover={{ scale: 1.03, y: -5 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => {
-                                setSelectedBand(item.level)
-                                setScreen('topics')
-                            }}
-                            className={`p-6 rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border ${item.border} shadow-xl hover:shadow-2xl hover:shadow-red-600/10 transition-all cursor-pointer space-y-4 relative overflow-hidden group`}
-                        >
-                            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
+                {/* Task 1 Cards */}
+                <CardGrid prompts={featuredTask1} part={1} color="blue" />
 
-                            <div className="flex items-center justify-between">
-                                <span className="px-3.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 font-mono text-sm font-black">
-                                    Band {item.level}
-                                </span>
-                                <span className="text-xs font-bold text-gray-400">
-                                    {t('ieltsWritingAssessor.topicsCount', '{{count}} ta mavzu', { count: item.count })}
-                                </span>
-                            </div>
+                {/* Divider */}
+                <div className="border-t border-slate-200 dark:border-slate-700 my-8" />
 
-                            <div>
-                                <h3 className="text-xl font-black text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                                    {item.label}
-                                </h3>
-                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">
-                                    {item.desc}
-                                </p>
-                            </div>
-
-                            <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800 text-xs font-bold text-red-600 dark:text-red-400">
-                                <span>{t('ieltsWritingAssessor.viewTopics', "Mavzularni ko'rish")}</span>
-                                <FaChevronRight className="group-hover:translate-x-1 transition-transform" />
-                            </div>
-                        </motion.div>
-                    ))}
-
-                    {/* All 15 Topics Card */}
-                    <motion.div
-                        whileHover={{ scale: 1.03, y: -5 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                            setSelectedBand('All')
-                            setScreen('topics')
-                        }}
-                        className="p-6 rounded-3xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white shadow-xl shadow-red-600/30 transition-all cursor-pointer space-y-4 flex flex-col justify-between"
-                    >
-                        <div className="space-y-2">
-                            <span className="px-3.5 py-1 rounded-full bg-white/20 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider">
-                                {t('ieltsWritingAssessor.allTopicsTotal', "JAMI 15 TA MAVZU")}
-                            </span>
-                            <h3 className="text-xl sm:text-2xl font-black">{t('ieltsWritingAssessor.allTopicsTitle', "Barcha Mavzular (All Levels)")}</h3>
-                            <p className="text-[10px] sm:text-xs text-white/80 font-medium">
-                                {t('ieltsWritingAssessor.allTopicsDesc', "Band 5.0 dan Band 9.0 gacha bo'lgan barcha Task 1 va Task 2 insho va akademik topshiriqlarini birdaniga ko'rish.")}
-                            </p>
-                        </div>
-                        <div className="flex items-center justify-between text-xs font-black pt-4 border-t border-white/20">
-                            <span>{t('ieltsWritingAssessor.openAllTopics', "Barcha mavzularni ochish")}</span>
-                            <FaChevronRight />
-                        </div>
-                    </motion.div>
-                </div>
+                {/* Task 2 Cards */}
+                <CardGrid prompts={featuredTask2} part={2} color="red" />
             </div>
-        )
-    }
-
-    /* ==================== SCREEN 2: TOPIC SELECTION ==================== */
-    if (screen === 'topics') {
-        return (
-            <>
-            <button
-                onClick={() => setScreen('levels')}
-                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
-            >
-                <span className="text-base xs:text-lg leading-none">←</span>
-                <span>{t('ieltsWritingAssessor.backToLevels', "Darajalarga qaytish")}</span>
-            </button>
-
-            <div className="relative min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-sans">
-                {/* Header with Back Button */}
-                <div className="flex flex-wrap items-center justify-end gap-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                        {['All', '5.0', '6.0', '7.0', '8.0', '9.0'].map((b) => (
-                            <button
-                                key={b}
-                                onClick={() => setSelectedBand(b)}
-                                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
-                                    selectedBand === b
-                                        ? 'bg-red-600 text-white shadow-md'
-                                        : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'
-                                }`}
-                            >
-                                {b === 'All' ? t('ieltsWritingAssessor.allOptions', 'Barchasi') : `${t('ieltsWritingAssessor.band', 'Band')} ${b}`}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="space-y-2">
-                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
-                        {selectedBand === 'All' ? t('ieltsWritingAssessor.allTopicsTitle', 'Barcha Mavzular (All Levels)') : `${t('ieltsWritingAssessor.band', 'Band')} ${selectedBand}`}
-                    </h2>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {t('ieltsWritingAssessor.selectTopic', "O'zingiz mashq qilmoqchi bo'lgan Task 1 yoki Task 2 mavzusini tanlang:")}
-                    </p>
-                </div>
-
-                {/* Topics Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredPrompts.map((prompt, index) => (
-                        <motion.div
-                            key={prompt.id}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => {
-                                setSelectedPrompt(prompt)
-                                setScreen('workspace')
-                            }}
-                            className="p-6 rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-xl hover:border-red-500/40 transition-all cursor-pointer space-y-4 flex flex-col justify-between group"
-                        >
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[10px] font-black uppercase text-red-600 dark:text-red-400 bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/20">
-                                        {prompt.type}
-                                    </span>
-                                    <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
-                                        {t('ieltsWritingAssessor.targetBand', 'Target Band')} {prompt.bandLevel}
-                                    </span>
-                                </div>
-
-                                <h3 className="text-base font-black text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                                    {prompt.title}
-                                </h3>
-
-                                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium line-clamp-3 italic">
-                                    "{prompt.promptText}"
-                                </p>
-                            </div>
-
-                            <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs font-bold text-gray-500 dark:text-gray-400">
-                                <span className="flex items-center gap-1.5">
-                                    <FaClock className="text-red-500" />
-                                    <span>{prompt.timeLimit / 60} {t('ieltsWritingAssessor.minutes', 'daqiqa')}</span>
-                                </span>
-
-                                <span className="text-red-600 dark:text-red-400 font-black flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                    <span>{t('ieltsWritingAssessor.startTask', 'Topshiriqni boshlash')}</span>
-                                    <FaChevronRight className="text-[10px]" />
-                                </span>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-            </>
         )
     }
 
     /* ==================== SCREEN 3: MAIN WRITING WORKSPACE ==================== */
     return (
-        <>
-            <button
-                onClick={() => setScreen('topics')}
-                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
-            >
-                <span className="text-base xs:text-lg leading-none">←</span>
-                <span>{t('ieltsWritingAssessor.backToLevels', "Mavzularga qaytish")}</span>
-            </button>
-
-            <div className="relative min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-sans">
-                {/* Ambient Aurora Glow */}
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[650px] h-[320px] bg-gradient-to-r from-red-600/20 via-rose-500/15 to-amber-500/10 rounded-full blur-[140px] pointer-events-none -z-10" />
-
-                {/* Top Workspace Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
-                    <div className="flex items-center gap-3">
-                    <span className="text-xs font-black uppercase text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-500/20">
-                        {selectedPrompt.type} | Target Band {selectedPrompt.bandLevel}
-                    </span>
-                </div>
-
-                {/* Switch Workspace Tabs */}
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setWorkspaceTab('editor')}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-extrabold transition cursor-pointer ${
-                            workspaceTab === 'editor'
-                                ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md'
-                                : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'
-                        }`}
-                    >
-                        <FaPenFancy />
-                        <span>{t('ieltsWritingAssessor.aiExaminerTab', 'Insho Yozish & AI Examiner')}</span>
-                    </button>
-
-                    <button
-                        onClick={() => setWorkspaceTab('guide')}
-                        className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-extrabold transition cursor-pointer ${
-                            workspaceTab === 'guide'
-                                ? 'bg-amber-500 text-gray-950 shadow-md font-black'
-                                : 'bg-white dark:bg-gray-900 text-amber-600 dark:text-amber-400 border border-amber-500/30'
-                        }`}
-                    >
-                        <FaBookOpen />
-                        <span>{t('ieltsWritingAssessor.modelAnswerTab', 'Namuna Insho & Band Guide')}</span>
-                    </button>
-                </div>
-            </div>
-
-            {/* TAB B: MODEL ANSWER & BAND STRUCTURE GUIDE */}
-            {workspaceTab === 'guide' && (
-                <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-8 rounded-3xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl border border-gray-200 dark:border-gray-800 shadow-2xl space-y-6"
-                >
-                    <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-4">
-                        <div>
-                            <h3 className="text-xl font-black text-gray-900 dark:text-white">
-                                {selectedPrompt.title} — Band 8.5 / 9.0 Namuna Insho
-                            </h3>
-                            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1">
-                                {t('ieltsWritingAssessor.idealSample', "Rasmiy IELTS imtihoni uchun tayyorlangan ideal namuna javob va kalit so'zlar:")}
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Topic Prompt Quote */}
-                    <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-xs sm:text-sm font-medium italic text-gray-700 dark:text-gray-300">
-                        "{selectedPrompt.promptText}"
-                    </div>
-
-                    {selectedPrompt.imageUrl && (
-                        <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-md">
-                            <img src={selectedPrompt.imageUrl} alt="Task Graphic" className="w-full max-h-[350px] object-cover" />
-                        </div>
-                    )}
-
-                    {/* Key Collocations Badge */}
-                    <div className="space-y-2">
-                        <span className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 block tracking-wider">
-                            {t('ieltsWritingAssessor.keyCollocationsLabel', "Ushbu inshodagi B2/C1 Kalit Akademik Iboralar:")}
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                            {selectedPrompt.keyCollocations.map((col, idx) => (
-                                <span key={idx} className="px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs font-extrabold">
-                                    {col}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Structure Tip */}
-                    <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-800 dark:text-emerald-300 flex items-start gap-2">
-                        <FaLightbulb className="text-emerald-500 text-base flex-shrink-0 mt-0.5" />
-                        <span><strong>{t('ieltsWritingAssessor.structureTipLabel', "Tuzilish maslahati:")}</strong> {selectedPrompt.structureTip}</span>
-                    </div>
-
-                    {/* Full Model Answer */}
-                    <div className="p-6 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h4 className="text-xs font-black uppercase tracking-wider text-gray-500">{t('ieltsWritingAssessor.sampleTextLabel', "Namuna Insho Matni:")}</h4>
-                        <p className="text-sm font-sans leading-relaxed text-gray-800 dark:text-gray-200 whitespace-pre-line font-normal">
-                            {selectedPrompt.sampleAnswer}
-                        </p>
-                    </div>
-
-                    <div className="flex justify-end">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8 font-sans"
+        >
+            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center">
+                    <div className="flex items-center gap-4">
                         <button
-                            onClick={() => {
-                                loadSampleAnswer()
-                                setWorkspaceTab('editor')
-                            }}
-                            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-[10px] sm:text-xs shadow-lg shadow-red-600/30 hover:scale-105 transition cursor-pointer"
+                            onClick={() => setScreen('home')}
+                            className="inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
                         >
-                            <FaMagic />
-                            <span>{t('ieltsWritingAssessor.loadSampleBtn', "Ushbu namuna inshoni muharrirga ko'chirish va AI da sinash")}</span>
+                            <span className="text-base xs:text-lg leading-none">←</span>
+                            <span>Mavzularga qaytish</span>
                         </button>
+                        <h1 className="text-lg md:text-xl font-black text-slate-800 dark:text-white ml-4 border-l pl-4 border-slate-300 dark:border-slate-600 uppercase tracking-wide">
+                            <span className="text-red-600 dark:text-red-400">{selectedPrompt.type}</span>
+                        </h1>
                     </div>
-                </motion.div>
-            )}
+                </div>
 
-            {/* TAB A: MAIN EDITOR & AI EXAMINER */}
-            {workspaceTab === 'editor' && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    {/* Left Side: Question Prompt & Exam Controls */}
-                    <div className="lg:col-span-5 space-y-6">
-                        <div className="p-6 rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200 dark:border-gray-800 shadow-xl space-y-5">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[11px] font-black uppercase text-red-600 dark:text-red-400 tracking-wider bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
-                                    {selectedPrompt.type}
-                                </span>
-
-                                <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
-                                    Target Band {selectedPrompt.bandLevel}
-                                </span>
-                            </div>
-
-                            <h3 className="text-base font-black text-gray-900 dark:text-white leading-snug">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:divide-x divide-slate-200 dark:divide-slate-700">
+                    
+                    {/* LEFT SIDE: TOPIC PROMPT & GUIDE */}
+                    <div className="p-6 md:p-8 h-[50vh] lg:h-[800px] overflow-y-auto custom-scrollbar bg-slate-50/50 dark:bg-slate-900/20">
+                        <div className="space-y-6">
+                            <h3 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white leading-snug">
                                 {selectedPrompt.title}
                             </h3>
-
-                            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-950/80 border border-gray-200 dark:border-gray-800 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                            <div className="p-5 rounded-2xl bg-white dark:bg-gray-950/80 border border-gray-200 dark:border-gray-800 text-sm md:text-base font-medium text-gray-700 dark:text-gray-300 leading-relaxed italic shadow-sm">
                                 "{selectedPrompt.promptText}"
                             </div>
 
                             {selectedPrompt.imageUrl && (
-                                <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-md mt-4">
+                                <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-md">
                                     <img src={selectedPrompt.imageUrl} alt="Task Graphic" className="w-full max-h-[350px] object-cover" />
                                 </div>
                             )}
 
-                            {/* Load Model Answer Button */}
-                            <button
-                                onClick={loadSampleAnswer}
-                                className="inline-flex items-center gap-2 text-xs font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer"
-                            >
-                                <FaMagic />
-                                <span>{t('ieltsWritingAssessor.loadSampleBtn', "Namuna inshoni matnga joylash va tekshirish")}</span>
-                            </button>
-
-                            {/* Exam Timer */}
-                            <div className={`p-4 rounded-2xl transition-colors ${
-                                timeWarning 
-                                    ? 'bg-gradient-to-r from-red-950 via-red-900 to-rose-950 border-2 border-red-500 animate-pulse' 
-                                    : 'bg-gradient-to-r from-gray-900 to-gray-950'
-                            } text-white flex items-center justify-between shadow-inner`}>
-                                <div className="flex items-center gap-2.5">
-                                    <FaClock className={isTimerRunning ? "text-red-500 animate-pulse text-lg" : "text-gray-400 text-lg"} />
-                                    <div>
-                                        <span className="text-[10px] font-bold text-gray-400 block uppercase tracking-wider">
-                                            {t('ieltsWritingAssessor.timerLabel', 'Imtihon Taymeri:')}
-                                        </span>
-                                        <span className="font-mono text-xl font-black text-white">
-                                            {formatTimer(timerSeconds)}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <button
-                                        onClick={() => setIsTimerRunning(!isTimerRunning)}
-                                        className={`px-4 py-2 rounded-xl text-xs font-extrabold transition cursor-pointer flex items-center gap-1.5 ${
-                                            isTimerRunning
-                                                ? 'bg-amber-500 hover:bg-amber-600 text-gray-950'
-                                                : 'bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/30'
-                                        }`}
-                                    >
-                                        {isTimerRunning ? <FaPause /> : <FaPlay />}
-                                        <span>{isTimerRunning ? t('ieltsWritingAssessor.pauseBtn', 'Pauza') : t('ieltsWritingAssessor.startTimerBtn', 'Vaqtni Boshlash')}</span>
-                                    </button>
-
-                                    <button
-                                        onClick={() => {
-                                            setIsTimerRunning(false)
-                                            setTimerSeconds(selectedPrompt.timeLimit)
-                                            setTimeWarning(false)
-                                        }}
-                                        title="Taymerni qayta tushirish"
-                                        className="p-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 transition cursor-pointer"
-                                    >
-                                        <FaRedo className="text-xs" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Side: Text Area Editor & Live Statistics */}
-                    <div className="lg:col-span-7 space-y-4">
-                        <div className="p-6 rounded-3xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200 dark:border-gray-800 shadow-xl space-y-4">
-                            <div className="flex items-center justify-between">
-                                <span className="text-xs font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
-                                    <FaEdit className="text-red-500" />
-                                    <span>{t('ieltsWritingAssessor.editorLabel', 'Insho Matni (IELTS Writing Textarea):')}</span>
-                                </span>
-
-                                <span className={`text-xs font-extrabold px-3 py-1 rounded-full border ${
-                                    wordCount >= selectedPrompt.suggestedWords
-                                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                                        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
-                                }`}>
-                                    {wordCount} / {selectedPrompt.suggestedWords} {t('ieltsWritingAssessor.words', "so'z")}
-                                </span>
-                            </div>
-
-                            <textarea
-                                value={essayText}
-                                onChange={(e) => {
-                                    setEssayText(e.target.value);
-                                    if (!isTimerRunning && timerSeconds > 0) {
-                                        setIsTimerRunning(true);
-                                    }
-                                }}
-                                placeholder={t('ieltsWritingAssessor.placeholder', "Inshoingizni bu yerga yozing... IELTS mezoniga mos holda kirish, asosiy paragraflar va xulosalarni shakllantiring.")}
-                                rows={14}
-                                className="w-full p-4 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm font-sans font-normal text-gray-900 dark:text-gray-100 focus:outline-none focus:border-red-500/60 transition leading-relaxed resize-none shadow-inner"
-                            />
-
-                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-                                <div className="flex items-center gap-4 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                    <div>
-                                        <span>{t('ieltsWritingAssessor.charCount', 'Belgilar soni:')} </span>
-                                        <span className="font-bold text-gray-800 dark:text-gray-200">{charCount}</span>
-                                    </div>
-                                    {copiedToast && (
-                                        <span className="text-emerald-500 font-bold animate-pulse">{t('ieltsWritingAssessor.copied', "Nusxa olindi!")}</span>
-                                    )}
-                                </div>
-
-                                <div className="flex items-center gap-3 w-full sm:w-auto">
-                                    {essayText && (
-                                        <button
-                                            onClick={copyToClipboard}
-                                            title="Matndan nusxa olish"
-                                            className="p-3 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-700 dark:text-gray-300 transition cursor-pointer"
-                                        >
-                                            <FaCopy className="text-xs" />
-                                        </button>
-                                    )}
-
-                                    <button
-                                        onClick={() => {
-                                            setEssayText('')
-                                            setAnalysisResult(null)
-                                        }}
-                                        disabled={!essayText}
-                                        className="px-4 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs transition cursor-pointer disabled:opacity-40"
-                                    >
-                                        {t('ieltsWritingAssessor.clearBtn', 'Tozalash')}
-                                    </button>
-
-                                    <button
-                                        onClick={runAIWritingAnalysis}
-                                        disabled={isAnalyzing || !essayText.trim()}
-                                        className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-[10px] sm:text-sm shadow-xl shadow-red-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50"
-                                    >
-                                        <FaBrain className={isAnalyzing ? "animate-spin text-base" : "text-base"} />
-                                        <span>{isAnalyzing ? t('ieltsWritingAssessor.analyzing', 'AI Tekshirmoqda...') : t('ieltsWritingAssessor.viewAIAssessmentBtn', "AI Tekshiruvini Ko'rish")}</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* AI Assessment Results Section */}
-            <AnimatePresence>
-                {analysisResult && workspaceTab === 'editor' && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 30 }}
-                        transition={{ duration: 0.4 }}
-                        className="p-8 rounded-3xl bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl border border-gray-200 dark:border-gray-800 shadow-2xl space-y-8"
-                    >
-                        {/* Overall Band Header */}
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-3xl bg-gradient-to-br from-red-600/15 via-rose-600/10 to-red-600/5 border border-red-500/30">
-                            <div className="flex items-center gap-4 text-center sm:text-left">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-rose-600 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-red-600/30">
-                                    <FaAward />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black text-gray-900 dark:text-white">
-                                        {t('ieltsWritingAssessor.resultTitle', 'Sizning IELTS Writing Natijangiz')}
-                                    </h3>
-                                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">
-                                        {analysisResult.wordCount} {t('ieltsWritingAssessor.words', "so'z")} | {selectedPrompt.type}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="text-center sm:text-right">
-                                <span className="text-xs font-black uppercase tracking-widest text-red-600 dark:text-red-400 block">
-                                    Overall IELTS Band
-                                </span>
-                                <span className="text-4xl sm:text-5xl font-black text-red-600 dark:text-red-400 font-mono">
-                                    {analysisResult.overallBand}
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* 4 Official Criteria Score Cards */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-black text-gray-500 uppercase tracking-wider">Task Response (TR)</span>
-                                    <span className="font-mono text-lg font-black text-red-600 dark:text-red-400">{analysisResult.taskResponse}</span>
-                                </div>
-                                <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-red-600 h-full rounded-full" style={{ width: `${(analysisResult.taskResponse / 9) * 100}%` }} />
-                                </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.trDesc', 'Mavzu talabi va so\'z hajmi qamrovi.')}</p>
-                            </div>
-
-                            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-black text-gray-500 uppercase tracking-wider">Coherence (CC)</span>
-                                    <span className="font-mono text-lg font-black text-rose-600 dark:text-rose-400">{analysisResult.coherence}</span>
-                                </div>
-                                <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-rose-600 h-full rounded-full" style={{ width: `${(analysisResult.coherence / 9) * 100}%` }} />
-                                </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.ccDesc', 'Mantiqiy izchillik va bog\'lovchilar.')}</p>
-                            </div>
-
-                            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-black text-gray-500 uppercase tracking-wider">Lexical (LR)</span>
-                                    <span className="font-mono text-lg font-black text-amber-600 dark:text-amber-400">{analysisResult.lexical}</span>
-                                </div>
-                                <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-amber-500 h-full rounded-full" style={{ width: `${(analysisResult.lexical / 9) * 100}%` }} />
-                                </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.lrDesc', 'Akademik iboralar va so\'z boyligi.')}</p>
-                            </div>
-
-                            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-black text-gray-500 uppercase tracking-wider">Grammar (GRA)</span>
-                                    <span className="font-mono text-lg font-black text-emerald-600 dark:text-emerald-400">{analysisResult.grammar}</span>
-                                </div>
-                                <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
-                                    <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${(analysisResult.grammar / 9) * 100}%` }} />
-                                </div>
-                                <p className="text-[11px] text-gray-500 dark:text-gray-400">{t('ieltsWritingAssessor.graDesc', 'Grammatik aniqlik va murakkab gaplar.')}</p>
-                            </div>
-                        </div>
-
-                        {/* Collocations & Connectors Badges */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-3">
-                                <h4 className="text-xs font-black uppercase tracking-wider text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                                    <FaSpellCheck className="text-red-500" />
-                                    <span>{t('ieltsWritingAssessor.foundCollocations', "Topilgan C1/C2 Akademik Ibora (Collocations):")}</span>
-                                </h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {analysisResult.foundCollocations && analysisResult.foundCollocations.length > 0 ? (
-                                        analysisResult.foundCollocations.map((col, idx) => (
-                                            <span key={idx} className="px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-extrabold">
+                            {/* Divider for Guide */}
+                            <div className="pt-8 mt-8 border-t border-slate-200 dark:border-slate-700">
+                                <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4">
+                                    Band 8.5 / 9.0 Namuna Insho & Guide
+                                </h3>
+                                
+                                <div className="space-y-3 mb-6">
+                                    <span className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 block tracking-wider">
+                                        {t('ieltsWritingAssessor.keyCollocationsLabel', "Ushbu inshodagi B2/C1 Kalit Akademik Iboralar:")}
+                                    </span>
+                                    <div className="flex flex-wrap gap-2">
+                                        {selectedPrompt.keyCollocations.map((col, idx) => (
+                                            <span key={idx} className="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs font-extrabold shadow-sm">
                                                 {col}
                                             </span>
-                                        ))
-                                    ) : (
-                                        <span className="text-xs text-gray-400 italic">{t('ieltsWritingAssessor.noCollocations', "Akademik collocations topilmadi.")}</span>
-                                    )}
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-3">
-                                <h4 className="text-xs font-black uppercase tracking-wider text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                                    <FaChartLine className="text-amber-500" />
-                                    <span>{t('ieltsWritingAssessor.foundConnectors', "Topilgan Mantiqiy Bog'lovchilar (Connectors):")}</span>
-                                </h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {analysisResult.foundConnectors && analysisResult.foundConnectors.length > 0 ? (
-                                        analysisResult.foundConnectors.map((conn, idx) => (
-                                            <span key={idx} className="px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-extrabold">
-                                                {conn}
-                                            </span>
-                                        ))
-                                    ) : (
-                                        <span className="text-xs text-gray-400 italic">{t('ieltsWritingAssessor.noConnectors', "Mantiqiy o'tish so'zlari topilmadi.")}</span>
-                                    )}
+                                <div className="p-5 mb-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-sm font-medium text-emerald-800 dark:text-emerald-300 flex items-start gap-3 shadow-sm">
+                                    <FaLightbulb className="text-emerald-500 text-lg flex-shrink-0 mt-0.5" />
+                                    <span><strong>{t('ieltsWritingAssessor.structureTipLabel', "Tuzilish maslahati:")}</strong> {selectedPrompt.structureTip}</span>
+                                </div>
+
+                                {/* Sample Answer — Collapsible Accordion */}
+                                <div className="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                                    <button
+                                        onClick={() => setShowSampleAnswer(v => !v)}
+                                        className="w-full flex items-center justify-between px-5 py-4 bg-gray-50 dark:bg-gray-900/60 hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors cursor-pointer group"
+                                    >
+                                        <span className="flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-gray-600 dark:text-gray-300">
+                                            <FaBookOpen className={`text-sm ${showSampleAnswer ? 'text-red-500' : 'text-gray-400'} transition-colors`} />
+                                            {t('ieltsWritingAssessor.sampleTextLabel', 'Namuna Insho Matni')}
+                                        </span>
+                                        <span className={`text-gray-400 text-xs transition-transform duration-300 ${showSampleAnswer ? 'rotate-180' : ''}`}>
+                                            ▼
+                                        </span>
+                                    </button>
+                                    <AnimatePresence>
+                                        {showSampleAnswer && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: 'auto', opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="px-5 pb-5 pt-4 bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 space-y-4">
+                                                    <button
+                                                        onClick={loadSampleAnswer}
+                                                        className="inline-flex items-center gap-2 text-xs font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg border border-red-100 dark:border-red-900/30 transition-all hover:bg-red-100 dark:hover:bg-red-900/40"
+                                                    >
+                                                        <FaMagic /> Copy to Editor
+                                                    </button>
+                                                    <p className="text-sm font-sans leading-relaxed text-gray-800 dark:text-gray-200 whitespace-pre-line font-normal">
+                                                        {selectedPrompt.sampleAnswer}
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Overused Words Alert */}
-                        {analysisResult.overusedWordsDetected && analysisResult.overusedWordsDetected.length > 0 && (
-                            <div className="p-5 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-3">
-                                <h4 className="text-xs font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-2">
-                                    <FaExclamationTriangle />
-                                    <span>{t('ieltsWritingAssessor.overusedWords', "Ko'p Takrorlangan So'zlar va Ularning Sinonimlari:")}</span>
-                                </h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                    {analysisResult.overusedWordsDetected.map((item, idx) => (
-                                        <div key={idx} className="p-3 rounded-xl bg-white/80 dark:bg-gray-900/80 border border-rose-500/20 text-xs">
-                                            <div className="font-bold text-rose-600 dark:text-rose-400">
-                                                "{item.word}" ({item.count} marta)
+                    {/* RIGHT SIDE: EDITOR & RESULTS */}
+                    <div className="p-6 md:p-8 h-[50vh] lg:h-[800px] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-800 flex flex-col">
+                        
+                        {/* Exam Timer */}
+                        <div className={`mb-6 p-4 md:p-5 rounded-2xl transition-colors ${
+                            timeWarning 
+                                ? 'bg-gradient-to-r from-red-950 via-red-900 to-rose-950 border-2 border-red-500 animate-pulse' 
+                                : 'bg-gradient-to-r from-gray-900 to-gray-950'
+                        } text-white flex items-center justify-between shadow-lg shrink-0`}>
+                            <div className="flex items-center gap-3">
+                                <FaClock className={isTimerRunning ? "text-red-500 animate-pulse text-xl md:text-2xl" : "text-gray-400 text-xl md:text-2xl"} />
+                                <div>
+                                    <span className="text-[10px] font-bold text-gray-400 block uppercase tracking-wider">
+                                        {t('ieltsWritingAssessor.timerLabel', 'Imtihon Taymeri:')}
+                                    </span>
+                                    <span className="font-mono text-xl md:text-2xl font-black text-white">
+                                        {formatTimer(timerSeconds)}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 md:gap-3">
+                                <button
+                                    onClick={() => setIsTimerRunning(!isTimerRunning)}
+                                    className={`px-4 md:px-5 py-2 md:py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer flex items-center gap-2 ${
+                                        isTimerRunning
+                                            ? 'bg-amber-500 hover:bg-amber-600 text-gray-950'
+                                            : 'bg-red-600 hover:bg-red-700 text-white shadow-md shadow-red-600/30'
+                                    }`}
+                                >
+                                    {isTimerRunning ? <FaPause /> : <FaPlay />}
+                                    <span className="hidden sm:inline">{isTimerRunning ? t('ieltsWritingAssessor.pauseBtn', 'Pauza') : t('ieltsWritingAssessor.startTimerBtn', 'Boshlash')}</span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setIsTimerRunning(false)
+                                        setTimerSeconds(selectedPrompt.timeLimit)
+                                        setTimeWarning(false)
+                                    }}
+                                    title="Taymerni qayta tushirish"
+                                    className="p-2 md:p-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 transition cursor-pointer"
+                                >
+                                    <FaRedo className="text-xs md:text-sm" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Editor Header */}
+                        <div className="flex flex-wrap gap-2 items-center justify-between mb-4 shrink-0">
+                            <span className="text-xs font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-2">
+                                <FaEdit className="text-red-500" />
+                                <span>{t('ieltsWritingAssessor.editorLabel', 'Insho Matni (IELTS Writing Textarea):')}</span>
+                            </span>
+                            <span className={`text-xs font-extrabold px-3 py-1 rounded-full border ${
+                                wordCount >= selectedPrompt.suggestedWords
+                                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                            }`}>
+                                {wordCount} / {selectedPrompt.suggestedWords} {t('ieltsWritingAssessor.words', "so'z")}
+                            </span>
+                        </div>
+
+                        {/* Text Area */}
+                        <textarea
+                            value={essayText}
+                            onChange={(e) => {
+                                setEssayText(e.target.value);
+                                if (!isTimerRunning && timerSeconds > 0) {
+                                    setIsTimerRunning(true);
+                                }
+                            }}
+                            placeholder={t('ieltsWritingAssessor.placeholder', "Inshoingizni bu yerga yozing... IELTS mezoniga mos holda kirish, asosiy paragraflar va xulosalarni shakllantiring.")}
+                            className="flex-1 w-full min-h-[300px] p-5 mb-4 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-sm md:text-base font-sans font-normal text-gray-900 dark:text-gray-100 focus:outline-none focus:border-red-500/60 transition leading-relaxed resize-none shadow-inner"
+                        />
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0 mb-8 pb-8 border-b border-slate-200 dark:border-slate-700">
+                            <div className="flex items-center gap-4 text-xs font-medium text-gray-500 dark:text-gray-400">
+                                <div>
+                                    <span>{t('ieltsWritingAssessor.charCount', 'Belgilar soni:')} </span>
+                                    <span className="font-bold text-gray-800 dark:text-gray-200">{charCount}</span>
+                                </div>
+                                {copiedToast && (
+                                    <span className="text-emerald-500 font-bold animate-pulse">{t('ieltsWritingAssessor.copied', "Nusxa olindi!")}</span>
+                                )}
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                                {essayText && (
+                                    <button onClick={copyToClipboard} title="Matndan nusxa olish" className="p-3 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-700 dark:text-gray-300 transition cursor-pointer">
+                                        <FaCopy className="text-xs" />
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => { setEssayText(''); setAnalysisResult(null); }}
+                                    disabled={!essayText}
+                                    className="px-5 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs transition cursor-pointer disabled:opacity-40"
+                                >
+                                    {t('ieltsWritingAssessor.clearBtn', 'Tozalash')}
+                                </button>
+                                <button
+                                    onClick={runAIWritingAnalysis}
+                                    disabled={isAnalyzing || !essayText.trim()}
+                                    className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 px-6 md:px-8 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-50"
+                                >
+                                    <FaBrain className={isAnalyzing ? "animate-spin text-base" : "text-base"} />
+                                    <span>{isAnalyzing ? t('ieltsWritingAssessor.analyzing', 'AI Tekshirmoqda...') : t('ieltsWritingAssessor.viewAIAssessmentBtn', "AI Tekshiruvini Ko'rish")}</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* AI Results Output directly inside the right column below editor */}
+                        <AnimatePresence>
+                            {analysisResult && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 15 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 15 }}
+                                    className="space-y-6 pb-8"
+                                >
+                                    {/* Overall Band Header */}
+                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-br from-red-600/15 via-rose-600/10 to-red-600/5 border border-red-500/30">
+                                        <div className="flex items-center gap-4 text-center sm:text-left">
+                                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-rose-600 text-white flex items-center justify-center text-2xl font-black shadow-lg shadow-red-600/30">
+                                                <FaAward />
                                             </div>
-                                            <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-1">
-                                                Tavsiya sinonimlar: <span className="font-semibold text-gray-800 dark:text-gray-200">{item.synonyms.join(', ')}</span>
+                                            <div>
+                                                <h3 className="text-xl font-black text-gray-900 dark:text-white">Sizning Natijangiz</h3>
+                                                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">
+                                                    {analysisResult.wordCount} {t('ieltsWritingAssessor.words', "so'z")} | {selectedPrompt.type}
+                                                </p>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                                        <div className="text-center sm:text-right">
+                                            <span className="text-xs font-black uppercase tracking-widest text-red-600 dark:text-red-400 block mb-1">Overall Band</span>
+                                            <span className="text-4xl sm:text-5xl font-black text-red-600 dark:text-red-400 font-mono">{analysisResult.overallBand}</span>
+                                        </div>
+                                    </div>
 
-                        {/* Strengths & Recommendations */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-3">
-                                <h4 className="flex items-center gap-2 text-sm font-extrabold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                                    <FaCheckCircle />
-                                    <span>{t('ieltsWritingAssessor.strengthsTitle', 'Kuchli Tomonlaringiz')}</span>
-                                </h4>
-                                <ul className="space-y-2">
-                                    {analysisResult.strengths.map((str, i) => (
-                                        <li key={i} className="text-xs sm:text-sm font-medium text-emerald-800 dark:text-emerald-300 flex items-start gap-2">
-                                            <span className="text-emerald-500 font-bold">•</span>
-                                            <span>{str}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                                    {/* Sub Scores */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {/* TR */}
+                                        <div className="p-4 md:p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-gray-500 uppercase tracking-wider">TR</span>
+                                                <span className="font-mono text-lg font-black text-red-600 dark:text-red-400">{analysisResult.taskResponse}</span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                                                <div className="bg-red-600 h-full rounded-full" style={{ width: `${(analysisResult.taskResponse / 9) * 100}%` }} />
+                                            </div>
+                                        </div>
+                                        {/* CC */}
+                                        <div className="p-4 md:p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-gray-500 uppercase tracking-wider">CC</span>
+                                                <span className="font-mono text-lg font-black text-rose-600 dark:text-rose-400">{analysisResult.coherence}</span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                                                <div className="bg-rose-600 h-full rounded-full" style={{ width: `${(analysisResult.coherence / 9) * 100}%` }} />
+                                            </div>
+                                        </div>
+                                        {/* LR */}
+                                        <div className="p-4 md:p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-gray-500 uppercase tracking-wider">LR</span>
+                                                <span className="font-mono text-lg font-black text-amber-600 dark:text-amber-400">{analysisResult.lexical}</span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                                                <div className="bg-amber-500 h-full rounded-full" style={{ width: `${(analysisResult.lexical / 9) * 100}%` }} />
+                                            </div>
+                                        </div>
+                                        {/* GRA */}
+                                        <div className="p-4 md:p-5 rounded-2xl bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 space-y-2">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs font-black text-gray-500 uppercase tracking-wider">GRA</span>
+                                                <span className="font-mono text-lg font-black text-emerald-600 dark:text-emerald-400">{analysisResult.grammar}</span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+                                                <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${(analysisResult.grammar / 9) * 100}%` }} />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <div className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-3">
-                                <h4 className="flex items-center gap-2 text-sm font-extrabold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
-                                    <FaLightbulb />
-                                    <span>{t('ieltsWritingAssessor.improveTitle', 'Yaxshilash Uchun Tavsiyalar')}</span>
-                                </h4>
-                                <ul className="space-y-2">
-                                    {analysisResult.improvements.map((imp, i) => (
-                                        <li key={i} className="text-xs sm:text-sm font-medium text-amber-800 dark:text-amber-300 flex items-start gap-2">
-                                            <span className="text-amber-500 font-bold">•</span>
-                                            <span>{imp}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
-        </>
+                                    {/* Other Results Blocks can be included here (Overused words, Collocations, Strengths, Weaknesses) */}
+                                    <div className="space-y-4">
+                                        <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-3">
+                                            <h4 className="flex items-center gap-2 text-sm font-extrabold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider"><FaCheckCircle /> Kuchli Tomonlar</h4>
+                                            <ul className="space-y-2">
+                                                {analysisResult.strengths.map((str, i) => (
+                                                    <li key={i} className="text-xs md:text-sm font-medium text-emerald-800 dark:text-emerald-300 flex items-start gap-2"><span className="text-emerald-500 font-bold">•</span><span>{str}</span></li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-3">
+                                            <h4 className="flex items-center gap-2 text-sm font-extrabold text-amber-700 dark:text-amber-400 uppercase tracking-wider"><FaLightbulb /> Tavsiyalar</h4>
+                                            <ul className="space-y-2">
+                                                {analysisResult.improvements.map((imp, i) => (
+                                                    <li key={i} className="text-xs md:text-sm font-medium text-amber-800 dark:text-amber-300 flex items-start gap-2"><span className="text-amber-500 font-bold">•</span><span>{imp}</span></li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                    </div>
+                </div>
+            </div>
+        </motion.div>
     )
 }

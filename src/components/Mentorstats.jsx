@@ -39,7 +39,7 @@ export default function Mentorstats() {
     const detailTopRef = useRef(null);
 
     // Yangi Bot Tokeni (rasmdan olindi)
-    const BOT_TOKEN = "8746561523:AAFkkkdkPw1t4JyRJDGkr1QTfKQKnwUcef4";
+    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_3;
 
     // Admin Chat ID (rasmdan olindi: 6383523156)
     const ADMIN_CHAT_IDS = ["6383523156", "334572168"];

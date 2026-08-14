@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaTimes, FaCheckCircle } from 'react-icons/fa'
+import { FaTimes, FaCheckCircle, FaSpinner } from 'react-icons/fa'
+import axios from 'axios'
 
 export default function Sec3() {
   const { t, i18n } = useTranslation()
@@ -10,51 +11,16 @@ export default function Sec3() {
 
   const teachers = [
     {
-      id: 'asilbek',
-      name: 'Asilbek Yusupov',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7dWFeDsKR6Jk7w_7kZ1XhSRUxWWF37-LI67gGm_4pcQ&s=10',
-      score: '3x9.0',
-      cert: 'CELTA',
-      experience: '5+',
-      students: '3000+',
-      quote: t('asilbek.description'),
-      telegram: 'https://t.me/asilbek',
-    },
-    {
       id: 'ruxillo',
       name: 'Ruxillo Asrorov',
       image: '/photo_2026-07-23_23-14-12.jpg',
       score: '8.0',
-      cert: 'IELTS 8',
+      cert: 'IELTS 8.0',
       experience: '4+',
       students: '200+',
       quote: t('ruxillo.description'),
       telegram: 'https://t.me/rukhillo',
-    },
-    {
-      id: 'zarnigor',
-      name: 'Zarnigor Okkanyova',
-      image:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=60&w=600&auto=format&fit=crop',
-      score: '8.5',
-      cert: 'IELTS 8.5',
-      experience: '4+',
-      students: '150+',
-      quote: t('zarnigor.description'),
-      telegram: 'https://t.me/',
-    },
-    {
-      id: 'gulasal',
-      name: 'Gulasal Butaeva',
-      image:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=60&w=600&auto=format&fit=crop',
-      score: '9.0',
-      cert: 'IELTS 9.0',
-      experience: '5+',
-      students: '600+',
-      quote: t('gulasal.description'),
-      telegram: 'https://t.me/',
-    },
+    }
   ]
 
   const [activeTeacher, setActiveTeacher] = useState(teachers[0])
@@ -62,6 +28,12 @@ export default function Sec3() {
   const [modal, setModal] = useState(false)
   const [selectedMentor, setSelectedMentor] = useState('')
   const [toast, setToast] = useState(false)
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_1;
+  const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
 
   const currentTeacher = teachers.find((tch) => tch.id === activeTeacher.id) || teachers[0]
 
@@ -81,9 +53,50 @@ export default function Sec3() {
     return () => clearInterval(typingInterval)
   }, [currentTeacher.id, i18n.language])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
+
+    const newLead = {
+      id: Date.now(),
+      name: name,
+      phone: phone,
+      type: `Ustoz bilan bog'lanish (${selectedMentor})`,
+      status: 'Kutilmoqda',
+      date: new Date().toLocaleString('uz-UZ')
+    }
+
+    try {
+      const res = await axios.get(import.meta.env.VITE_FIREBASE_DB_URL)
+      let currentLeads = []
+      if (res.data !== null) {
+          currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
+      }
+      const updatedLeads = [newLead, ...currentLeads]
+      await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads)
+      localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
+    } catch (err) {
+      console.error(err)
+    }
+
+    const message = `Ustoz bilan bog'lanish:\n\nUstoz: ${selectedMentor}\nIsm: ${name}\nTel: ${phone}`
+
+    try {
+      ADMIN_CHAT_IDS.forEach(chatId => {
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: message })
+        }).catch(err => console.error(err))
+      })
+    } catch (err) {
+      console.error(err)
+    }
+
+    setLoading(false)
     setModal(false)
+    setName('')
+    setPhone('')
     setToast(true)
     setTimeout(() => setToast(false), 3000)
   }
@@ -326,6 +339,8 @@ export default function Sec3() {
                   <input
                     type="text"
                     required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder={t('sec3.namePlaceholder')}
                     className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-500 transition"
                   />
@@ -337,6 +352,8 @@ export default function Sec3() {
                   <input
                     type="tel"
                     required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="+998 90 123 45 67"
                     className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-500 transition"
                   />
@@ -345,9 +362,10 @@ export default function Sec3() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-lg shadow-red-500/20"
+                  disabled={loading}
+                  className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-lg shadow-red-500/20 disabled:opacity-50"
                 >
-                  {t('sec3.submitBtn')}
+                  {loading ? <FaSpinner className="animate-spin mx-auto" /> : t('sec3.submitBtn')}
                 </motion.button>
               </form>
             </motion.div>

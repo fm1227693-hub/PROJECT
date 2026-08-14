@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
     FaTelegramPlane,
     FaInstagram,
@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function Footer() {
     const { t } = useTranslation()
     const [activeModal, setActiveModal] = useState(null) // 'privacy' | 'terms' | null
+    const location = useLocation()
 
     
 
@@ -64,7 +65,7 @@ export default function Footer() {
         <footer
             data-aos="fade-up"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="relative text-gray-600 dark:text-gray-400 pt-14 pb-8 px-5 border-t border-slate-200/60 dark:border-white/10 mt-16 transition-colors duration-300 bg-white/75 dark:bg-[#030712]/80 backdrop-blur-2xl overflow-hidden z-10"
+            className={`relative text-gray-600 dark:text-gray-400 pt-14 pb-8 px-5 border-t border-slate-200/60 dark:border-white/10 ${location.pathname === '/enter' ? '' : 'mt-16'} transition-colors duration-300 bg-white/75 dark:bg-[#030712]/80 backdrop-blur-2xl overflow-hidden z-10`}
         >
             {/* Ambient Footer Glow */}
             <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl" />

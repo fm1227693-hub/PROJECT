@@ -5,7 +5,7 @@ import { FaHeart, FaRegHeart, FaPaperPlane, FaTrash, FaCheckCircle, FaUserCircle
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
-const API_URL = 'https://optimum-a2d13-default-rtdb.firebaseio.com/comments.json'
+const API_URL = import.meta.env.VITE_FIREBASE_COMMENTS_URL
 
 export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     const { t } = useTranslation()

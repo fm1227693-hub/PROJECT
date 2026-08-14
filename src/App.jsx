@@ -10,8 +10,9 @@ import AboutUs from "./components/AboutUs";
 import Admin from "./components/Admin";
 import Register from "./components/Register";
 import Mentorstats from "./components/Mentorstats";
-import IeltsPracticeApp from "./components/IeltsPractiseApp";
 import LevelTest from "./components/LevelTest";
+import ListeningHub from "./components/ListeningHub";
+import ReadingHub from "./components/ReadingHub";
 import Pricing from "./components/Pricing";
 import Gamess from "./components/Gamess";
 import FAQ from "./components/FAQ";
@@ -222,7 +223,8 @@ export default function App() {
               <Route path="/level-test" element={<LevelTest />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/games" element={<Gamess />} />
-              <Route path="/ielts-practice" element={<IeltsPracticeApp />} />
+              <Route path="/reading-tests" element={<ReadingHub />} />
+              <Route path="/listening-tests" element={<ListeningHub />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/form" element={<LeadForm />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
