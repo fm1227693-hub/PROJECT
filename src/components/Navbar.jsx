@@ -287,7 +287,7 @@ export default function Navbar() {
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
                                         >
                                             <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30]" />
-                                            <span>{t('navbar.ieltsWriting', 'AI IELTS Writing')}</span>
+                                            <span>{t('navbar.ieltsWriting', 'IELTS Writing')}</span>
                                         </Link>
 
                                         <Link
@@ -451,7 +451,7 @@ export default function Navbar() {
                                         <FaGamepad className="w-3.5 h-3.5 text-[#c41e30]" />
                                         <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.testAndGames', "Mock Testlar va O'yinlar")}</span>
                                     </div>
-                                    <Link to="/ielts-writing" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsWriting', 'AI IELTS Writing')}</Link>
+                                    <Link to="/ielts-writing" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsWriting', 'IELTS Writing')}</Link>
 
                                     <Link to="/reading-tests" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">IELTS Reading Tests</Link>
                                     <Link to="/listening-tests" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">IELTS Listening Tests</Link>
