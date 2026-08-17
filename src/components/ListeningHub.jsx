@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaHeadphones, FaChevronRight } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 import ListeningTest from "./ListeningTest";
 import ListeningTest2 from "./ListeningTest2";
 import ListeningTest3 from "./ListeningTest3";
@@ -18,6 +19,7 @@ const tests = [
 ];
 
 export default function ListeningHub() {
+  const { t } = useTranslation();
   const [activeTest, setActiveTest] = useState(tests[0]);
 
   return (
@@ -40,7 +42,7 @@ export default function ListeningHub() {
               }`}
             >
               <FaHeadphones className={activeTest.id === test.id ? "text-white" : "text-red-500"} />
-              <span className="whitespace-nowrap">{test.title}</span>
+              <span className="whitespace-nowrap">{t(`listeningHub.test${test.id}`)}</span>
             </button>
           ))}
         </div>

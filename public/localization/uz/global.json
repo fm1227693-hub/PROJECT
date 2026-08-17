@@ -755,9 +755,77 @@
         "lrDesc": "Lug'at boyligi",
         "graDesc": "Grammatika",
         "strengthsTitle": "Yutuqlar:",
-        "improveTitle": "Maslahatlar:"
+        "improveTitle": "Maslahatlar:",
+        "task1": "Task 1",
+        "task2": "Task 2",
+        "start": "Boshlash",
+        "academicWritingTest": "IELTS Academic Writing Test",
+        "writingSimulator": "Writing Assessor & AI Simulator",
+        "selectTopicSubtitle": "Mavzuni tanlang, yozing va AI bilan Band baholangizni bilib oling. Part 1 — 20 daqiqa, Part 2 — 40 daqiqa.",
+        "backToTopics": "Mavzularga qaytish",
+        "sampleGuide": "Band 8.5 / 9.0 Namuna Insho & Guide",
+        "copyToEditor": "Editorga nusxalash",
+        "overallBand": "Overall Band",
+        "part1Title": "Part 1 — Task 1 (Academic)",
+        "part2Title": "Part 2 — Task 2 (Essay)",
+        "part1Desc": "20 daqiqa | Kamida 150 so'z | Grafik, jadval, xarita tavsifi",
+        "part2Desc": "40 daqiqa | Kamida 250 so'z | Argument insho"
     },
     "flashcard": {
         "flipInstruction": "Asl holatiga qaytish uchun bosing"
+    },
+    "readingTest": {
+        "clearAll": "Tozalash",
+        "submitTest": "Tekshirish",
+        "submitted": "Tekshirildi",
+        "score": "Natija",
+        "showAnswers": "To'g'ri javoblarni ko'rish",
+        "hideAnswers": "Javoblarni yashirish",
+        "question": "Savol",
+        "correctAnswers": "To'g'ri javob(lar)",
+        "highlight": "Ajratish (Highlight)",
+        "notes": "Qaydlar (Notes)",
+        "clear": "O'chirish (Clear)",
+        "note": "Qayd",
+        "typeNote": "Qaydlaringizni shu yerga yozing...",
+        "save": "Saqlash",
+        "testPaused": "Test To'xtatildi",
+        "resume": "Davom etish",
+        "confirmRestart": "Boshidan boshlaysizmi?",
+        "confirmExit": "Testdan chiqmoqchimisiz? Natijalar saqlanmaydi.",
+        "yes": "Ha",
+        "no": "Yo'q"
+    },
+    "readingHub": {
+        "title1": "IELTS",
+        "title2": "Reading",
+        "subtitle": "Haqiqiy Kompyuterda topshiriladigan IELTS (CDI) formatini sinab ko'ring. 60 daqiqalik sessiyani boshlash uchun quyidagi amaliy testlardan birini tanlang.",
+        "startTest": "Testni Boshlash",
+        "duration": "60 Daq",
+        "test1Title": "Amaliy Test 1",
+        "test1Desc": "General Training va Academic aralash",
+        "test2Title": "Amaliy Test 2",
+        "test2Desc": "Ilm-fan va Tarixga yo'naltirilgan",
+        "test3Title": "Amaliy Test 3",
+        "test3Desc": "Tabiat va Texnologiya",
+        "test4Title": "Amaliy Test 4",
+        "test4Desc": "San'at va Madaniyat",
+        "test5Title": "Amaliy Test 5",
+        "test5Desc": "Ilg'or Akademik Reading",
+        "test6Title": "Amaliy Test 6",
+        "test6Desc": "Kompleks Imtihon"
+    },
+    "listeningHub": {
+        "test1": "Amaliy Test 1",
+        "test2": "Amaliy Test 2",
+        "test3": "Amaliy Test 3",
+        "test4": "Amaliy Test 4",
+        "test5": "Amaliy Test 5",
+        "test6": "Amaliy Test 6"
+    },
+    "listeningTest": {
+        "checkAnswers": "Javoblarni Tekshirish",
+        "retakeTest": "Qayta Topshirish",
+        "score": "Sizning Natijangiz:"
     }
 }

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import CdiReadingLayout from "./CdiReadingLayout";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { readingTest2Answers as answerKey } from "../data/readingTest2";
 import { passageTest2_1, passageTest2_2, passageTest2_3 } from "../data/readingPassages";
 
-export default function ReadingTest2() {
+export default function ReadingTest2({ onExit }) {
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -69,39 +70,17 @@ export default function ReadingTest2() {
   };
 
     return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="max-w-7xl mx-auto"
-    >
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-        <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">
-              Academic Reading Practice Test 2
-            </h1>
-            {submitted && score !== null && (
-              <div className="bg-blue-600 text-white px-6 py-2 rounded-full font-bold text-lg shadow-lg">
-                Score: {score} / 40
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-col">
-
-          {/* ═══════════════ PASSAGE 1 + Q1-16 ═══════════════ */}
-          <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-1">READING PASSAGE 1</h2>
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Questions 1–16</p>
-            </div>
-
-            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
-              {passageTest2_1}
-            </div>
-
-            {/* Questions 1-7 */}
+    <CdiReadingLayout
+      onExit={onExit}
+      testTitle="Practice Test 2"
+      parts={[
+        {
+          id: 1,
+          title: "Part 1",
+          passage: passageTest2_1,
+          questions: (
+            <div className="space-y-10 pb-20">
+              {/* Questions 1-7 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1–7<br/>Do the following statements agree with the information in the IELTS reading text?<br/>Write TRUE, FALSE, or NOT GIVEN.</div>
               
@@ -191,20 +170,16 @@ export default function ReadingTest2() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* ═══════════════ PASSAGE 2 + Q17-27 ═══════════════ */}
-          <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-1">READING PASSAGE 2</h2>
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Questions 17–27</p>
             </div>
-
-            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
-              {passageTest2_2}
-            </div>
-
-            {/* Questions 17-25 */}
+          )
+        },
+        {
+          id: 2,
+          title: "Part 2",
+          passage: passageTest2_2,
+          questions: (
+            <div className="space-y-10 pb-20">
+              {/* Questions 17-25 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 17–25<br/>Match the headings below with the paragraphs. Write ONE LETTER A-I.</div>
               
@@ -261,20 +236,16 @@ export default function ReadingTest2() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* ═══════════════ PASSAGE 3 + Q28-40 ═══════════════ */}
-          <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-1">READING PASSAGE 3</h2>
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Questions 28–40</p>
             </div>
-
-            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
-              {passageTest2_3}
-            </div>
-
-            {/* Questions 28-31 */}
+          )
+        },
+        {
+          id: 3,
+          title: "Part 3",
+          passage: passageTest2_3,
+          questions: (
+            <div className="space-y-10 pb-20">
+              {/* Questions 28-31 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 28–31<br/>Choose the correct letter, A, B, C or D.</div>
               
@@ -361,82 +332,31 @@ export default function ReadingTest2() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* ACTION BUTTONS */}
-          <div className="p-6 md:p-8 flex justify-end gap-4">
-            <button
-              onClick={() => {
-                setAnswers({});
-                setSubmitted(false);
-                setScore(null);
-              }}
-              className="px-6 py-3 rounded-xl font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-            >
-              Clear All
-            </button>
-            <button
-              onClick={() => {
-                  let s = 0;
-                  Object.keys(answerKey).forEach((key) => {
-                    const validAnswers = answerKey[key].map((ans) => ans.toString().toLowerCase().trim());
-                    const userAnswer = (answers[key] || "").toString().toLowerCase().trim();
-                    if (validAnswers.includes(userAnswer)) s++;
-                  });
-                  setScore(s);
-                  setSubmitted(true);
-              }}
-              disabled={submitted}
-              className={`px-8 py-3 rounded-xl font-bold text-white shadow-lg transition-all ${
-                submitted
-                  ? "bg-slate-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700 hover:-translate-y-1 hover:shadow-blue-500/30"
-              }`}
-            >
-              {submitted ? "Submitted" : "Submit Test"}
-            </button>
-          </div>
-
-          {/* ANSWERS TABLE */}
-          {submitted && (
-            <div className="p-6 md:p-8 bg-slate-50/50 dark:bg-slate-800/20">
-              <div className="flex flex-col items-center justify-center space-y-6">
-                <button 
-                  onClick={() => setShowAnswers(!showAnswers)}
-                  className="w-full md:w-auto px-8 py-3 rounded-xl font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
-                >
-                  {showAnswers ? "Javoblarni yashirish" : "To'g'ri javoblarni ko'rish"}
-                </button>
-
-                {showAnswers && (
-                  <div className="w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800">
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
-                        <thead className="bg-slate-100 dark:bg-slate-700/50 text-slate-800 dark:text-slate-200">
-                          <tr>
-                            <th className="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-24 text-center">Savol</th>
-                            <th className="p-4 font-bold border-b border-slate-200 dark:border-slate-700">To'g'ri javob(lar)</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {Object.keys(answerKey).map((q) => (
-                            <tr key={q} className="border-b last:border-0 border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                              <td className="p-4 font-bold bg-slate-50/50 dark:bg-slate-800/50 text-center border-r border-slate-100 dark:border-slate-700/50">{q}</td>
-                              <td className="p-4 font-mono text-green-600 dark:text-green-400 font-medium tracking-wide">
-                                {answerKey[q].join('  /  ')}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
-          )}
-        </div>
-      </div>
-    </motion.div>
+          )
+        }
+      ]}
+      answers={answers}
+      answerKey={answerKey}
+      submitted={submitted}
+      score={score}
+      showAnswers={showAnswers}
+      setShowAnswers={setShowAnswers}
+      onClearAll={() => {
+        setAnswers({});
+        setSubmitted(false);
+        setScore(null);
+      }}
+      onSubmit={() => {
+        let s = 0;
+        Object.keys(answerKey).forEach((key) => {
+          const validAnswers = answerKey[key].map((ans) => String(ans).toLowerCase().trim());
+          const userAnswer = String(answers[key] || "").toLowerCase().trim();
+          if (validAnswers.includes(userAnswer)) s++;
+        });
+        setScore(s);
+        setSubmitted(true);
+      }}
+    />
   );
 }

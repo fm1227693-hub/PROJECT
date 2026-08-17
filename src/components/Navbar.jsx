@@ -289,15 +289,7 @@ export default function Navbar() {
                                             <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.ieltsWriting', 'AI IELTS Writing')}</span>
                                         </Link>
-                                        <Link
-                                            to="/level-test"
-                                            onClick={() => setTestsDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="100"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
-                                        >
-                                            <FaClipboardList className="w-3.5 h-3.5 text-[#c41e30]" />
-                                            <span>{t('navbar.levelTest', 'Daraja testi')}</span>
-                                        </Link>
+
                                         <Link
                                             to="/reading-tests"
                                             onClick={() => setTestsDropdownOpen(false)}
@@ -460,7 +452,7 @@ export default function Navbar() {
                                         <span className="text-xs font-black text-[#c41e30] uppercase tracking-wider">{t('navbar.testAndGames', "Mock Testlar va O'yinlar")}</span>
                                     </div>
                                     <Link to="/ielts-writing" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.ieltsWriting', 'AI IELTS Writing')}</Link>
-                                    <Link to="/level-test" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.levelTest', 'Daraja testi')}</Link>
+
                                     <Link to="/reading-tests" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">IELTS Reading Tests</Link>
                                     <Link to="/listening-tests" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">IELTS Listening Tests</Link>
                                     <Link to="/games" onClick={() => setMenuOpen(false)} className="px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors">{t('navbar.games', "O'yinlar")}</Link>

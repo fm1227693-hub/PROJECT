@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { readingTest3Answers as answerKey, passageTest3_1 as passage1, passageTest3_2 as passage2, passageTest3_3 as passage3 } from "../data/readingTest3";
 
-const ReadingTest3 = () => {
+export default function ReadingTest3({ onExit }) {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [showAnswers, setShowAnswers] = useState(false);
@@ -108,64 +108,246 @@ const ReadingTest3 = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="max-w-7xl mx-auto"
-    >
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-        <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">
-              Academic Reading Practice Test 3
-            </h1>
-            {submitted && (
-              <div className="bg-blue-600 text-white px-6 py-2 rounded-full font-bold text-lg shadow-lg">
-                Score: {score} / 40
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-col">
-          {/* LEFT SIDE - READING PASSAGES */}
-          <div className="p-6 md:p-8 bg-slate-50/50 dark:bg-slate-900/20 border-b border-slate-200 dark:border-slate-700">
-            <div className="prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
+    <CdiReadingLayout
+      onExit={onExit}
+      testTitle="Practice Test 3"
+      parts={[
+        {
+          id: 1,
+          title: "Part 1",
+          passage: passage1,
+          questions: (
+            <div className="space-y-10 pb-20">
+              {/* Questions 1-8 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1вЂ“8<br/>Choose the most suitable paragraph headings from the list of headings and write the correct letter, AвЂ“H, in boxes 1вЂ“8.</div>
               
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-black mb-2">READING PASSAGE 1</h2>
-                <h3 className="text-lg font-bold text-slate-500">QUESTIONS 1вЂ“14</h3>
+              <div className="text-slate-700 dark:text-slate-300 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-2 font-medium">
+                <p>1. Cons of the commuting</p>
+                <p>2. Thing that students have to go through</p>
+                <p>3. Commutes have become common in Ireland nowadays</p>
+                <p>4. Danger of the overflow</p>
+                <p>5. Cause of the problems</p>
+                <p>6. Pricing data</p>
+                <p>7. Regression</p>
+                <p>8. Eyeless choice</p>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/80 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 mb-12">
-                {passage1}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-6 text-right">{q}.</span>
+                    <input type="text" maxLength={1} className={`w-12 px-2 py-1 text-center bg-white dark:bg-slate-800 border-2 rounded-lg outline-none uppercase transition-colors ${getStatusClass(q)}`} value={answers[q] || ""} onChange={(e) => handleInputChange(q, e.target.value)} disabled={submitted} />
+                    {renderFeedback(q)}
+                  </div>
+                ))}
               </div>
-              
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-black mb-2">READING PASSAGE 2</h2>
-                <h3 className="text-lg font-bold text-slate-500">QUESTIONS 15вЂ“30</h3>
-              </div>
-
-              <div className="bg-white dark:bg-slate-800/80 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 mb-12">
-                {passage2}
-              </div>
-
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-black mb-2">READING PASSAGE 3</h2>
-                <h3 className="text-lg font-bold text-slate-500">QUESTIONS 31вЂ“40</h3>
-              </div>
-
-              <div className="bg-white dark:bg-slate-800/80 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 mb-12">
-                {passage3}
-              </div>
-
             </div>
-          </div>
 
-          {/* RIGHT SIDE - QUESTIONS */}
-          <div className="p-6 md:p-8 bg-white dark:bg-slate-800">
+            {/* Questions 9-14 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 9вЂ“14<br/>Do the following statements agree with the information given? Write TRUE, FALSE, or NOT GIVEN.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
+                <p>9. The accommodation problem in Ireland is especially bad in Dublin.</p>
+                <p>10. Commutes are considered ridiculous.</p>
+                <p>11. The number of students in Ireland is not likely to increase in the future.</p>
+                <p>12. Due to the opening of the new offices around Dublin, the number of local restaurants will go up significantly over the next 3 to 10 years.</p>
+                <p>13. The rent price went up by 15% last year.</p>
+                <p>14. Michael Martin stated that crisis could have been omitted if the government reacted properly.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[9, 10, 11, 12, 13, 14].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-6 text-right">{q}.</span>
+                    <select 
+                      className={`w-32 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} 
+                      value={answers[q] || ""} 
+                      onChange={(e) => handleInputChange(q, e.target.value)} 
+                      disabled={submitted}
+                    >
+                      <option value=""></option>
+                      <option value="TRUE">TRUE</option>
+                      <option value="FALSE">FALSE</option>
+                      <option value="NOT GIVEN">NOT GIVEN</option>
+                    </select>
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            </div>
+          )
+        },
+        {
+          id: 2,
+          title: "Part 2",
+          passage: passage2,
+          questions: (
+            <div className="space-y-10 pb-20">
+              {/* Questions 1-8 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1вЂ“8<br/>Choose the most suitable paragraph headings from the list of headings and write the correct letter, AвЂ“H, in boxes 1вЂ“8.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-2 font-medium">
+                <p>1. Cons of the commuting</p>
+                <p>2. Thing that students have to go through</p>
+                <p>3. Commutes have become common in Ireland nowadays</p>
+                <p>4. Danger of the overflow</p>
+                <p>5. Cause of the problems</p>
+                <p>6. Pricing data</p>
+                <p>7. Regression</p>
+                <p>8. Eyeless choice</p>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-6 text-right">{q}.</span>
+                    <input type="text" maxLength={1} className={`w-12 px-2 py-1 text-center bg-white dark:bg-slate-800 border-2 rounded-lg outline-none uppercase transition-colors ${getStatusClass(q)}`} value={answers[q] || ""} onChange={(e) => handleInputChange(q, e.target.value)} disabled={submitted} />
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Questions 9-14 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 9вЂ“14<br/>Do the following statements agree with the information given? Write TRUE, FALSE, or NOT GIVEN.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
+                <p>9. The accommodation problem in Ireland is especially bad in Dublin.</p>
+                <p>10. Commutes are considered ridiculous.</p>
+                <p>11. The number of students in Ireland is not likely to increase in the future.</p>
+                <p>12. Due to the opening of the new offices around Dublin, the number of local restaurants will go up significantly over the next 3 to 10 years.</p>
+                <p>13. The rent price went up by 15% last year.</p>
+                <p>14. Michael Martin stated that crisis could have been omitted if the government reacted properly.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[9, 10, 11, 12, 13, 14].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-6 text-right">{q}.</span>
+                    <select 
+                      className={`w-32 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} 
+                      value={answers[q] || ""} 
+                      onChange={(e) => handleInputChange(q, e.target.value)} 
+                      disabled={submitted}
+                    >
+                      <option value=""></option>
+                      <option value="TRUE">TRUE</option>
+                      <option value="FALSE">FALSE</option>
+                      <option value="NOT GIVEN">NOT GIVEN</option>
+                    </select>
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* SECTION 2 */}
             
-            {/* Questions 1-8 */}
+            {/* Questions 15-22 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 15вЂ“22<br/>Write TRUE, FALSE, or NOT GIVEN.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
+                <p>15. Thomas Edison slept 4 hours a night.</p>
+                <p>16. Scientists don't have a certain answer for why we have to sleep.</p>
+                <p>17. Lack of sleep might cause various problems.</p>
+                <p>18. Sleep-deprivation may be the cause of anorexia.</p>
+                <p>19. There are four stages of the REM sleep.</p>
+                <p>20. According to Jim Horne, we need to sleep as much as it takes to not be sleepy during the day.</p>
+                <p>21. Giraffes require less sleep than dogs.</p>
+                <p>22. After four sleepless days, Randy had a delusion about him being a football celebrity.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[15, 16, 17, 18, 19, 20, 21, 22].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-8 text-right">{q}.</span>
+                    <select 
+                      className={`w-32 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} 
+                      value={answers[q] || ""} 
+                      onChange={(e) => handleInputChange(q, e.target.value)} 
+                      disabled={submitted}
+                    >
+                      <option value=""></option>
+                      <option value="TRUE">TRUE</option>
+                      <option value="FALSE">FALSE</option>
+                      <option value="NOT GIVEN">NOT GIVEN</option>
+                    </select>
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Questions 23-27 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 23вЂ“27<br/>Choose the correct letter, A, B, C or D.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-4 font-medium">
+                <div><p>23. During the Light Sleep stage:</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. Muscle activity increases</li><li>B. Jiggling might occur</li><li>C. It is not easy to be woken up</li><li>D. After waking up, one may experience slight disorientation</li></ul></div>
+                <div><p>24. Heart rate is at the lowest level during:</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. Light Sleep stage</li><li>B. Rem Sleep</li><li>C. True Sleep stage</li><li>D. Third Sleep stage</li></ul></div>
+                <div><p>25. The brain activity is really high:</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. During REM sleep</li><li>B. During the stage of True Sleep</li><li>C. When we are awake</li><li>D. During the Deep sleep stage</li></ul></div>
+                <div><p>26. Humans require at least:</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. 7.75 hours of sleep</li><li>B. 5 hours of sleep</li><li>C. 8 hours</li><li>D. There is no set amount of time</li></ul></div>
+                <div><p>27. Pythons need:</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. Less sleep than tigers</li><li>B. Twice as much sleep as cats</li><li>C. Almost ten times more sleep than giraffes</li><li>D. More sleep than any other animal in the world</li></ul></div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                {[23, 24, 25, 26, 27].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-8 text-right">{q}.</span>
+                    <select 
+                      className={`w-20 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} 
+                      value={answers[q] || ""} 
+                      onChange={(e) => handleInputChange(q, e.target.value)} 
+                      disabled={submitted}
+                    >
+                      <option value=""></option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                    </select>
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Questions 28-30 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 28вЂ“30<br/>Complete the sentences below. Write NO MORE THAN THREE WORDS from the passage.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
+                <p>28. If we continually lack sleep, the specific part of our brain that controls language, is ________________.</p>
+                <p>29. True Sleep lasts approximately ________________.</p>
+                <p>30. Although during REM sleep our breathing rate and blood pressure rise, our bodies ________________.</p>
+              </div>
+
+              <div className="space-y-4">
+                {[28, 29, 30].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-8 text-right">{q}.</span>
+                    <input type="text" className={`w-48 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} value={answers[q] || ""} onChange={(e) => handleInputChange(q, e.target.value)} disabled={submitted} />
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            </div>
+          )
+        },
+        {
+          id: 3,
+          title: "Part 3",
+          passage: passage3,
+          questions: (
+            <div className="space-y-10 pb-20">
+              {/* Questions 1-8 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1вЂ“8<br/>Choose the most suitable paragraph headings from the list of headings and write the correct letter, AвЂ“H, in boxes 1вЂ“8.</div>
               
@@ -408,37 +590,31 @@ const ReadingTest3 = () => {
                 {renderFeedback(40)}
               </div>
             </div>
-
-
-            {/* ACTION BUTTONS */}
-            <div className="mt-8 pt-4 pb-4 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-4">
-              <button
-                onClick={() => {
-                  setAnswers({});
-                  setSubmitted(false);
-                  setScore(0);
-                }}
-                className="px-6 py-3 rounded-xl font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-              >
-                Clear All
-              </button>
-              <button
-                onClick={calculateScore}
-                disabled={submitted}
-                className={`px-8 py-3 rounded-xl font-bold text-white shadow-lg transition-all ${
-                  submitted
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 hover:-translate-y-1 hover:shadow-blue-500/30"
-                }`}
-              >
-                {submitted ? "Submitted" : "Submit Test"}
-              </button>
             </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
+          )
+        }
+      ]}
+      answers={answers}
+      answerKey={answerKey}
+      submitted={submitted}
+      score={score}
+      showAnswers={showAnswers}
+      setShowAnswers={setShowAnswers}
+      onClearAll={() => {
+        setAnswers({});
+        setSubmitted(false);
+        setScore(null);
+      }}
+      onSubmit={() => {
+        let s = 0;
+        Object.keys(answerKey).forEach((key) => {
+          const validAnswers = answerKey[key].map((ans) => String(ans).toLowerCase().trim());
+          const userAnswer = String(answers[key] || "").toLowerCase().trim();
+          if (validAnswers.includes(userAnswer)) s++;
+        });
+        setScore(s);
+        setSubmitted(true);
+      }}
+    />
   );
-};
-
-export default ReadingTest3;
+}

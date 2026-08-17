@@ -677,7 +677,21 @@
         "lrDesc": "Лексика",
         "graDesc": "Грамматика",
         "strengthsTitle": "Сильные стороны:",
-        "improveTitle": "Рекомендации:"
+        "improveTitle": "Рекомендации:",
+        "task1": "Task 1",
+        "task2": "Task 2",
+        "start": "Начать",
+        "academicWritingTest": "Тест IELTS Academic Writing",
+        "writingSimulator": "Оценщик Writing и ИИ-Симулятор",
+        "selectTopicSubtitle": "Выберите тему, напишите и узнайте свой балл от ИИ. Part 1 — 20 минут, Part 2 — 40 минут.",
+        "backToTopics": "Вернуться к темами",
+        "sampleGuide": "Band 8.5 / 9.0 Пример эссе и Руководство",
+        "copyToEditor": "Копировать в редактор",
+        "overallBand": "Общий балл (Overall Band)",
+        "part1Title": "Part 1 — Task 1 (Academic)",
+        "part2Title": "Part 2 — Task 2 (Essay)",
+        "part1Desc": "20 минут | Минимум 150 слов | Описание графика, таблицы, карты",
+        "part2Desc": "40 минут | Минимум 250 слов | Эссе-аргументация"
     },
     "ieltsWriting": {
         "task1Type": "Task 1 (Академический)",
@@ -715,5 +729,59 @@
     },
     "flashcard": {
         "flipInstruction": "Нажмите, чтобы перевернуть"
+    },
+    "readingTest": {
+        "clearAll": "Очистить все",
+        "submitTest": "Проверить тест",
+        "submitted": "Проверено",
+        "score": "Результат",
+        "showAnswers": "Показать ответы",
+        "hideAnswers": "Скрыть ответы",
+        "question": "Вопрос",
+        "correctAnswers": "Правильный ответ(ы)",
+        "highlight": "Выделить (Highlight)",
+        "notes": "Заметки (Notes)",
+        "clear": "Очистить (Clear)",
+        "note": "Заметка",
+        "typeNote": "Введите ваши заметки здесь...",
+        "save": "Сохранить",
+        "testPaused": "Тест приостановлен",
+        "resume": "Продолжить",
+        "confirmRestart": "Начать сначала?",
+        "confirmExit": "Выйти из теста? Результаты не будут сохранены.",
+        "yes": "Да",
+        "no": "Нет"
+    },
+    "readingHub": {
+        "title1": "IELTS",
+        "title2": "Reading",
+        "subtitle": "Испытайте настоящий формат IELTS на компьютере. Выберите практический тест ниже, чтобы начать 60-минутную сессию.",
+        "startTest": "Начать Тест",
+        "duration": "60 Мин",
+        "test1Title": "Практический Тест 1",
+        "test1Desc": "Смесь General Training и Academic",
+        "test2Title": "Практический Тест 2",
+        "test2Desc": "Фокус на науке и истории",
+        "test3Title": "Практический Тест 3",
+        "test3Desc": "Природа и технологии",
+        "test4Title": "Практический Тест 4",
+        "test4Desc": "Искусство и культура",
+        "test5Title": "Практический Тест 5",
+        "test5Desc": "Продвинутое Академическое Чтение",
+        "test6Title": "Практический Тест 6",
+        "test6Desc": "Комплексный экзамен"
+    },
+    "listeningHub": {
+        "test1": "Практический Тест 1",
+        "test2": "Практический Тест 2",
+        "test3": "Практический Тест 3",
+        "test4": "Практический Тест 4",
+        "test5": "Практический Тест 5",
+        "test6": "Практический Тест 6"
+    },
+    "listeningTest": {
+        "checkAnswers": "Проверить Ответы",
+        "retakeTest": "Пройти Снова",
+        "score": "Ваш Результат:"
     }
 }

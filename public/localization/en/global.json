@@ -676,7 +676,21 @@
         "lrDesc": "Lexical Resource",
         "graDesc": "Grammatical Range",
         "strengthsTitle": "Strengths:",
-        "improveTitle": "Suggestions:"
+        "improveTitle": "Suggestions:",
+        "task1": "Task 1",
+        "task2": "Task 2",
+        "start": "Start",
+        "academicWritingTest": "IELTS Academic Writing Test",
+        "writingSimulator": "Writing Assessor & AI Simulator",
+        "selectTopicSubtitle": "Choose a topic, write, and get your Band score from AI. Part 1 — 20 minutes, Part 2 — 40 minutes.",
+        "backToTopics": "Back to Topics",
+        "sampleGuide": "Band 8.5 / 9.0 Sample Essay & Guide",
+        "copyToEditor": "Copy to Editor",
+        "overallBand": "Overall Band",
+        "part1Title": "Part 1 — Task 1 (Academic)",
+        "part2Title": "Part 2 — Task 2 (Essay)",
+        "part1Desc": "20 minutes | At least 150 words | Graph, table, map description",
+        "part2Desc": "40 minutes | At least 250 words | Argumentative essay"
     },
     "ieltsWriting": {
         "task1Type": "Task 1 (Academic)",
@@ -714,5 +728,59 @@
     },
     "flashcard": {
         "flipInstruction": "Click to flip back"
+    },
+    "readingTest": {
+        "clearAll": "Clear All",
+        "submitTest": "Submit Test",
+        "submitted": "Submitted",
+        "score": "Score",
+        "showAnswers": "View Answers",
+        "hideAnswers": "Hide Answers",
+        "question": "Question",
+        "correctAnswers": "Correct Answer(s)",
+        "highlight": "Highlight",
+        "notes": "Notes",
+        "clear": "Clear",
+        "note": "Note",
+        "typeNote": "Type your notes here...",
+        "save": "Save",
+        "testPaused": "Test Paused",
+        "resume": "Resume",
+        "confirmRestart": "Are you sure you want to restart?",
+        "confirmExit": "Are you sure you want to exit? Results will not be saved.",
+        "yes": "Yes",
+        "no": "No"
+    },
+    "readingHub": {
+        "title1": "IELTS",
+        "title2": "Reading",
+        "subtitle": "Experience the real Computer-Delivered IELTS format. Choose a practice test below to start your 60-minute session.",
+        "startTest": "Start Test",
+        "duration": "60 Min",
+        "test1Title": "Practice Test 1",
+        "test1Desc": "General Training & Academic mix",
+        "test2Title": "Practice Test 2",
+        "test2Desc": "Science and History focus",
+        "test3Title": "Practice Test 3",
+        "test3Desc": "Nature and Technology",
+        "test4Title": "Practice Test 4",
+        "test4Desc": "Arts and Culture",
+        "test5Title": "Practice Test 5",
+        "test5Desc": "Advanced Academic Reading",
+        "test6Title": "Practice Test 6",
+        "test6Desc": "Comprehensive Exam"
+    },
+    "listeningHub": {
+        "test1": "Practice Test 1",
+        "test2": "Practice Test 2",
+        "test3": "Practice Test 3",
+        "test4": "Practice Test 4",
+        "test5": "Practice Test 5",
+        "test6": "Practice Test 6"
+    },
+    "listeningTest": {
+        "checkAnswers": "Check Answers",
+        "retakeTest": "Retake Test",
+        "score": "Your Score:"
     }
 }

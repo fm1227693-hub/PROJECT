@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle, FaPlay, FaPause } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 import { listeningTest6Answers as answerKey6 } from "../data/listeningTest6";
 
 export default function ListeningTest6() {
+  const { t } = useTranslation();
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
@@ -729,7 +731,7 @@ export default function ListeningTest6() {
               className="px-10 py-4 bg-red-600 hover:bg-red-700 text-white text-xl font-black rounded-full shadow-lg shadow-red-600/30 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-3"
             >
               <FaCheckCircle />
-              Check Answers
+              {t("listeningTest.checkAnswers", "Check Answers")}
             </button>
           ) : (
             <button 
@@ -741,7 +743,7 @@ export default function ListeningTest6() {
               }}
               className="px-10 py-4 bg-slate-800 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 text-xl font-black rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
-              Retake Test
+              {t("listeningTest.retakeTest", "Retake Test")}
             </button>
           )}
         </div>

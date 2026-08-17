@@ -784,10 +784,10 @@ Respond STRICTLY in the following JSON format:
                     </div>
                     <div>
                         <h2 className="text-xl font-black text-gray-900 dark:text-white">
-                            {part === 1 ? 'Part 1 — Task 1 (Academic)' : 'Part 2 — Task 2 (Essay)'}
+                            {part === 1 ? t('ieltsWritingAssessor.part1Title') : t('ieltsWritingAssessor.part2Title')}
                         </h2>
                         <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                            {part === 1 ? '20 daqiqa | Kamida 150 so\'z | Grafik, jadval, xarita tavsifi' : '40 daqiqa | Kamida 250 so\'z | Argument insho'}
+                            {part === 1 ? t('ieltsWritingAssessor.part1Desc') : t('ieltsWritingAssessor.part2Desc')}
                         </p>
                     </div>
                 </div>
@@ -820,7 +820,7 @@ Respond STRICTLY in the following JSON format:
                                             ? 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400'
                                             : 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400'
                                     }`}>
-                                        {part === 1 ? 'Task 1' : 'Task 2'}
+                                        {part === 1 ? t('ieltsWritingAssessor.task1') : t('ieltsWritingAssessor.task2')}
                                     </span>
                                 </div>
                                 <h3 className="text-sm font-black text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors mb-2 line-clamp-2">
@@ -832,10 +832,10 @@ Respond STRICTLY in the following JSON format:
                                 <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
                                     <span className="flex items-center gap-1.5 text-xs font-bold text-gray-400">
                                         <FaClock className="text-red-400" />
-                                        {prompt.timeLimit / 60} daqiqa
+                                        {prompt.timeLimit / 60} {t('ieltsWritingAssessor.minutes')}
                                     </span>
                                     <span className="text-xs font-black text-red-600 dark:text-red-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                        Boshlash <FaChevronRight className="text-[9px]" />
+                                        {t('ieltsWritingAssessor.start')} <FaChevronRight className="text-[9px]" />
                                     </span>
                                 </div>
                             </div>
@@ -858,7 +858,7 @@ Respond STRICTLY in the following JSON format:
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 text-red-600 dark:text-red-400 text-xs font-black uppercase tracking-widest"
                     >
                         <FaGraduationCap className="text-sm" />
-                        <span>IELTS Academic Writing Test</span>
+                        <span>{t('ieltsWritingAssessor.academicWritingTest')}</span>
                     </motion.div>
                     <motion.h1
                         initial={{ opacity: 0, y: -10 }}
@@ -866,7 +866,7 @@ Respond STRICTLY in the following JSON format:
                         transition={{ delay: 0.1 }}
                         className="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight"
                     >
-                        Writing Assessor & AI Simulator
+                        {t('ieltsWritingAssessor.writingSimulator')}
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
@@ -874,7 +874,7 @@ Respond STRICTLY in the following JSON format:
                         transition={{ delay: 0.2 }}
                         className="text-sm font-medium text-gray-500 dark:text-gray-400 leading-relaxed"
                     >
-                        Mavzuni tanlang, yozing va AI bilan Band baholangizni bilib oling. Part 1 — 20 daqiqa, Part 2 — 40 daqiqa.
+                        {t('ieltsWritingAssessor.selectTopicSubtitle')}
                     </motion.p>
                 </div>
 
@@ -905,7 +905,7 @@ Respond STRICTLY in the following JSON format:
                             className="inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
                         >
                             <span className="text-base xs:text-lg leading-none">←</span>
-                            <span>Mavzularga qaytish</span>
+                            <span>{t('ieltsWritingAssessor.backToTopics')}</span>
                         </button>
                         <h1 className="text-lg md:text-xl font-black text-slate-800 dark:text-white ml-4 border-l pl-4 border-slate-300 dark:border-slate-600 uppercase tracking-wide">
                             <span className="text-red-600 dark:text-red-400">{selectedPrompt.type}</span>
@@ -934,7 +934,7 @@ Respond STRICTLY in the following JSON format:
                             {/* Divider for Guide */}
                             <div className="pt-8 mt-8 border-t border-slate-200 dark:border-slate-700">
                                 <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4">
-                                    Band 8.5 / 9.0 Namuna Insho & Guide
+                                    {t('ieltsWritingAssessor.sampleGuide')}
                                 </h3>
                                 
                                 <div className="space-y-3 mb-6">
@@ -983,7 +983,7 @@ Respond STRICTLY in the following JSON format:
                                                         onClick={loadSampleAnswer}
                                                         className="inline-flex items-center gap-2 text-xs font-bold text-red-600 dark:text-red-400 hover:underline cursor-pointer bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg border border-red-100 dark:border-red-900/30 transition-all hover:bg-red-100 dark:hover:bg-red-900/40"
                                                     >
-                                                        <FaMagic /> Copy to Editor
+                                                        <FaMagic /> {t('ieltsWritingAssessor.copyToEditor')}
                                                     </button>
                                                     <p className="text-sm font-sans leading-relaxed text-gray-800 dark:text-gray-200 whitespace-pre-line font-normal">
                                                         {selectedPrompt.sampleAnswer}
@@ -1124,14 +1124,14 @@ Respond STRICTLY in the following JSON format:
                                                 <FaAward />
                                             </div>
                                             <div>
-                                                <h3 className="text-xl font-black text-gray-900 dark:text-white">Sizning Natijangiz</h3>
+                                                <h3 className="text-xl font-black text-gray-900 dark:text-white">{t('ieltsWritingAssessor.resultTitle', 'Sizning Natijangiz')}</h3>
                                                 <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5">
                                                     {analysisResult.wordCount} {t('ieltsWritingAssessor.words', "so'z")} | {selectedPrompt.type}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="text-center sm:text-right">
-                                            <span className="text-xs font-black uppercase tracking-widest text-red-600 dark:text-red-400 block mb-1">Overall Band</span>
+                                            <span className="text-xs font-black uppercase tracking-widest text-red-600 dark:text-red-400 block mb-1">{t('ieltsWritingAssessor.overallBand')}</span>
                                             <span className="text-4xl sm:text-5xl font-black text-red-600 dark:text-red-400 font-mono">{analysisResult.overallBand}</span>
                                         </div>
                                     </div>
