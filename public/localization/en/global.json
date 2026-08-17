@@ -782,5 +782,16 @@
         "checkAnswers": "Check Answers",
         "retakeTest": "Retake Test",
         "score": "Your Score:"
+    },
+    "mobileShowcase": {
+        "n26Title": "IELTS Preparation at a Whole New Level",
+        "n26Subtitle": "Evaluate Essays with AI, take real CDI mock tests, and track your progress all in one personal platform.",
+        "n26Btn": "Take Free Level Test",
+        "seniorRole": "Senior Instructor • 6+ years experience",
+        "badge1": "6+ Years",
+        "badge2": "200+ Students",
+        "badge3": "Speaking",
+        "studentsTitle": "Students' Results",
+        "seeAllBtn": "See all"
     }
 }

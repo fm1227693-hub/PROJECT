@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaCheckCircle, FaTimesCircle, FaPlay, FaPause } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { answerKey } from "../data/listeningTest1";
+import AudioPlayer from "./AudioPlayer";
 
 export default function ListeningTest() {
   const { t } = useTranslation();
@@ -10,57 +11,8 @@ export default function ListeningTest() {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
-  // Audio Player State
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
-
-  // Audio functions
-  const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleTimeUpdate = () => {
-    const current = audioRef.current.currentTime;
-    const total = audioRef.current.duration;
-    setCurrentTime(current);
-    setProgress((current / total) * 100);
-  };
-
-  const handleProgressChange = (e) => {
-    const newTime = (e.target.value / 100) * duration;
-    audioRef.current.currentTime = newTime;
-    setProgress(e.target.value);
-  };
-
-  const handleLoadedMetadata = () => {
-    setDuration(audioRef.current.duration);
-  };
-
-  const changeSpeed = (rate) => {
-    audioRef.current.playbackRate = rate;
-    setPlaybackRate(rate);
-    setShowSpeedMenu(false);
-  };
-
-  const formatTime = (time) => {
-    if (isNaN(time)) return "00:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  };
-
   const handleInputChange = (qNum, value) => {
-    setAnswers({ ...answers, [qNum]: value });
+    setAnswers((prev) => ({ ...prev, [qNum]: value }));
   };
 
   const calculateScore = () => {
@@ -111,68 +63,8 @@ export default function ListeningTest() {
 
   return (
     <div className="w-full">
-      {/* Sticky Audio Player Placeholder */}
-      <div className="sticky top-[84px] z-40 max-w-[1000px] mx-auto bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200 dark:border-slate-700 shadow-sm mb-8 py-3 rounded-2xl">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="font-bold text-red-600 hidden md:block w-48 shrink-0">Practice Test 1 Audio</div>
-          
-          <audio 
-            ref={audioRef}
-            src="/audios/LISTENING1.mp3" 
-            onTimeUpdate={handleTimeUpdate}
-            onLoadedMetadata={handleLoadedMetadata}
-            onEnded={() => setIsPlaying(false)}
-          />
-
-          {/* Custom Audio UI */}
-          <div className="flex-1 w-full flex items-center gap-3 sm:gap-4">
-            <button 
-              onClick={togglePlay}
-              className="w-10 h-10 shrink-0 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-transform hover:scale-105"
-            >
-              {isPlaying ? <FaPause className="w-4 h-4" /> : <FaPlay className="w-4 h-4 ml-1" />}
-            </button>
-
-            <span className="text-xs font-mono font-medium opacity-70 shrink-0">{formatTime(currentTime)}</span>
-            
-            <input 
-              type="range" 
-              min="0" 
-              max="100" 
-              value={progress || 0}
-              onChange={handleProgressChange}
-              className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-red-600"
-            />
-            
-            <span className="text-xs font-mono font-medium opacity-70 shrink-0">{formatTime(duration)}</span>
-
-            {/* Speed Control */}
-            <div className="relative shrink-0">
-              <button 
-                onClick={() => setShowSpeedMenu(!showSpeedMenu)}
-                className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600"
-              >
-                {playbackRate}x
-              </button>
-              
-              {showSpeedMenu && (
-                <div className="absolute right-0 top-full mt-2 w-20 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl overflow-hidden z-50">
-                  {[0.75, 1, 1.25, 1.5, 2].map((rate) => (
-                    <button
-                      key={rate}
-                      onClick={() => changeSpeed(rate)}
-                      className={`block w-full text-center px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${playbackRate === rate ? 'font-bold text-red-600 dark:text-red-400' : ''}`}
-                    >
-                      {rate}x
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-        </div>
-      </div>
+      {/* Sticky Audio Player */}
+      <AudioPlayer src="/audios/LISTENING1.mp3" title="Practice Test 1 Audio" />
 
       <div className="max-w-4xl mx-auto px-4">
         

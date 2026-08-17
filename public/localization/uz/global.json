@@ -827,5 +827,16 @@
         "checkAnswers": "Javoblarni Tekshirish",
         "retakeTest": "Qayta Topshirish",
         "score": "Sizning Natijangiz:"
+    },
+    "mobileShowcase": {
+        "n26Title": "IELTS tayyorgarlik mutlaqo yangi bosqichda",
+        "n26Subtitle": "Shaxsiy platforma orqali Insholarni sun'iy intellektda baholang, real CDI testlarini topshiring va natijalaringizni bir joyda kuzatib boring.",
+        "n26Btn": "Bepul daraja testini topshirish",
+        "seniorRole": "Senior Instructor • 6+ yillik tajriba",
+        "badge1": "6+ Yil",
+        "badge2": "200+ Student",
+        "badge3": "Speaking",
+        "studentsTitle": "O'quvchilar Natijalari",
+        "seeAllBtn": "Barchasi"
     }
 }
