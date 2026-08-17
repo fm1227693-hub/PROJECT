@@ -7,7 +7,7 @@ import { IMaskInput } from 'react-imask';
 const mentors = [
   { id: 1, name: 'Zamirgor Omiqova', role: 'IELTS 8.5 Expert' },
   { id: 2, name: 'Gulasal', role: 'IELTS 9.0 Certified' },
-  { id: 3, name: 'Ruxillo Asrorov', role: 'English Teacher & IELTS Expert' }
+  { id: 3, name: 'Ruhillo Asrorov', role: 'English Teacher & IELTS Expert' }
 ];
 
 const timeSlots = ['10:00 - 10:15', '11:00 - 11:15', '14:00 - 14:15', '16:00 - 16:15', '18:00 - 18:15'];
@@ -181,7 +181,7 @@ export default function ConsultationBooking() {
           {t('consultationBooking.submitBtn', "Bron qilish")}
         </button>
       </form>
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
     </div>
   );
 }

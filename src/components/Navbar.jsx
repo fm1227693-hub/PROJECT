@@ -14,7 +14,12 @@ export default function Navbar() {
     const { t, i18n } = useTranslation()
     const location = useLocation()
 
-    const [dark, isDark] = useState(true)
+    const [dark, isDark] = useState(() => {
+        const saved = localStorage.getItem('theme')
+        // Agar localStorage da qiymat bo'lmasa, default dark mode
+        if (saved === null) return true
+        return saved === 'true'
+    })
     const [menuOpen, setMenuOpen] = useState(false)
     const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false)
     const [testsDropdownOpen, setTestsDropdownOpen] = useState(false)
@@ -37,9 +42,12 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') === 'true'
-        isDark(savedTheme)
-        if (savedTheme) {
+        // useState lazy initializer allaqachon state ni o'rnatdi,
+        // faqat DOM ga dark class ni qo'llashimiz kerak
+        const saved = localStorage.getItem('theme')
+        const shouldBeDark = saved === null ? true : saved === 'true'
+        isDark(shouldBeDark)
+        if (shouldBeDark) {
             document.documentElement.classList.add('dark')
         } else {
             document.documentElement.classList.remove('dark')

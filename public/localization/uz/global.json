@@ -417,7 +417,7 @@
     },
     "ruxillo": {
         "role": "Katta ingliz tili o'qituvchisi (IELTS 8)",
-        "description": "Ruxillo ingliz tilini maktab davridayoq mustaqil o'rganishni boshlagan va bir necha yil ichida o'z shahridagi eng talab qilinadigan o'qituvchilardan biriga aylangan. U IELTS'ga tayyorlash va nutq amaliyoti bo'yicha ixtisoslashgan bo'lib, murakkab grammatik mavzularni sodda va tushunarli tilda tushuntiradi. 4 yillik faoliyati davomida u IELTS 7 va undan yuqori ball olgan 200 dan ortiq o'quvchini tayyorlagan va o'z o'qitish metodikasini doimiy takomillashtirib bormoqda."
+        "description": "Ruhillo ingliz tilini maktab davridayoq mustaqil o'rganishni boshlagan va bir necha yil ichida o'z shahridagi eng talab qilinadigan o'qituvchilardan biriga aylangan. U IELTS'ga tayyorlash va nutq amaliyoti bo'yicha ixtisoslashgan bo'lib, murakkab grammatik mavzularni sodda va tushunarli tilda tushuntiradi. 4 yillik faoliyati davomida u IELTS 7 va undan yuqori ball olgan 200 dan ortiq o'quvchini tayyorlagan va o'z o'qitish metodikasini doimiy takomillashtirib bormoqda."
     },
     "zarnigor": {
         "role": "IELTS 8.5",
@@ -610,7 +610,9 @@
         "emailPlaceholder": "Gmail pochta (azizbek@gmail.com)",
         "textPlaceholder": "Izohingizni yozing...",
         "submitSuccess": "Izohingiz qo'shildi!",
+        "addSuccess": "Izoh muvaffaqiyatli qo'shildi!",
         "deleteSuccess": "Izoh o'chirildi!",
+        "fillError": "Iltimos, izohni to'liq kiriting!",
         "replying": "Javob yozilmoqda...",
         "reply": "Javob berish",
         "closeReplies": "Javoblarni yopish",

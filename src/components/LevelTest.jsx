@@ -105,7 +105,7 @@ export default function LevelTest() {
         setFinished(true)
         toast.error(t('levelTest.timeUp') || "Vaqt tugadi!", {
             id: 'time-up',
-            position: 'top-right',
+            position: 'top-center',
             duration: 3000,
         })
     }, [t])
@@ -141,7 +141,7 @@ export default function LevelTest() {
         clearInterval(timerRef.current)
         setFinished(true)
         toast.success(t('levelTest.testFinished') || 'Test yakunlandi', {
-            position: 'top-right',
+            position: 'top-center',
             duration: 2000,
         })
     }
@@ -188,7 +188,7 @@ export default function LevelTest() {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
                 <div className="absolute top-1/4 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
-                <Toaster position="bottom-right" />
+                <Toaster position="top-center" />
                 <BackBtn />
                 <div
                     data-aos="zoom-in"
@@ -234,7 +234,7 @@ export default function LevelTest() {
         const { correct, total, percent, level } = computeScore()
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
-                <Toaster position="bottom-right" />
+                <Toaster position="top-center" />
                 <BackBtn />
                 <div
                     data-aos="zoom-in"
@@ -301,7 +301,7 @@ export default function LevelTest() {
     if (finished && !showResult) {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
-                <Toaster position="bottom-right" />
+                <Toaster position="top-center" />
                 <BackBtn />
                 <div
                     data-aos="zoom-in"
@@ -334,7 +334,7 @@ export default function LevelTest() {
     // TEST
     return (
         <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
-            <Toaster position="bottom-right" />
+            <Toaster position="top-center" />
             <BackBtn />
             <div
                 data-aos="fade-up"

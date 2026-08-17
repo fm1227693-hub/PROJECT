@@ -6,7 +6,7 @@ import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle, F
 const staticMentorsData = [
     {
         id: 1,
-        name: "Ruxillo Asrorov",
+        name: "Ruhillo Asrorov",
         role: "English Teacher & IELTS Expert",
         experience: "4+ yil tajriba",
         bio: "Ingliz tili va IELTS imtihoniga tayyorlash bo'yicha yuqori darajadagi malakali mutaxassis.",
@@ -220,7 +220,7 @@ Telefon: +998 ${formData.phone}
                     initial={{ opacity: 0, y: -50, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                    className="fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-xl shadow-2xl border border-gray-200/80 dark:border-white/10 text-gray-900 dark:text-white"
+                    className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-xl shadow-2xl border border-gray-200/80 dark:border-white/10 text-gray-900 dark:text-white"
                 >
                     {toast.type === 'success' ? (
                         <FaCheckCircle className="text-emerald-500 text-xl shrink-0" />
@@ -418,7 +418,7 @@ Telefon: +998 ${formData.phone}
                                 key={mentor.id}
                                 data-aos="fade-up"
                                 data-aos-duration="700"
-                                className="relative overflow-hidden bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-[#070b14]/95 backdrop-blur-3xl border border-white/10 hover:border-red-500/50 rounded-[40px] p-6 sm:p-10 shadow-2xl shadow-black/50 transition-all duration-500 group"
+                                className="relative overflow-hidden bg-white dark:bg-gradient-to-br dark:from-slate-900/95 dark:via-slate-900/90 dark:to-[#070b14]/95 border border-slate-200 dark:border-white/10 hover:border-red-400 dark:hover:border-red-500/50 rounded-[40px] p-6 sm:p-10 shadow-2xl shadow-slate-200/80 dark:shadow-black/50 transition-all duration-500 group"
                             >
                                 {/* Background Ambient Lights */}
                                 <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-red-600/25 via-rose-600/15 to-transparent rounded-full blur-3xl group-hover:from-red-600/40 transition-all duration-700 pointer-events-none" />
@@ -446,13 +446,13 @@ Telefon: +998 ${formData.phone}
                                             </div>
 
                                             {/* Top Floating Badge */}
-                                            <div className="absolute top-4 left-4 px-3.5 py-1.5 bg-slate-950/90 border border-red-500/40 backdrop-blur-md rounded-full flex items-center gap-1.5 shadow-xl text-[11px] font-black text-rose-400">
+                                            <div className="absolute top-4 left-4 px-3.5 py-1.5 bg-white/90 dark:bg-slate-950/90 border border-red-500/40 backdrop-blur-md rounded-full flex items-center gap-1.5 shadow-xl text-[11px] font-black text-rose-500 dark:text-rose-400">
                                                 <FaStar className="text-red-500 text-xs shrink-0 animate-spin-slow" />
                                                 <span>{t('mentorsPage.topMentor', "TOP MENTOR")}</span>
                                             </div>
 
                                             {/* Bottom Floating Experience Badge */}
-                                            <div className="absolute -bottom-3 right-4 px-4 py-2 bg-slate-950/95 border border-red-500/50 backdrop-blur-md rounded-2xl flex items-center gap-2 shadow-2xl text-xs font-black text-white">
+                                            <div className="absolute -bottom-3 right-4 px-4 py-2 bg-white/95 dark:bg-slate-950/95 border border-red-500/50 backdrop-blur-md rounded-2xl flex items-center gap-2 shadow-2xl text-xs font-black text-slate-900 dark:text-white">
                                                 <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
                                                 <FaClock className="text-red-400 text-xs" />
                                                 <span>{t('mentorsPage.experience', mentor.experience)}</span>
@@ -475,7 +475,7 @@ Telefon: +998 ${formData.phone}
 
                                             <h3
                                                 onClick={() => setActiveMentorDetail(mentor)}
-                                                className="text-3xl sm:text-4xl font-black text-white cursor-pointer hover:text-red-400 transition-colors tracking-tight flex items-center gap-2.5"
+                                                className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white cursor-pointer hover:text-red-500 dark:hover:text-red-400 transition-colors tracking-tight flex items-center gap-2.5"
                                             >
                                                 <span>{mentor.name}</span>
                                                 <FaCheckCircle className="text-red-500 text-xl shrink-0" title="Tasdiqlangan mutaxassis" />
@@ -487,8 +487,8 @@ Telefon: +998 ${formData.phone}
                                         </div>
 
                                         {/* Bio Quote Card */}
-                                        <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 text-slate-300 text-xs sm:text-sm font-medium leading-relaxed relative">
-                                            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-slate-900 border border-white/10 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-400">
+                                        <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-xs sm:text-sm font-medium leading-relaxed relative">
+                                            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                                                 {t('mentorsPage.aboutHeading', "Mutaxassis Haqida")}
                                             </span>
                                             <p className="pt-1">{t('mentorsPage.bio', mentor.bio)}</p>
@@ -496,30 +496,30 @@ Telefon: +998 ${formData.phone}
 
                                         {/* Quick Stats Grid */}
                                         <div className="grid grid-cols-3 gap-3 py-1">
-                                            <div className="p-3 rounded-2xl bg-slate-950/60 border border-red-500/20 text-center">
-                                                <p className="text-lg sm:text-xl font-black text-rose-400">8.0+</p>
-                                                <p className="text-[10px] sm:text-xs font-bold text-slate-400">{t('mentorsPage.ieltsLevel', "IELTS Daraja")}</p>
+                                            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-red-500/20 text-center">
+                                                <p className="text-lg sm:text-xl font-black text-rose-500 dark:text-rose-400">8.0+</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">{t('mentorsPage.ieltsLevel', "IELTS Daraja")}</p>
                                             </div>
-                                            <div className="p-3 rounded-2xl bg-slate-950/60 border border-red-500/20 text-center">
-                                                <p className="text-lg sm:text-xl font-black text-red-500">4+ Yil</p>
-                                                <p className="text-[10px] sm:text-xs font-bold text-slate-400">{t('mentorsPage.experienceLabel', "Tajriba")}</p>
+                                            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-red-500/20 text-center">
+                                                <p className="text-lg sm:text-xl font-black text-red-600 dark:text-red-500">4+ Yil</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">{t('mentorsPage.experienceLabel', "Tajriba")}</p>
                                             </div>
-                                            <div className="p-3 rounded-2xl bg-slate-950/60 border border-red-500/20 text-center">
-                                                <p className="text-lg sm:text-xl font-black text-rose-500">100%</p>
-                                                <p className="text-[10px] sm:text-xs font-bold text-slate-400">{t('mentorsPage.guaranteed', "Kafolatlangan")}</p>
+                                            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-red-500/20 text-center">
+                                                <p className="text-lg sm:text-xl font-black text-rose-600 dark:text-rose-500">100%</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">{t('mentorsPage.guaranteed', "Kafolatlangan")}</p>
                                             </div>
                                         </div>
 
                                         {/* Skills Chips */}
                                         <div>
-                                            <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">
+                                            <p className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
                                                 {t('mentorsPage.specializations', "Mutaxassislik yo'nalishlari:")}
                                             </p>
                                             <div className="flex flex-wrap gap-2">
                                                 {mentor.skills && mentor.skills.map((skill, i) => (
                                                     <span
                                                         key={i}
-                                                        className="inline-flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 text-xs px-3.5 py-1.5 rounded-xl font-extrabold border border-white/10 hover:border-red-500/50 hover:text-white transition-all duration-300 shadow-md hover:-translate-y-0.5"
+                                                        className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs px-3.5 py-1.5 rounded-xl font-extrabold border border-slate-200 dark:border-white/10 hover:border-red-400 dark:hover:border-red-500/50 hover:text-red-600 dark:hover:text-white transition-all duration-300 shadow-md hover:-translate-y-0.5"
                                                     >
                                                         <FaGraduationCap className="text-red-400 text-xs shrink-0" />
                                                         <span>{skill}</span>
@@ -532,7 +532,7 @@ Telefon: +998 ${formData.phone}
                                         <div className="flex flex-col sm:flex-row gap-3 pt-2">
                                             <button
                                                 onClick={() => setActiveMentorDetail(mentor)}
-                                                className="flex-1 px-6 py-4 rounded-2xl bg-white/[0.06] hover:bg-white/[0.14] text-white text-xs sm:text-sm font-black transition-all duration-300 cursor-pointer active:scale-95 border border-white/15 hover:border-white/30 flex items-center justify-center gap-2 backdrop-blur-md shadow-lg group/btn"
+                                                className="flex-1 px-6 py-4 rounded-2xl bg-slate-100 dark:bg-white/[0.06] hover:bg-slate-200 dark:hover:bg-white/[0.14] text-slate-900 dark:text-white text-xs sm:text-sm font-black transition-all duration-300 cursor-pointer active:scale-95 border border-slate-200 dark:border-white/15 hover:border-red-300 dark:hover:border-white/30 flex items-center justify-center gap-2 shadow-lg group/btn"
                                             >
                                                 <span>{t('mentorsPage.detailsBtn', "Batafsil ma'lumot")}</span>
                                                 <FaArrowRight className="text-xs group-hover/btn:translate-x-1 transition-transform" />

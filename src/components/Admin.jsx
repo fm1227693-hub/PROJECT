@@ -71,7 +71,7 @@ export default function Admin() {
                     </button>
                 </div>
             </div>
-            <Toaster position="top-right" />
+            <Toaster position="top-center" />
         </div>
     )
 }

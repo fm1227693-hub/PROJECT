@@ -338,7 +338,7 @@
     },
     "ruxillo": {
         "role": "Senior English Teacher (IELTS 8)",
-        "description": "Ruxillo started learning English on his own while still in school, and within just a few years became one of the most sought-after teachers in his city. He specializes in IELTS preparation and speaking practice, breaking down complex grammar topics into simple, easy-to-understand explanations. Over 4 years of teaching, he has prepared more than 200 students who scored IELTS 7 or higher, and he continues refining his own teaching methodology."
+        "description": "Ruhillo started learning English on his own while still in school, and within just a few years became one of the most sought-after teachers in his city. He specializes in IELTS preparation and speaking practice, breaking down complex grammar topics into simple, easy-to-understand explanations. Over 4 years of teaching, he has prepared more than 200 students who scored IELTS 7 or higher, and he continues refining his own teaching methodology."
     },
     "zarnigor": {
         "role": "IELTS 8.5",
@@ -531,7 +531,9 @@
         "emailPlaceholder": "Gmail email (azizbek@gmail.com)",
         "textPlaceholder": "Write your review...",
         "submitSuccess": "Your review has been added!",
+        "addSuccess": "Comment added successfully!",
         "deleteSuccess": "Review deleted!",
+        "fillError": "Please fill in the comment field!",
         "replying": "Writing reply...",
         "reply": "Reply",
         "closeReplies": "Close replies",

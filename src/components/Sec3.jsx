@@ -12,7 +12,7 @@ export default function Sec3() {
   const teachers = [
     {
       id: 'ruxillo',
-      name: 'Ruxillo Asrorov',
+      name: 'Ruhillo Asrorov',
       image: '/photo_2026-07-23_23-14-12.jpg',
       score: '8.0',
       cert: 'IELTS 8.0',

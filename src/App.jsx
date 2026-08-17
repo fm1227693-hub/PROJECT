@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { inView, animate, AnimatePresence, motion } from "framer-motion";
+import { Toaster } from 'react-hot-toast';
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
@@ -201,6 +202,7 @@ export default function App() {
         <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/80 dark:from-[#030712]/90 to-transparent pointer-events-none" />
       </div>
 
+      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <div className="relative z-10">
         <Navbar />
         <ScrollToTop />

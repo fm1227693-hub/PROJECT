@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { readingTest2Answers as answerKey } from "../data/readingTest2";
@@ -8,6 +8,7 @@ export default function ReadingTest2() {
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
 
   const handleInputChange = (qNum, value) => {
     setAnswers((prev) => ({
@@ -58,7 +59,7 @@ export default function ReadingTest2() {
         ) : (
           <span className="flex items-center gap-2">
             <FaTimesCircle className="text-red-500" />
-            <span className="text-xs text-slate-500 font-mono">
+            <span className="hidden md:inline ml-1 text-xs text-slate-500 font-mono">
               ({answerKey[qNum][0]})
             </span>
           </span>
@@ -87,41 +88,22 @@ export default function ReadingTest2() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:divide-x divide-slate-200 dark:divide-slate-700">
-          {/* LEFT SIDE - READING PASSAGES */}
-          <div className="p-6 md:p-8 h-[50vh] lg:h-[800px] overflow-y-auto custom-scrollbar bg-slate-50/50 dark:bg-slate-900/20">
-            <div className="prose dark:prose-invert max-w-none">
-              
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-black mb-2">READING PASSAGE 1</h2>
-              </div>
-              <div className="bg-white dark:bg-slate-800/80 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 mb-12">
-                {passageTest2_1}
-              </div>
-              
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-black mb-2">READING PASSAGE 2</h2>
-              </div>
-              <div className="bg-white dark:bg-slate-800/80 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 mb-12">
-                {passageTest2_2}
-              </div>
+        <div className="flex flex-col">
 
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-black mb-2">READING PASSAGE 3</h2>
-              </div>
-              <div className="bg-white dark:bg-slate-800/80 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 mb-12">
-                {passageTest2_3}
-              </div>
-
+          {/* ═══════════════ PASSAGE 1 + Q1-16 ═══════════════ */}
+          <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-black mb-1">READING PASSAGE 1</h2>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Questions 1–16</p>
             </div>
-          </div>
 
-          {/* RIGHT SIDE - QUESTIONS */}
-          <div className="p-6 md:p-8 h-[50vh] lg:h-[800px] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-800">
-            
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
+              {passageTest2_1}
+            </div>
+
             {/* Questions 1-7 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
-              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1РІР‚вЂњ7<br/>Do the following statements agree with the information in the IELTS reading text?<br/>Write TRUE, FALSE, or NOT GIVEN.</div>
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1–7<br/>Do the following statements agree with the information in the IELTS reading text?<br/>Write TRUE, FALSE, or NOT GIVEN.</div>
               
               <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
               <p>1. Matthias Classen is unsure about the possibility of monster's existence.</p>
@@ -156,7 +138,7 @@ export default function ReadingTest2() {
 
             {/* Questions 8-12 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
-              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 8РІР‚вЂњ12<br/>Choose the correct letter, A, B, C or D.</div>
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 8–12<br/>Choose the correct letter, A, B, C or D.</div>
               
               <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-4 font-medium">
               <div><p>8. Who wrote a novel about a giant squid?</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. Emily Alder</li><li>B. Stephen King</li><li>C. Alfred Lord Tennyson</li><li>D. Jules Verne</li></ul></div>
@@ -190,7 +172,7 @@ export default function ReadingTest2() {
 
             {/* Questions 13-16 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
-              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 13РІР‚вЂњ16<br/>Complete the sentences below. Write NO MORE THAN TWO WORDS from the passage for each answer.</div>
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 13–16<br/>Complete the sentences below. Write NO MORE THAN TWO WORDS from the passage for each answer.</div>
               
               <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
               <p>13. According to the Victor Hugo's novel, the squid would ________________ if he had such opportunity.</p>
@@ -209,24 +191,22 @@ export default function ReadingTest2() {
                 ))}
               </div>
             </div>
+          </div>
 
-          
-            
-            
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700">
+          {/* ═══════════════ PASSAGE 2 + Q17-27 ═══════════════ */}
+          <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">READING PASSAGE 2</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 17РІР‚вЂњ27</h3>
+              <h2 className="text-2xl font-black mb-1">READING PASSAGE 2</h2>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Questions 17–27</p>
             </div>
 
-            {/* Passage Text */}
-            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700">
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
               {passageTest2_2}
             </div>
 
             {/* Questions 17-25 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
-              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 17РІР‚вЂњ25<br/>Match the headings below with the paragraphs. Write ONE LETTER A-I.</div>
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 17–25<br/>Match the headings below with the paragraphs. Write ONE LETTER A-I.</div>
               
               <div className="text-slate-700 dark:text-slate-300 mb-6 grid grid-cols-1 sm:grid-cols-2 gap-2 font-medium">
                 <p>17. Scientific success</p>
@@ -253,10 +233,10 @@ export default function ReadingTest2() {
 
             {/* Questions 26-27 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
-              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 26РІР‚вЂњ27<br/>Choose the correct letter, A, B, C or D.</div>
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 26–27<br/>Choose the correct letter, A, B, C or D.</div>
               
               <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-4 font-medium">
-                <div><p>26. How can you describe the relations between Churchill and Wells throughout the years?</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. passionate РІС›вЂќ friendly РІС›вЂќ adverse</li><li>B. curious РІС›вЂќ friendly</li><li>C. respectful РІС›вЂќ friendly РІС›вЂќ inhospitable</li><li>D. friendly РІС›вЂќ respectful РІС›вЂќ hostile</li></ul></div>
+                <div><p>26. How can you describe the relations between Churchill and Wells throughout the years?</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. passionate – friendly – adverse</li><li>B. curious – friendly</li><li>C. respectful – friendly – inhospitable</li><li>D. friendly – respectful – hostile</li></ul></div>
                 <div><p>27. What is the type of this text?</p><ul className="pl-6 list-disc text-sm mt-1 text-slate-500"><li>A. science-fiction story</li><li>B. article from the magazine</li><li>C. historical text</li><li>D. Wells autobiography</li></ul></div>
               </div>
 
@@ -281,46 +261,180 @@ export default function ReadingTest2() {
                 ))}
               </div>
             </div>
+          </div>
 
-          
-            
-            
+          {/* ═══════════════ PASSAGE 3 + Q28-40 ═══════════════ */}
+          <div className="p-6 md:p-8 border-b border-slate-200 dark:border-slate-700">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-black mb-1">READING PASSAGE 3</h2>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Questions 28–40</p>
+            </div>
 
-            {/* ACTION BUTTONS */}
-            <div className="mt-8 pt-4 pb-4 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-4">
-              <button
-                onClick={() => {
-                  setAnswers({});
-                  setSubmitted(false);
-                  setScore(null);
-                }}
-                className="px-6 py-3 rounded-xl font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-              >
-                Clear All
-              </button>
-              <button
-                onClick={() => {
-                    let s = 0;
-                    Object.keys(answerKey).forEach((key) => {
-                      const validAnswers = answerKey[key].map((ans) => ans.toString().toLowerCase().trim());
-                      const userAnswer = (answers[key] || "").toString().toLowerCase().trim();
-                      if (validAnswers.includes(userAnswer)) s++;
-                    });
-                    setScore(s);
-                    setSubmitted(true);
-                }}
-                disabled={submitted}
-                className={`px-8 py-3 rounded-xl font-bold text-white shadow-lg transition-all ${
-                  submitted
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700 hover:-translate-y-1 hover:shadow-blue-500/30"
-                }`}
-              >
-                {submitted ? "Submitted" : "Submit Test"}
-              </button>
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
+              {passageTest2_3}
+            </div>
+
+            {/* Questions 28-31 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 28–31<br/>Choose the correct letter, A, B, C or D.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-4 font-medium">
+                <div><p>28. According to the first paragraph, what is the writer's main point?</p></div>
+                <div><p>29. What does the writer suggest in the second paragraph?</p></div>
+                <div><p>30. The writer uses the example to illustrate:</p></div>
+                <div><p>31. In the final paragraph, the writer concludes that:</p></div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[28, 29, 30, 31].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-8 text-right">{q}.</span>
+                    <select 
+                      className={`w-24 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} 
+                      value={answers[q] || ""} 
+                      onChange={(e) => handleInputChange(q, e.target.value)} 
+                      disabled={submitted}
+                    >
+                      <option value=""></option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                    </select>
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Questions 32-36 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 32–36<br/>Complete the sentences below. Write ONE WORD ONLY from the passage.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
+                <p>32. The research was supported by leading ________________ in the field.</p>
+                <p>33. One significant ________________ of the approach was discussed.</p>
+                <p>34. They decided to implement a ________________ method.</p>
+                <p>35. The main ________________ was difficult to resolve.</p>
+                <p>36. Critics continue to ________________ upon this practice.</p>
+              </div>
+
+              <div className="space-y-4">
+                {[32, 33, 34, 35, 36].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-8 text-right">{q}.</span>
+                    <input type="text" className={`flex-1 max-w-sm px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} value={answers[q] || ""} onChange={(e) => handleInputChange(q, e.target.value)} disabled={submitted} />
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Questions 37-40 */}
+            <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 37–40<br/>Do the following statements agree with the information given? Write TRUE, FALSE or NOT GIVEN.</div>
+              
+              <div className="text-slate-700 dark:text-slate-300 mb-6 space-y-3 font-medium">
+                <p>37. The initial predictions were accurate.</p>
+                <p>38. Most participants agreed with the findings.</p>
+                <p>39. The study received funding from the government.</p>
+                <p>40. The researchers plan to repeat the experiment next year.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[37, 38, 39, 40].map((q) => (
+                  <div key={q} className="flex items-center gap-3">
+                    <span className="font-bold w-6 text-right">{q}.</span>
+                    <select 
+                      className={`w-40 px-3 py-2 bg-white dark:bg-slate-800 border-2 rounded-lg outline-none transition-colors ${getStatusClass(q)}`} 
+                      value={answers[q] || ""} 
+                      onChange={(e) => handleInputChange(q, e.target.value)} 
+                      disabled={submitted}
+                    >
+                      <option value=""></option>
+                      <option value="TRUE">TRUE</option>
+                      <option value="FALSE">FALSE</option>
+                      <option value="NOT GIVEN">NOT GIVEN</option>
+                    </select>
+                    {renderFeedback(q)}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="p-6 md:p-8 flex justify-end gap-4">
+            <button
+              onClick={() => {
+                setAnswers({});
+                setSubmitted(false);
+                setScore(null);
+              }}
+              className="px-6 py-3 rounded-xl font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+            >
+              Clear All
+            </button>
+            <button
+              onClick={() => {
+                  let s = 0;
+                  Object.keys(answerKey).forEach((key) => {
+                    const validAnswers = answerKey[key].map((ans) => ans.toString().toLowerCase().trim());
+                    const userAnswer = (answers[key] || "").toString().toLowerCase().trim();
+                    if (validAnswers.includes(userAnswer)) s++;
+                  });
+                  setScore(s);
+                  setSubmitted(true);
+              }}
+              disabled={submitted}
+              className={`px-8 py-3 rounded-xl font-bold text-white shadow-lg transition-all ${
+                submitted
+                  ? "bg-slate-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700 hover:-translate-y-1 hover:shadow-blue-500/30"
+              }`}
+            >
+              {submitted ? "Submitted" : "Submit Test"}
+            </button>
+          </div>
+
+          {/* ANSWERS TABLE */}
+          {submitted && (
+            <div className="p-6 md:p-8 bg-slate-50/50 dark:bg-slate-800/20">
+              <div className="flex flex-col items-center justify-center space-y-6">
+                <button 
+                  onClick={() => setShowAnswers(!showAnswers)}
+                  className="w-full md:w-auto px-8 py-3 rounded-xl font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
+                >
+                  {showAnswers ? "Javoblarni yashirish" : "To'g'ri javoblarni ko'rish"}
+                </button>
+
+                {showAnswers && (
+                  <div className="w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                        <thead className="bg-slate-100 dark:bg-slate-700/50 text-slate-800 dark:text-slate-200">
+                          <tr>
+                            <th className="p-4 font-bold border-b border-slate-200 dark:border-slate-700 w-24 text-center">Savol</th>
+                            <th className="p-4 font-bold border-b border-slate-200 dark:border-slate-700">To'g'ri javob(lar)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.keys(answerKey).map((q) => (
+                            <tr key={q} className="border-b last:border-0 border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                              <td className="p-4 font-bold bg-slate-50/50 dark:bg-slate-800/50 text-center border-r border-slate-100 dark:border-slate-700/50">{q}</td>
+                              <td className="p-4 font-mono text-green-600 dark:text-green-400 font-medium tracking-wide">
+                                {answerKey[q].join('  /  ')}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

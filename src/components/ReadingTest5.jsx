@@ -6,6 +6,7 @@ import { readingTest5Answers as answerKey, passageTest5_1, passageTest5_2, passa
 const ReadingTest5 = () => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
   const [score, setScore] = useState(0);
 
   const handleInputChange = (questionNumber, value) => {
@@ -80,10 +81,10 @@ const ReadingTest5 = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:divide-x divide-slate-200 dark:divide-slate-700">
+        <div className="flex flex-col">
           {/* LEFT SIDE - READING PASSAGES */}
-          <div className="p-6 md:p-8 h-[50vh] lg:h-[800px] overflow-y-auto custom-scrollbar bg-slate-50/50 dark:bg-slate-900/20">
-            <div className="prose dark:prose-invert max-w-none">
+          <div className="p-6 md:p-8 bg-slate-50/50 dark:bg-slate-900/20 border-b border-slate-200 dark:border-slate-700">
+            <div className="prose dark:prose-invert max-w-none max-h-[50vh] lg:max-h-[75vh] overflow-y-auto overflow-x-hidden shadow-inner custom-scrollbar">
               
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-black mb-2">READING PASSAGE 1</h2>
@@ -113,7 +114,7 @@ const ReadingTest5 = () => {
           </div>
 
           {/* RIGHT SIDE - QUESTIONS */}
-          <div className="p-6 md:p-8 h-[50vh] lg:h-[800px] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-800">
+          <div className="p-6 md:p-8 bg-white dark:bg-slate-800">
             
             {/* Questions 1-8 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">

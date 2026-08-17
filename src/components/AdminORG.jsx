@@ -209,7 +209,7 @@ const StatCard = ({ value, label }) => (
 
 return (
     <div className="flex min-h-screen pt-20 lg:pt-[76px] bg-gray-50/50 dark:bg-[#070b14] font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-gray-100 relative">
-        <Toaster position="top-right" />
+        <Toaster position="top-center" />
         {/* Sidebar Wrapper */}
         <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 hidden lg:block shrink-0 relative">
             {/* Sticky Inner Container */}
