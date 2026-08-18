@@ -1,4 +1,11 @@
 {
+    "loader": {
+        "loading": "Загрузка",
+        "school": "School of English"
+    },
+    "themeLoader": {
+        "text": "Переключение режима..."
+    },
     "Welcome to React": "Добро пожаловать в React и react-i18next",
     "greating": "привет всем",
     "Bosh sahifa": "Главная страница",

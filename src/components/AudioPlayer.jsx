@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactMemo } from "react";
+import React, { useState, useRef } from "react";
 import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 
 function AudioPlayer({ src, title = "Practice Test Audio" }) {
@@ -9,7 +9,6 @@ function AudioPlayer({ src, title = "Practice Test Audio" }) {
   const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
-  const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
 
   const togglePlay = () => {
@@ -106,7 +105,7 @@ function AudioPlayer({ src, title = "Practice Test Audio" }) {
             {formatTime(currentTime)}
           </span>
 
-          {/* Premium Red Progress Slider (Qizg'ish / Red Seekbar) */}
+          {/* Red Progress Slider */}
           <div className="relative flex-1 flex items-center group">
             <input
               type="range"

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { inView, animate, AnimatePresence, motion } from "framer-motion";
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
@@ -23,8 +24,8 @@ import LeadForm from "./components/LeadForm";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfUse from "./components/TermsOfUse";
 import IeltsWritingAssessor from "./components/IeltsWritingAssessor";
-
 import BackgroundCanvas from "./components/BackgroundCanvas";
+import ThemeTransitionLoader from "./components/ThemeTransitionLoader";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -37,6 +38,7 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
@@ -49,55 +51,45 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Premium Framer Motion global scroll reveal (Robust dynamic version)
+  // Ultra-Smooth 60FPS/120FPS GPU Native Scroll Reveal Observer
   useEffect(() => {
     if (isLoading) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const type = el.getAttribute('data-aos');
-          const delayAttr = el.getAttribute('data-aos-delay');
-          const delayMs = delayAttr ? parseInt(delayAttr, 10) / 1000 : 0;
-          
-          // Premium Apple-like ease-out (fast start, smooth deceleration). Slowed down for a more majestic feel.
-          const options = { duration: 1.2, delay: delayMs * 1.5, ease: [0.22, 1, 0.36, 1] };
-          
-          // Execute Premium Framer Motion directly on the DOM nodes
-          if (type === 'fade-up') animate(el, { opacity: [0, 1], y: [40, 0] }, options);
-          else if (type === 'fade-down') animate(el, { opacity: [0, 1], y: [-40, 0] }, options);
-          else if (type === 'fade-left') animate(el, { opacity: [0, 1], x: [40, 0] }, options);
-          else if (type === 'fade-right') animate(el, { opacity: [0, 1], x: [-40, 0] }, options);
-          else if (type === 'zoom-in') animate(el, { opacity: [0, 1], scale: [0.9, 1] }, options);
-          else animate(el, { opacity: [0, 1], y: [30, 0] }, options);
-          
-          observer.unobserve(el);
-          el.removeAttribute('data-aos'); // Prevent duplicate observing
-        }
-      });
-    }, { rootMargin: "0px 0px -50px 0px" });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const delayAttr = el.getAttribute('data-aos-delay');
+            if (delayAttr) {
+              const delayMs = parseInt(delayAttr, 10);
+              el.style.transitionDelay = `${delayMs}ms`;
+            }
+            el.classList.add('aos-animate');
+            observer.unobserve(el);
+          }
+        });
+      },
+      { rootMargin: '60px 0px 60px 0px' }
+    );
 
-    // Catch currently mounted elements
     const observeAll = () => {
-      document.querySelectorAll("[data-aos]").forEach(el => observer.observe(el));
+      document.querySelectorAll('[data-aos]').forEach((el) => observer.observe(el));
     };
-    observeAll();
 
-    // Catch dynamically mounted elements (e.g. from React Router or AnimatePresence)
-    const mutationObserver = new MutationObserver(() => {
-      observeAll();
-    });
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    const timer = setTimeout(observeAll, 50);
 
     return () => {
+      clearTimeout(timer);
       observer.disconnect();
-      mutationObserver.disconnect();
     };
   }, [isLoading, location.pathname]);
 
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-hidden font-sans">
+      
+      {/* Synthetic Theme Transition Loading Screen */}
+      <ThemeTransitionLoader />
 
       {/* Keyframe animatsiyalar */}
       <style>{`
@@ -111,9 +103,9 @@ export default function App() {
         }
       `}</style>
 
-      {/* Premium Loading Ekrani */}
+      {/* Premium Loading Ekrani (Har doim Dark Modeda) */}
       {isLoading && (
-        <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-white dark:bg-[#030712] overflow-hidden">
+        <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-[#030712] text-white overflow-hidden select-none">
 
           {/* Qizil tusdagi fon glow effektlari */}
           <div className="absolute inset-0 pointer-events-none">
@@ -140,16 +132,16 @@ export default function App() {
 
             {/* Nom (Muxamedov Feruz) */}
             <div className="flex flex-col items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-black tracking-wider text-red-600 dark:text-red-500">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-wider text-red-500 font-heading">
                 OPTIMUM
               </h1>
-              <p className="text-[11px] sm:text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-[0.3em] uppercase">
-                School of English
+              <p className="text-[11px] sm:text-xs font-semibold text-slate-400 tracking-[0.3em] uppercase">
+                {t('loader.school', 'School of English')}
               </p>
             </div>
 
             {/* Progress bar */}
-            <div className="w-48 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-2">
+            <div className="w-48 h-1 bg-slate-800 rounded-full overflow-hidden mt-2">
               <div
                 className="h-full w-1/3 bg-gradient-to-r from-red-500 via-rose-500 to-red-500 rounded-full"
                 style={{ animation: "loading-bar 1.2s ease-in-out infinite" }}
@@ -157,8 +149,8 @@ export default function App() {
             </div>
 
             {/* Yuklanmoqda matni */}
-            <p className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 tracking-widest uppercase flex items-center gap-1">
-              Yuklanmoqda
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase flex items-center gap-1">
+              {t('loader.loading', 'Yuklanmoqda')}
               <span className="flex gap-0.5">
                 <span className="w-1 h-1 bg-red-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
                 <span className="w-1 h-1 bg-red-500 rounded-full animate-bounce [animation-delay:-0.15s]" />

@@ -102,7 +102,7 @@ export default function Sec3() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center py-6 pt-[70px] lg:pt-[80px] px-3 sm:px-6 md:px-8 overflow-hidden transition-colors duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
+    <section className="relative pt-2 sm:pt-4 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
       {/* Orqa fondagi jozibali va sekin pulslanuvchi nurlar */}
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
@@ -114,10 +114,9 @@ export default function Sec3() {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-10 right-5 sm:right-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
       />
-
-      <div className="relative max-w-6xl mx-auto">
+      <div className="relative max-w-7xl mx-auto">
         <div data-aos="fade-up" className="text-center mb-3">
-          <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full shadow-inner">
+          <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
             {t('sec3.badge')}
           </span>
@@ -387,6 +386,6 @@ export default function Sec3() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </section>
   )
 }

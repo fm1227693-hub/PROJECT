@@ -37,16 +37,16 @@ export default function MobileShowcase() {
     }, [])
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6 select-none overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-20 select-none overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
             {/* Main Outer Card Container */}
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"
-                className="w-full glass-card bg-gradient-to-br from-[#0d1322] via-[#0b0e1b] to-[#070b14] dark:from-[#0d1322] dark:via-[#0b0e1b] dark:to-[#070b14] text-white rounded-[2.5rem] p-5 sm:p-8 lg:px-12 pt-6 sm:pt-10 lg:pt-12 pb-0 sm:pb-0 lg:pb-0 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 shadow-2xl border border-white/10 dark:border-white/10 hover:border-red-500/40 transition-all duration-500"
+                className="w-full glass-card text-white rounded-[2.5rem] p-5 sm:p-8 lg:px-12 pt-6 sm:pt-10 lg:pt-12 pb-0 sm:pb-0 lg:pb-0 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 transition-all duration-500"
             >
                 {/* Dynamic Lighting Backdrop */}
-                <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-gradient-to-br from-red-600/20 via-rose-500/10 to-transparent rounded-full blur-[130px] pointer-events-none" />
-                <div className="absolute -bottom-32 -left-32 w-[450px] h-[450px] bg-gradient-to-tr from-amber-500/15 via-red-500/10 to-transparent rounded-full blur-[130px] pointer-events-none" />
+                <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-gradient-to-br from-red-600/15 via-rose-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
+                <div className="absolute top-1/2 -left-32 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-red-600/10 via-amber-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
 
                 {/* Left Side: Headline, Subtitle, Pill Button */}
                 <div className="w-full lg:w-1/2 space-y-6 text-left relative z-10 self-center my-auto py-2 sm:py-6 lg:py-8">
@@ -72,10 +72,10 @@ export default function MobileShowcase() {
 
                 {/* Right Side: iPhone Mockup */}
                 <div className="w-full lg:w-1/2 flex justify-center items-end relative z-10 self-end pt-2 lg:pt-3 overflow-hidden">
-                    
+
                     {/* Thin Sleek iPhone Chassis */}
                     <div className="relative w-[310px] xs:w-[335px] sm:w-[365px] bg-[#141a29] border border-slate-700/80 rounded-t-[48px] rounded-b-none p-[4px] pb-0 shadow-[0_25px_60px_rgba(0,0,0,0.8)] select-none translate-y-5 sm:translate-y-6 lg:translate-y-7">
-                        
+
                         {/* Earpiece Speaker Slit on top frame rim */}
                         <div className="absolute top-[2px] left-1/2 -translate-x-1/2 w-12 h-[2px] bg-[#090d16] rounded-full z-50 opacity-90" />
 
@@ -109,14 +109,14 @@ export default function MobileShowcase() {
 
                             {/* UPPER FLOATING WHITE CARD */}
                             <div className="w-full bg-[#faf7f5] rounded-t-[42px] rounded-b-[36px] pt-2.5 px-3.5 pb-4 font-sans text-slate-900 relative">
-                                
+
                                 {/* Status Bar (Live Real-Time Uzbekistan HH:mm, Cellular Signal, Wi-Fi, Battery) */}
                                 <div className="flex items-center justify-between px-1.5 pt-0.5 pb-1 text-slate-900 font-sans">
                                     {/* Left: Live Real-Time Uzbekistan Clock */}
                                     <span className="font-extrabold text-[13px] tracking-tight pl-1 text-slate-900">
                                         {currentTime || '23:05'}
                                     </span>
-                                    
+
                                     {/* Right: Cellular Signal + Wi-Fi + Battery */}
                                     <div className="flex items-center gap-1.5 pr-1 text-slate-900">
                                         {/* 4 Ascending Cellular Signal Bars */}

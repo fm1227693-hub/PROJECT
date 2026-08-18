@@ -1,4 +1,11 @@
 {
+    "loader": {
+        "loading": "Yuklanmoqda",
+        "school": "School of English"
+    },
+    "themeLoader": {
+        "text": "Rejim almashtirilmoqda..."
+    },
     "Welcome to React": "React va react-i18nextga xush kelibsiz",
     "greating": "hammaga salom",
     "Bosh sahifa": "Bosh sahifa",

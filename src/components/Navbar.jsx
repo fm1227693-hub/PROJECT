@@ -31,14 +31,20 @@ export default function Navbar() {
     const langRef = useRef(null)
 
     const Theme = () => {
-        const nextState = !dark
-        isDark(nextState)
-        localStorage.setItem('theme', nextState)
-        if (nextState) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        // Trigger synthetic theme transition loading screen
+        window.dispatchEvent(new CustomEvent('trigger-theme-transition'));
+
+        // Flip theme mode cleanly behind the loading overlay
+        setTimeout(() => {
+            const nextState = !dark;
+            isDark(nextState);
+            localStorage.setItem('theme', nextState);
+            if (nextState) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }, 180);
     }
 
     useEffect(() => {

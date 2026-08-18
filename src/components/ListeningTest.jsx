@@ -65,7 +65,6 @@ export default function ListeningTest() {
     <div className="w-full">
       {/* Sticky Audio Player */}
       <AudioPlayer src="/audios/LISTENING1.mp3" title="Practice Test 1 Audio" />
-
       <div className="max-w-4xl mx-auto px-4">
         
         {submitted && (
