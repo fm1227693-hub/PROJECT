@@ -37,12 +37,12 @@ export default function MobileShowcase() {
     }, [])
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-20 select-none overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-[60px] select-none overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
             {/* Main Outer Card Container */}
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"
-                className="w-full glass-card text-white rounded-[2.5rem] p-5 sm:p-8 lg:px-12 pt-6 sm:pt-10 lg:pt-12 pb-0 sm:pb-0 lg:pb-0 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 transition-all duration-500"
+                className="w-full glass-card text-slate-900 dark:text-white rounded-[2.5rem] p-5 sm:p-8 lg:px-12 pt-6 sm:pt-10 lg:pt-12 pb-0 sm:pb-0 lg:pb-0 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 transition-all duration-500"
             >
                 {/* Dynamic Lighting Backdrop */}
                 <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-gradient-to-br from-red-600/15 via-rose-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
@@ -51,11 +51,11 @@ export default function MobileShowcase() {
                 {/* Left Side: Headline, Subtitle, Pill Button */}
                 <div className="w-full lg:w-1/2 space-y-6 text-left relative z-10 self-center my-auto py-2 sm:py-6 lg:py-8">
 
-                    <h2 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.12] font-heading">
+                    <h2 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.12] font-heading">
                         {t('mobileShowcase.n26Title', 'IELTS tayyorgarlik mutlaqo yangi bosqichda')}
                     </h2>
 
-                    <p className="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-xl">
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-xl">
                         {t('mobileShowcase.n26Subtitle', 'Shaxsiy platforma orqali Insholarni sun\'iy intellektda baholang, real CDI testlarini topshiring va natijalaringizni bir joyda kuzatib boring.')}
                     </p>
 
