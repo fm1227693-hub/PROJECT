@@ -200,20 +200,20 @@
   pointer-events-none: true;
 }
 
-/* Ultra-Fast 60FPS/120FPS GPU Native Scroll Reveal */
+/* Ultra-Fast 60FPS/120FPS GPU Native Scroll Reveal (Safe Immediate Visibility) */
 [data-aos] {
-  opacity: 0;
+  opacity: 1;
   transition-property: opacity, transform;
-  transition-duration: 0.55s;
+  transition-duration: 0.4s;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
-[data-aos="fade-up"] { transform: translate3d(0, 28px, 0); }
-[data-aos="fade-down"] { transform: translate3d(0, -28px, 0); }
-[data-aos="fade-left"] { transform: translate3d(28px, 0, 0); }
-[data-aos="fade-right"] { transform: translate3d(-28px, 0, 0); }
-[data-aos="zoom-in"] { transform: scale(0.94); }
+[data-aos="fade-up"]:not(.aos-animate) { transform: translate3d(0, 16px, 0); opacity: 0.85; }
+[data-aos="fade-down"]:not(.aos-animate) { transform: translate3d(0, -16px, 0); opacity: 0.85; }
+[data-aos="fade-left"]:not(.aos-animate) { transform: translate3d(16px, 0, 0); opacity: 0.85; }
+[data-aos="fade-right"]:not(.aos-animate) { transform: translate3d(-16px, 0, 0); opacity: 0.85; }
+[data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.97); opacity: 0.85; }
 
 [data-aos].aos-animate {
   opacity: 1;

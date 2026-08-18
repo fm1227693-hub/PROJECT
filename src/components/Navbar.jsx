@@ -233,8 +233,7 @@ export default function Navbar() {
                                         <Link
                                             to="/about"
                                             onClick={() => setAboutDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="0"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaInfoCircle className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.aboutUs', 'Biz haqimizda')}</span>
@@ -242,8 +241,7 @@ export default function Navbar() {
                                         <Link
                                             to="/mentor-stats"
                                             onClick={() => setAboutDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="100"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaChalkboardTeacher className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.mentors', 'Mentorlar')}</span>
@@ -251,8 +249,7 @@ export default function Navbar() {
                                         <Link
                                             to="/stats"
                                             onClick={() => setAboutDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="200"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaChartBar className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.statistic', 'Statistika')}</span>
@@ -289,8 +286,7 @@ export default function Navbar() {
                                         <Link
                                             to="/ielts-writing"
                                             onClick={() => setTestsDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="0"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.ieltsWriting', 'IELTS Writing')}</span>
@@ -299,8 +295,7 @@ export default function Navbar() {
                                         <Link
                                             to="/reading-tests"
                                             onClick={() => setTestsDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="200"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaBookOpen className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>IELTS Reading Tests</span>
@@ -308,8 +303,7 @@ export default function Navbar() {
                                         <Link
                                             to="/listening-tests"
                                             onClick={() => setTestsDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="250"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaMicrophone className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>IELTS Listening Tests</span>
@@ -317,8 +311,7 @@ export default function Navbar() {
                                         <Link
                                             to="/games"
                                             onClick={() => setTestsDropdownOpen(false)}
-                                            data-aos="fade-left" data-aos-delay="300"
-                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
                                             <FaGamepad className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>{t('navbar.games', "O'yinlar")}</span>

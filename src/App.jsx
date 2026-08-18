@@ -51,7 +51,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Ultra-Smooth 60FPS/120FPS GPU Native Scroll Reveal Observer
+  // Ultra-Smooth 60FPS/120FPS GPU Native Scroll Reveal Observer with Emergency Fallback
   useEffect(() => {
     if (isLoading) return;
 
@@ -70,17 +70,36 @@ export default function App() {
           }
         });
       },
-      { rootMargin: '60px 0px 60px 0px' }
+      { rootMargin: '100px 0px 100px 0px' }
     );
 
     const observeAll = () => {
-      document.querySelectorAll('[data-aos]').forEach((el) => observer.observe(el));
+      const elements = document.querySelectorAll('[data-aos]');
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        // Agar element ekranda bo'lsa yoki yaqin bo'lsa, darhol ko'rsatish
+        if (rect.top <= (window.innerHeight || document.documentElement.clientHeight) + 150) {
+          el.classList.add('aos-animate');
+        } else {
+          observer.observe(el);
+        }
+      });
     };
 
-    const timer = setTimeout(observeAll, 50);
+    const timer1 = setTimeout(observeAll, 30);
+    const timer2 = setTimeout(observeAll, 150);
+    
+    // Favqulodda holat xavfsizligi: Har qanday sharoitda 300ms dan keyin barcha elementlarni 100% ko'rsatish
+    const fallbackTimer = setTimeout(() => {
+      document.querySelectorAll('[data-aos]').forEach((el) => {
+        el.classList.add('aos-animate');
+      });
+    }, 300);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(fallbackTimer);
       observer.disconnect();
     };
   }, [isLoading, location.pathname]);
