@@ -94,15 +94,19 @@ export default function MobileShowcase() {
                         {/* Black OLED Screen Background */}
                         <div className="w-full h-full bg-black rounded-t-[36px] sm:rounded-t-[44px] rounded-b-none p-[2px] pb-0 relative overflow-hidden flex flex-col justify-between">
 
-                            {/* True Apple Dynamic Island Pill */}
-                            <div className="absolute top-2 sm:top-2.5 left-1/2 -translate-x-1/2 w-[90px] sm:w-[106px] h-[22px] sm:h-[28px] bg-black rounded-full z-40 flex items-center justify-between px-2 sm:px-2.5 border border-black shadow-sm">
-                                {/* Left FaceID Sensor Pill */}
-                                <div className="w-[30px] sm:w-[38px] h-[10px] sm:h-[13px] rounded-full bg-[#0c0c10] border border-[#14141a]" />
+                            {/* Authentic Apple Dynamic Island & Front Camera */}
+                            <div className="absolute top-2 sm:top-2.5 left-1/2 -translate-x-1/2 w-[82px] sm:w-[94px] h-[27px] sm:h-[32px] bg-black rounded-full z-40 flex items-center justify-between px-2.5 sm:px-3 border border-black shadow-md">
+                                {/* Left: Face ID Sensor */}
+                                <div className="w-[24px] sm:w-[28px] h-[9px] sm:h-[11px] rounded-full bg-[#050507] flex items-center justify-center">
+                                    <div className="w-[6px] sm:w-[7px] h-[6px] sm:h-[7px] rounded-full bg-[#020204]" />
+                                </div>
 
-                                {/* Right Camera Lens with Purple/Blue Glass Glare Ring */}
-                                <div className="w-[12px] sm:w-[15px] h-[12px] sm:h-[15px] rounded-full bg-[#08080c] border border-[#1a1d28] flex items-center justify-center relative">
-                                    <div className="w-[6px] sm:w-[8px] h-[6px] sm:h-[8px] rounded-full bg-[#182036] border border-[#273559] flex items-center justify-center">
-                                        <div className="w-[2px] sm:w-[2.5px] h-[2px] sm:h-[2.5px] rounded-full bg-[#3b82f6] opacity-90 shadow-[0_0_2px_#3b82f6]" />
+                                {/* Right: TrueDepth Camera Lens with authentic glass optics */}
+                                <div className="w-[12px] sm:w-[14px] h-[12px] sm:h-[14px] rounded-full bg-[#040406] ring-1 ring-white/10 flex items-center justify-center relative">
+                                    <div className="w-[7px] sm:w-[8.5px] h-[7px] sm:h-[8.5px] rounded-full bg-[#0f172a] border border-[#1e293b] flex items-center justify-center">
+                                        <div className="w-[3px] sm:w-[3.5px] h-[3px] sm:h-[3.5px] rounded-full bg-[#2563eb] shadow-[0_0_3px_#3b82f6] relative">
+                                            <div className="absolute top-[0.5px] right-[0.5px] w-[1px] h-[1px] bg-white rounded-full opacity-90" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -119,12 +123,12 @@ export default function MobileShowcase() {
 
                                     {/* Right: Cellular Signal + Wi-Fi + Battery */}
                                     <div className="flex items-center gap-1 sm:gap-1.5 pr-0.5 sm:pr-1 text-slate-900">
-                                        {/* 4 Ascending Cellular Signal Bars */}
+                                        {/* 4 Ascending Cellular Signal Bars (Tarmoq belgilari) */}
                                         <svg className="w-3.5 sm:w-4 h-2.5 sm:h-3 text-slate-900 shrink-0" viewBox="0 0 17 12" fill="currentColor">
-                                            <rect x="0" y="8" width="2.8" h="4" rx="0.8" />
-                                            <rect x="4.2" y="5.5" width="2.8" h="6.5" rx="0.8" />
-                                            <rect x="8.4" y="3" width="2.8" h="9" rx="0.8" />
-                                            <rect x="12.6" y="0" width="2.8" h="12" rx="0.8" />
+                                            <rect x="0" y="7.5" width="3" height="4.5" rx="0.8" />
+                                            <rect x="4.5" y="5" width="3" height="7" rx="0.8" />
+                                            <rect x="9" y="2.5" width="3" height="9.5" rx="0.8" />
+                                            <rect x="13.5" y="0" width="3" height="12" rx="0.8" />
                                         </svg>
 
                                         {/* Authentic Apple 3-Arc Wi-Fi Icon */}
