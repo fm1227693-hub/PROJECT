@@ -37,7 +37,7 @@ export default function MobileShowcase() {
     }, [])
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-[60px] select-none overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 p-20 select-none overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
             {/* Main Outer Card Container */}
             <div
                 data-aos="fade-up"
