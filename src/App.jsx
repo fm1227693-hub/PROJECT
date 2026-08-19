@@ -120,6 +120,12 @@ export default function App() {
           50% { transform: translateX(150%); }
           100% { transform: translateX(-100%); }
         }
+        body.mobile-menu-open .fab-button-container {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(0.8);
+        }
       `}</style>
 
       {/* Premium Loading Ekrani (Har doim Dark Modeda) */}
@@ -253,7 +259,7 @@ export default function App() {
 
       {/* Bottom Floating Quick Action Badges */}
 
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+      <div className="fab-button-container fixed bottom-6 right-6 z-50 flex items-center gap-3 transition-all duration-300">
         <a
           href="tel:+998910829979"
           className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full flex items-center justify-center shadow-2xl shadow-red-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer border-2 border-white/30 dark:border-slate-800 group"
