@@ -128,7 +128,7 @@ export default function Footer() {
 
                 {/* 4. Ish vaqti */}
                 <FooterSection title={t('footer.hoursTitle')} noBorder>
-                    <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 p-3 rounded-xl border border-gray-100 dark:border-gray-800 sm:bg-transparent sm:p-0 sm:border-none">
+                    <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 px-3 py-1 rounded-2xl sm:rounded-full border border-gray-100 dark:border-gray-800 w-fit">
                         <FaClock className="text-red-600 dark:text-red-400 shrink-0 text-sm" />
                         <div className="flex flex-col sm:flex-row sm:gap-3">
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
