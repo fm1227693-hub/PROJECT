@@ -42,7 +42,7 @@ export default function Home() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="max-w-7xl mt-22  mx-auto  sm:px-6 lg:px-8 select-none transition-colors duration-200 h-[calc(100vh-75px)] pt-[70px] lg:pt-[80px]  flex items-center justify-center relative overflow-hidden"
+            className="max-w-7xl  mx-auto  sm:px-6 lg:px-8 select-none transition-colors duration-200 min-h-[calc(100vh-75px)] py-[90px] lg:py-[100px]  flex items-center justify-center relative overflow-visible"
         >
             {/* Ambient Background Glows - Crimson Red Theme */}
             <div className="absolute  top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
@@ -52,7 +52,7 @@ export default function Home() {
             <div
                 data-aos="fade-down"
                 data-aos-duration="800"
-                className="w-full mb-37 flex flex-col lg:flex-row gap-8 lg:gap-14 items-center glass-card p-6 sm:p-9 lg:px-11 lg:py-10 rounded-[2.2rem] sm:rounded-[2.8rem] relative overflow-hidden transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)] max-h-full"
+                className="w-full pt-1 flex flex-col lg:flex-row gap-8 lg:gap-14 items-center glass-card p-6 sm:p-9 lg:px-11 lg:py-12 rounded-[2.2rem] sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
             >
                 {/* Left Resend-style Editorial Hero Content */}
                 <div
@@ -72,7 +72,7 @@ export default function Home() {
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(239,68,68,0.35)]">
                             {t('home.titleHighlight', 'CDI Mock & AI')}
                         </span>{' '}
-                        bilan yuqoriga ko'taring
+                        
                     </h1>
 
                     {/* Description */}
