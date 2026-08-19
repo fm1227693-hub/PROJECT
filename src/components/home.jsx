@@ -42,7 +42,7 @@ export default function Home() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="max-w-7xl mt-20  mx-auto  sm:px-6 lg:px-8 select-none transition-colors duration-200 h-[calc(100vh-75px)] py-[90px] lg:py-[100px]  flex items-center justify-center relative overflow-visible"
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 select-none transition-colors duration-200 pt-[80px] pb-8 lg:h-[calc(100vh-75px)] lg:py-[100px] flex items-center justify-center relative overflow-visible"
         >
             {/* Ambient Background Glows - Crimson Red Theme */}
             <div className="absolute  top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
@@ -52,81 +52,60 @@ export default function Home() {
             <div
                 data-aos="fade-down"
                 data-aos-duration="800"
-                className="w-full pt-1 flex flex-col lg:flex-row gap-8 lg:gap-14 items-center glass-card p-6 sm:p-9 lg:px-11 lg:py-12 rounded-[2.2rem] sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+                className="w-full flex flex-col lg:flex-row gap-6 lg:gap-14 items-center glass-card px-5 py-7 sm:p-9 lg:px-11 lg:py-12 rounded-2xl sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
             >
                 {/* Left Resend-style Editorial Hero Content */}
                 <div
                     data-aos="fade-right"
                     data-aos-duration="900"
-                    className="flex flex-col justify-center space-y-5 lg:space-y-6 lg:w-1/2 text-left relative z-10 w-full shrink-0 overflow-hidden"
+                    className="flex flex-col items-center lg:items-start justify-center space-y-4 lg:space-y-5 lg:w-1/2 text-center lg:text-left relative z-10 w-full"
                 >
                     {/* Top Pill Badge */}
-                    <div className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-gradient-to-r from-red-600/90 via-rose-600 to-red-700 text-white rounded-full text-xs font-extrabold w-fit shadow-md shadow-red-600/35 tracking-wider uppercase border border-red-400/30">
-                        <FaFire className="w-3.5 h-3.5 animate-bounce text-amber-300" />
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-red-600/90 via-rose-600 to-red-700 text-white rounded-full text-[10px] sm:text-xs font-extrabold w-fit shadow-md shadow-red-600/35 tracking-wider uppercase border border-red-400/30">
+                        <FaFire className="w-3 h-3 animate-bounce text-amber-300" />
                         <span>{t('home.badge', 'OPTIMUM SCHOOL OF ENGLISH')}</span>
                     </div>
 
                     {/* Headline */}
-                    <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.12] font-heading lg:h-[165px] lg:overflow-hidden flex flex-col justify-start">
+                    <h1 className="text-[1.85rem] sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading lg:h-[165px] lg:overflow-hidden">
                         {t('home.titlePrefix', 'IELTS natijangizni')}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(239,68,68,0.35)]">
                             {t('home.titleHighlight', 'CDI Mock & AI')}
                         </span>
-                        
                     </h1>
 
                     {/* Description */}
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-xl lg:h-[72px] lg:overflow-hidden">
+                    <p className="text-sm text-gray-600 dark:text-gray-300 font-medium leading-relaxed lg:h-[72px] lg:overflow-hidden">
                         {t('home.description', 'Optimum o‘quv platformasi barcha darajadagi o‘quvchilar uchun CDI simulatori va AI tahlillari orqali 7.5+ Band natijalarini ta’minlaydi.')}
                     </p>
 
-                    {/* Action Buttons with Vibrant Red Shadows */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4 pb-2 w-full">
                         <Link
                             to="/form"
-                            className="relative group px-7 py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-[0_10px_35px_rgba(220,38,38,0.45)] hover:shadow-[0_15px_45px_rgba(220,38,38,0.65)] transition-all duration-300 flex items-center justify-center gap-3 text-xs sm:text-sm cursor-pointer hover:-translate-y-0.5 active:scale-95 overflow-hidden text-center border border-red-400/40"
+                            className="relative group w-full sm:w-auto px-10 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.4)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.6)] transition-all duration-300 flex items-center justify-center gap-2.5 text-[15px] cursor-pointer hover:-translate-y-1 active:scale-95 overflow-hidden border border-red-400/40"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
-                            <span className="relative z-10">{t('home.enrollBtn', 'Bepul sinov darsi')}</span>
-                            <FaArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1.5 transition-transform shrink-0" />
+                            <span className="relative z-10 whitespace-nowrap">{t('home.enrollBtn', 'Bepul sinov darsi')}</span>
+                            <FaArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform shrink-0" />
                         </Link>
                         
                         <Link
                             to="/about"
-                            className="px-7 py-4 bg-slate-900/80 hover:bg-slate-800 text-white font-extrabold rounded-2xl border border-red-500/30 hover:border-red-500/60 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(239,68,68,0.25)] transition-all duration-300 text-xs sm:text-sm text-center cursor-pointer hover:-translate-y-0.5 active:scale-95 backdrop-blur-md"
+                            className="w-full sm:w-auto px-10 py-3.5 bg-slate-900/60 hover:bg-slate-800 text-white font-bold rounded-2xl border border-gray-700 hover:border-red-500/50 shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-300 text-[15px] text-center cursor-pointer hover:-translate-y-1 active:scale-95 backdrop-blur-md flex items-center justify-center whitespace-nowrap"
                         >
                             {t('home.moreInfoBtn', "Batafsil ma'lumot")}
                         </Link>
                     </div>
 
-                    {/* Verified Trust Stats Badges */}
-                    <div className="pt-4 flex flex-wrap items-center gap-5 sm:gap-6 text-xs text-gray-400 font-semibold border-t border-gray-800/80">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-6.5 h-6.5 rounded-lg bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-500 shrink-0">
-                                <FaUsers className="w-3.5 h-3.5" />
-                            </div>
-                            <span className="text-gray-300 font-bold">10,000+ Bitiruvchi</span>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-6.5 h-6.5 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 shrink-0">
-                                <FaStar className="w-3.5 h-3.5" />
-                            </div>
-                            <span className="text-gray-300 font-bold">4.9 / 5.0 Natija</span>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-6.5 h-6.5 rounded-lg bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-400 shrink-0">
-                                <FaGraduationCap className="w-3.5 h-3.5" />
-                            </div>
-                            <span className="text-gray-300 font-bold">CDI Real Exam Test</span>
-                        </div>
-                    </div>
+
                 </div>
 
-                {/* Right General Optimum IELTS Platform 3D Glass Deck Visual */}
+                {/* Right — Desktop only */}
                 <div
                     data-aos="fade-left"
                     data-aos-duration="900"
-                    className="w-full lg:w-1/2 flex justify-center items-center py-2 relative z-10 cyber-deck-scene"
+                    className="hidden lg:flex w-full lg:w-1/2 justify-center items-center py-2 relative z-10 cyber-deck-scene"
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                 >

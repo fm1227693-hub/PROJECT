@@ -74,7 +74,7 @@ export default function MobileShowcase() {
                 <div className="w-full lg:w-1/2 flex justify-center items-end relative z-10 self-end pt-4 lg:pt-3 overflow-hidden">
 
                     {/* Thin Sleek iPhone Chassis */}
-                    <div className="relative w-[285px] sm:w-[365px] max-w-full bg-[#141a29] border border-slate-700/80 rounded-t-[40px] sm:rounded-t-[48px] rounded-b-none p-[3px] sm:p-[4px] pb-0 shadow-[0_25px_60px_rgba(0,0,0,0.8)] select-none translate-y-3 sm:translate-y-6 lg:translate-y-7">
+                    <div className="relative w-[285px] sm:w-[365px] max-w-full bg-[#141a29] border border-slate-700/80 rounded-t-[40px] sm:rounded-t-[48px] rounded-b-none p-[3px] sm:p-[4px] pb-0 shadow-[0_25px_60px_rgba(0,0,0,0.8)] select-none translate-y-5 sm:translate-y-8 lg:translate-y-10">
 
                         {/* Earpiece Speaker Slit on top frame rim */}
                         <div className="absolute top-[2px] left-1/2 -translate-x-1/2 w-10 sm:w-12 h-[2px] bg-[#090d16] rounded-full z-50 opacity-90" />
@@ -112,7 +112,7 @@ export default function MobileShowcase() {
                             </div>
 
                             {/* UPPER FLOATING WHITE CARD */}
-                            <div className="w-full bg-[#faf7f5] rounded-t-[34px] sm:rounded-t-[42px] rounded-b-[28px] sm:rounded-b-[36px] pt-2 sm:pt-2.5 px-2.5 sm:px-3.5 pb-3 sm:pb-4 font-sans text-slate-900 relative">
+                            <div className="w-full bg-[#faf7f5] rounded-t-[34px] sm:rounded-t-[42px] rounded-b-[28px] sm:rounded-b-[36px] pt-2 sm:pt-2.5 px-2.5 sm:px-3.5 pb-2 sm:pb-3 font-sans text-slate-900 relative">
 
                                 {/* Status Bar (Live Real-Time Uzbekistan HH:mm, Cellular Signal, Wi-Fi, Battery) */}
                                 <div className="flex items-center justify-between px-1 sm:px-1.5 pt-0.5 pb-1 text-slate-900 font-sans">
@@ -180,7 +180,7 @@ export default function MobileShowcase() {
                                 </div>
 
                                 {/* Main Account Card -> Ruhillo Asrorov IELTS Score & Experience */}
-                                <div className="mt-1.5 sm:mt-2 bg-gradient-to-br from-[#f3eae8] to-[#eee2e0] p-3 sm:p-4 rounded-[20px] sm:rounded-[26px] border border-red-500/20 text-slate-900 shadow-sm">
+                                <div className="mt-1 sm:mt-1.5 bg-gradient-to-br from-[#f3eae8] to-[#eee2e0] p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-red-500/20 text-slate-900 shadow-sm">
                                     <div className="flex items-center justify-between">
                                         <span className="text-[11px] sm:text-[13px] font-bold text-red-950">Ruhillo Asrorov</span>
                                     </div>
@@ -202,7 +202,7 @@ export default function MobileShowcase() {
                                 </div>
 
                                 {/* 4 Circular Red/Rose Brand Gradient Action Buttons */}
-                                <div className="grid grid-cols-4 gap-1 sm:gap-2 mt-3 sm:mt-4 mb-1 text-center px-0.5">
+                                <div className="grid grid-cols-4 gap-1 sm:gap-2 mt-2 sm:mt-3 mb-0.5 text-center px-0.5">
                                     <div className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer">
                                         <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-105 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
                                             <FaAward className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
@@ -241,10 +241,10 @@ export default function MobileShowcase() {
                             </div>
 
                             {/* BLACK OLED SEPARATOR GAP */}
-                            <div className="h-2 sm:h-2.5 bg-black w-full shrink-0" />
+                            <div className="h-1.5 sm:h-2 bg-black w-full shrink-0" />
 
                             {/* LOWER FLOATING WHITE CARD */}
-                            <div className="w-full bg-[#faf7f5] rounded-t-[28px] sm:rounded-t-[36px] rounded-b-none p-3 sm:p-4 pt-3 sm:pt-3.5 shadow-sm flex flex-col justify-between flex-1 pb-3 sm:pb-4">
+                            <div className="w-full bg-[#faf7f5] rounded-t-[28px] sm:rounded-t-[36px] rounded-b-none p-2.5 sm:p-3 pt-2.5 sm:pt-3 shadow-sm flex flex-col justify-between flex-1 pb-2 sm:pb-3">
                                 <div className="flex items-center justify-between mb-2 sm:mb-3 px-0.5 sm:px-1">
                                     <h4 className="text-[14px] sm:text-[16px] font-black text-slate-900">
                                         {t('mobileShowcase.studentsTitle', "O'quvchilar Natijalari")}
@@ -282,7 +282,7 @@ export default function MobileShowcase() {
                                 </div>
 
                                 {/* 2 Mentor Students */}
-                                <div className="space-y-2.5 sm:space-y-3.5 overflow-y-auto max-h-[120px] sm:max-h-[140px] scrollbar-none px-0.5 sm:px-1">
+                                <div className="space-y-1.5 sm:space-y-2 overflow-y-auto max-h-[105px] sm:max-h-[120px] scrollbar-none px-0.5 sm:px-1">
                                     {/* Student 1: Javohir Munirov - Band 7.5 */}
                                     <div className="flex items-center justify-between py-0.5 sm:py-1">
                                         <div className="flex items-center gap-2 sm:gap-3">
