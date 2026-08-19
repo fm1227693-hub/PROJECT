@@ -42,7 +42,7 @@ export default function Home() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 select-none transition-colors duration-200 pt-[80px] pb-8 lg:h-[calc(100vh-75px)] lg:py-[100px] flex items-center justify-center relative overflow-visible"
+            className="w-full mx-auto px-4 sm:px-6 lg:px-8 select-none transition-colors duration-200 pt-[80px] pb-8 min-h-screen flex items-center justify-center relative overflow-visible"
         >
             {/* Ambient Background Glows - Crimson Red Theme */}
             <div className="absolute  top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
@@ -52,7 +52,7 @@ export default function Home() {
             <div
                 data-aos="fade-down"
                 data-aos-duration="800"
-                className="w-full flex flex-col lg:flex-row gap-6 lg:gap-14 items-center glass-card px-5 py-7 sm:p-9 lg:px-11 lg:py-12 rounded-2xl sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+                className="w-full min-h-[80vh] flex flex-col lg:flex-row gap-6 lg:gap-14 items-center justify-between glass-card px-5 py-7 sm:p-9 lg:px-11 lg:py-12 rounded-2xl sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
             >
                 {/* Left Resend-style Editorial Hero Content */}
                 <div
