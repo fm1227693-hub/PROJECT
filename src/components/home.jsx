@@ -42,7 +42,7 @@ export default function Home() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="max-w-7xl  mx-auto  sm:px-6 lg:px-8 select-none transition-colors duration-200 min-h-[calc(100vh-75px)] py-[90px] lg:py-[100px]  flex items-center justify-center relative overflow-visible"
+            className="max-w-7xl mt-20  mx-auto  sm:px-6 lg:px-8 select-none transition-colors duration-200 h-[calc(100vh-75px)] py-[90px] lg:py-[100px]  flex items-center justify-center relative overflow-visible"
         >
             {/* Ambient Background Glows - Crimson Red Theme */}
             <div className="absolute  top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
@@ -58,7 +58,7 @@ export default function Home() {
                 <div
                     data-aos="fade-right"
                     data-aos-duration="900"
-                    className="flex flex-col justify-center space-y-5 lg:space-y-6 lg:w-1/2 text-left relative z-10 w-full"
+                    className="flex flex-col justify-center space-y-5 lg:space-y-6 lg:w-1/2 text-left relative z-10 w-full shrink-0 overflow-hidden"
                 >
                     {/* Top Pill Badge */}
                     <div className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-gradient-to-r from-red-600/90 via-rose-600 to-red-700 text-white rounded-full text-xs font-extrabold w-fit shadow-md shadow-red-600/35 tracking-wider uppercase border border-red-400/30">
@@ -67,16 +67,16 @@ export default function Home() {
                     </div>
 
                     {/* Headline */}
-                    <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.12] font-heading">
+                    <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.12] font-heading lg:h-[165px] lg:overflow-hidden flex flex-col justify-start">
                         {t('home.titlePrefix', 'IELTS natijangizni')}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(239,68,68,0.35)]">
                             {t('home.titleHighlight', 'CDI Mock & AI')}
-                        </span>{' '}
+                        </span>
                         
                     </h1>
 
                     {/* Description */}
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-xl">
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-xl lg:h-[72px] lg:overflow-hidden">
                         {t('home.description', 'Optimum o‘quv platformasi barcha darajadagi o‘quvchilar uchun CDI simulatori va AI tahlillari orqali 7.5+ Band natijalarini ta’minlaydi.')}
                     </p>
 
