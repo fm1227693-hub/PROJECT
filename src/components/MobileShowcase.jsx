@@ -42,7 +42,7 @@ export default function MobileShowcase() {
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"
-                className="w-full glass-card text-slate-900 dark:text-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-8 lg:px-12 pt-6 sm:pt-10 lg:pt-12 pb-0 sm:pb-0 lg:pb-0 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 transition-all duration-500"
+                className="w-full glass-card text-slate-900 dark:text-white rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-8 lg:px-12 pt-6 sm:pt-10 lg:pt-12 pb-0 sm:pb-0 lg:pb-0 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-6 lg:gap-12 transition-all duration-500"
             >
                 {/* Dynamic Lighting Backdrop */}
                 <div className="absolute -top-32 -right-32 w-[450px] h-[450px] bg-gradient-to-br from-red-600/15 via-rose-500/5 to-transparent rounded-full blur-[140px] pointer-events-none" />
@@ -71,7 +71,7 @@ export default function MobileShowcase() {
                 </div>
 
                 {/* Right Side: iPhone Mockup */}
-                <div className="w-full lg:w-1/2 flex justify-center items-end relative z-10 self-end pt-4 lg:pt-3 overflow-hidden">
+                <div className="w-full lg:w-1/2 flex justify-center items-end relative z-10 self-end pt-0 sm:pt-4 lg:pt-3 overflow-hidden">
 
                     {/* Thin Sleek iPhone Chassis */}
                     <div className="relative w-[285px] sm:w-[365px] max-w-full bg-[#141a29] border border-slate-700/80 rounded-t-[40px] sm:rounded-t-[48px] rounded-b-none p-[3px] sm:p-[4px] pb-0 shadow-[0_25px_60px_rgba(0,0,0,0.8)] select-none translate-y-5 sm:translate-y-8 lg:translate-y-10">

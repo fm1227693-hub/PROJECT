@@ -133,7 +133,7 @@ export default function Sec3() {
         <div
           data-aos="fade-up"
           data-aos-delay="150"
-          className="flex items-center justify-start md:justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 scrollbar-none px-2"
+          className="flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 scrollbar-none px-2"
         >
           {teachers.map((teacher) => {
             const isActive = currentTeacher.id === teacher.id
