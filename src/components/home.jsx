@@ -42,7 +42,7 @@ export default function Home() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="w-full mx-auto px-4 sm:px-6 lg:px-8 select-none transition-colors duration-200 pt-[80px] pb-8 min-h-screen flex items-center justify-center relative overflow-visible"
+            className="w-full mx-auto px-4 sm:px-6 lg:px-8 select-none transition-colors duration-200 pt-[105px] pb-8 min-h-screen flex items-center justify-center relative overflow-visible"
         >
             {/* Ambient Background Glows - Crimson Red Theme */}
             <div className="absolute  top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
@@ -67,7 +67,7 @@ export default function Home() {
                     </div>
 
                     {/* Headline */}
-                    <h1 className="text-[1.85rem] sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading lg:h-[165px] lg:overflow-hidden">
+                    <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading">
                         {t('home.titlePrefix', 'IELTS natijangizni')}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(239,68,68,0.35)]">
                             {t('home.titleHighlight', 'CDI Mock & AI')}
@@ -75,7 +75,7 @@ export default function Home() {
                     </h1>
 
                     {/* Description */}
-                    <p className="text-sm text-gray-600 dark:text-gray-300 font-medium leading-relaxed lg:h-[72px] lg:overflow-hidden">
+                    <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-2xl">
                         {t('home.description', 'Optimum o‘quv platformasi barcha darajadagi o‘quvchilar uchun CDI simulatori va AI tahlillari orqali 7.5+ Band natijalarini ta’minlaydi.')}
                     </p>
 
