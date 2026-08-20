@@ -109,10 +109,11 @@ export default function Home() {
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <div 
-                        className="relative w-full max-w-[410px] lg:max-w-[440px] cyber-deck-wrapper transition-transform duration-200 ease-out py-3"
-                        style={{ transform: transformStyle }}
-                    >
+                    <div className="transform scale-[1.05] xl:scale-110 2xl:scale-[1.15] w-full flex justify-center" style={{ backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                        <div 
+                            className="relative w-full max-w-[410px] lg:max-w-[440px] cyber-deck-wrapper transition-transform duration-200 ease-out py-3"
+                            style={{ transform: transformStyle }}
+                        >
                         {/* Main General Optimum IELTS Platform Card */}
                         <div className="neon-glass-card p-5 sm:p-7 rounded-2xl sm:rounded-3xl relative overflow-hidden">
                             {/* Glowing Red Top Border Highlight */}
@@ -144,31 +145,31 @@ export default function Home() {
                             <div className="space-y-4 pt-4">
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-300 flex items-center gap-1.5"><FaHeadphones className="text-red-400" /> Listening Practice</span>
-                                        <span className="text-red-400 font-black">Band 8.5 Avg</span>
+                                        <span className="text-gray-300 flex items-center gap-1.5"><FaLayerGroup className="text-red-400" /> Extensive Practice Library</span>
+                                        <span className="text-red-400 font-black">100+ Mock Tests</span>
                                     </div>
                                     <div className="w-full h-2.5 bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-800">
-                                        <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full w-[92%] shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
+                                        <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full w-[96%] shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-300 flex items-center gap-1.5"><FaLaptopCode className="text-rose-400" /> Reading CDI Layout</span>
-                                        <span className="text-rose-400 font-bold">Band 8.0 Avg</span>
+                                        <span className="text-gray-300 flex items-center gap-1.5"><FaLaptopCode className="text-rose-400" /> Full CDI Simulation</span>
+                                        <span className="text-rose-400 font-bold">Authentic Exam UI</span>
                                     </div>
                                     <div className="w-full h-2.5 bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-800">
-                                        <div className="h-full bg-gradient-to-r from-rose-500 to-red-500 rounded-full w-[88%] shadow-[0_0_10px_rgba(244,63,94,0.8)]"></div>
+                                        <div className="h-full bg-gradient-to-r from-rose-500 to-red-500 rounded-full w-[98%] shadow-[0_0_10px_rgba(244,63,94,0.8)]"></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-300 flex items-center gap-1.5"><FaRobot className="text-amber-400" /> AI Writing & Speaking</span>
-                                        <span className="text-amber-400 font-bold">Instant Evaluation</span>
+                                        <span className="text-gray-300 flex items-center gap-1.5"><FaChartLine className="text-amber-400" /> Detailed Analytics</span>
+                                        <span className="text-amber-400 font-bold">Track Your Progress</span>
                                     </div>
                                     <div className="w-full h-2.5 bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-800">
-                                        <div className="h-full bg-gradient-to-r from-red-500 to-amber-500 rounded-full w-[85%] shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
+                                        <div className="h-full bg-gradient-to-r from-red-500 to-amber-500 rounded-full w-[94%] shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
                                     </div>
                                 </div>
                             </div>
@@ -199,6 +200,7 @@ export default function Home() {
                                     10,000+ Learners <span className="text-emerald-400">Band 7.5+</span>
                                 </p>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

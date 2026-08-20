@@ -221,7 +221,7 @@ export default function App() {
 
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <div className="relative z-10">
-        <Navbar />
+        {location.pathname !== '/enter' && <Navbar />}
         <ScrollToTop />
         <AnimatePresence mode="wait">
           <motion.div

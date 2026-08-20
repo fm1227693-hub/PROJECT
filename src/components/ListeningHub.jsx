@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaHeadphones, FaChevronRight } from "react-icons/fa";
+import { FaHeadphones, FaChevronRight, FaPlay } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import ListeningTest from "./ListeningTest";
 import ListeningTest2 from "./ListeningTest2";
@@ -20,49 +20,95 @@ const tests = [
 
 export default function ListeningHub() {
   const { t } = useTranslation();
-  const [activeTest, setActiveTest] = useState(tests[0]);
+  const [activeTest, setActiveTest] = useState(null);
+
+  const testDescriptions = [
+    t('listeningHub.desc1', "General & Academic Listening practice"),
+    t('listeningHub.desc2', "Focus on daily life and social contexts"),
+    t('listeningHub.desc3', "Educational and training contexts"),
+    t('listeningHub.desc4', "Academic discussions and lectures"),
+    t('listeningHub.desc5', "Mixed contexts with varying accents"),
+    t('listeningHub.desc6', "Comprehensive full-length exam"),
+  ];
 
   return (
     <div className="min-h-screen pt-28 pb-12 font-['Plus_Jakarta_Sans',sans-serif] flex flex-col gap-6 w-full text-slate-800 dark:text-slate-200">
       
-      {/* Top Navigation Tabs */}
-      <div className="w-full flex justify-center px-4">
-        <div className="w-full max-w-[1000px] flex bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-x-auto hide-scrollbar">
-          {tests.map((test) => (
-            <button
-              key={test.id}
-              onClick={() => {
-                  setActiveTest(test);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className={`flex-1 flex justify-center items-center gap-2 px-4 py-2.5 rounded-xl transition-all font-bold text-sm min-w-[140px] ${
-                activeTest.id === test.id
-                  ? "bg-red-600 text-white shadow-md shadow-red-500/30"
-                  : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50"
-              }`}
-            >
-              <FaHeadphones className={activeTest.id === test.id ? "text-white" : "text-red-500"} />
-              <span className="whitespace-nowrap">{t(`listeningHub.test${test.id}`)}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      {!activeTest ? (
+        <div className="w-full max-w-5xl mx-auto px-4 lg:px-8">
+            <div className="text-center mb-10">
+                <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-3">
+                    {t('listeningHub.title', "Listening Practice Tests")}
+                </h1>
+                <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">
+                    {t('listeningHub.subtitle', "Choose a test below to start your IELTS Listening practice.")}
+                </p>
+            </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 min-w-0 bg-transparent">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTest.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-            className="w-full"
-          >
-            {activeTest.component}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tests.map((test, idx) => (
+                    <motion.div
+                        key={test.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="bg-transparent rounded-3xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col h-full backdrop-blur-sm hover:bg-white/30 dark:hover:bg-slate-800/30"
+                    >
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-500/20 text-red-600 flex items-center justify-center text-xl">
+                                <FaHeadphones />
+                            </div>
+                            <span className="text-xs font-bold px-3 py-1 bg-slate-200/50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 rounded-full">
+                                60 {t('listeningHub.min', "Мин")}
+                            </span>
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
+                            {t(`listeningHub.test${test.id}`, test.title)}
+                        </h3>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm mb-8 flex-1">
+                            {testDescriptions[idx]}
+                        </p>
+
+                        <button
+                            onClick={() => {
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                                setActiveTest(test);
+                            }}
+                            className="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors group-hover:shadow-lg group-hover:shadow-red-600/30"
+                        >
+                            {t('listeningHub.startBtn', "Начать Тест")} <FaPlay className="text-xs" />
+                        </button>
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+      ) : (
+        <div className="w-full">
+            <div className="max-w-7xl mx-auto px-4 w-full mb-6 flex justify-start">
+                <button 
+                    onClick={() => setActiveTest(null)}
+                    className="inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 px-5 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm active:scale-95 group"
+                >
+                    <FaChevronRight className="rotate-180 text-red-500 transition-transform group-hover:-translate-x-1" />
+                    {t('listeningHub.backBtn', "Back to Tests")}
+                </button>
+            </div>
+            <div className="flex-1 min-w-0 bg-transparent">
+                <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeTest.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full"
+                >
+                    {activeTest.component}
+                </motion.div>
+                </AnimatePresence>
+            </div>
+        </div>
+      )}
 
     </div>
   );
