@@ -783,12 +783,27 @@
         "test3": "Practice Test 3",
         "test4": "Practice Test 4",
         "test5": "Practice Test 5",
-        "test6": "Practice Test 6"
+        "test6": "Practice Test 6",
+        "title": "Listening Practice Tests",
+        "subtitle": "Choose a test below to start your IELTS Listening practice.",
+        "desc1": "General & Academic Listening practice",
+        "desc2": "Focus on daily life and social contexts",
+        "desc3": "Educational and training contexts",
+        "desc4": "Academic discussions and lectures",
+        "desc5": "Mixed contexts with varying accents",
+        "desc6": "Comprehensive full-length exam",
+        "min": "Min",
+        "startBtn": "Start Test",
+        "backBtn": "Back to Tests"
     },
     "listeningTest": {
         "checkAnswers": "Check Answers",
         "retakeTest": "Retake Test",
-        "score": "Your Score:"
+        "score": "Your Score:",
+        "confirmExit": "Are you sure you want to exit?",
+        "confirmRestart": "Are you sure you want to restart?",
+        "yes": "Yes",
+        "no": "No"
     },
     "mobileShowcase": {
         "n26Title": "IELTS Preparation at a Whole New Level",

@@ -828,12 +828,27 @@
         "test3": "Amaliy Test 3",
         "test4": "Amaliy Test 4",
         "test5": "Amaliy Test 5",
-        "test6": "Amaliy Test 6"
+        "test6": "Amaliy Test 6",
+        "title": "Tinglab Tushunish Testlari",
+        "subtitle": "IELTS Listening amaliyotini boshlash uchun quyida testni tanlang.",
+        "desc1": "General & Academic Listening amaliyoti",
+        "desc2": "Kundalik hayot va ijtimoiy mavzularga e'tibor",
+        "desc3": "Ta'lim va mashg'ulot mavzulari",
+        "desc4": "Akademik munozaralar va leksiyalar",
+        "desc5": "Turli xil aksentlar qorishmasi",
+        "desc6": "To'liq metrajli kompleks imtihon",
+        "min": "Min",
+        "startBtn": "Testni Boshlash",
+        "backBtn": "Testlarga Qaytish"
     },
     "listeningTest": {
         "checkAnswers": "Javoblarni Tekshirish",
         "retakeTest": "Qayta Topshirish",
-        "score": "Sizning Natijangiz:"
+        "score": "Sizning Natijangiz:",
+        "confirmExit": "Haqiqatan ham chiqishni xohlaysizmi?",
+        "confirmRestart": "Haqiqatan ham qayta boshlashni xohlaysizmi?",
+        "yes": "Ha",
+        "no": "Yo'q"
     },
     "mobileShowcase": {
         "n26Title": "IELTS tayyorgarlik mutlaqo yangi bosqichda",

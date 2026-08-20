@@ -1,33 +1,28 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { listeningTest4Answers as answerKey4 } from "../data/listeningTest4";
-import AudioPlayer from "./AudioPlayer";
+import { listeningTest4Answers as answerKey } from "../data/listeningTest4";
+import CdiListeningLayout from "./CdiListeningLayout";
 
-export default function ListeningTest4() {
+export default function ListeningTest4({ onExit }) {
   const { t } = useTranslation();
   const [answers, setAnswers] = useState({});
+  const [score, setScore] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
+  const [showAnswers, setShowAnswers] = useState(false);
 
   const handleInputChange = (qNum, value) => {
     setAnswers((prev) => ({ ...prev, [qNum]: value }));
   };
 
-  const handleCheckboxChange = (qNum, option) => {
-    setAnswers((prev) => ({ ...prev, [qNum]: option }));
-  };
-
-  const calculateScore = () => {
-    let currentScore = 0;
+  const calculateScore = () => {let currentScore = 0;
     
     // Check all questions 1-40
     const regularQuestions = Array.from({ length: 40 }, (_, i) => i + 1);
     
     regularQuestions.forEach(i => {
       const userAnswer = (answers[i] || "").toLowerCase().trim();
-      const validAnswers = answerKey4[i] || [];
+      const validAnswers = answerKey[i] || [];
       if (validAnswers.includes(userAnswer)) {
         currentScore++;
       }
@@ -35,13 +30,13 @@ export default function ListeningTest4() {
 
     setScore(currentScore);
     setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
   };
 
   const getStatusClass = (qNum) => {
     if (!submitted) return "border-slate-300 dark:border-slate-600 focus:border-red-500";
     const userAnswer = (answers[qNum] || "").toLowerCase().trim();
-    const validAnswers = answerKey4[qNum] || [];
+    const validAnswers = answerKey[qNum] || [];
     if (validAnswers.includes(userAnswer)) {
       return "border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400";
     }
@@ -51,7 +46,7 @@ export default function ListeningTest4() {
   const renderFeedback = (qNum) => {
     if (!submitted) return null;
     const userAnswer = (answers[qNum] || "").toLowerCase().trim();
-    const validAnswers = answerKey4[qNum] || [];
+    const validAnswers = answerKey[qNum] || [];
     const isCorrect = validAnswers.includes(userAnswer);
     
     return (
@@ -59,45 +54,22 @@ export default function ListeningTest4() {
         {isCorrect ? (
           <FaCheckCircle className="text-green-500" />
         ) : (
-          <span className="flex items-center gap-2">
-            <FaTimesCircle className="text-red-500" />
-            <span className="text-xs text-green-600 dark:text-green-400 font-medium bg-green-100 dark:bg-green-900/40 px-2 py-0.5 rounded">
-              Answer: {validAnswers[0]}
-            </span>
-          </span>
+          <FaTimesCircle className="text-red-500" />
         )}
       </span>
     );
   };
 
-  return (
-    <div className="w-full">
-      {/* Sticky Audio Player */}
-      <AudioPlayer src="/audios/LISTENING4.mp3" title="Practice Test 4 Audio" />
-
-      <div className="max-w-4xl mx-auto px-4">
-        {submitted && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl mb-8 text-center border-2 border-red-500"
-          >
-            <h2 className="text-3xl font-bold mb-2">Your Score: {score} / 40</h2>
-            <p className="text-slate-500 dark:text-slate-400">
-              Review your answers below. Correct answers are highlighted in green.
-            </p>
-          </motion.div>
-        )}
-
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-          
-          {/* SECTION 1 */}
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 1</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 1–10</h3>
-            </div>
-
-            {/* Questions 1-10 */}
+  const parts = [
+    
+    {
+      id: 1,
+      title: "Part 1",
+      questions: "1-10",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 1-10 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 1–10<br/>Complete the form below.<br/>Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.</div>
               
@@ -184,16 +156,18 @@ export default function ListeningTest4() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* SECTION 2 */}
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/20">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 2</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 11–20</h3>
-            </div>
-
-            {/* Questions 11-14 */}
+</>
+        </div>
+      )
+    },
+    {
+      id: 2,
+      title: "Part 2",
+      questions: "11-20",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 11-14 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 11–14<br/>Choose the correct letter, A, B, or C.</div>
               
@@ -250,7 +224,7 @@ export default function ListeningTest4() {
                             name={`q${q.qNum}`} 
                             value={opt.val}
                             checked={answers[q.qNum] === opt.val}
-                            onChange={() => handleCheckboxChange(q.qNum, opt.val)}
+                            onChange={() => handleInputChange(q.qNum, opt.val)}
                             disabled={submitted}
                             className="w-4 h-4 text-red-600 focus:ring-red-500"
                           />
@@ -312,17 +286,18 @@ export default function ListeningTest4() {
                 </tbody>
               </table>
             </div>
-
-          </div>
-
-          {/* SECTION 3 */}
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 3</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 21–30</h3>
-            </div>
-
-            {/* Questions 21-23 */}
+</>
+        </div>
+      )
+    },
+    {
+      id: 3,
+      title: "Part 3",
+      questions: "21-30",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 21-23 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 21–23<br/>Complete the information below.<br/>Write NO MORE THAN TWO WORDS for each answer.</div>
               
@@ -419,7 +394,7 @@ export default function ListeningTest4() {
                             name={`q${q.qNum}`} 
                             value={opt.val}
                             checked={answers[q.qNum] === opt.val}
-                            onChange={() => handleCheckboxChange(q.qNum, opt.val)}
+                            onChange={() => handleInputChange(q.qNum, opt.val)}
                             disabled={submitted}
                             className="w-4 h-4 text-red-600 focus:ring-red-500"
                           />
@@ -431,17 +406,18 @@ export default function ListeningTest4() {
                 ))}
               </div>
             </div>
-            
-          </div>
-
-          {/* SECTION 4 */}
-          <div className="p-6 sm:p-10 bg-slate-50 dark:bg-slate-900/20">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 4</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 31–40</h3>
-            </div>
-
-            {/* Questions 31-35 */}
+</>
+        </div>
+      )
+    },
+    {
+      id: 4,
+      title: "Part 4",
+      questions: "31-40",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 31-35 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 31–35<br/>Complete the chart with information about the black bear.<br/>Write NO MORE THAN TWO WORDS for each answer.</div>
               
@@ -506,38 +482,32 @@ export default function ListeningTest4() {
                   </div>
                 ))}
               </div>
-            </div>
-            
-          </div>
 
+</div>
+</>
         </div>
+      )
+    }
+  ];
 
-        {/* Action Buttons */}
-        <div className="mt-8 mb-12 flex justify-center gap-4">
-          {!submitted ? (
-            <button 
-              onClick={calculateScore}
-              className="px-10 py-4 bg-red-600 hover:bg-red-700 text-white text-xl font-black rounded-full shadow-lg shadow-red-600/30 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-3"
-            >
-              <FaCheckCircle />
-              {t("listeningTest.checkAnswers", "Check Answers")}
-            </button>
-          ) : (
-            <button 
-              onClick={() => {
-                setAnswers({});
-                setSubmitted(false);
-                setScore(0);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="px-10 py-4 bg-slate-800 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 text-xl font-black rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95"
-            >
-              {t("listeningTest.retakeTest", "Retake Test")}
-            </button>
-          )}
-        </div>
-
-      </div>
-    </div>
+  return (
+    <CdiListeningLayout
+      testTitle="Practice Test 4"
+      audioSrc="/audios/LISTENING4.mp3"
+      parts={parts}
+      answers={answers}
+      answerKey={answerKey}
+      submitted={submitted}
+      score={score}
+      showAnswers={showAnswers}
+      setShowAnswers={setShowAnswers}
+      onClearAll={() => {
+        setAnswers({});
+        setSubmitted(false);
+        setScore(null);
+      }}
+      onSubmit={calculateScore}
+      onExit={onExit}
+    />
   );
 }

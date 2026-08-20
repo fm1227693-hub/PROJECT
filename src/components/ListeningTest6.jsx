@@ -1,74 +1,21 @@
-import React, { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { FaCheckCircle, FaTimesCircle, FaPlay, FaPause } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { listeningTest6Answers as answerKey6 } from "../data/listeningTest6";
+import { listeningTest6Answers as answerKey } from "../data/listeningTest6";
+import CdiListeningLayout from "./CdiListeningLayout";
 
-export default function ListeningTest6() {
+export default function ListeningTest6({ onExit }) {
   const { t } = useTranslation();
   const [answers, setAnswers] = useState({});
+  const [score, setScore] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
-
-  // Audio Player State
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
-
-  // Audio functions
-  const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleTimeUpdate = () => {
-    const current = audioRef.current.currentTime;
-    const total = audioRef.current.duration;
-    setCurrentTime(current);
-    setProgress((current / total) * 100);
-  };
-
-  const handleProgressChange = (e) => {
-    const newTime = (e.target.value / 100) * duration;
-    audioRef.current.currentTime = newTime;
-    setProgress(e.target.value);
-  };
-
-  const handleLoadedMetadata = () => {
-    setDuration(audioRef.current.duration);
-  };
-
-  const changeSpeed = (rate) => {
-    audioRef.current.playbackRate = rate;
-    setPlaybackRate(rate);
-    setShowSpeedMenu(false);
-  };
-
-  const formatTime = (time) => {
-    if (isNaN(time)) return "00:00";
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  };
+  const [showAnswers, setShowAnswers] = useState(false);
 
   const handleInputChange = (qNum, value) => {
-    setAnswers({ ...answers, [qNum]: value });
+    setAnswers((prev) => ({ ...prev, [qNum]: value }));
   };
 
-  const handleCheckboxChange = (qNum, option) => {
-    setAnswers({ ...answers, [qNum]: option });
-  };
-
-  const calculateScore = () => {
-    let currentScore = 0;
+  const calculateScore = () => {let currentScore = 0;
     
     // Arrays for special multi-answer logic
     const userAnswers11to15 = [
@@ -98,7 +45,7 @@ export default function ListeningTest6() {
     
     regularQuestions.forEach(i => {
       const userAnswer = (answers[i] || "").toLowerCase().trim();
-      const validAnswers = answerKey6[i] || [];
+      const validAnswers = answerKey[i] || [];
       
       // Special logic for 11-15 (any 5 of the correct options)
       if (i >= 11 && i <= 15) {
@@ -138,14 +85,13 @@ export default function ListeningTest6() {
 
     setScore(currentScore);
     setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
   };
 
   const getStatusClass = (qNum) => {
     if (!submitted) return "border-slate-300 dark:border-slate-600 focus:border-red-500";
     const userAnswer = (answers[qNum] || "").toLowerCase().trim();
-    const validAnswers = answerKey6[qNum] || [];
-    
+    const validAnswers = answerKey[qNum] || [];
     if (validAnswers.includes(userAnswer)) {
       return "border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400";
     }
@@ -155,7 +101,7 @@ export default function ListeningTest6() {
   const renderFeedback = (qNum) => {
     if (!submitted) return null;
     const userAnswer = (answers[qNum] || "").toLowerCase().trim();
-    const validAnswers = answerKey6[qNum] || [];
+    const validAnswers = answerKey[qNum] || [];
     const isCorrect = validAnswers.includes(userAnswer);
     
     return (
@@ -163,106 +109,22 @@ export default function ListeningTest6() {
         {isCorrect ? (
           <FaCheckCircle className="text-green-500" />
         ) : (
-          <span className="flex items-center gap-2">
-            <FaTimesCircle className="text-red-500" />
-            <span className="text-xs text-green-600 dark:text-green-400 font-medium bg-green-100 dark:bg-green-900/40 px-2 py-0.5 rounded">
-              Answer: {validAnswers[0].toUpperCase()}
-            </span>
-          </span>
+          <FaTimesCircle className="text-red-500" />
         )}
       </span>
     );
   };
 
-  return (
-    <div className="w-full">
-      {/* Sticky Audio Player */}
-      <div className="sticky top-[84px] z-40 max-w-[1000px] mx-auto bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200 dark:border-slate-700 shadow-sm mb-8 py-3 rounded-2xl">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="font-bold text-red-600 hidden md:block w-48 shrink-0">Practice Test 6 Audio</div>
-          
-          <audio 
-            ref={audioRef}
-            src="/audios/LISTENING6.mp3" 
-            onTimeUpdate={handleTimeUpdate}
-            onLoadedMetadata={handleLoadedMetadata}
-            onEnded={() => setIsPlaying(false)}
-          />
-
-          {/* Custom Audio UI */}
-          <div className="flex-1 w-full flex items-center gap-3 sm:gap-4">
-            <button 
-              onClick={togglePlay}
-              className="w-10 h-10 shrink-0 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-transform hover:scale-105"
-            >
-              {isPlaying ? <FaPause className="w-4 h-4" /> : <FaPlay className="w-4 h-4 ml-1" />}
-            </button>
-
-            <span className="text-xs font-mono font-medium opacity-70 shrink-0">{formatTime(currentTime)}</span>
-            
-            <input 
-              type="range" 
-              min="0" 
-              max="100" 
-              value={progress || 0}
-              onChange={handleProgressChange}
-              className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-red-600"
-            />
-            
-            <span className="text-xs font-mono font-medium opacity-70 shrink-0">{formatTime(duration)}</span>
-
-            {/* Speed Control */}
-            <div className="relative shrink-0">
-              <button 
-                onClick={() => setShowSpeedMenu(!showSpeedMenu)}
-                className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-300 dark:border-slate-600"
-              >
-                {playbackRate}x
-              </button>
-              
-              {showSpeedMenu && (
-                <div className="absolute right-0 top-full mt-2 w-20 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl overflow-hidden z-50">
-                  {[0.75, 1, 1.25, 1.5, 2].map((rate) => (
-                    <button
-                      key={rate}
-                      onClick={() => changeSpeed(rate)}
-                      className={`block w-full text-center px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${playbackRate === rate ? 'font-bold text-red-600 dark:text-red-400' : ''}`}
-                    >
-                      {rate}x
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4">
-        
-        {submitted && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl mb-8 text-center border-2 border-red-500"
-          >
-            <h2 className="text-3xl font-bold mb-2">Your Score: {score} / 40</h2>
-            <p className="text-slate-500 dark:text-slate-400">
-              Review your answers below. Correct answers are highlighted in green.
-            </p>
-          </motion.div>
-        )}
-
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700">
-          
-          {/* SECTION 1 */}
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 1</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 1–10</h3>
-            </div>
-
-            {/* Questions 1-5 */}
+  const parts = [
+    
+    {
+      id: 1,
+      title: "Part 1",
+      questions: "1-10",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 1-5 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
               <div className="flex justify-between items-start mb-4 gap-4">
                 <div className="font-bold italic text-slate-600 dark:text-slate-400">
@@ -375,17 +237,18 @@ export default function ListeningTest6() {
                 </tbody>
               </table>
             </div>
-
-          </div>
-
-          {/* SECTION 2 */}
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/20">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 2</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 11–20</h3>
-            </div>
-
-            {/* Questions 11-15 */}
+</>
+        </div>
+      )
+    },
+    {
+      id: 2,
+      title: "Part 2",
+      questions: "11-20",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 11-15 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 11–15<br/>Choose FIVE letters, A–I.<br/>Which FIVE activities are available at Golden Lake Resort?</div>
               
@@ -473,17 +336,18 @@ export default function ListeningTest6() {
                 </tbody>
               </table>
             </div>
-
-          </div>
-
-          {/* SECTION 3 */}
-          <div className="p-6 sm:p-10 border-b border-slate-200 dark:border-slate-700">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 3</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 21–30</h3>
-            </div>
-
-            {/* Questions 21-23 */}
+</>
+        </div>
+      )
+    },
+    {
+      id: 3,
+      title: "Part 3",
+      questions: "21-30",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 21-23 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 21–23<br/>Choose THREE letters, A–F.<br/>Which THREE things are the students required to submit to their professor?</div>
               
@@ -610,7 +474,7 @@ export default function ListeningTest6() {
                             name={`q${q.qNum}`} 
                             value={opt.val}
                             checked={answers[q.qNum] === opt.val}
-                            onChange={() => handleCheckboxChange(q.qNum, opt.val)}
+                            onChange={() => handleInputChange(q.qNum, opt.val)}
                             disabled={submitted}
                             className="w-4 h-4 text-red-600 focus:ring-red-500"
                           />
@@ -622,17 +486,18 @@ export default function ListeningTest6() {
                 ))}
               </div>
             </div>
-            
-          </div>
-
-          {/* SECTION 4 */}
-          <div className="p-6 sm:p-10 bg-slate-50 dark:bg-slate-900/20">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-black mb-2">SECTION 4</h2>
-              <h3 className="text-lg font-bold text-slate-500">QUESTIONS 31–40</h3>
-            </div>
-
-            {/* Questions 31-33 */}
+</>
+        </div>
+      )
+    },
+    {
+      id: 4,
+      title: "Part 4",
+      questions: "31-40",
+      content: (
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <>
+{/* Questions 31-33 */}
             <div className="mb-10 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
               <div className="font-bold mb-4 italic text-slate-600 dark:text-slate-400">Questions 31–33<br/>Complete the information about the Great Barrier Reef.<br/>Write NO MORE THAN TWO WORDS for each answer.</div>
               
@@ -717,38 +582,32 @@ export default function ListeningTest6() {
                   </div>
                 </div>
               </div>
-            </div>
-            
-          </div>
 
+</div>
+</>
         </div>
+      )
+    }
+  ];
 
-        {/* Action Buttons */}
-        <div className="mt-8 mb-12 flex justify-center gap-4">
-          {!submitted ? (
-            <button 
-              onClick={calculateScore}
-              className="px-10 py-4 bg-red-600 hover:bg-red-700 text-white text-xl font-black rounded-full shadow-lg shadow-red-600/30 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-3"
-            >
-              <FaCheckCircle />
-              {t("listeningTest.checkAnswers", "Check Answers")}
-            </button>
-          ) : (
-            <button 
-              onClick={() => {
-                setAnswers({});
-                setSubmitted(false);
-                setScore(0);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="px-10 py-4 bg-slate-800 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 text-xl font-black rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95"
-            >
-              {t("listeningTest.retakeTest", "Retake Test")}
-            </button>
-          )}
-        </div>
-
-      </div>
-    </div>
+  return (
+    <CdiListeningLayout
+      testTitle="Practice Test 6"
+      audioSrc="/audios/LISTENING6.mp3"
+      parts={parts}
+      answers={answers}
+      answerKey={answerKey}
+      submitted={submitted}
+      score={score}
+      showAnswers={showAnswers}
+      setShowAnswers={setShowAnswers}
+      onClearAll={() => {
+        setAnswers({});
+        setSubmitted(false);
+        setScore(null);
+      }}
+      onSubmit={calculateScore}
+      onExit={onExit}
+    />
   );
 }

@@ -140,7 +140,7 @@ export default function CdiListeningLayout({
       {/* MAIN CONTENT AREA */}
       <div className="flex-1 overflow-y-auto bg-white dark:bg-[#1e1e1e] p-6 lg:p-10 custom-scrollbar relative">
         <div className="max-w-4xl mx-auto">
-          {currentPart.questions}
+          {currentPart.content}
           
           {submitted && showAnswers && (
             <div className="mt-12 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800">

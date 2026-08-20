@@ -10,12 +10,12 @@ import ListeningTest5 from "./ListeningTest5";
 import ListeningTest6 from "./ListeningTest6";
 
 const tests = [
-  { id: 1, title: "Practice Test 1", component: <ListeningTest /> },
-  { id: 2, title: "Practice Test 2", component: <ListeningTest2 /> },
-  { id: 3, title: "Practice Test 3", component: <ListeningTest3 /> },
-  { id: 4, title: "Practice Test 4", component: <ListeningTest4 /> },
-  { id: 5, title: "Practice Test 5", component: <ListeningTest5 /> },
-  { id: 6, title: "Practice Test 6", component: <ListeningTest6 /> },
+  { id: 1, title: "Practice Test 1", Component: ListeningTest },
+  { id: 2, title: "Practice Test 2", Component: ListeningTest2 },
+  { id: 3, title: "Practice Test 3", Component: ListeningTest3 },
+  { id: 4, title: "Practice Test 4", Component: ListeningTest4 },
+  { id: 5, title: "Practice Test 5", Component: ListeningTest5 },
+  { id: 6, title: "Practice Test 6", Component: ListeningTest6 },
 ];
 
 export default function ListeningHub() {
@@ -84,15 +84,6 @@ export default function ListeningHub() {
         </div>
       ) : (
         <div className="w-full">
-            <div className="max-w-7xl mx-auto px-4 w-full mb-6 flex justify-start">
-                <button 
-                    onClick={() => setActiveTest(null)}
-                    className="inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 px-5 py-2.5 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm active:scale-95 group"
-                >
-                    <FaChevronRight className="rotate-180 text-red-500 transition-transform group-hover:-translate-x-1" />
-                    {t('listeningHub.backBtn', "Back to Tests")}
-                </button>
-            </div>
             <div className="flex-1 min-w-0 bg-transparent">
                 <AnimatePresence mode="wait">
                 <motion.div
@@ -103,7 +94,7 @@ export default function ListeningHub() {
                     transition={{ duration: 0.3 }}
                     className="w-full"
                 >
-                    {activeTest.component}
+                    {activeTest.Component && <activeTest.Component onExit={() => setActiveTest(null)} />}
                 </motion.div>
                 </AnimatePresence>
             </div>
