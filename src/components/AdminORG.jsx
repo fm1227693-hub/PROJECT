@@ -208,12 +208,12 @@ const StatCard = ({ value, label }) => (
 )
 
 return (
-    <div className="flex min-h-screen pt-20 lg:pt-[76px] bg-gray-50/50 dark:bg-[#070b14] font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-gray-100 relative">
+    <div className="flex min-h-screen bg-gray-50/50 dark:bg-[#070b14] font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-gray-100 relative">
         <Toaster position="top-center" />
         {/* Sidebar Wrapper */}
         <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 hidden lg:block shrink-0 relative">
             {/* Sticky Inner Container */}
-            <div className="sticky top-[76px] flex flex-col h-[calc(100vh-76px)]">
+            <div className="sticky top-0 flex flex-col h-screen">
                 <div className="p-6 flex items-center gap-3 border-b border-gray-100 dark:border-gray-800">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-lg shadow-lg shadow-red-600/30">
                         <FaUserShield />
@@ -294,7 +294,7 @@ return (
                                         {filteredLeads.length === 0 ? (
                                             <tr>
                                                 <td colSpan="6" className="py-8 text-center text-gray-500">
-                                                    Murojaatlar topilmadi
+                                                    {t('adminPanel.noLeadsFound', "Murojaatlar topilmadi")}
                                                 </td>
                                             </tr>
                                         ) : (
@@ -358,7 +358,7 @@ return (
                         <FaTrash />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-gray-900 dark:text-white">Ushbu murojaatni o'chirmoqchimisiz?</h3>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminPanel.deleteConfirmTitle', "Ushbu murojaatni o'chirmoqchimisiz?")}</h3>
                         <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalLead.name}</p>
                     </div>
                     <div className="flex items-center justify-center gap-3 pt-2">

@@ -549,6 +549,9 @@
     },
     "adminPanel": {
         "title": "Admin Dashboard",
+        "latestRequests": "Latest Requests",
+        "dateLabel": "Date",
+        "actionsLabel": "Actions",
         "subtitle": "Manage and analyze leads from website",
         "refreshBtn": "Refresh",
         "exitBtn": "Logout",

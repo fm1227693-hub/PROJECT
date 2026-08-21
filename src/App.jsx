@@ -252,7 +252,7 @@ export default function App() {
             </Routes>
             {/* <ConsultationBooking/>
             <Flashcards/> */}
-            <Footer />
+            {location.pathname !== '/enter' && <Footer />}
           </motion.div>
         </AnimatePresence>
       </div>

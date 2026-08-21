@@ -628,6 +628,9 @@
     },
     "adminPanel": {
         "title": "Admin Boshqaruv Paneli",
+        "latestRequests": "So'nggi murojaatlar",
+        "dateLabel": "Sana",
+        "actionsLabel": "Amallar",
         "subtitle": "Sayt orqali tushgan murojaatlarni boshqarish va tahlil qilish",
         "refreshBtn": "Yangilash",
         "exitBtn": "Chiqish",

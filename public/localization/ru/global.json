@@ -550,6 +550,9 @@
     },
     "adminPanel": {
         "title": "Панель Управления Администратора",
+        "latestRequests": "Последние обращения",
+        "dateLabel": "Дата",
+        "actionsLabel": "Действия",
         "subtitle": "Управление и анализ заявок с сайта",
         "refreshBtn": "Обновить",
         "exitBtn": "Выйти",
