@@ -52,7 +52,7 @@ export default function Home() {
             <div
                 data-aos="fade-down"
                 data-aos-duration="800"
-                className="w-full min-h-[80vh] flex flex-col lg:flex-row gap-6 lg:gap-14 items-center justify-between glass-card px-5 py-7 sm:p-9 lg:px-11 lg:py-12 rounded-2xl sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+                className="w-full max-w-[1252px] min-h-[80vh] flex flex-col lg:flex-row gap-6 lg:gap-14 items-center justify-between glass-card px-5 py-7 sm:p-9 lg:px-11 lg:py-12 rounded-2xl sm:rounded-[2.8rem] relative overflow-visible transition-all duration-500 border border-red-500/20 shadow-[0_20px_60px_rgba(0,0,0,0.6)] mx-auto"
             >
                 {/* Left Resend-style Editorial Hero Content */}
                 <div
@@ -67,7 +67,7 @@ export default function Home() {
                     </div>
 
                     {/* Headline */}
-                    <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading">
+                    <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading">
                         {t('home.titlePrefix', 'IELTS natijangizni')}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(239,68,68,0.35)]">
                             {t('home.titleHighlight', 'CDI Mock & AI')}
@@ -109,9 +109,9 @@ export default function Home() {
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <div className="transform scale-[1.05] xl:scale-110 2xl:scale-[1.15] w-full flex justify-center" style={{ backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                    <div className="transform scale-90 xl:scale-95 2xl:scale-100 w-full flex justify-center" style={{ backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
                         <div 
-                            className="relative w-full max-w-[410px] lg:max-w-[440px] cyber-deck-wrapper transition-transform duration-200 ease-out py-3"
+                            className="relative w-full max-w-[360px] lg:max-w-[380px] cyber-deck-wrapper transition-transform duration-200 ease-out py-3"
                             style={{ transform: transformStyle }}
                         >
                         {/* Main General Optimum IELTS Platform Card */}

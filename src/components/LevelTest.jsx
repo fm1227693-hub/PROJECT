@@ -4,46 +4,57 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 const QUESTIONS = [
-    { id: 1, level: 1, q: "'She ___ a doctor.'", options: ['is', 'are', 'am', 'be'], answer: 0 },
-    { id: 2, level: 1, q: "'I ___ from Uzbekistan.'", options: ['am', 'is', 'are', 'be'], answer: 0 },
-    { id: 3, level: 1, q: "Choose the correct plural: 'book' -> ?", options: ['bookes', 'books', 'bookies', 'books es'], answer: 1 },
-    { id: 4, level: 1, q: "'They ___ students.'", options: ['is', 'am', 'are', 'be'], answer: 2 },
-    { id: 5, level: 1, q: "'This is ___ apple.'", options: ['a', 'an', 'the', '-'], answer: 1 },
-    { id: 6, level: 1, q: "Opposite of 'big':", options: ['small', 'tall', 'long', 'wide'], answer: 0 },
-    { id: 7, level: 1, q: "'What ___ your name?'", options: ['are', 'is', 'am', 'do'], answer: 1 },
-    { id: 8, level: 1, q: "'I have two ___.'", options: ['cat', 'cats', 'cates', 'catss'], answer: 1 },
-    { id: 9, level: 2, q: "'He ___ to school every day.'", options: ['go', 'goes', 'going', 'gone'], answer: 1 },
-    { id: 10, level: 2, q: "'I ___ TV right now.'", options: ['watch', 'watches', 'am watching', 'watched'], answer: 2 },
-    { id: 11, level: 2, q: "'There ___ a book on the table.'", options: ['is', 'are', 'am', 'be'], answer: 0 },
-    { id: 12, level: 2, q: "'She ___ her homework yesterday.'", options: ['do', 'did', 'does', 'doing'], answer: 1 },
-    { id: 13, level: 2, q: "'Can you ___ me, please?'", options: ['helps', 'helping', 'help', 'helped'], answer: 2 },
-    { id: 14, level: 2, q: "'How much ___ is this?'", options: ['much', 'many', 'money', 'price'], answer: 0 },
-    { id: 15, level: 2, q: "'We ___ going to the park.'", options: ['is', 'am', 'are', 'be'], answer: 2 },
-    { id: 16, level: 2, q: "'I don't have ___ money.'", options: ['some', 'any', 'a', 'the'], answer: 1 },
-    { id: 17, level: 3, q: "'She has ___ finished her work.'", options: ['already', 'yet', 'ago', 'since'], answer: 0 },
-    { id: 18, level: 3, q: "'If it rains, I ___ stay home.'", options: ['will', 'would', 'was', 'did'], answer: 0 },
-    { id: 19, level: 3, q: "'I have lived here ___ 2015.'", options: ['for', 'since', 'ago', 'during'], answer: 1 },
-    { id: 20, level: 3, q: "Choose the comparative: 'good' -> ?", options: ['gooder', 'more good', 'better', 'best'], answer: 2 },
-    { id: 21, level: 3, q: "'This book is ___ than that one.'", options: ['interesting', 'more interesting', 'most interesting', 'interestinger'], answer: 1 },
-    { id: 22, level: 3, q: "'I used to ___ football when I was young.'", options: ['play', 'playing', 'played', 'plays'], answer: 0 },
-    { id: 23, level: 3, q: "'She said she ___ tired.'", options: ['is', 'was', 'be', 'been'], answer: 1 },
-    { id: 24, level: 3, q: "'You ___ smoke here — it's forbidden.'", options: ['must not', "don't have to", 'can', 'may'], answer: 0 },
-    { id: 25, level: 4, q: "'By next year, I ___ my studies.'", options: ['will finish', 'will have finished', 'finish', 'am finishing'], answer: 1 },
-    { id: 26, level: 4, q: "'The letter ___ by him yesterday.'", options: ['wrote', 'was written', 'is written', 'has written'], answer: 1 },
-    { id: 27, level: 4, q: "'I wish I ___ more time.'", options: ['have', 'had', 'has', 'having'], answer: 1 },
-    { id: 28, level: 4, q: "'She's the woman ___ car was stolen.'", options: ['who', 'which', 'whose', 'that'], answer: 2 },
-    { id: 29, level: 4, q: "'Hardly ___ he arrived when the phone rang.'", options: ['had', 'has', 'did', 'was'], answer: 0 },
-    { id: 30, level: 4, q: "'I'd rather you ___ that.'", options: ["don't say", "didn't say", 'not say', "won't say"], answer: 1 },
-    { id: 31, level: 4, q: "Choose the correct phrasal verb: 'to give up' means:", options: ['to start', 'to quit', 'to continue', 'to postpone'], answer: 1 },
-    { id: 32, level: 4, q: "'Despite ___ hard, he failed the exam.'", options: ['study', 'studying', 'studied', 'to study'], answer: 1 },
-    { id: 33, level: 5, q: "'Had I known, I ___ differently.'", options: ['would act', 'would have acted', 'will act', 'act'], answer: 1 },
-    { id: 34, level: 5, q: "'Not only ___ late, but he also forgot the documents.'", options: ['he was', 'was he', 'he is', 'is he'], answer: 1 },
-    { id: 35, level: 5, q: "'It's high time we ___ a decision.'", options: ['make', 'made', 'will make', 'making'], answer: 1 },
-    { id: 36, level: 5, q: "'The project, ___ was delayed twice, is finally done.'", options: ['that', 'which', 'what', 'who'], answer: 1 },
-    { id: 37, level: 6, q: "'Were it not for your help, I ___ failed.'", options: ['would have', 'will have', 'had', 'would'], answer: 0 },
-    { id: 38, level: 6, q: "Choose the closest meaning to 'ubiquitous':", options: ['rare', 'everywhere', 'expensive', 'hidden'], answer: 1 },
-    { id: 39, level: 6, q: "'No sooner ___ home than it started to rain.'", options: ['I had got', 'had I got', 'I got', 'have I got'], answer: 1 },
-    { id: 40, level: 6, q: "'She talks as if she ___ everything.'", options: ['knows', 'knew', 'known', 'has known'], answer: 1 },
+    // Level 1: Starter (1-8)
+    { id: 1, level: 1, q: "'Excuse me, _____ you speak English?'", options: ['do', 'are', 'is', 'have'], answer: 0 },
+    { id: 2, level: 1, q: "'_____ are you from?' 'I am from Italy.'", options: ['What', 'Where', 'Who', 'How'], answer: 1 },
+    { id: 3, level: 1, q: "'I _____ a student.'", options: ['are', 'is', 'am', 'be'], answer: 2 },
+    { id: 4, level: 1, q: "'She _____ got a brother.'", options: ['have', 'has', 'having', 'is'], answer: 1 },
+    { id: 5, level: 1, q: "'My mother is a doctor. _____ works in a hospital.'", options: ['He', 'She', 'They', 'It'], answer: 1 },
+    { id: 6, level: 1, q: "'What time _____ it?'", options: ['is', 'are', 'am', 'does'], answer: 0 },
+    { id: 7, level: 1, q: "'I like _____ football on weekends.'", options: ['play', 'playing', 'played', 'plays'], answer: 1 },
+    { id: 8, level: 1, q: "'_____ there a bank near here?'", options: ['Am', 'Are', 'Is', 'Do'], answer: 2 },
+
+    // Level 2: Elementary (9-16)
+    { id: 9, level: 2, q: "'I _____ to the cinema yesterday.'", options: ['go', 'went', 'gone', 'going'], answer: 1 },
+    { id: 10, level: 2, q: "'_____ you ever been to Paris?'", options: ['Did', 'Do', 'Have', 'Are'], answer: 2 },
+    { id: 11, level: 2, q: "'If it rains tomorrow, we _____ stay at home.'", options: ['will', 'would', 'do', 'are'], answer: 0 },
+    { id: 12, level: 2, q: "'This is the _____ book I have ever read.'", options: ['good', 'better', 'best', 'more good'], answer: 2 },
+    { id: 13, level: 2, q: "'I _____ my homework when the phone rang.'", options: ['was doing', 'did', 'do', 'am doing'], answer: 0 },
+    { id: 14, level: 2, q: "'He _____ in London for five years.'", options: ['lives', 'is living', 'has lived', 'live'], answer: 2 },
+    { id: 15, level: 2, q: "'You _____ smoke in the hospital.'", options: ["don't have to", "mustn't", "needn't", "won't"], answer: 1 },
+    { id: 16, level: 2, q: "'The letter _____ yesterday.'", options: ['is sent', 'sent', 'was sent', 'has sent'], answer: 2 },
+
+    // Level 3: Intermediate (17-24)
+    { id: 17, level: 3, q: "'If I _____ you, I would study harder.'", options: ['am', 'was', 'were', 'be'], answer: 2 },
+    { id: 18, level: 3, q: "'She told me that she _____ to leave.'", options: ['wants', 'wanted', 'is wanting', 'has wanted'], answer: 1 },
+    { id: 19, level: 3, q: "'I am looking forward to _____ you.'", options: ['see', 'seeing', 'saw', 'be seeing'], answer: 1 },
+    { id: 20, level: 3, q: "'He is used to _____ early.'", options: ['get up', 'getting up', 'got up', 'gets up'], answer: 1 },
+    { id: 21, level: 3, q: "'By this time next year, I _____ my studies.'", options: ['will finish', 'will have finished', 'am finishing', 'finished'], answer: 1 },
+    { id: 22, level: 3, q: "'I wish I _____ a car.'", options: ['have', 'had', 'has', 'having'], answer: 1 },
+    { id: 23, level: 3, q: "'_____ the heavy rain, we decided to go out.'", options: ['Although', 'Despite', 'However', 'Because'], answer: 1 },
+    { id: 24, level: 3, q: "'She asked me where _____.'", options: ['I live', 'do I live', 'I lived', 'did I live'], answer: 2 },
+
+    // Level 4: Upper-Intermediate (25-32)
+    { id: 25, level: 4, q: "'Hardly _____ left the house when it started to rain.'", options: ['I had', 'had I', 'did I', 'I did'], answer: 1 },
+    { id: 26, level: 4, q: "'It’s high time you _____ a job.'", options: ['get', 'got', 'will get', 'getting'], answer: 1 },
+    { id: 27, level: 4, q: "'He denied _____ the money.'", options: ['to steal', 'stealing', 'steal', 'stolen'], answer: 1 },
+    { id: 28, level: 4, q: "'I would rather you _____ that.'", options: ['not do', "didn't do", "don't do", "won't do"], answer: 1 },
+    { id: 29, level: 4, q: "'Not only _____ late, but he also forgot his books.'", options: ['he arrived', 'arrived he', 'did he arrive', 'he did arrive'], answer: 2 },
+    { id: 30, level: 4, q: "'If he had studied harder, he _____ the exam.'", options: ['would pass', 'will pass', 'would have passed', 'passed'], answer: 2 },
+    { id: 31, level: 4, q: "'The man _____ wallet was stolen went to the police.'", options: ['who', 'which', 'whose', 'whom'], answer: 2 },
+    { id: 32, level: 4, q: "'You had better _____ a doctor.'", options: ['see', 'to see', 'seeing', 'saw'], answer: 0 },
+
+    // Level 5: Advanced (33-36)
+    { id: 33, level: 5, q: "'_____ you to change your mind, let me know.'", options: ['If', 'Should', 'Were', 'Had'], answer: 1 },
+    { id: 34, level: 5, q: "'He was on the verge of _____.'", options: ['cry', 'to cry', 'crying', 'cried'], answer: 2 },
+    { id: 35, level: 5, q: "'The company is rumored _____ bankrupt last year.'", options: ['to go', 'going', 'to have gone', 'gone'], answer: 2 },
+    { id: 36, level: 5, q: "'Scarcely _____ the speech when the audience erupted in applause.'", options: ['finished he', 'he had finished', 'had he finished', 'did he finish'], answer: 2 },
+
+    // Level 6: Proficiency (37-40)
+    { id: 37, level: 6, q: "'_____ it not been for your help, I would have failed.'", options: ['Had', 'Were', 'If', 'Should'], answer: 0 },
+    { id: 38, level: 6, q: "'She has a _____ for languages.'", options: ['flair', 'tendency', 'habit', 'skill'], answer: 0 },
+    { id: 39, level: 6, q: "'His argument was so _____ that no one could disagree.'", options: ['cogent', 'ambiguous', 'tenuous', 'flimsy'], answer: 0 },
+    { id: 40, level: 6, q: "'The government’s decision was met with _____ criticism.'", options: ['heavy', 'strong', 'fierce', 'deep'], answer: 2 }
 ]
 
 const TOTAL_TIME = 30 * 60
