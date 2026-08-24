@@ -444,6 +444,8 @@
         "questionsLabel": "Questions",
         "timeLabel": "Time",
         "startBtn": "Start test",
+        "cancelBtn": "Cancel",
+        "exitBtn": "Exit",
         "timeUp": "Time's up!",
         "testFinished": "Test finished",
         "doneBadge": "Test finished",

@@ -45,7 +45,7 @@ export default function ConsultationBooking() {
       const res = await axios.get(import.meta.env.VITE_FIREBASE_DB_URL)
       let currentLeads = []
       if (res.data !== null) {
-          currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
+        currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
       }
       const updatedLeads = [newLead, ...currentLeads]
       await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads)
@@ -103,11 +103,10 @@ export default function ConsultationBooking() {
                 type="button"
                 key={m.id}
                 onClick={() => setSelectedMentor(m.name)}
-                className={`p-3 rounded-xl border text-left transition ${
-                  selectedMentor === m.name
+                className={`p-3 rounded-xl border text-left transition ${selectedMentor === m.name
                     ? 'border-red-600 bg-red-600/10 text-white'
                     : 'border-gray-800 bg-[#161821] text-gray-400 hover:border-gray-700'
-                }`}
+                  }`}
               >
                 <div className="font-semibold text-sm">{m.name}</div>
                 <div className="text-xs text-gray-500 mt-1">{m.role}</div>

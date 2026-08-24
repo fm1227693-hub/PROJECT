@@ -43,15 +43,7 @@ export default function Pricing() {
 
             <div className="max-w-6xl mx-auto relative z-10">
 
-                <button
-                    onClick={() => navigate(-1)}
-                    data-aos="fade-right"
-                    data-aos-duration="600"
-                    className="inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer mb-6 xs:mb-8 hover:-translate-x-1"
-                >
-                    <span className="text-base xs:text-lg leading-none">←</span>
-                    {t('common.backBtn') || 'Orqaga'}
-                </button>
+
 
                 <div data-aos="fade-up" data-aos-duration="700" className="text-center max-w-2xl mx-auto mb-10 xs:mb-14">
                     <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1 rounded-full inline-block border border-red-500/20 shadow-sm">

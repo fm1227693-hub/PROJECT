@@ -111,12 +111,17 @@ export default function Footer() {
 
                 {/* 3. Aloqa maʼlumotlari */}
                 <FooterSection title={t('footer.contactTitle')}>
-                    <div className="flex items-start gap-3 group">
+                    <a 
+                        href="https://www.google.com/maps/search/?api=1&query=Premier+School,+Namozgoh+St,+Bukhara"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-start gap-3 group hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
+                    >
                         <FaMapMarkerAlt className="mt-1 text-red-600 dark:text-red-400 shrink-0 text-sm" />
                         <span className="text-sm leading-snug">
                             {t('footer.address')}
                         </span>
-                    </div>
+                    </a>
                     <a
                         href="tel:+998900829979"
                         className="flex items-center gap-3 group hover:text-red-600 dark:hover:text-red-400 transition-colors"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaMicrophone, FaBookOpen } from 'react-icons/fa'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaHeadphones, FaBookOpen } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -289,7 +289,7 @@ export default function Navbar() {
                                             onClick={() => setTestsDropdownOpen(false)}
                                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.1] hover:text-red-600 dark:hover:text-white transition-colors"
                                         >
-                                            <FaMicrophone className="w-3.5 h-3.5 text-[#c41e30]" />
+                                            <FaHeadphones className="w-3.5 h-3.5 text-[#c41e30]" />
                                             <span>IELTS Listening Tests</span>
                                         </Link>
                                         <Link
@@ -482,7 +482,7 @@ export default function Navbar() {
                                         IELTS Reading Tests
                                     </Link>
                                     <Link to="/listening-tests" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">
-                                        <FaMicrophone className="w-4 h-4 opacity-50" />
+                                        <FaHeadphones className="w-4 h-4 opacity-50" />
                                         IELTS Listening Tests
                                     </Link>
                                     <Link to="/games" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">

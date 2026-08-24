@@ -459,6 +459,8 @@
         "questionsLabel": "Вопросы",
         "timeLabel": "Время",
         "startBtn": "Начать тест",
+        "cancelBtn": "Отмена",
+        "exitBtn": "Выход",
         "timeUp": "Время истекло!",
         "testFinished": "Тест завершён",
         "doneBadge": "Тест завершён",

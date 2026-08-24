@@ -523,6 +523,8 @@
         "questionsLabel": "Savollar",
         "timeLabel": "Vaqt",
         "startBtn": "Testni boshlash",
+        "cancelBtn": "Bekor qilish",
+        "exitBtn": "Chiqish",
         "timeUp": "Vaqt tugadi!",
         "testFinished": "Test yakunlandi",
         "doneBadge": "Test yakunlandi",

@@ -112,6 +112,25 @@ export default function LevelTest() {
         return () => clearInterval(timerRef.current)
     }, [stage, finished])
 
+    // Hide Navbar and Footer when not in intro stage
+    useEffect(() => {
+        const navbar = document.querySelector('header')?.parentElement;
+        const footer = document.querySelector('footer');
+        
+        if (stage !== 'intro') {
+            if (navbar) navbar.style.display = 'none';
+            if (footer) footer.style.display = 'none';
+        } else {
+            if (navbar) navbar.style.display = '';
+            if (footer) footer.style.display = '';
+        }
+        
+        return () => {
+            if (navbar) navbar.style.display = '';
+            if (footer) footer.style.display = '';
+        }
+    }, [stage])
+
     const handleAutoFinish = useCallback(() => {
         setFinished(true)
         toast.error(t('levelTest.timeUp') || "Vaqt tugadi!", {
@@ -173,34 +192,55 @@ export default function LevelTest() {
 
     const answeredCount = Object.keys(answers).length
     const q = QUESTIONS[current]
-
-    const handleBack = () => {
+    const handleExit = () => {
         if (stage === 'test' && !finished) {
-            const confirmLeave = window.confirm(
-                t('levelTest.leaveConfirm') || "Testni tark etmoqchimisiz? Natijangiz saqlanmaydi."
+            toast.custom(
+                (toastItem) => (
+                    <div className={`${toastItem.visible ? 'animate-enter' : 'animate-leave'} max-w-sm w-full bg-white dark:bg-gray-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl pointer-events-auto flex flex-col gap-4 p-5 sm:p-6 border border-gray-100 dark:border-gray-800 font-['Plus_Jakarta_Sans',sans-serif]`}>
+                        <p className="text-sm sm:text-base font-bold text-gray-800 dark:text-white text-center leading-snug">
+                            {t('levelTest.leaveConfirm') || "Testni tark etmoqchimisiz? Natijangiz saqlanmaydi."}
+                        </p>
+                        <div className="flex items-center gap-3 mt-2">
+                            <button
+                                onClick={() => toast.dismiss(toastItem.id)}
+                                className="flex-1 py-3 text-xs sm:text-sm font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer border border-transparent dark:border-gray-700"
+                            >
+                                {t('levelTest.cancelBtn') || "Bekor qilish"}
+                            </button>
+                            <button
+                                onClick={() => {
+                                    toast.dismiss(toastItem.id)
+                                    navigate(-1)
+                                }}
+                                className="flex-1 py-3 text-xs sm:text-sm font-bold bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors shadow-lg shadow-red-500/20 cursor-pointer"
+                            >
+                                {t('levelTest.exitBtn') || "Chiqish"}
+                            </button>
+                        </div>
+                    </div>
+                ),
+                { duration: Infinity, id: 'exit-confirm' }
             )
-            if (!confirmLeave) return
+        } else {
+            navigate(-1)
         }
-        navigate(-1)
     }
 
-    const BackBtn = () => (
+    const ExitBtn = () => (
         <button
-            onClick={handleBack}
-            className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+            onClick={handleExit}
+            className="fixed top-6 right-6 sm:top-8 sm:right-8 z-50 inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-lg shadow-red-500/30 transition-all cursor-pointer hover:shadow-xl active:scale-95 border border-red-500/50"
         >
-            <span className="text-base xs:text-lg leading-none">←</span>
-            {t('common.backBtn') || 'Orqaga'}
+            {t('levelTest.exitBtn') || 'Chiqish'}
         </button>
     )
-
     // INTRO
     if (stage === 'intro') {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
                 <div className="absolute top-1/4 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
                 <Toaster position="top-center" />
-                <BackBtn />
+
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
@@ -234,6 +274,13 @@ export default function LevelTest() {
                     >
                         {t('levelTest.startBtn') || 'Testni boshlash'}
                     </button>
+
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="w-full mt-2.5 xs:mt-3 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800/50 text-gray-500 dark:text-gray-400 font-bold py-3 xs:py-3.5 rounded-xl xs:rounded-2xl transition-all text-sm cursor-pointer active:scale-95 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                    >
+                        {t('levelTest.cancelBtn') || 'Bekor qilish'}
+                    </button>
                 </div>
                 <style>{styleBlock}</style>
             </div>
@@ -246,7 +293,8 @@ export default function LevelTest() {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
                 <Toaster position="top-center" />
-                <BackBtn />
+                <ExitBtn />
+
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
@@ -313,7 +361,8 @@ export default function LevelTest() {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
                 <Toaster position="top-center" />
-                <BackBtn />
+                <ExitBtn />
+
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
@@ -346,7 +395,7 @@ export default function LevelTest() {
     return (
         <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
             <Toaster position="top-center" />
-            <BackBtn />
+            <ExitBtn />
             <div
                 data-aos="fade-up"
                 data-aos-duration="500"
