@@ -166,8 +166,8 @@ export default function ResultsSlider() {
     const activeStudent = activeData[currentIndex];
 
     return (
-        <div className="w-full px-2 sm:px-4 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px]">
-            <div id="results-section" className="relative w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-6 bg-white/90 dark:bg-[#090623]/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-2 sm:my-4 transition-colors duration-300 overflow-hidden">
+        <div className="w-full mb-10 px-2 sm:px-4 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px]">
+            <div id="results-section" className=" relative w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-6 bg-white/90 dark:bg-[#090623]/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-2 sm:my-4 transition-colors duration-300 overflow-hidden">
 
                 {/* Dekorativ fon nuri */}
                 <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { 
     HiLightningBolt, 
     HiCheckCircle, 
@@ -56,11 +57,12 @@ export default function AboutUs() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
 
                 {/* 1-kartochka */}
-                <div
+                <Link
+                    to="/principle/1"
                     data-aos="fade-up"
                     data-aos-duration="800"
                     data-aos-delay="100"
-                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300"
+                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300 block"
                 >
                     <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
@@ -77,14 +79,15 @@ export default function AboutUs() {
                         {t('aboutUs.card1Tag')}
                         <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                     </span>
-                </div>
+                </Link>
 
                 {/* 2-kartochka */}
-                <div
+                <Link
+                    to="/principle/2"
                     data-aos="fade-up"
                     data-aos-duration="800"
                     data-aos-delay="200"
-                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300"
+                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300 block"
                 >
                     <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
@@ -101,14 +104,15 @@ export default function AboutUs() {
                         {t('aboutUs.card2Tag')}
                         <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                     </span>
-                </div>
+                </Link>
 
                 {/* 3-kartochka */}
-                <div
+                <Link
+                    to="/principle/3"
                     data-aos="fade-up"
                     data-aos-duration="800"
                     data-aos-delay="300"
-                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300"
+                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300 block"
                 >
                     <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
@@ -125,7 +129,7 @@ export default function AboutUs() {
                         {t('aboutUs.card3Tag')}
                         <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
                     </span>
-                </div>
+                </Link>
 
             </div>
 

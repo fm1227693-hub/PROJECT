@@ -26,6 +26,7 @@ import TermsOfUse from "./components/TermsOfUse";
 import IeltsWritingAssessor from "./components/IeltsWritingAssessor";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 import ThemeTransitionLoader from "./components/ThemeTransitionLoader";
+import Principle from "./components/Principle";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -249,6 +250,7 @@ export default function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-use" element={<TermsOfUse />} />
               <Route path="/ielts-writing" element={<IeltsWritingAssessor />} />
+              <Route path="/principle/:id" element={<Principle />} />
             </Routes>
             {/* <ConsultationBooking/>
             <Flashcards/> */}
