@@ -35,7 +35,8 @@ export default function IeltsWritingAssessor() {
     const mockExams = [
         {
             id: 'mock_1',
-            title: t('ieltsWriting.mock1Title', 'IELTS Writing Mock Test 1'),
+            title: t('ieltsWriting.mock1Title', 'Practice Test 1'),
+            subtitle: 'General Training & Academic mix',
             imageUrl: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=400&fit=crop',
             timeLimit: 60 * 60,
             task1: {
@@ -58,7 +59,8 @@ export default function IeltsWritingAssessor() {
         },
         {
             id: 'mock_2',
-            title: t('ieltsWriting.mock2Title', 'IELTS Writing Mock Test 2'),
+            title: t('ieltsWriting.mock2Title', 'Practice Test 2'),
+            subtitle: 'Science and History focus',
             imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&fit=crop',
             timeLimit: 60 * 60,
             task1: {
@@ -81,7 +83,8 @@ export default function IeltsWritingAssessor() {
         },
         {
             id: 'mock_3',
-            title: t('ieltsWriting.mock3Title', 'IELTS Writing Mock Test 3'),
+            title: t('ieltsWriting.mock3Title', 'Practice Test 3'),
+            subtitle: 'Nature and Technology',
             imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&fit=crop',
             timeLimit: 60 * 60,
             task1: {
@@ -104,7 +107,8 @@ export default function IeltsWritingAssessor() {
         },
         {
             id: 'mock_4',
-            title: t('ieltsWriting.mock4Title', 'IELTS Writing Mock Test 4'),
+            title: t('ieltsWriting.mock4Title', 'Practice Test 4'),
+            subtitle: 'Arts and Culture',
             imageUrl: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&fit=crop',
             timeLimit: 60 * 60,
             task1: {
@@ -127,7 +131,8 @@ export default function IeltsWritingAssessor() {
         },
         {
             id: 'mock_5',
-            title: t('ieltsWriting.mock5Title', 'IELTS Writing Mock Test 5'),
+            title: t('ieltsWriting.mock5Title', 'Practice Test 5'),
+            subtitle: 'Advanced Academic Reading',
             imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&fit=crop',
             timeLimit: 60 * 60,
             task1: {
@@ -150,7 +155,8 @@ export default function IeltsWritingAssessor() {
         },
         {
             id: 'mock_6',
-            title: t('ieltsWriting.mock6Title', 'IELTS Writing Mock Test 6'),
+            title: t('ieltsWriting.mock6Title', 'Practice Test 6'),
+            subtitle: 'Comprehensive Exam',
             imageUrl: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400&fit=crop',
             timeLimit: 60 * 60,
             task1: {
@@ -418,10 +424,8 @@ Rules:
 
     if (screen === 'home') {
         return (
-            <div className="relative min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto font-sans">
-                {/* Ambient Red Glow */}
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-red-600/15 via-rose-500/10 to-blue-500/10 rounded-full blur-[150px] pointer-events-none -z-10" />
-
+            <div className="min-h-screen pt-28 pb-12 font-sans bg-transparent transition-colors flex flex-col items-center">
+                <div className="w-full max-w-5xl px-4 lg:px-8">
                 {/* Hero Header */}
                 <div className="text-center space-y-4 max-w-3xl mx-auto mb-14">
                     <motion.div
@@ -450,43 +454,40 @@ Rules:
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {featuredMocks.map(mock => (
-                        <div key={mock.id} className="bg-white dark:bg-[#1e1e1e] border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col group cursor-pointer" onClick={() => openPrompt(mock)}>
-                            <div className="h-48 overflow-hidden relative">
-                                <img src={mock.imageUrl} alt={mock.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                                <div className="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
-                                    Mock Test
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {featuredMocks.map((mock, idx) => (
+                        <motion.div
+                            key={mock.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="bg-transparent rounded-3xl p-6 border border-slate-200 dark:border-slate-700/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col h-full backdrop-blur-sm hover:bg-white/30 dark:hover:bg-slate-800/30"
+                        >
+                            <div className="flex items-start justify-between mb-4">
+                                <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-500/20 text-red-600 flex items-center justify-center text-xl">
+                                    <FaBookOpen />
                                 </div>
-                                <div className="absolute bottom-4 left-4 right-4">
-                                    <h3 className="text-xl font-bold text-white leading-snug">{mock.title}</h3>
-                                </div>
+                                <span className="text-xs font-bold px-3 py-1 bg-slate-200/50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 rounded-full">
+                                    60 Min
+                                </span>
                             </div>
-                            <div className="p-6 flex-1 flex flex-col justify-between">
-                                <div className="space-y-3">
-                                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-                                        <span className="font-bold text-slate-900 dark:text-white">Part 1:</span> {mock.task1.type}
-                                    </p>
-                                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium line-clamp-2">
-                                        <span className="font-bold text-slate-900 dark:text-white">Part 2:</span> {mock.task2.type}
-                                    </p>
-                                </div>
-                                <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-bold">
-                                        <FaClock className="text-red-500" />
-                                        60 mins
-                                    </div>
-                                    <button 
-                                        onClick={(e) => { e.stopPropagation(); openPrompt(mock); }}
-                                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-bold text-sm flex items-center gap-1 transition-colors group-hover:translate-x-1"
-                                    >
-                                        Start Exam <FaChevronRight className="text-xs" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                            
+                            <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
+                                {mock.title}
+                            </h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-8 flex-1">
+                                {mock.subtitle || `${mock.task1.type} & ${mock.task2.type}`}
+                            </p>
+
+                            <button
+                                onClick={(e) => { e.stopPropagation(); openPrompt(mock); }}
+                                className="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors group-hover:shadow-lg group-hover:shadow-red-600/30"
+                            >
+                                Start Test <FaPlay className="text-xs" />
+                            </button>
+                        </motion.div>
                     ))}
+                </div>
                 </div>
             </div>
         )
