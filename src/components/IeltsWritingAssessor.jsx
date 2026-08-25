@@ -802,7 +802,7 @@ Respond STRICTLY in the following JSON format:
                             whileHover={{ scale: 1.02, y: -4 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => openPrompt(prompt)}
-                            className="cursor-pointer rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md hover:shadow-xl hover:border-red-400 dark:hover:border-red-500 transition-all duration-200 overflow-hidden group flex flex-col"
+                            className="cursor-pointer rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl hover:border-red-400 dark:hover:border-red-500 transition-all duration-200 overflow-hidden group flex flex-col"
                         >
                             {prompt.imageUrl && (
                                 <div className="h-36 overflow-hidden">
