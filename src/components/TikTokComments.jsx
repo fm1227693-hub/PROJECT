@@ -230,7 +230,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
             </div>
 
             {/* CommentsORG Scrollable List */}
-            <div className="bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border-x border-gray-200 dark:border-gray-800 max-h-[500px] overflow-y-auto p-4 sm:p-6 space-y-4 divide-y divide-gray-100 dark:divide-gray-800/60">
+            <div className="bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border-x border-gray-200 dark:border-gray-800 max-h-[220px] overflow-y-auto p-4 sm:p-6 space-y-4 divide-y divide-gray-100 dark:divide-gray-800/60">
                 {CommentsORG.length === 0 ? (
                     <div className="py-12 text-center space-y-3">
                         <FaCommentDots className="text-4xl animate-bounce text-gray-400 mx-auto" />

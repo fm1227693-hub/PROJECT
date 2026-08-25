@@ -41,21 +41,21 @@ export default function Principle() {
             {/* Background elements */}
             <div className={`absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-bl ${config.bgGradient} rounded-full blur-[80px] sm:blur-[120px] -z-10`} />
             <div className={`absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-tr ${config.bgGradient} rounded-full blur-[80px] sm:blur-[120px] -z-10`} />
-            
+
             <div className="max-w-4xl mx-auto w-full">
 
 
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     className="relative group p-6 sm:p-10 md:p-12"
                 >
                     <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-red-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-red-500/10 transition-colors duration-700" />
-                    
+
                     {/* Header Section */}
                     <div className="flex flex-col items-start border-b border-slate-200 dark:border-slate-800 pb-8 mb-8">
-                        <motion.div 
+                        <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ delay: 0.2, duration: 0.5 }}
@@ -64,7 +64,7 @@ export default function Principle() {
                             {config.icon}
                         </motion.div>
 
-                        <motion.h4 
+                        <motion.h4
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.3, duration: 0.5 }}
@@ -72,8 +72,8 @@ export default function Principle() {
                         >
                             {t(`principles.p${principleId}_subtitle`)}
                         </motion.h4>
-                        
-                        <motion.h1 
+
+                        <motion.h1
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
@@ -82,7 +82,7 @@ export default function Principle() {
                             {t(`principles.p${principleId}_title`)}
                         </motion.h1>
 
-                        <motion.p 
+                        <motion.p
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.5, duration: 0.7 }}
@@ -95,7 +95,7 @@ export default function Principle() {
                     {/* Features Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-10 sm:mb-12 relative z-10">
                         {[1, 2, 3].map((num, idx) => (
-                            <motion.div 
+                            <motion.div
                                 key={num}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -116,7 +116,7 @@ export default function Principle() {
                     </div>
 
                     {/* Extra Highlight Box */}
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.7, duration: 0.5 }}
@@ -132,19 +132,19 @@ export default function Principle() {
                     </motion.div>
 
                     {/* CTA Buttons */}
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.5 }}
                         className="flex flex-col sm:flex-row gap-3 sm:gap-4 relative z-10"
                     >
-                        <Link 
+                        <Link
                             to="/level-test"
                             className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-lg shadow-red-600/30 transition-all transform hover:-translate-y-1 text-center"
                         >
                             {t('principles.cta')}
                         </Link>
-                        <Link 
+                        <Link
                             to="/about"
                             className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-2xl transition-all text-center"
                         >

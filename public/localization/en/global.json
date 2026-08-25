@@ -499,14 +499,26 @@
         "badge": "FAQ",
         "title": "Frequently Asked Questions",
         "subtitle": "Check out the answers to the most common questions from our students.",
-        "q1": "How long do our courses last?",
-        "a1": "Depending on the field, our courses last on average from 3 to 12 months. Classes are held 4 times a week by qualified instructors.",
-        "q2": "What is required to start the classes?",
-        "a2": "To get started, you only need a laptop (computer), necessary books, internet connection, and a strong desire to learn. Basic knowledge is taught from scratch.",
+        "q1": "How long do your courses last?",
+        "a1": "Depending on the direction, our courses last from 3 to 12 months. Classes are held 4 times a week by qualified teachers.",
+        "q2": "What is required to start classes?",
+        "a2": "To get started, you only need a laptop (computer), necessary books, internet, and a strong desire. Basic knowledge is taught from scratch.",
         "q3": "What happens if I miss a class?",
-        "a3": "Active participation in every class is recommended. If you cannot attend or struggle with a topic, our experienced assistant teachers will help you outside of class hours, re-explain the covered topics, and assist you with practical exercises.",
-        "q4": "Is a certificate awarded after completing the course?",
-        "a4": "Yes, graduates who successfully complete the course receive a special certificate, and top students are provided with practical assistance in finding a job."
+        "a3": "Active participation in every class is recommended. If you miss a class or struggle with a topic, our experienced assistant teachers will help you outside of class times, explaining the topics again and assisting with practical exercises.",
+        "q4": "Will I get a certificate after completing the course?",
+        "a4": "Yes, graduates who successfully complete the course will receive a special certificate, and the best students will receive practical help in finding a job.",
+        "q5": "What are the course prices?",
+        "a5": "Course prices vary depending on your level and whether you choose group or individual lessons. For precise information, please visit the pricing page or contact us.",
+        "q6": "What days are the classes held?",
+        "a6": "Classes are held 3 days a week with 1 additional day for the Speaking Club. You can choose a time that suits you best.",
+        "q7": "Is there a free trial lesson?",
+        "a7": "Yes, the first trial lesson is completely free for all new students at our center. This allows you to get acquainted with the learning process and the teacher.",
+        "q8": "How is homework checked?",
+        "a8": "Homework is strictly checked by teachers and their assistants before each lesson. Since not doing homework negatively affects the learning process, we take it very seriously.",
+        "q9": "Is online study available?",
+        "a9": "Of course, we offer both traditional offline and online classes. Online classes are just as interactive and effective as offline ones.",
+        "q10": "Can I change my teacher?",
+        "a10": "If you do not understand the teaching style or wish to switch to another group, you can freely change your teacher or schedule by contacting our administration."
     },
     "leadForm": {
         "backBtn": "Go back",
@@ -561,7 +573,6 @@
         "p1_f3_desc": "Daily homework assignments and vocabulary memorization processes are strictly monitored by teachers.",
         "p1_extra_title": "Expected Results",
         "p1_extra_desc": "Thanks to this fast methodology, our students usually reach their target IELTS 7.0+ or CEFR B2/C1 levels within 3-4 months. There is no magic – just hard work and proper guidance.",
-
         "p2_title": "Practical Approach",
         "p2_subtitle": "Core Principle II",
         "p2_desc": "The main part of our classes is focused on live communication and speaking skills, which helps you quickly overcome the language barrier and express your thoughts freely.",
@@ -573,7 +584,6 @@
         "p2_f3_desc": "By listening to audios with various accents, you will be prepared not only for the exam but also for real-life communication.",
         "p2_extra_title": "Practice is the Key to Success",
         "p2_extra_desc": "Our center operates on the '20% Theory, 80% Practice' rule. You cannot get a high score just by knowing the rules; it is important to be able to apply them automatically.",
-
         "p3_title": "To Perfection",
         "p3_subtitle": "Core Principle III",
         "p3_desc": "Individual work is carried out on the mistakes and shortcomings of each student. In addition, students regularly take mock tests, which constantly leads to high results.",
@@ -585,7 +595,6 @@
         "p3_f3_desc": "We develop skills to overcome exam anxiety and allocate time properly, so that you are confident on the day of the exam.",
         "p3_extra_title": "Ultimate Goal",
         "p3_extra_desc": "There is no limit to perfection. Our goal is not just to help you pass the test, but to make English a part of your life.",
-
         "cta": "Take a Test"
     },
     "adminPanel": {

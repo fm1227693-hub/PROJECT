@@ -11,24 +11,10 @@ export default function FAQ() {
         setActiveIndex(activeIndex === index ? null : index)
     }
 
-    const FAQ_ITEMS = [
-        {
-            question: t('faq.q1'),
-            answer: t('faq.a1')
-        },
-        {
-            question: t('faq.q2'),
-            answer: t('faq.a2')
-        },
-        {
-            question: t('faq.q3'),
-            answer: t('faq.a3')
-        },
-        {
-            question: t('faq.q4'),
-            answer: t('faq.a4')
-        }
-    ]
+    const FAQ_ITEMS = Array.from({ length: 10 }, (_, i) => ({
+        question: t(`faq.q${i + 1}`),
+        answer: t(`faq.a${i + 1}`)
+    }));
 
     return (
         <section id="faq" className="py-20 px-5 sm:px-8 font-['Plus_Jakarta_Sans',sans-serif] bg-transparent relative z-10">

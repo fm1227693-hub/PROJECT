@@ -585,7 +585,19 @@
         "q3": "Darsda qatnasha olmay qolsam nima bo'ladi?",
         "a3": "Har bir darsda faol qatnashish tavsiya etiladi. Agar darsga kela olmay qolsangiz yoki qaysidir mavzuni tushunmay qiynalsangiz, markazimizdagi tajribali assistent o'qituvchilar darsdan tashqari vaqtlarda sizga yaqindan yordam berib, o'tilgan mavzularni qaytadan tushuntirib berishadi va amaliy mashqlarni bajarishda ko'maklashishadi.",
         "q4": "Kurs tugatgandan keyin sertifikat beriladimi?",
-        "a4": "Ha, kursni muvaffaqiyatli tamomlagan bitiruvchilarga maxsus sertifikat beriladi va eng yaxshi o'quvchilarga ish topishda amaliy yordam ko'rsatiladi."
+        "a4": "Ha, kursni muvaffaqiyatli tamomlagan bitiruvchilarga maxsus sertifikat beriladi va eng yaxshi o'quvchilarga ish topishda amaliy yordam ko'rsatiladi.",
+        "q5": "Kurs narxlari qancha?",
+        "a5": "Kurs narxlari darajangizga va guruh yoki yakka tartibdagi darslarga qarab o'zgaradi. Aniq ma'lumot olish uchun narxlar sahifasiga o'ting yoki biz bilan bog'laning.",
+        "q6": "Darslar qaysi kunlari bo'ladi?",
+        "a6": "Darslar haftada 3 kun asosiy va 1 kun qo'shimcha Speaking Club sifatida o'tiladi. Sizga mos vaqtni tanlash imkoniyati mavjud.",
+        "q7": "Bepul sinov darsi bormi?",
+        "a7": "Ha, markazimizda barcha yangi o'quvchilar uchun birinchi sinov darsi butunlay bepul. Bu orqali siz dars jarayoni va o'qituvchi bilan yaqindan tanishishingiz mumkin.",
+        "q8": "Uy vazifalari qanday tekshiriladi?",
+        "a8": "Uy vazifalari har dars oldidan o'qituvchilar va ularning yordamchilari tomonidan qat'iy tekshiriladi. Vazifalarni bajarmaslik o'quv jarayoniga salbiy ta'sir ko'rsatganligi uchun ularga jiddiy yondashamiz.",
+        "q9": "Online o'qish imkoniyati bormi?",
+        "a9": "Albatta, bizda ham an'anaviy oflayn, ham onlayn formatda darslar mavjud. Onlayn darslar ham oflayn darslar kabi interaktiv va samarali o'tiladi.",
+        "q10": "Ustozni almashtirish mumkinmi?",
+        "a10": "Agar sizga dars uslubi tushunarsiz bo'lsa yoki boshqa guruhga o'tishni xohlasangiz, ma'muriyatimizga murojaat qilib bemalol o'qituvchini yoki vaqtni o'zgartirishingiz mumkin."
     },
     "leadForm": {
         "backBtn": "Orqaga qaytish",
@@ -640,7 +652,6 @@
         "p1_f3_desc": "Har kungi uy vazifalari va so'z yodlash jarayoni o'qituvchilar tomonidan qat'iy nazorat qilinadi.",
         "p1_extra_title": "Kutilayotgan Natijalar",
         "p1_extra_desc": "Ushbu tezkor metodika yordamida o'quvchilarimiz odatda 3-4 oy ichida maqsad qilingan IELTS 7.0+ yoki CEFR B2/C1 darajalariga yetishadilar. Hech qanday sehr yo'q – faqat tinimsiz mehnat va to'g'ri yo'nalish.",
-
         "p2_title": "Amaliy Yondashuv",
         "p2_subtitle": "Asosiy tamoyil II",
         "p2_desc": "Darslarimizning asosiy qismi jonli muloqot va so'zlashuv nutqiga qaratilgan bo'lib, bu sizga til to'sig'ini tezroq yengib o'tishga va erkin fikr bildirishga yordam beradi.",
@@ -652,7 +663,6 @@
         "p2_f3_desc": "Turli xil aksentdagi audiolarni tinglash orqali siz nafaqat imtihonga, balki real hayotdagi muloqotga ham tayyor bo'lasiz.",
         "p2_extra_title": "Amaliyot - Muvaffaqiyat Kaliti",
         "p2_extra_desc": "Bizning markazda 'Nazariya 20%, Amaliyot 80%' qoidasi ishlaydi. Faqatgina qoidalarni bilish bilan yuqori ball olib bo'lmaydi, ularni avtomatik tarzda qo'llay olish muhimdir.",
-
         "p3_title": "Mukammallik Sari",
         "p3_subtitle": "Asosiy tamoyil III",
         "p3_desc": "Har bir o'quvchining xato va kamchiliklari ustida yakka tartibda ishlanadi. Bunga qo'shimcha ravishda o'quvchilar muntazam ravishda mock testlaridan o'tadilar, bu esa doimiy ravishda yuqori natijalarga olib keladi.",
@@ -664,7 +674,6 @@
         "p3_f3_desc": "Imtihon hayajonini yengish va vaqtni to'g'ri taqsimlash ko'nikmalarini shakllantiramiz, toki imtihon kuni o'zingizga ishonchingiz komil bo'lsin.",
         "p3_extra_title": "Yakuniy Maqsad",
         "p3_extra_desc": "Mukammallik chegarasi yo'q. Bizning maqsadimiz sizni shunchaki testdan o'tkazish emas, balki ingliz tilini hayotingizning bir qismiga aylantirishdir.",
-        
         "cta": "Testdan O'tish"
     },
     "adminPanel": {
