@@ -6,9 +6,10 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function CdiWritingLayout({ 
   prompt, 
-  essayText,
-  setEssayText,
-  wordCount,
+  essayText1,
+  setEssayText1,
+  essayText2,
+  setEssayText2,
   onExit,
   onSubmit,
   isAnalyzing,
@@ -20,6 +21,12 @@ export default function CdiWritingLayout({
   const [timeLeft, setTimeLeft] = useState(prompt.timeLimit);
   const [isPaused, setIsPaused] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [activeTask, setActiveTask] = useState('task1'); // 'task1' or 'task2'
+
+  const activePrompt = prompt[activeTask];
+  const activeEssayText = activeTask === 'task1' ? essayText1 : essayText2;
+  const setActiveEssayText = activeTask === 'task1' ? setEssayText1 : setEssayText2;
+  const wordCount = activeEssayText.trim().split(/\s+/).filter(Boolean).length;
 
   useEffect(() => {
     setIsDarkMode(document.documentElement.classList.contains('dark'));
@@ -90,6 +97,21 @@ export default function CdiWritingLayout({
         <div className="flex items-center gap-4">
           <h1 className="text-xl lg:text-2xl font-black tracking-wider text-red-500">IELTS</h1>
           <span className="hidden md:inline-block text-sm font-medium text-slate-300 border-l border-slate-600 pl-4">{prompt.title}</span>
+          {/* Tabs */}
+          <div className="ml-4 flex bg-slate-800 rounded-lg p-1">
+             <button 
+                onClick={() => setActiveTask('task1')} 
+                className={`px-4 py-1 rounded-md text-sm font-bold transition-colors ${activeTask === 'task1' ? 'bg-white text-slate-900' : 'text-slate-400 hover:text-white'}`}
+             >
+                Task 1
+             </button>
+             <button 
+                onClick={() => setActiveTask('task2')} 
+                className={`px-4 py-1 rounded-md text-sm font-bold transition-colors ${activeTask === 'task2' ? 'bg-white text-slate-900' : 'text-slate-400 hover:text-white'}`}
+             >
+                Task 2
+             </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-4 lg:gap-6">
@@ -113,7 +135,8 @@ export default function CdiWritingLayout({
                       onClick={() => {
                         toast.dismiss(tToast.id);
                         setTimeLeft(prompt.timeLimit); 
-                        setEssayText("");
+                        setEssayText1("");
+                        setEssayText2("");
                         onClearResult && onClearResult();
                       }}
                     >
@@ -157,21 +180,25 @@ export default function CdiWritingLayout({
 
         {/* Left Pane (Prompt) */}
         <div className="w-full lg:w-1/2 h-[45%] lg:h-full border-b lg:border-b-0 lg:border-r border-slate-300 dark:border-slate-700 bg-white dark:bg-[#1e1e1e] overflow-y-auto custom-scrollbar p-6 lg:p-8 flex flex-col select-none">
-          {prompt.imageUrl && (
+          {activePrompt.imageUrl && (
             <div className="mb-6 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm">
-              <img src={prompt.imageUrl} alt="Prompt visual" className="w-full h-auto object-cover max-h-80" />
+              {activePrompt.imageUrl.startsWith('https://quickchart.io') ? (
+                  <img src={activePrompt.imageUrl} alt="Prompt visual" className="w-full h-auto object-cover max-h-80 bg-white" />
+              ) : (
+                  <img src={activePrompt.imageUrl} alt="Prompt visual" className="w-full h-auto object-cover max-h-80" />
+              )}
             </div>
           )}
           <div className="prose dark:prose-invert max-w-none text-slate-800 dark:text-slate-200">
-            <h2 className="text-2xl font-black mb-4">{prompt.title}</h2>
-            <div className="p-5 bg-slate-100 dark:bg-slate-800/50 rounded-xl border-l-4 border-red-500 font-medium text-lg leading-relaxed shadow-inner">
-              {prompt.promptText}
+            <h2 className="text-2xl font-black mb-4">{activePrompt.type}</h2>
+            <div className="p-5 bg-slate-100 dark:bg-slate-800/50 rounded-xl border-l-4 border-red-500 font-medium text-lg leading-relaxed shadow-inner whitespace-pre-line">
+              {activePrompt.promptText}
             </div>
             
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
               <p className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mb-2">Instructions:</p>
               <ul className="list-disc pl-5 text-slate-600 dark:text-slate-300 space-y-1">
-                {prompt.taskType === 'task1' ? (
+                {activeTask === 'task1' ? (
                   <>
                     <li>Summarize the information by selecting and reporting the main features.</li>
                     <li>Make comparisons where relevant.</li>
@@ -191,8 +218,8 @@ export default function CdiWritingLayout({
         {/* Right Pane (Textarea) */}
         <div className="w-full lg:w-1/2 h-[55%] lg:h-full bg-slate-50 dark:bg-[#121212] overflow-hidden flex flex-col">
           <textarea
-            value={essayText}
-            onChange={(e) => setEssayText(e.target.value)}
+            value={activeEssayText}
+            onChange={(e) => setActiveEssayText(e.target.value)}
             disabled={isAnalyzing || analysisResult}
             placeholder={t('ieltsWriting.placeholder', "Write your essay here...")}
             className="flex-1 w-full p-6 lg:p-8 bg-transparent text-slate-800 dark:text-slate-200 resize-none outline-none text-base lg:text-lg leading-relaxed custom-scrollbar placeholder:text-slate-400 dark:placeholder:text-slate-600"
@@ -206,20 +233,20 @@ export default function CdiWritingLayout({
         <div className="flex items-center gap-4">
           <div className="bg-slate-800 px-4 py-2 rounded-lg font-bold font-mono text-sm shadow-inner border border-slate-700 flex gap-2 items-center">
              <span className="text-slate-400">Word Count:</span>
-             <span className={wordCount < prompt.suggestedWords ? "text-amber-400" : "text-emerald-400"}>
+             <span className={wordCount < activePrompt.suggestedWords ? "text-amber-400" : "text-emerald-400"}>
                {wordCount}
              </span>
           </div>
-          {wordCount < prompt.suggestedWords && (
+          {wordCount < activePrompt.suggestedWords && (
             <span className="text-xs text-amber-500 hidden sm:inline-block font-bold">
-              (Minimum {prompt.suggestedWords} words required)
+              (Minimum {activePrompt.suggestedWords} words required)
             </span>
           )}
         </div>
 
         <button
           onClick={onSubmit}
-          disabled={isAnalyzing || !essayText.trim() || analysisResult}
+          disabled={isAnalyzing || analysisResult}
           className="flex items-center justify-center gap-2 px-6 lg:px-8 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold transition-all shadow-lg shadow-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isAnalyzing ? (
@@ -252,7 +279,7 @@ export default function CdiWritingLayout({
                   <div>
                       <h3 className="text-xl font-black text-gray-900 dark:text-white">Your Result</h3>
                       <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 mt-1">
-                          {analysisResult.wordCount} words | {prompt.type}
+                          Full Mock Exam
                       </p>
                   </div>
                   <div className="text-center sm:text-right">
