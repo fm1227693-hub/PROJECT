@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaTimes, FaTelegramPlane, FaStar, FaGraduationCap, FaArrowRight, FaClock, FaAward } from "react-icons/fa";
+import { HiArrowLeft } from 'react-icons/hi';
 
 const staticMentorsData = [
     {
@@ -238,18 +239,15 @@ Telefon: +998 ${formData.phone}
                 <div className="max-w-3xl mx-auto space-y-6">
                     
                     {/* Back button */}
-                    <div className="sticky top-6 z-30">
-                        <button
-                            onClick={() => setActiveMentorDetail(null)}
-                            className="inline-flex items-center gap-2.5 bg-white/90 dark:bg-slate-900/90 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white backdrop-blur-2xl border border-slate-200 dark:border-white/15 hover:border-red-500/50 px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer shadow-2xl active:scale-95 group"
-                        >
-                            <span className="text-red-500 text-lg transition-transform group-hover:-translate-x-1">←</span>
-                            <span>{t('mentorsPage.backBtn', "Orqaga qaytish")}</span>
-                        </button>
-                    </div>
+                    <button 
+                        onClick={() => setActiveMentorDetail(null)}
+                        className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
+                    >
+                        <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
+                    </button>
 
                     {/* Main Detail Glass Card */}
-                    <div className="relative overflow-hidden bg-white dark:bg-gradient-to-b dark:from-slate-900/95 dark:via-slate-900/90 dark:to-[#070b14]/95 backdrop-blur-3xl border border-slate-200 dark:border-white/10 rounded-[40px] p-6 sm:p-10 shadow-2xl shadow-slate-200/80 dark:shadow-black/60 space-y-8">
+                    <div className="relative overflow-hidden bg-white dark:bg-white/[0.03] backdrop-blur-3xl border border-slate-200 dark:border-white/10 rounded-[40px] p-6 sm:p-10 shadow-2xl shadow-slate-200/80 dark:shadow-black/40 space-y-8">
                         
                         {/* Ambient glow lights */}
                         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-red-600/25 via-rose-600/15 to-transparent rounded-full blur-3xl pointer-events-none" />

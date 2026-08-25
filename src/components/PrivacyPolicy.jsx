@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { FaShieldAlt, FaLock, FaUserCheck, FaServer, FaArrowLeft, FaHome, FaCheckCircle } from 'react-icons/fa'
+import { FaShieldAlt, FaLock, FaUserCheck, FaServer, FaHome, FaCheckCircle } from 'react-icons/fa'
+import { HiArrowLeft } from 'react-icons/hi'
 
 export default function PrivacyPolicy() {
     const { t } = useTranslation()
@@ -15,12 +16,11 @@ export default function PrivacyPolicy() {
     return (
         <>
             {/* Back button fixed top left */}
-            <Link
+            <Link 
                 to="/"
-                className="fixed top-28 sm:top-32 left-4 sm:left-8 z-50 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all cursor-pointer hover:-translate-x-1"
+                className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
             >
-                <span className="text-base xs:text-lg leading-none">←</span>
-                <span>{t('common.backBtn') || 'Orqaga'}</span>
+                <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
             </Link>
 
             <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-['Plus_Jakarta_Sans',sans-serif]">
