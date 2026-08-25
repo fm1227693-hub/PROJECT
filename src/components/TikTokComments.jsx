@@ -17,6 +17,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     const [score, setScore] = useState('IELTS 7.5')
     const [loading, setLoading] = useState(false)
     const [submitting, setSubmitting] = useState(false)
+    const [showAll, setShowAll] = useState(false)
 
     // Predefined vibrant gradients for user avatars
     const avatarGradients = [
@@ -169,28 +170,41 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
         }
     }
 
-    if (!isOpen) {
-        return (
-            <div className="flex justify-center my-6 font-['Plus_Jakarta_Sans',sans-serif]">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsOpen(true)}
-                    className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all cursor-pointer border border-red-400/30"
-                >
-                    <FaComments className="text-base animate-bounce" />
-                    <span>{t('studentCommentsORG.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-mono font-bold">
-                        {CommentsORG.length}
-                    </span>
-                    <FaChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
-                </motion.button>
-            </div>
-        )
-    }
-
     return (
-        <div className="w-full max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-white select-none transition-all duration-300">
+        <div className="w-full max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif] my-6">
+            <AnimatePresence mode="wait">
+                {!isOpen ? (
+                    <motion.div
+                        key="closed-btn"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.25 }}
+                        className="flex justify-center"
+                    >
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsOpen(true)}
+                            className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all cursor-pointer border border-red-400/30"
+                        >
+                            <FaComments className="text-base animate-bounce" />
+                            <span>{t('studentCommentsORG.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-mono font-bold">
+                                {CommentsORG.length}
+                            </span>
+                            <FaChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
+                        </motion.button>
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="open-comments"
+                        initial={{ opacity: 0, height: 0, y: -20 }}
+                        animate={{ opacity: 1, height: 'auto', y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -20 }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="w-full text-gray-900 dark:text-white select-none overflow-hidden"
+                    >
 
             {/* Header section */}
             <div className="flex items-center justify-between p-4 sm:p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-t-3xl border-t border-x border-gray-200 dark:border-gray-800 shadow-md">
@@ -230,7 +244,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
             </div>
 
             {/* CommentsORG Scrollable List */}
-            <div className="bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border-x border-gray-200 dark:border-gray-800 max-h-[220px] overflow-y-auto p-4 sm:p-6 space-y-4 divide-y divide-gray-100 dark:divide-gray-800/60">
+            <div className={`bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl border-x border-gray-200 dark:border-gray-800 ${showAll ? 'max-h-none' : 'max-h-[220px]'} overflow-y-auto p-4 sm:p-6 space-y-4 divide-y divide-gray-100 dark:divide-gray-800/60 transition-all duration-300`}>
                 {CommentsORG.length === 0 ? (
                     <div className="py-12 text-center space-y-3">
                         <FaCommentDots className="text-4xl animate-bounce text-gray-400 mx-auto" />
@@ -340,6 +354,22 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                 )}
             </div>
 
+            {/* View all / Hide button */}
+            {CommentsORG.length > 3 && (
+                <div className="bg-white/60 dark:bg-gray-950/60 border-x border-gray-200 dark:border-gray-800 flex justify-center py-2 relative z-10 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.02)]">
+                    <button 
+                        onClick={() => setShowAll(!showAll)}
+                        className="text-[11px] font-bold text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors cursor-pointer flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gray-100/50 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    >
+                        {showAll ? (
+                            <>{t('studentCommentsORG.closeBtn')} <FaChevronUp className="text-[9px]" /></>
+                        ) : (
+                            <>{t('studentCommentsORG.viewAllBtn')} ({CommentsORG.length}) <FaChevronDown className="text-[9px]" /></>
+                        )}
+                    </button>
+                </div>
+            )}
+
             {/* Bottom Add Comment Bar */}
             <form
                 onSubmit={handleAddComment}
@@ -375,6 +405,9 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                 </div>
             </form>
 
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }

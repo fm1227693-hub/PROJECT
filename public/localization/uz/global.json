@@ -638,7 +638,9 @@
         "reply": "Javob berish",
         "closeReplies": "Javoblarni yopish",
         "viewReplies": "ta javobni ko'rish",
-        "justNow": "Hozirgina"
+        "justNow": "Hozirgina",
+        "viewAllBtn": "Barcha izohlarni ko'rish",
+        "closeBtn": "Yopish"
     },
     "principles": {
         "p1_title": "Tezkor Natija",

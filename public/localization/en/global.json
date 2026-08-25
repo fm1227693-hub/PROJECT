@@ -559,7 +559,9 @@
         "reply": "Reply",
         "closeReplies": "Close replies",
         "viewReplies": "replies",
-        "justNow": "Just now"
+        "justNow": "Just now",
+        "viewAllBtn": "View all comments",
+        "closeBtn": "Close"
     },
     "principles": {
         "p1_title": "Fast Results",

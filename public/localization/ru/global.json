@@ -560,7 +560,9 @@
         "reply": "Ответить",
         "closeReplies": "Скрыть ответы",
         "viewReplies": "ответов",
-        "justNow": "Только что"
+        "justNow": "Только что",
+        "viewAllBtn": "Посмотреть все комментарии",
+        "closeBtn": "Закрыть"
     },
     "principles": {
         "p1_title": "Быстрый Результат",
