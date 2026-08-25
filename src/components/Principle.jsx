@@ -42,6 +42,14 @@ export default function Principle() {
             <div className={`absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-bl ${config.bgGradient} rounded-full blur-[80px] sm:blur-[120px] -z-10`} />
             <div className={`absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-tr ${config.bgGradient} rounded-full blur-[80px] sm:blur-[120px] -z-10`} />
 
+            {/* Back Button (Fixed on the left) */}
+            <button 
+                onClick={() => navigate(-1)}
+                className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
+            >
+                <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
+            </button>
+
             <div className="max-w-4xl mx-auto w-full">
 
 
@@ -52,6 +60,8 @@ export default function Principle() {
                     className="relative group p-6 sm:p-10 md:p-12"
                 >
                     <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-red-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-red-500/10 transition-colors duration-700" />
+
+
 
                     {/* Header Section */}
                     <div className="flex flex-col items-start border-b border-slate-200 dark:border-slate-800 pb-8 mb-8">

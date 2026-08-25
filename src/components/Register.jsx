@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle, FaArrowLeft } from 'react-icons/fa';
+import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { HiArrowLeft } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -132,12 +133,9 @@ export default function Register() {
             <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="fixed top-24 sm:top-28 left-4 sm:left-8 z-50 inline-flex items-center gap-2 sm:gap-3 px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-xl border border-gray-200/80 dark:border-white/10 rounded-full shadow-lg hover:shadow-red-500/20 hover:border-red-500/30 dark:hover:border-red-500/30 text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 cursor-pointer group hover:-translate-y-0.5"
+                className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
             >
-                <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 dark:bg-white/5 group-hover:bg-red-50 dark:group-hover:bg-red-500/10 transition-colors">
-                    <FaArrowLeft className="text-[10px] sm:text-xs group-hover:-translate-x-1 transition-transform duration-300" />
-                </div>
-                {t('common.backBtn')}
+                <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
             </button>
 
             <motion.div

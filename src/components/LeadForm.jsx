@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaSpinner, FaArrowRight, FaTimes, FaArrowLeft } from 'react-icons/fa'
+import { HiArrowLeft } from 'react-icons/hi'
 import axios from 'axios'
 import { IMaskInput } from 'react-imask';
 
@@ -108,17 +109,12 @@ export default function LeadForm() {
             {/* Asosiy Forma qismi */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6 select-none pt-24 sm:pt-28 lg:pt-32">
                 {/* Orqaga qaytish tugmasi */}
-                <div className="mb-6 flex">
-                    <button
-                        onClick={handleGoBack}
-                        className="inline-flex items-center gap-3 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-all cursor-pointer group"
-                    >
-                        <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-800/80 shadow-sm border border-gray-200 dark:border-gray-700 group-hover:border-red-500 dark:group-hover:border-red-500 group-hover:text-red-500 transition-all duration-300">
-                            <FaArrowLeft className="text-sm group-hover:-translate-x-0.5 transition-transform duration-300" />
-                        </span>
-                        <span className="text-sm font-bold tracking-wide">{t('common.backBtn') || 'Orqaga'}</span>
-                    </button>
-                </div>
+                <button 
+                    onClick={handleGoBack}
+                    className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
+                >
+                    <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
+                </button>
 
                 <div className="relative glass-card p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] shadow-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden transition-all duration-300">
                     
