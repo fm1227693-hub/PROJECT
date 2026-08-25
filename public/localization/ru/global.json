@@ -787,7 +787,26 @@
         "p14Title": "Task 2: Уголовное правосудие и реабилитация",
         "p14Prompt": "The primary purpose of prisons should be to punish criminals rather than to rehabilitate them. To what extent do you agree or disagree?",
         "p15Title": "Task 1: Диаграмма процесса - Производство кофе",
-        "p15Prompt": "The diagram illustrates the stages of commercial coffee production, from harvesting beans to final packaging. Summarize the information by reporting the main features."
+        "p15Prompt": "The diagram illustrates the stages of commercial coffee production, from harvesting beans to final packaging. Summarize the information by reporting the main features.",
+        "placeholder": "Напишите свое эссе здесь... Сформулируйте введение, основные абзацы и заключение в соответствии с критериями IELTS.",
+        "examPaused": "Экзамен приостановлен",
+        "resume": "Продолжить",
+        "analyzing": "ИИ анализирует...",
+        "resultTitle": "Результат оценки IELTS",
+        "overallBand": "Общий балл",
+        "taskResp": "Задача (TR)",
+        "coherence": "Логика (CC)",
+        "lexical": "Словарный (LR)",
+        "grammar": "Грамматика (GRA)",
+        "strengths": "Сильные стороны",
+        "improvements": "Рекомендации",
+        "submitTest": "Завершить тест",
+        "instructionsTitle": "Инструкции:",
+        "t1Instruction1": "Обобщите информацию, выбрав и сообщив об основных характеристиках.",
+        "t1Instruction2": "Делайте сравнения там, где это уместно.",
+        "t1Instruction3": "Напишите не менее 150 слов.",
+        "t2Instruction1": "Обоснуйте свой ответ и приведите соответствующие примеры из собственных знаний или опыта.",
+        "t2Instruction2": "Напишите не менее 250 слов."
     },
     "flashcard": {
         "flipInstruction": "Нажмите, чтобы перевернуть"

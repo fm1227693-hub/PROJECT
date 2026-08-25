@@ -153,7 +153,7 @@ export default function CdiWritingLayout({
       {/* MAIN CONTENT SPLIT */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
         
-        {isPaused && !analysisResult && (
+        {isPaused && !analysisResult && !isAnalyzing && (
           <div className="absolute inset-0 z-50 bg-[#141518]/80 backdrop-blur-sm flex items-center justify-center">
             <div className="bg-[#1f212a] p-8 rounded-2xl text-center shadow-2xl border border-[#262c36]">
               <h2 className="text-2xl font-bold mb-4 text-white">{t("ieltsWriting.examPaused", "Exam Paused")}</h2>
@@ -161,6 +161,72 @@ export default function CdiWritingLayout({
                 {t("ieltsWriting.resume", "Resume")}
               </button>
             </div>
+          </div>
+        )}
+
+        {isAnalyzing && (
+          <div className="absolute inset-0 z-50 bg-[#141518]/80 backdrop-blur-sm flex items-center justify-center">
+             <div className="bg-[#1f212a] p-8 rounded-2xl text-center border border-[#353846]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ed1b24] mx-auto mb-4"></div>
+                <h2 className="text-xl font-bold text-white">{t("ieltsWriting.analyzing", "AI tahlil qilmoqda...")}</h2>
+             </div>
+          </div>
+        )}
+
+        {analysisResult && (
+          <div className="absolute inset-0 z-[60] bg-[#141518]/90 backdrop-blur-md flex items-center justify-center p-4 lg:p-8 overflow-y-auto">
+             <div className="bg-[#1f212a] border border-[#353846] rounded-2xl w-full max-w-4xl p-6 lg:p-10 shadow-2xl my-auto">
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-3xl font-black text-white flex items-center gap-3">
+                        <FaAward className="text-[#ed1b24]" /> {t("ieltsWriting.resultTitle", "IELTS Baholash Natijasi")}
+                    </h2>
+                    <button onClick={onClearResult} className="text-slate-400 hover:text-white p-2">
+                        <FaTimes className="text-2xl" />
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                    <div className="bg-[#141518] border border-[#ed1b24]/50 rounded-xl p-4 text-center shadow-[0_0_15px_rgba(237,27,36,0.1)]">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{t("ieltsWriting.overallBand", "Overall")}</div>
+                        <div className="text-4xl font-black text-[#ed1b24]">{analysisResult.overallBand}</div>
+                    </div>
+                    <div className="bg-[#141518] border border-[#353846] rounded-xl p-4 text-center">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{t("ieltsWriting.taskResp", "Task Resp.")}</div>
+                        <div className="text-2xl font-bold text-white">{analysisResult.taskResponse}</div>
+                    </div>
+                    <div className="bg-[#141518] border border-[#353846] rounded-xl p-4 text-center">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{t("ieltsWriting.coherence", "Coherence")}</div>
+                        <div className="text-2xl font-bold text-white">{analysisResult.coherence}</div>
+                    </div>
+                    <div className="bg-[#141518] border border-[#353846] rounded-xl p-4 text-center">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{t("ieltsWriting.lexical", "Lexical")}</div>
+                        <div className="text-2xl font-bold text-white">{analysisResult.lexical}</div>
+                    </div>
+                    <div className="bg-[#141518] border border-[#353846] rounded-xl p-4 text-center">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{t("ieltsWriting.grammar", "Grammar")}</div>
+                        <div className="text-2xl font-bold text-white">{analysisResult.grammar}</div>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-[#141518] border border-green-900/30 rounded-xl p-6">
+                        <h3 className="text-lg font-bold text-green-500 mb-4 flex items-center gap-2">
+                            <FaCheckCircle /> {t("ieltsWriting.strengths", "Kuchli taraflari")}
+                        </h3>
+                        <ul className="list-disc pl-5 text-slate-300 space-y-2 text-sm">
+                            {analysisResult.strengths?.map((s, i) => <li key={i}>{s}</li>)}
+                        </ul>
+                    </div>
+                    <div className="bg-[#141518] border border-amber-900/30 rounded-xl p-6">
+                        <h3 className="text-lg font-bold text-amber-500 mb-4 flex items-center gap-2">
+                            <FaLightbulb /> {t("ieltsWriting.improvements", "Maslahatlar")}
+                        </h3>
+                        <ul className="list-disc pl-5 text-slate-300 space-y-2 text-sm">
+                            {analysisResult.improvements?.map((s, i) => <li key={i}>{s}</li>)}
+                        </ul>
+                    </div>
+                </div>
+             </div>
           </div>
         )}
 
@@ -185,18 +251,18 @@ export default function CdiWritingLayout({
             </p>
             
             <div className="mt-8 pt-6 border-t border-[#353846]">
-              <p className="text-sm text-slate-400 font-bold uppercase tracking-wider mb-3">Instructions:</p>
+              <p className="text-sm text-slate-400 font-bold uppercase tracking-wider mb-3">{t("ieltsWriting.instructionsTitle", "Instructions:")}</p>
               <ul className="list-disc pl-5 text-slate-300 space-y-2">
                 {activeTask === 'task1' ? (
                   <>
-                    <li>Summarize the information by selecting and reporting the main features.</li>
-                    <li>Make comparisons where relevant.</li>
-                    <li>Write at least 150 words.</li>
+                    <li>{t("ieltsWriting.t1Instruction1", "Summarize the information by selecting and reporting the main features.")}</li>
+                    <li>{t("ieltsWriting.t1Instruction2", "Make comparisons where relevant.")}</li>
+                    <li>{t("ieltsWriting.t1Instruction3", "Write at least 150 words.")}</li>
                   </>
                 ) : (
                   <>
-                    <li>Give reasons for your answer and include any relevant examples from your own knowledge or experience.</li>
-                    <li>Write at least 250 words.</li>
+                    <li>{t("ieltsWriting.t2Instruction1", "Give reasons for your answer and include any relevant examples from your own knowledge or experience.")}</li>
+                    <li>{t("ieltsWriting.t2Instruction2", "Write at least 250 words.")}</li>
                   </>
                 )}
               </ul>

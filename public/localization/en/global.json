@@ -786,7 +786,26 @@
         "p14Title": "Task 2: Criminal Justice and Rehabilitation",
         "p14Prompt": "The primary purpose of prisons should be to punish criminals rather than to rehabilitate them. To what extent do you agree or disagree?",
         "p15Title": "Task 1: Process Diagram - Coffee Production",
-        "p15Prompt": "The diagram illustrates the stages of commercial coffee production, from harvesting beans to final packaging. Summarize the information by reporting the main features."
+        "p15Prompt": "The diagram illustrates the stages of commercial coffee production, from harvesting beans to final packaging. Summarize the information by reporting the main features.",
+        "placeholder": "Write your essay here... Structure your introduction, main body paragraphs, and conclusion according to IELTS criteria.",
+        "examPaused": "Exam Paused",
+        "resume": "Resume",
+        "analyzing": "AI is analyzing...",
+        "resultTitle": "IELTS Assessment Result",
+        "overallBand": "Overall Band",
+        "taskResp": "Task Resp.",
+        "coherence": "Coherence",
+        "lexical": "Lexical",
+        "grammar": "Grammar",
+        "strengths": "Strengths",
+        "improvements": "Areas for Improvement",
+        "submitTest": "Submit Test",
+        "instructionsTitle": "Instructions:",
+        "t1Instruction1": "Summarize the information by selecting and reporting the main features.",
+        "t1Instruction2": "Make comparisons where relevant.",
+        "t1Instruction3": "Write at least 150 words.",
+        "t2Instruction1": "Give reasons for your answer and include any relevant examples from your own knowledge or experience.",
+        "t2Instruction2": "Write at least 250 words."
     },
     "flashcard": {
         "flipInstruction": "Click to flip back"

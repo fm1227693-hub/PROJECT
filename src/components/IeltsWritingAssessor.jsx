@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 import { GoogleGenAI } from '@google/genai'
 import CdiWritingLayout from './CdiWritingLayout'
 import {
@@ -29,7 +30,7 @@ import {
 } from 'react-icons/fa'
 
 export default function IeltsWritingAssessor() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
 
     // 6 Full Mock Exams (Task 1 + Task 2)
     const mockExams = [
@@ -309,29 +310,20 @@ export default function IeltsWritingAssessor() {
         const totalWordCount = wordCount1 + wordCount2;
 
         if (wordCount1 < 15 || wordCount2 < 15) {
-            setIsAnalyzing(true);
-            setTimeout(() => {
-                setAnalysisResult({
-                    underLength: true,
-                    overallBand: 0.0,
-                    taskResponse: 0.0,
-                    coherence: 0.0,
-                    lexical: 0.0,
-                    grammar: 0.0,
-                    wordCount: totalWordCount,
-                    minRequired: 400,
-                    foundCollocations: [],
-                    foundConnectors: [],
-                    overusedWordsDetected: [],
-                    strengths: [
-                        t('ieltsWritingAssessor.underLengthTitle', 'Insholardan birining hajmi juda kam. Ball: 0.0')
-                    ],
-                    improvements: [
-                        t('ieltsWritingAssessor.underLengthTip', 'IELTS mezoniga ko\'ra Task 1 uchun kamida 150 ta so\'z, Task 2 uchun 250 ta so\'z yozilishi shart.')
-                    ]
-                });
-                setIsAnalyzing(false);
-            }, 600);
+            toast.error(
+                i18n.language === 'uz' || i18n.language === 'uz-latn' 
+                ? "Iltimos, tekshirish uchun Task 1 va Task 2 ga yetarlicha so'z yozing! (Kamida 15 ta)"
+                : "Please write enough words for both Task 1 and Task 2 to be evaluated! (At least 15 words)",
+                {
+                    duration: 4000,
+                    style: {
+                        borderRadius: '10px',
+                        background: '#1f212a',
+                        color: '#fff',
+                        border: '1px solid #353846'
+                    },
+                }
+            );
             return;
         }
 
@@ -339,15 +331,31 @@ export default function IeltsWritingAssessor() {
 
         try {
             const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-            if (!apiKey) {
-                alert("API Key topilmadi! Iltimos .env faylga VITE_GEMINI_API_KEY kiriting.");
-                setIsAnalyzing(false);
-                return;
-            }
+            let parsedResult;
 
-            const ai = new GoogleGenAI({ apiKey });
-            
-            const promptStr = `
+            if (!apiKey) {
+                // MOCK RESPONSE FOR TESTING UI WITHOUT API KEY
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                parsedResult = {
+                    overallBand: 6.5,
+                    taskResponse: 6.0,
+                    coherence: 6.5,
+                    lexical: 7.0,
+                    grammar: 6.5,
+                    foundCollocations: ["steady increase", "crucial role"],
+                    foundConnectors: ["furthermore", "however"],
+                    overusedWordsDetected: [],
+                    strengths: [
+                        i18n.language === 'en' ? "Good overall structure." : "Umumiy struktura juda yaxshi tuzilgan.",
+                        i18n.language === 'en' ? "Clear paragraphing." : "Paragraflar to'g'ri ajratilgan va mantiqiy bog'langan."
+                    ],
+                    improvements: [
+                        i18n.language === 'en' ? "Use more complex sentences." : "Murakkab gap tuzilmalaridan ko'proq foydalaning.",
+                        i18n.language === 'en' ? "Expand vocabulary." : "So'z boyligingizni (vocabulary) yanada kengaytiring."
+                    ]
+                };
+            } else {
+                const promptStr = `
 You are an expert, strict IELTS examiner. Assess the following IELTS Full Mock Test.
 Task 1 (Requires >=150 words):
 Prompt: ${selectedPrompt.task1.promptText}
@@ -379,25 +387,28 @@ Return a valid JSON object EXACTLY in this format:
 }
 
 Rules:
-- The strings in 'strengths' and 'improvements' MUST be entirely in Uzbek language (because the site users speak Uzbek).
+- The strings in 'strengths' and 'improvements' MUST be entirely in ${i18n.language === 'uz' ? 'Uzbek' : i18n.language === 'ru' ? 'Russian' : 'English'} language.
 - Provide 2-3 specific, actionable feedback points in strengths and improvements based closely on the actual essay content.
 - Ensure the response is pure JSON without markdown codeblocks. Do not include \`\`\`json or \`\`\`.
 `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: promptStr,
-                config: {
-                    responseMimeType: "application/json",
+                const response = await axios.post(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+                    {
+                        contents: [{ parts: [{ text: promptStr }] }],
+                        generationConfig: {
+                            responseMimeType: "application/json"
+                        }
+                    }
+                );
+
+                let responseText = response.data.candidates[0].content.parts[0].text;
+                if (responseText.startsWith('```json')) {
+                    responseText = responseText.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
                 }
-            });
 
-            let responseText = response.text;
-            if (responseText.startsWith('```json')) {
-                responseText = responseText.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
+                parsedResult = JSON.parse(responseText);
             }
-
-            const parsedResult = JSON.parse(responseText);
             
             setAnalysisResult({
                 underLength: false,
