@@ -172,7 +172,7 @@ export default function CdiWritingLayout({
           {activePrompt.imageUrl && (
             <div className="mb-8 rounded-xl overflow-hidden shadow-sm flex justify-center bg-white p-4">
               {activePrompt.imageUrl.startsWith('https://quickchart.io') ? (
-                  <img src={activePrompt.imageUrl + (activePrompt.imageUrl.includes('?') ? '&' : '?') + 'w=1200&h=600&devicePixelRatio=2.0'} alt="Prompt visual" className="w-full h-auto object-contain" />
+                  <img src={activePrompt.imageUrl + (activePrompt.imageUrl.includes('?') ? '&' : '?') + 'w=600&h=300&devicePixelRatio=2.0'} alt="Prompt visual" className="w-full h-auto object-contain" />
               ) : (
                   <img src={activePrompt.imageUrl} alt="Prompt visual" className="w-full h-auto object-contain" />
               )}
