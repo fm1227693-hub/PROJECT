@@ -37,10 +37,10 @@ export default function Game7() {
         setSelectedOption(option);
 
         if (option === currentItem.correct) {
-            setMessage({ type: 'success', text: "To'g'ri topdingiz!" });
+            setMessage({ type: 'success', text: t("gamesPage.games.synonymFinder.correct") });
             setScore(prev => prev + 1);
         } else {
-            setMessage({ type: 'error', text: "Xato. To'g'ri javob: " + currentItem.correct });
+            setMessage({ type: 'error', text: t("gamesPage.games.synonymFinder.incorrect") + currentItem.correct });
         }
     };
 
@@ -76,7 +76,7 @@ export default function Game7() {
                     Sinonimni Toping
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 px-2">
-                    Berilgan so'zning ma'nodoshini (sinonimini) toping.
+                    {t("gamesPage.games.synonymFinder.gameDesc")}
                 </p>
             </div>
 
@@ -88,7 +88,7 @@ export default function Game7() {
                     <div>
                         <div className="flex justify-between items-center mb-4 text-xs font-bold text-gray-400">
                             <span className="bg-red-500/10 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-full">
-                                Ball: {score}
+                                {t("gamesPage.common.score")} {score}
                             </span>
                             <span>
                                 {currentIndex + 1} / {synonymList.length}
@@ -104,7 +104,7 @@ export default function Game7() {
                                 className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 mb-4 text-center shadow-lg shadow-amber-500/20 text-white"
                             >
                                 <span className="block text-[10px] uppercase font-bold tracking-widest opacity-80 mb-1">
-                                    Shu so'zga sinonim toping:
+                                    {t("gamesPage.games.synonymFinder.label")}
                                 </span>
                                 <span className="text-3xl sm:text-4xl font-black tracking-widest drop-md">
                                     {currentItem.word.toUpperCase()}
@@ -173,7 +173,7 @@ export default function Game7() {
                                 onClick={handleNext}
                                 className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 text-sm"
                             >
-                                Keyingisi <FaCheckCircle />
+                                {t("gamesPage.common.next")} <FaCheckCircle />
                             </motion.button>
                         )}
                     </div>
@@ -196,7 +196,7 @@ export default function Game7() {
                             onClick={restartGame}
                             className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-amber-500/20 text-sm"
                         >
-                            <FaRedo /> Qaytadan o'ynash
+                            <FaRedo /> {t("gamesPage.common.playAgain")}
                         </button>
                     </motion.div>
                 )}

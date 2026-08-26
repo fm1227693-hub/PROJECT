@@ -489,48 +489,45 @@
         "timeUpToast": "Vaqt tugadi!"
     },
     "games": {
-        "title": "Mini o'yinlar",
-        "subtitle": "Ingliz tilini o'yin tarzida o'rganing va so'z boyligingizni oshiring",
+        "title": "O'yinlar",
         "wordScramble": {
-            "title": "So'zni topish (Word Scramble)",
+            "title": "Word Scramble",
             "description": "Aralashib ketgan harflardan to'g'ri inglizcha so'zni tuzing.",
+            "correct": "To'g'ri topdingiz!",
+            "incorrect": "Xato, qaytadan urinib ko'ring.",
             "scrambledLabel": "Aralash so'z:",
             "placeholder": "Javobingizni yozing...",
             "check": "Tekshirish",
-            "next": "Keyingisi",
-            "correct": "Barakalla! To'g'ri topdingiz.",
-            "incorrect": "Xato, qaytadan urinib ko'ring!"
+            "next": "Keyingisi"
         }
     },
     "games1": {
-        "title": "Krestik-Nolik",
-        "subtitle": "Do'stingiz bilan birgalikda o'ynang va g'olibni aniqlang!",
-        "turn": "Navbat:",
+        "title": "Tic Tac Toe",
+        "subtitle": "Bo'sh vaqt uchun",
         "winner": "G'olib:",
-        "draw": "Durang! 🤝",
-        "reset": "Qayta boshlash"
+        "draw": "Durang!",
+        "turn": "Navbat:",
+        "reset": "Qaytadan"
     },
     "game2": {
-        "title": "Ingliz tili Daraja Testi",
-        "subtitle": "Savollar osondan qiyinga qarab boradi. Bilimingizni sinang!",
+        "title": "Grammar Quiz",
+        "subtitle": "Grammatika bo'yicha testlar",
         "level": "Daraja:",
         "question": "Savol",
         "of": "/",
-        "scoreText": "To'g'ri javoblar:",
-        "restart": "Qayta boshlash",
-        "finishTitle": "Test Yakunlandi! 🎉",
-        "resultText": "Siz 20 ta savoldan {score} ta to'g'ri topdingiz."
+        "finishTitle": "Test yakunlandi!",
+        "resultText": "Siz {score} ball to'pladingiz",
+        "restart": "Qaytadan"
     },
     "game3": {
-        "title": "So'zlarni Topish O'yini",
-        "subtitle": "Inglizcha so'zlarning to'g'ri tarjimasini toping va tezligingizni sinang!",
-        "score": "Ball:",
-        "streak": "Seriya:",
-        "question": "So'z",
+        "title": "Memory Game",
+        "subtitle": "So'zlarni yodda saqlash mashqi",
+        "streak": "Ketma-ketlik:",
+        "question": "Savol",
         "of": "/",
-        "restart": "Qayta boshlash",
-        "finishTitle": "O'yin Yakunlandi! 🏆",
-        "resultText": "Siz {{score}} ta so'zni muvaffaqiyatli topdingiz!"
+        "finishTitle": "O'yin yakunlandi!",
+        "resultText": "Siz {score} ball to'pladingiz",
+        "restart": "Qaytadan"
     },
     "levelTest": {
         "badge": "Darajani aniqlash",
@@ -931,5 +928,80 @@
         "badge3": "Speaking",
         "studentsTitle": "O'quvchilar Natijalari",
         "seeAllBtn": "Barchasi"
+    },
+    "gamesPage": {
+        "badge": "O'yinlar",
+        "title": "Ingliz tilini o'ynab o'rganamiz",
+        "subtitle": "O'zingizga yoqqan o'yinni tanlang va bilimingizni sinab ko'ring",
+        "backBtn": "Ortga qaytish",
+        "games": {
+            "wordScramble": {
+                "title": "Word Scramble",
+                "desc": "So'zlarni to'g'ri yig'ing",
+                "gameTitle": "So'zni topish (Word Scramble)",
+                "gameDesc": "Aralashib ketgan harflardan to'g'ri inglizcha so'zni tuzing.",
+                "scrambledLabel": "Aralash so'z:",
+                "placeholder": "Javobingizni yozing...",
+                "correct": "To'g'ri topdingiz!",
+                "incorrect": "Xato, qaytadan urinib ko'ring."
+            },
+            "vocabMatch": {
+                "title": "Vocabulary Match",
+                "desc": "So'zlarni va ma'nolarini moslang"
+            },
+            "grammarQuiz": {
+                "title": "Grammar Quiz",
+                "desc": "Grammatika bo'yicha testlar"
+            },
+            "memoryGame": {
+                "title": "Memory Game",
+                "desc": "So'zlarni yodda saqlash mashqi"
+            },
+            "sentenceBuilder": {
+                "title": "Sentence Builder",
+                "desc": "So'zlardan to'g'ri gap tuzing",
+                "gameTitle": "Gap Tuzish",
+                "gameDesc": "So'zlarni to'g'ri ketma-ketlikda joylashtirib mantiqiy gap tuzing.",
+                "placeholder": "So'zlarni bu yerga yig'ing...",
+                "errorAllWords": "Hamma so'zlarni ishlating!",
+                "errorOrder": "Ketma-ketlik noto'g'ri, qaytadan urinib ko'ring.",
+                "correct": "To'g'ri topdingiz!"
+            },
+            "missingLetters": {
+                "title": "Missing Letters",
+                "desc": "Tushib qolgan harflarni toping",
+                "gameTitle": "Harflarni Topish",
+                "gameDesc": "So'zdagi tushib qolgan harflarni topib, to'liq so'zni yozing.",
+                "label": "Tushib qolgan harflar",
+                "placeholder": "To'liq so'zni yozing...",
+                "correct": "To'g'ri topdingiz!",
+                "incorrect": "Xato, qaytadan urinib ko'ring."
+            },
+            "oddOneOut": {
+                "title": "Odd One Out",
+                "desc": "Ortiqchasini toping",
+                "gameTitle": "Ortiqchasini Toping",
+                "gameDesc": "Berilgan 4 ta so'zdan mantiqan guruhga kirmaydigan bittasini tanlang.",
+                "correct": "To'g'ri! Ortiqcha so'z: ",
+                "incorrect": "Xato. Ortiqcha so'z: "
+            },
+            "synonymFinder": {
+                "title": "Synonym Finder",
+                "desc": "So'zlarning ma'nodoshini toping",
+                "gameTitle": "Sinonimni Toping",
+                "gameDesc": "Berilgan so'zning ma'nodoshini (sinonimini) toping.",
+                "label": "Shu so'zga sinonim toping:",
+                "correct": "To'g'ri topdingiz!",
+                "incorrect": "Xato. To'g'ri javob: "
+            }
+        },
+        "common": {
+            "score": "Ball:",
+            "check": "Tekshirish",
+            "next": "Keyingisi",
+            "greatResult": "Ajoyib natija!",
+            "totalScore": "Jami ball:",
+            "playAgain": "Qaytadan o'ynash"
+        }
     }
 }

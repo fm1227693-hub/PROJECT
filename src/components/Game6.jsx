@@ -37,10 +37,10 @@ export default function Game6() {
         setSelectedWord(word);
 
         if (word === currentItem.odd) {
-            setMessage({ type: 'success', text: "To'g'ri! Ortiqcha so'z: " + word });
+            setMessage({ type: 'success', text: t("gamesPage.games.oddOneOut.correct") + word });
             setScore(prev => prev + 1);
         } else {
-            setMessage({ type: 'error', text: "Xato. Ortiqcha so'z: " + currentItem.odd + " edi." });
+            setMessage({ type: 'error', text: t("gamesPage.games.oddOneOut.incorrect") + currentItem.odd });
         }
     };
 
@@ -76,7 +76,7 @@ export default function Game6() {
                     Ortiqchasini Toping
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 px-2">
-                    Berilgan 4 ta so'zdan mantiqan guruhga kirmaydigan bittasini tanlang.
+                    {t("gamesPage.games.oddOneOut.gameDesc")}
                 </p>
             </div>
 
@@ -88,7 +88,7 @@ export default function Game6() {
                     <div>
                         <div className="flex justify-between items-center mb-4 text-xs font-bold text-gray-400">
                             <span className="bg-red-500/10 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-full">
-                                Ball: {score}
+                                {t("gamesPage.common.score")} {score}
                             </span>
                             <span>
                                 {currentIndex + 1} / {oddOneOutList.length}
@@ -158,7 +158,7 @@ export default function Game6() {
                                 onClick={handleNext}
                                 className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-violet-500/20 text-sm"
                             >
-                                Keyingisi <FaCheckCircle />
+                                {t("gamesPage.common.next")} <FaCheckCircle />
                             </motion.button>
                         )}
                     </div>
@@ -181,7 +181,7 @@ export default function Game6() {
                             onClick={restartGame}
                             className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-violet-500/20 text-sm"
                         >
-                            <FaRedo /> Qaytadan o'ynash
+                            <FaRedo /> {t("gamesPage.common.playAgain")}
                         </button>
                     </motion.div>
                 )}

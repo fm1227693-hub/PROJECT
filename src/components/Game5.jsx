@@ -37,10 +37,10 @@ export default function Game5() {
         if (!userInput.trim()) return;
 
         if (userInput.trim().toLowerCase() === currentItem.word.toLowerCase()) {
-            setMessage({ type: 'success', text: "To'g'ri topdingiz!" });
+            setMessage({ type: 'success', text: t("gamesPage.games.missingLetters.correct") });
             setScore(prev => prev + 1);
         } else {
-            setMessage({ type: 'error', text: "Xato, qaytadan urinib ko'ring." });
+            setMessage({ type: 'error', text: t("gamesPage.games.missingLetters.incorrect") });
         }
     };
 
@@ -76,7 +76,7 @@ export default function Game5() {
                     Harflarni Topish
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 px-2">
-                    So'zdagi tushib qolgan harflarni topib, to'liq so'zni yozing.
+                    {t("gamesPage.games.missingLetters.gameDesc")}
                 </p>
             </div>
 
@@ -88,7 +88,7 @@ export default function Game5() {
                     <div>
                         <div className="flex justify-between items-center mb-4 text-xs font-bold text-gray-400">
                             <span className="bg-red-500/10 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-full">
-                                Ball: {score}
+                                {t("gamesPage.common.score")} {score}
                             </span>
                             <span>
                                 {currentIndex + 1} / {missingLettersList.length}
@@ -104,7 +104,7 @@ export default function Game5() {
                                 className="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-4 mb-4 text-center shadow-lg shadow-indigo-500/20 text-white"
                             >
                                 <span className="block text-[10px] uppercase font-bold tracking-widest opacity-80 mb-1">
-                                    Tushib qolgan harflar
+                                    {t("gamesPage.games.missingLetters.label")}
                                 </span>
                                 <span className="text-3xl sm:text-4xl font-mono font-black tracking-[0.3em] drop-md">
                                     {currentItem.masked.toUpperCase()}
@@ -122,7 +122,7 @@ export default function Game5() {
                                 type="text"
                                 value={userInput}
                                 onChange={(e) => setUserInput(e.target.value)}
-                                placeholder="To'liq so'zni yozing..."
+                                placeholder={t("gamesPage.games.missingLetters.placeholder")}
                                 disabled={message?.type === 'success'}
                                 required
                                 className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm font-bold text-center"
@@ -154,7 +154,7 @@ export default function Game5() {
                                     type="button"
                                     className="w-full mt-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 text-sm"
                                 >
-                                    Keyingisi <FaCheckCircle />
+                                    {t("gamesPage.common.next")} <FaCheckCircle />
                                 </motion.button>
                             ) : (
                                 <button
@@ -179,13 +179,13 @@ export default function Game5() {
                             Ajoyib natija!
                         </h2>
                         <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                            Barcha so'zlarni topdingiz. Jami ball: {score}
+                            {t("gamesPage.common.totalScore")} {score}
                         </p>
                         <button
                             onClick={restartGame}
                             className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-indigo-500/20 text-sm"
                         >
-                            <FaRedo /> Qaytadan o'ynash
+                            <FaRedo /> {t("gamesPage.common.playAgain")}
                         </button>
                     </motion.div>
                 )}

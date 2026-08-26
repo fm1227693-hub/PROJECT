@@ -20,64 +20,64 @@ export default function Gamess() {
     {
       id: 'game',
       component: <Games />,
-      title: 'Word Scramble',
-      description: "So'zlarni to'g'ri yig'ing",
+      title: t('gamesPage.games.wordScramble.title', 'Word Scramble'),
+      description: t('gamesPage.games.wordScramble.desc', "So'zlarni to'g'ri yig'ing"),
       icon: <FaFont />,
       color: 'from-blue-500 to-indigo-600'
     },
     {
       id: 'game1',
       component: <Game1 />,
-      title: 'Vocabulary Match',
-      description: "So'zlarni va ma'nolarini moslang",
+      title: t('gamesPage.games.vocabMatch.title', 'Vocabulary Match'),
+      description: t('gamesPage.games.vocabMatch.desc', "So'zlarni va ma'nolarini moslang"),
       icon: <FaPuzzlePiece />,
       color: 'from-emerald-500 to-teal-600'
     },
     {
       id: 'game2',
       component: <Game2 />,
-      title: 'Grammar Quiz',
-      description: "Grammatika bo'yicha testlar",
+      title: t('gamesPage.games.grammarQuiz.title', 'Grammar Quiz'),
+      description: t('gamesPage.games.grammarQuiz.desc', "Grammatika bo'yicha testlar"),
       icon: <BsStars />,
       color: 'from-amber-500 to-orange-600'
     },
     {
       id: 'game3',
       component: <Game3 />,
-      title: 'Memory Game',
-      description: "So'zlarni yodda saqlash mashqi",
+      title: t('gamesPage.games.memoryGame.title', 'Memory Game'),
+      description: t('gamesPage.games.memoryGame.desc', "So'zlarni yodda saqlash mashqi"),
       icon: <FaBrain />,
       color: 'from-purple-500 to-pink-600'
     },
     {
       id: 'game4',
       component: <Game4 />,
-      title: 'Sentence Builder',
-      description: "So'zlardan to'g'ri gap tuzing",
+      title: t('gamesPage.games.sentenceBuilder.title', 'Sentence Builder'),
+      description: t('gamesPage.games.sentenceBuilder.desc', "So'zlardan to'g'ri gap tuzing"),
       icon: <FaLayerGroup />,
       color: 'from-rose-500 to-red-600'
     },
     {
       id: 'game5',
       component: <Game5 />,
-      title: 'Missing Letters',
-      description: "Tushib qolgan harflarni toping",
+      title: t('gamesPage.games.missingLetters.title', 'Missing Letters'),
+      description: t('gamesPage.games.missingLetters.desc', "Tushib qolgan harflarni toping"),
       icon: <FaKeyboard />,
       color: 'from-indigo-500 to-blue-600'
     },
     {
       id: 'game6',
       component: <Game6 />,
-      title: 'Odd One Out',
-      description: "Ortiqchasini toping",
+      title: t('gamesPage.games.oddOneOut.title', 'Odd One Out'),
+      description: t('gamesPage.games.oddOneOut.desc', "Ortiqchasini toping"),
       icon: <FaShapes />,
       color: 'from-violet-500 to-fuchsia-500'
     },
     {
       id: 'game7',
       component: <Game7 />,
-      title: 'Synonym Finder',
-      description: "So'zlarning ma'nodoshini toping",
+      title: t('gamesPage.games.synonymFinder.title', 'Synonym Finder'),
+      description: t('gamesPage.games.synonymFinder.desc', "So'zlarning ma'nodoshini toping"),
       icon: <FaBook />,
       color: 'from-amber-500 to-orange-600'
     }

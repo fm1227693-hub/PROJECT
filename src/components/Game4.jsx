@@ -54,17 +54,17 @@ export default function Game4() {
 
     const handleCheck = () => {
         if (builtWords.length !== currentItem.sentence.split(' ').length) {
-            setMessage({ type: 'error', text: "Hamma so'zlarni ishlating!" });
+            setMessage({ type: 'error', text: t("gamesPage.games.sentenceBuilder.errorAllWords") });
             setTimeout(() => setMessage(null), 2000);
             return;
         }
 
         const userSentence = builtWords.join(' ');
         if (userSentence === currentItem.sentence) {
-            setMessage({ type: 'success', text: "To'g'ri topdingiz!" });
+            setMessage({ type: 'success', text: t("gamesPage.games.sentenceBuilder.correct") });
             setScore(prev => prev + 1);
         } else {
-            setMessage({ type: 'error', text: "Ketma-ketlik noto'g'ri, qaytadan urinib ko'ring." });
+            setMessage({ type: 'error', text: t("gamesPage.games.sentenceBuilder.errorOrder") });
             setTimeout(() => setMessage(null), 2000);
         }
     };
@@ -106,7 +106,7 @@ export default function Game4() {
                     Gap Tuzish
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 px-2">
-                    So'zlarni to'g'ri ketma-ketlikda joylashtirib mantiqiy gap tuzing.
+                    {t("gamesPage.games.sentenceBuilder.gameDesc")}
                 </p>
             </div>
 
@@ -118,7 +118,7 @@ export default function Game4() {
                     <div>
                         <div className="flex justify-between items-center mb-4 text-xs font-bold text-gray-400">
                             <span className="bg-red-500/10 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-full">
-                                Ball: {score}
+                                {t("gamesPage.common.score")} {score}
                             </span>
                             <span>
                                 {currentIndex + 1} / {sentencesList.length}
@@ -139,7 +139,7 @@ export default function Game4() {
                                         animate={{ opacity: 1 }}
                                         className="text-slate-400 text-sm mt-1 ml-1"
                                     >
-                                        So'zlarni bu yerga yig'ing...
+                                        {t("gamesPage.games.sentenceBuilder.placeholder")}
                                     </motion.span>
                                 )}
                                 {builtWords.map((word, idx) => (
@@ -202,7 +202,7 @@ export default function Game4() {
                                 onClick={handleNext}
                                 className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 text-sm"
                             >
-                                Keyingisi <FaCheckCircle />
+                                {t("gamesPage.common.next")} <FaCheckCircle />
                             </motion.button>
                         ) : (
                             <button
@@ -227,13 +227,13 @@ export default function Game4() {
                             Ajoyib natija!
                         </h2>
                         <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                            Siz barcha gaplarni to'g'ri tuzdingiz. Jami ball: {score}
+                            {t("gamesPage.common.totalScore")} {score}
                         </p>
                         <button
                             onClick={restartGame}
                             className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-red-500/20 text-sm"
                         >
-                            <FaRedo /> Qaytadan o'ynash
+                            <FaRedo /> {t("gamesPage.common.playAgain")}
                         </button>
                     </motion.div>
                 )}
