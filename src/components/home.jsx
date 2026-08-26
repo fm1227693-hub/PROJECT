@@ -75,7 +75,7 @@ export default function Home() {
                     </h1>
 
                     {/* Description */}
-                    <p className="text-base sm:text-lg lg:text-[1.35rem] text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-2xl">
+                    <p className="text-base sm:text-lg lg:text-[1.35rem] text-gray-800 dark:text-gray-300 font-medium leading-relaxed max-w-2xl">
                         {t('home.description', 'Optimum o‘quv platformasi barcha darajadagi o‘quvchilar uchun CDI simulatori va AI tahlillari orqali 7.5+ Band natijalarini ta’minlaydi.')}
                     </p>
 
@@ -130,7 +130,7 @@ export default function Home() {
                                             Optimum IELTS Hub
                                             <span className="px-2 py-0.5 bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 text-[10px] rounded-full border border-red-500/20 dark:border-red-500/30">ALL LEVELS</span>
                                         </h3>
-                                        <p className="text-gray-500 dark:text-gray-400 text-xs">Full Exam Practice Suite</p>
+                                        <p className="text-gray-700 dark:text-gray-400 text-xs">Full Exam Practice Suite</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -145,7 +145,7 @@ export default function Home() {
                             <div className="space-y-4 pt-4">
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><FaLayerGroup className="text-red-500 dark:text-red-400" /> Extensive Practice Library</span>
+                                        <span className="text-gray-900 dark:text-gray-300 flex items-center gap-1.5"><FaLayerGroup className="text-red-500 dark:text-red-400" /> Extensive Practice Library</span>
                                         <span className="text-red-600 dark:text-red-400 font-black">100+ Mock Tests</span>
                                     </div>
                                     <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-300 dark:border-gray-800">
@@ -155,7 +155,7 @@ export default function Home() {
 
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><FaLaptopCode className="text-rose-500 dark:text-rose-400" /> Full CDI Simulation</span>
+                                        <span className="text-gray-900 dark:text-gray-300 flex items-center gap-1.5"><FaLaptopCode className="text-rose-500 dark:text-rose-400" /> Full CDI Simulation</span>
                                         <span className="text-rose-600 dark:text-rose-400 font-bold">Authentic Exam UI</span>
                                     </div>
                                     <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-300 dark:border-gray-800">
@@ -165,7 +165,7 @@ export default function Home() {
 
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><FaChartLine className="text-amber-500 dark:text-amber-400" /> Detailed Analytics</span>
+                                        <span className="text-gray-900 dark:text-gray-300 flex items-center gap-1.5"><FaChartLine className="text-amber-500 dark:text-amber-400" /> Detailed Analytics</span>
                                         <span className="text-amber-600 dark:text-amber-400 font-bold">Track Your Progress</span>
                                     </div>
                                     <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-300 dark:border-gray-800">
@@ -195,7 +195,7 @@ export default function Home() {
                                 <FaChartLine className="w-3.5 h-3.5" />
                             </div>
                             <div>
-                                <p className="text-[10px] uppercase font-extrabold tracking-wider text-gray-500 dark:text-gray-400">Success Rate</p>
+                                <p className="text-[10px] uppercase font-extrabold tracking-wider text-gray-700 dark:text-gray-400">Success Rate</p>
                                 <p className="text-xs font-black text-gray-900 dark:text-white flex items-center gap-1">
                                     10,000+ Learners <span className="text-emerald-600 dark:text-emerald-400">Band 7.5+</span>
                                 </p>

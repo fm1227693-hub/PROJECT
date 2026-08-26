@@ -44,10 +44,10 @@ export default function AboutUs() {
                     <div className="mt-5 sm:mt-6 w-14 h-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-400" />
                 </div>
                 <div className="relative lg:col-span-7 flex flex-col space-y-3 sm:space-y-4">
-                    <p className="text-gray-600 dark:text-gray-300 font-medium text-sm sm:text-base md:text-lg leading-relaxed">
+                    <p className="text-gray-800 dark:text-gray-300 font-medium text-sm sm:text-base md:text-lg leading-relaxed">
                         {t('aboutUs.description1')}
                     </p>
-                    <p className="text-gray-500 dark:text-gray-400 font-semibold text-xs sm:text-sm leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-400 font-semibold text-xs sm:text-sm leading-relaxed">
                         {t('aboutUs.description2')}
                     </p>
                 </div>
@@ -71,7 +71,7 @@ export default function AboutUs() {
                             <HiLightningBolt className="w-6 h-6 text-red-400" />
                         </div>
                         <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card1Title')}</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                        <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
                             {t('aboutUs.card1Desc')}
                         </p>
                     </div>
@@ -96,7 +96,7 @@ export default function AboutUs() {
                             <HiCheckCircle className="w-6 h-6 text-white" />
                         </div>
                         <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2">{t('aboutUs.card2Title')}</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                        <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
                             {t('aboutUs.card2Desc')}
                         </p>
                     </div>
@@ -121,7 +121,7 @@ export default function AboutUs() {
                             <HiSparkles className="w-6 h-6 text-red-400" />
                         </div>
                         <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card3Title')}</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                        <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
                             {t('aboutUs.card3Desc')}
                         </p>
                     </div>
@@ -148,7 +148,7 @@ export default function AboutUs() {
                     <h3 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
                         {t('aboutUs.locationTitle')}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 font-medium text-sm sm:text-base leading-relaxed">
+                    <p className="text-gray-800 dark:text-gray-300 font-medium text-sm sm:text-base leading-relaxed">
                         {t('aboutUs.locationDesc')}
                     </p>
                     <div className="space-y-3 pt-2">
@@ -156,7 +156,7 @@ export default function AboutUs() {
                             <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
                                 <HiLocationMarker className="w-5 h-5" />
                             </div>
-                            <span className="text-gray-600 dark:text-gray-300 font-semibold text-xs sm:text-sm">
+                            <span className="text-gray-800 dark:text-gray-300 font-semibold text-xs sm:text-sm">
                                 {t('aboutUs.address')}
                             </span>
                         </div>
@@ -167,7 +167,7 @@ export default function AboutUs() {
                             <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
                                 <HiPhone className="w-5 h-5" />
                             </div>
-                            <span className="text-gray-600 dark:text-gray-300 font-semibold text-xs sm:text-sm">
+                            <span className="text-gray-800 dark:text-gray-300 font-semibold text-xs sm:text-sm">
                                 +998 90 082 99 79
                             </span>
                         </a>
@@ -214,19 +214,19 @@ export default function AboutUs() {
 
                 <div className="relative space-y-2 max-w-xl text-center md:text-left">
                     <h4 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">{t('aboutUs.footerTitle')}</h4>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
                         {t('aboutUs.footerDesc')}
                     </p>
                 </div>
                 <div className="relative flex flex-wrap items-center justify-center gap-6 sm:gap-8 shrink-0">
                     <div className="text-center">
                         <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white">100%</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{t('aboutUs.stat1Label')}</span>
+                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-700 dark:text-gray-400">{t('aboutUs.stat1Label')}</span>
                     </div>
                     <div className="w-px h-10 bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
                     <div className="text-center">
                         <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-red-400">7/24</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">{t('aboutUs.stat2Label')}</span>
+                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-700 dark:text-gray-400">{t('aboutUs.stat2Label')}</span>
                     </div>
                 </div>
             </div>

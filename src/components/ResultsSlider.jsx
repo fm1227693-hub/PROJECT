@@ -220,7 +220,7 @@ export default function ResultsSlider() {
                                     whileTap={{ scale: 0.95 }}
                                     className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${isActive
                                         ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
-                                        : "opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
+                                        : "opacity-80 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
                                         }`}
                                 >
                                     <img

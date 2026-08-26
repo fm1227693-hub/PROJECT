@@ -46,7 +46,7 @@ export default function Sec4() {
                                 <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
                                     {t('about.goalTitle')}
                                 </h4>
-                                <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
+                                <p className="text-gray-600 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
                                     {t('about.goalDesc')}
                                 </p>
                             </div>
@@ -61,7 +61,7 @@ export default function Sec4() {
                                 <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
                                     {t('about.teacherTitle')}
                                 </h4>
-                                <p className="text-gray-400 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
+                                <p className="text-gray-600 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
                                     {t('about.teacherDesc')}
                                 </p>
                             </div>

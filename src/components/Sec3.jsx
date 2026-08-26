@@ -146,7 +146,7 @@ export default function Sec3() {
                 className={`shrink-0 rounded-full transition-all duration-300 ${
                   isActive
                     ? 'flex items-center gap-2.5 sm:gap-3 bg-white dark:bg-slate-900 text-slate-900 dark:text-white p-1 pr-4 sm:pr-5 shadow-xl shadow-slate-900/10 dark:shadow-white/10 ring-2 ring-red-400'
-                    : 'p-1 opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'
+                    : 'p-1 opacity-80 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'
                 }`}
               >
                 <img

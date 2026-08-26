@@ -135,7 +135,7 @@ Telefon: +998 ${formData.phone}
                 <button
                     type="button"
                     onClick={() => setModal(false)}
-                    className="absolute top-4 right-4 w-9 h-9 bg-gray-100/85 hover:bg-gray-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-gray-600 dark:text-slate-300 rounded-2xl flex items-center justify-center text-sm font-bold cursor-pointer transition-all duration-300 hover:rotate-90"
+                    className="absolute top-4 right-4 w-9 h-9 bg-gray-100/85 hover:bg-gray-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-gray-800 dark:text-slate-300 rounded-2xl flex items-center justify-center text-sm font-bold cursor-pointer transition-all duration-300 hover:rotate-90"
                     title="Yopish"
                 >
                     <FaTimes />
@@ -144,7 +144,7 @@ Telefon: +998 ${formData.phone}
                 <h3 className="text-xl font-extrabold mb-1 pr-6 tracking-tight">
                     {t('sec3.modalTitle', "Ustoz bilan bog'lanish")}
                 </h3>
-                <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">
+                <p className="text-gray-700 dark:text-slate-400 text-sm mb-6">
                     {t('sec3.selectedTeacher', "Tanlangan ustoz:")} <span className="text-[#c41e30] font-semibold">{selectedMentor}</span>
                 </p>
 
@@ -173,7 +173,7 @@ Telefon: +998 ${formData.phone}
                         </label>
                         <div className="relative flex items-center">
                             <FaPhoneAlt className="absolute left-4 text-gray-400 z-10" />
-                            <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
+                            <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-700 dark:text-gray-400">
                                 +998
                             </div>
                             <input
@@ -301,12 +301,12 @@ Telefon: +998 ${formData.phone}
                         {/* Birth & Age Info Pill Bar */}
                         <div className="flex justify-center items-center gap-6 sm:gap-10 text-xs sm:text-sm bg-slate-50 dark:bg-slate-950/70 p-4 rounded-2xl border border-red-500/20 shadow-inner">
                             <div>
-                                <span className="text-slate-500 dark:text-slate-400 font-medium">{t('mentorsPage.birthYear', "Tug'ilgan yil:")}</span>
+                                <span className="text-slate-700 dark:text-slate-400 font-medium">{t('mentorsPage.birthYear', "Tug'ilgan yil:")}</span>
                                 <strong className="text-slate-900 dark:text-white font-extrabold ml-1.5">{activeMentorDetail.birthYear}</strong>
                             </div>
                             <div className="text-red-500">•</div>
                             <div>
-                                <span className="text-slate-500 dark:text-slate-400 font-medium">{t('mentorsPage.age', "Yosh:")}</span>
+                                <span className="text-slate-700 dark:text-slate-400 font-medium">{t('mentorsPage.age', "Yosh:")}</span>
                                 <strong className="text-slate-900 dark:text-white font-extrabold ml-1.5">{activeMentorDetail.age} {t('mentorsPage.yearsOld', "yosh")}</strong>
                             </div>
                         </div>
@@ -362,7 +362,7 @@ Telefon: +998 ${formData.phone}
                                         <h5 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white mb-1 group-hover/cert:text-red-500 dark:group-hover/cert:text-red-400 transition-colors">
                                             {cert.title}
                                         </h5>
-                                        <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold">{cert.issuedBy}</p>
+                                        <p className="text-xs text-slate-700 dark:text-slate-400 font-semibold">{cert.issuedBy}</p>
                                     </div>
                                 ))}
                             </div>
@@ -402,7 +402,7 @@ Telefon: +998 ${formData.phone}
                         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
                             {t('mentorsPage.title', "Bizning Mentor")}
                         </h2>
-                        <p className="text-gray-500 dark:text-slate-400 text-sm md:text-base max-w-lg mx-auto font-medium">
+                        <p className="text-gray-700 dark:text-slate-400 text-sm md:text-base max-w-lg mx-auto font-medium">
                             {t('mentorsPage.subtitle', "Tajribali ingliz tili mutaxassisidan xalqaro darajadagi bilimlarni o'rganing.")}
                         </p>
                     </div>
@@ -480,8 +480,8 @@ Telefon: +998 ${formData.phone}
                                         </div>
 
                                         {/* Bio Quote Card */}
-                                        <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 text-xs sm:text-sm font-medium leading-relaxed relative">
-                                            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                                        <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-300 text-xs sm:text-sm font-medium leading-relaxed relative">
+                                            <span className="absolute -top-3 left-4 px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-md text-[10px] font-extrabold uppercase tracking-widest text-slate-700 dark:text-slate-400">
                                                 {t('mentorsPage.aboutHeading', "Mutaxassis Haqida")}
                                             </span>
                                             <p className="pt-1">{t('mentorsPage.bio', mentor.bio)}</p>
@@ -491,21 +491,21 @@ Telefon: +998 ${formData.phone}
                                         <div className="grid grid-cols-3 gap-3 py-1">
                                             <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-red-500/30 text-center">
                                                 <p className="text-lg sm:text-xl font-black text-rose-600 dark:text-rose-500">8.0</p>
-                                                <p className="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-slate-300">{t('mentorsPage.ieltsLevel', "IELTS Daraja")}</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-800 dark:text-slate-300">{t('mentorsPage.ieltsLevel', "IELTS Daraja")}</p>
                                             </div>
                                             <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-red-500/20 text-center">
                                                 <p className="text-lg sm:text-xl font-black text-red-600 dark:text-red-500">4+ Yil</p>
-                                                <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">{t('mentorsPage.experienceLabel', "Tajriba")}</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-400">{t('mentorsPage.experienceLabel', "Tajriba")}</p>
                                             </div>
                                             <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-red-500/20 text-center">
                                                 <p className="text-lg sm:text-xl font-black text-rose-600 dark:text-rose-500">100%</p>
-                                                <p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">{t('mentorsPage.guaranteed', "Kafolatlangan")}</p>
+                                                <p className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-400">{t('mentorsPage.guaranteed', "Kafolatlangan")}</p>
                                             </div>
                                         </div>
 
                                         {/* Skills Chips */}
                                         <div>
-                                            <p className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+                                            <p className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-400 mb-2">
                                                 {t('mentorsPage.specializations', "Mutaxassislik yo'nalishlari:")}
                                             </p>
                                             <div className="flex flex-wrap gap-2">
