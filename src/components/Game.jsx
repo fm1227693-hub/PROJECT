@@ -78,14 +78,14 @@ export default function Games() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
+            className="w-full py-0 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
         >
             {/* Sarlavha qismi */}
             <div 
                 data-aos="fade-down" 
-                className="text-center mb-6"
+                className="text-center mb-3 sm:mb-4"
             >
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-[11px] font-black mb-3 shadow-sm">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-black mb-2 shadow-sm">
                     <FaGamepad className="w-3.5 h-3.5" />
                     {t('games.title')}
                 </div>
@@ -100,12 +100,12 @@ export default function Games() {
             {/* Asosiy O'yin Kartasi */}
             <div 
                 data-aos="fade-up" data-aos-delay="200"
-                className="w-full glass-card border border-gray-200/60 dark:border-gray-800/80 rounded-3xl p-5 sm:p-7 shadow-2xl relative overflow-hidden"
+                className="w-full glass-card border border-gray-200/60 dark:border-gray-800/80 rounded-3xl p-4 sm:p-5 shadow-2xl relative overflow-hidden"
             >
                 {!isCompleted ? (
                     <div>
                         {/* Progress */}
-                        <div className="flex justify-between items-center mb-5 text-xs font-bold text-gray-400">
+                        <div className="flex justify-between items-center mb-4 text-xs font-bold text-gray-400">
                             <span className="bg-red-500/10 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-full">
                                 Ball: {score}
                             </span>
@@ -121,25 +121,25 @@ export default function Games() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="bg-gradient-to-br from-red-600 to-rose-600 rounded-2xl p-5 mb-5 text-center shadow-lg shadow-red-500/20 text-white"
+                                className="bg-gradient-to-br from-red-600 to-rose-600 rounded-2xl p-4 mb-4 text-center shadow-lg shadow-red-500/20 text-white"
                             >
                                 <span className="block text-[10px] uppercase font-bold tracking-widest opacity-80 mb-1">
                                     {t('games.wordScramble.scrambledLabel')}
                                 </span>
-                                <span className="text-3xl sm:text-4xl font-black tracking-widest drop-md">
+                                <span className="text-2xl sm:text-3xl font-black tracking-widest drop-md">
                                     {scrambled.toUpperCase()}
                                 </span>
                             </motion.div>
                         </AnimatePresence>
 
                         {/* Hint (Maslahat) */}
-                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-5 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-800">
+                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-4 bg-gray-50 dark:bg-gray-800/50 p-2.5 rounded-xl border border-gray-100 dark:border-gray-800">
                             <FaLightbulb className="w-4 h-4 text-amber-500 shrink-0" />
                             <span className="italic">{currentItem.hint}</span>
                         </div>
 
                         {/* Input va Form */}
-                        <form onSubmit={handleCheck} className="flex flex-col gap-3">
+                        <form onSubmit={handleCheck} className="flex flex-col gap-2">
                             <input
                                 type="text"
                                 value={userInput}

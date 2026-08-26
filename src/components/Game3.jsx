@@ -76,7 +76,7 @@ export default function Game3() {
     }
 
     return (
-        <div className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-lg mx-auto font-sans select-none flex flex-col justify-center items-center">
+        <div className="w-full py-4 px-3 sm:px-4 max-w-lg mx-auto font-sans select-none flex flex-col justify-center items-center">
             {/* Sarlavha qismi */}
             <motion.div 
                 initial={{ opacity: 0, y: -20 }}

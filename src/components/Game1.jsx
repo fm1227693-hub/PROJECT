@@ -45,7 +45,7 @@ export default function Game1() {
     return (
         <div 
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            className="min-h-screen pt-24 pb-12 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
+            className="w-full py-4 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
         >
             {/* Sarlavha qismi */}
             <motion.div 
