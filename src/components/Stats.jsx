@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { BsStars } from 'react-icons/bs'
 
 export default function Stats() {
     const { t } = useTranslation()
@@ -147,10 +148,10 @@ export default function Stats() {
 
                         <div className="space-y-4 sm:space-y-6">
                             {[
-                                { name: 'General English', progress: '42%', color: 'bg-red-600' },
-                                { name: 'IELTS Preparation', progress: '31%', color: 'bg-gray-950 dark:bg-white' },
-                                { name: 'Speaking Club', progress: '18%', color: 'bg-red-400' },
-                                { name: 'Grammar Intensive', progress: '9%', color: 'bg-gray-300 dark:bg-gray-700' }
+                                { name: 'General English', progress: '84%', color: 'bg-red-600' },
+                                { name: 'IELTS Preparation', progress: '76%', color: 'bg-gray-950 dark:bg-white' },
+                                { name: 'Speaking Club', progress: '92%', color: 'bg-red-400' },
+                                { name: 'Grammar Intensive', progress: '68%', color: 'bg-gray-300 dark:bg-gray-700' }
                             ].map((course, index) => (
                                 <div key={index} className="space-y-2 group p-2.5 sm:p-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 border border-transparent hover:border-gray-100 dark:hover:border-gray-800">
                                     <div className="flex justify-between text-xs font-bold">
@@ -166,7 +167,8 @@ export default function Stats() {
                     </div>
 
                     <div className="relative w-full mt-6 sm:mt-8 py-3.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold rounded-xl border border-red-100 dark:border-red-900/30 text-xs flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm">
-                        {t('statistic.footerText')}
+                        <BsStars className="text-yellow-500 text-base" />
+                        <span>{t('statistic.footerText').replace('✨', '').trim()}</span>
                     </div>
                 </div>
 

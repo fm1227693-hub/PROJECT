@@ -292,9 +292,9 @@ Telefon: +998 ${formData.phone}
                                 rel="noopener noreferrer"
                                 className="relative group/tg overflow-hidden inline-flex items-center gap-2.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs sm:text-sm font-black px-7 py-3.5 rounded-2xl transition-all duration-300 shadow-xl shadow-red-600/30 active:scale-95 border border-red-400/30"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover/tg:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
-                                <FaTelegramPlane className="text-base group-hover/tg:rotate-12 transition-transform" />
-                                <span>{t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}</span>
+                                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/tg:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                                <FaTelegramPlane className="relative z-10 text-base group-hover/tg:rotate-12 transition-transform" />
+                                <span className="relative z-10">{t('mentorsPage.connectBtn', "Telegram orqali bog'lanish")}</span>
                             </a>
                         </div>
 
@@ -377,8 +377,8 @@ Telefon: +998 ${formData.phone}
                                 }}
                                 className="w-full relative group/bcta overflow-hidden py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-sm shadow-2xl shadow-red-600/40 cursor-pointer active:scale-95 transition-all border border-red-400/30"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover/bcta:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
-                                <span>{t('mentors.contactBtn', "Bog'lanish")}</span>
+                                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/bcta:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                                <span className="relative z-10">{t('mentors.contactBtn', "Bog'lanish")}</span>
                             </button>
                         </div>
 
@@ -538,9 +538,9 @@ Telefon: +998 ${formData.phone}
                                                 }}
                                                 className="flex-1 relative group/call overflow-hidden px-6 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs sm:text-sm font-black transition-all duration-300 cursor-pointer active:scale-95 shadow-xl shadow-red-600/35 hover:shadow-2xl hover:shadow-red-600/60 flex items-center justify-center gap-2.5 border border-red-400/30"
                                             >
-                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover/call:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
-                                                <FaTelegramPlane className="text-sm group-hover/call:rotate-12 transition-transform" />
-                                                <span>{t('mentors.contactBtn', "Bog'lanish")}</span>
+                                                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover/call:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                                                <FaTelegramPlane className="relative z-10 text-sm group-hover/call:rotate-12 transition-transform" />
+                                                <span className="relative z-10">{t('mentors.contactBtn', "Bog'lanish")}</span>
                                             </button>
                                         </div>
 

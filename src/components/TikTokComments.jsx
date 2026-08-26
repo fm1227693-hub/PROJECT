@@ -186,14 +186,15 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsOpen(true)}
-                            className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-rose-700 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all cursor-pointer border border-red-400/30"
+                            className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/30 transition-all cursor-pointer border border-red-400/30 relative overflow-hidden"
                         >
-                            <FaComments className="text-base animate-bounce" />
-                            <span>{t('studentCommentsORG.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
-                            <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-mono font-bold">
+                            <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                            <FaComments className="relative z-10 text-base animate-bounce" />
+                            <span className="relative z-10">{t('studentCommentsORG.viewAndLeaveBtn', "Izohlarni ko'rish va qoldirish")}</span>
+                            <span className="relative z-10 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-mono font-bold">
                                 {CommentsORG.length}
                             </span>
-                            <FaChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
+                            <FaChevronDown className="relative z-10 w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
                         </motion.button>
                     </motion.div>
                 ) : (

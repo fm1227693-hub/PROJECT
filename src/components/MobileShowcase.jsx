@@ -62,10 +62,11 @@ export default function MobileShowcase() {
                     <div className="pt-1 sm:pt-2">
                         <Link
                             to="/level-test"
-                            className="inline-flex items-center gap-2.5 sm:gap-3 px-5 sm:px-7 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-red-600/40 border border-white/20 group"
+                            className="relative overflow-hidden inline-flex items-center gap-2.5 sm:gap-3 px-5 sm:px-7 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs sm:text-sm tracking-wide transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-red-600/40 border border-white/20 group z-10"
                         >
-                            <span>{t('mobileShowcase.n26Btn', 'Bepul daraja testini topshirish')}</span>
-                            <FaArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                            <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                            <span className="relative z-10">{t('mobileShowcase.n26Btn', 'Bepul daraja testini topshirish')}</span>
+                            <FaArrowRight className="relative z-10 w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
                 </div>

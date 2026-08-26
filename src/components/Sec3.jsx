@@ -291,9 +291,10 @@ export default function Sec3() {
                   setSelectedMentor(currentTeacher.name)
                   setModal(true)
                 }}
-                className="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-500/20"
+                className="flex-1 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs font-bold py-3.5 rounded-xl transition-all duration-300 shadow-[0_6px_20px_rgba(220,38,38,0.35)] hover:shadow-[0_8px_25px_rgba(220,38,38,0.5)] border border-red-500/30 relative overflow-hidden group"
               >
-                {t('sec3.contactBtn')}
+                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                <span className="relative z-10">{t('sec3.contactBtn')}</span>
               </motion.button>
             </div>
           </div>
@@ -362,9 +363,12 @@ export default function Sec3() {
                   whileTap={{ scale: 0.95 }}
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-lg shadow-red-500/20 disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-bold py-3 rounded-xl transition-all duration-300 text-sm shadow-[0_6px_20px_rgba(220,38,38,0.35)] hover:shadow-[0_8px_25px_rgba(220,38,38,0.5)] border border-red-500/30 relative overflow-hidden group disabled:opacity-50"
                 >
-                  {loading ? <FaSpinner className="animate-spin mx-auto" /> : t('sec3.submitBtn')}
+                  <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                  <span className="relative z-10 flex items-center justify-center">
+                    {loading ? <FaSpinner className="animate-spin mx-auto" /> : t('sec3.submitBtn')}
+                  </span>
                 </motion.button>
               </form>
             </motion.div>

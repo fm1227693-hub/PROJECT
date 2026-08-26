@@ -29,7 +29,7 @@ export default function AboutUs() {
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"
-                className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start mb-16 sm:mb-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-200 dark:border-gray-800 p-6 sm:p-12 rounded-3xl shadow-xl overflow-hidden"
+                className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-200 dark:border-gray-800 p-6 sm:p-12 rounded-3xl shadow-xl overflow-hidden"
             >
                 <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
 

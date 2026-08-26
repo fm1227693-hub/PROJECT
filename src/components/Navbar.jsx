@@ -131,17 +131,22 @@ export default function Navbar() {
                         className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} ${large ? 'bottom-full mb-2 w-full' : 'top-full mt-2 w-40'} bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1`}
                     >
                         {Object.entries(LANGS).map(([code, { label, short }]) => (
-                            <button
+                            <motion.button
                                 key={code}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.96 }}
                                 onClick={() => handleLanguageChange(code)}
-                                className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${currentLang === code
-                                    ? 'bg-gradient-to-r from-[#8a0f1e] to-[#c41e30] text-white shadow-md'
-                                    : 'text-gray-600 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
+                                className={`relative group overflow-hidden flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer ${currentLang === code
+                                    ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white shadow-[0_6px_20px_rgba(220,38,38,0.35)] hover:shadow-[0_8px_25px_rgba(220,38,38,0.5)] border border-red-500/30'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-white/[0.04] hover:text-red-600 dark:hover:text-red-400'
                                 }`}
                             >
-                                <span>{label}</span>
-                                <span className="opacity-70 text-[10px] tracking-wider font-mono">{short}</span>
-                            </button>
+                                {currentLang === code && (
+                                    <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
+                                )}
+                                <span className="relative z-10">{label}</span>
+                                <span className="relative z-10 opacity-70 text-[10px] tracking-wider font-mono">{short}</span>
+                            </motion.button>
                         ))}
                     </motion.div>
                 )}
