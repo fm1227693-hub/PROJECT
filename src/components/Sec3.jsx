@@ -114,7 +114,7 @@ export default function Sec3() {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-10 right-5 sm:right-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
       />
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative max-w-7xl mx-auto ">
         <div data-aos="fade-up" className="text-center mb-3">
           <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
@@ -133,7 +133,7 @@ export default function Sec3() {
         <div
           data-aos="fade-up"
           data-aos-delay="150"
-          className="flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 scrollbar-none px-2"
+          className="flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 scrollbar-none px-2 pt-1"
         >
           {teachers.map((teacher) => {
             const isActive = currentTeacher.id === teacher.id
@@ -145,14 +145,14 @@ export default function Sec3() {
                 whileTap={{ scale: 0.95 }}
                 className={`shrink-0 rounded-full transition-all duration-300 ${
                   isActive
-                    ? 'flex items-center gap-2.5 sm:gap-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 pl-1.5 pr-4 sm:pr-5 py-1.5 shadow-xl shadow-slate-900/10 dark:shadow-white/10 ring-2 ring-red-400'
-                    : 'p-0.5 opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'
+                    ? 'flex items-center gap-2.5 sm:gap-3 bg-white dark:bg-slate-900 text-slate-900 dark:text-white p-1 pr-4 sm:pr-5 shadow-xl shadow-slate-900/10 dark:shadow-white/10 ring-2 ring-red-400'
+                    : 'p-1 opacity-60 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'
                 }`}
               >
                 <img
                   src={teacher.image}
                   alt={teacher.name}
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-red-400"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-red-400 "
                 />
                 {isActive && (
                   <motion.div

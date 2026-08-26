@@ -67,7 +67,7 @@ export default function Home() {
                     </div>
 
                     {/* Headline */}
-                    <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading">
+                    <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] xl:text-[3.75rem] font-black tracking-tight text-gray-900 dark:text-white leading-[1.1] font-heading">
                         {t('home.titlePrefix', 'IELTS natijangizni')}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_4px_25px_rgba(239,68,68,0.35)]">
                             {t('home.titleHighlight', 'CDI Mock & AI')}
@@ -75,15 +75,15 @@ export default function Home() {
                     </h1>
 
                     {/* Description */}
-                    <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-2xl">
+                    <p className="text-base sm:text-lg lg:text-[1.35rem] text-gray-600 dark:text-gray-300 font-medium leading-relaxed max-w-2xl">
                         {t('home.description', 'Optimum o‘quv platformasi barcha darajadagi o‘quvchilar uchun CDI simulatori va AI tahlillari orqali 7.5+ Band natijalarini ta’minlaydi.')}
                     </p>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4 pb-2 w-full">
+                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 lg:gap-5 pt-4 pb-2 w-full">
                         <Link
                             to="/form"
-                            className="relative group w-full sm:w-auto px-10 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.4)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.6)] transition-all duration-300 flex items-center justify-center gap-2.5 text-[15px] cursor-pointer hover:-translate-y-1 active:scale-95 overflow-hidden border border-red-400/40"
+                            className="relative group w-full sm:w-auto px-10 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.4)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.6)] transition-all duration-300 flex items-center justify-center gap-2.5 text-[15px] lg:text-[16px] cursor-pointer hover:-translate-y-1 active:scale-95 overflow-hidden border border-red-400/40"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
                             <span className="relative z-10 whitespace-nowrap">{t('home.enrollBtn', 'Bepul sinov darsi')}</span>
@@ -92,7 +92,7 @@ export default function Home() {
                         
                         <Link
                             to="/about"
-                            className="w-full sm:w-auto px-10 py-3.5 bg-slate-900/60 hover:bg-slate-800 text-white font-bold rounded-2xl border border-gray-700 hover:border-red-500/50 shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-300 text-[15px] text-center cursor-pointer hover:-translate-y-1 active:scale-95 backdrop-blur-md flex items-center justify-center whitespace-nowrap"
+                            className="w-full sm:w-auto px-10 py-3.5 bg-white/80 dark:bg-slate-900/60 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-900 dark:text-white font-bold rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-red-500/30 dark:hover:border-red-500/50 shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-300 text-[15px] lg:text-[16px] text-center cursor-pointer hover:-translate-y-1 active:scale-95 backdrop-blur-md flex items-center justify-center whitespace-nowrap"
                         >
                             {t('home.moreInfoBtn', "Batafsil ma'lumot")}
                         </Link>
@@ -109,9 +109,9 @@ export default function Home() {
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <div className="transform scale-90 xl:scale-95 2xl:scale-100 w-full flex justify-center" style={{ backfaceVisibility: 'hidden', WebkitFontSmoothing: 'antialiased' }}>
+                    <div className="w-full flex justify-center lg:ml-8 [zoom:0.95] lg:[zoom:1] xl:[zoom:1.1] 2xl:[zoom:1.25]" style={{ transformStyle: 'preserve-3d' }}>
                         <div 
-                            className="relative w-full max-w-[360px] lg:max-w-[380px] cyber-deck-wrapper transition-transform duration-200 ease-out py-3"
+                            className="relative w-full max-w-[360px] lg:max-w-[400px] cyber-deck-wrapper transition-transform duration-200 ease-out py-3"
                             style={{ transform: transformStyle }}
                         >
                         {/* Main General Optimum IELTS Platform Card */}
@@ -120,23 +120,23 @@ export default function Home() {
                             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-rose-500 to-amber-500"></div>
 
                             {/* Card Header: General Platform Info */}
-                            <div className="flex items-center justify-between pb-4 border-b border-gray-800/80">
+                            <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-800/80">
                                 <div className="flex items-center gap-3">
                                     <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-red-600 to-rose-500 flex items-center justify-center text-white shadow-md shadow-red-600/40">
                                         <FaLayerGroup className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <h3 className="text-white font-extrabold text-sm sm:text-base tracking-wide flex items-center gap-1.5">
+                                        <h3 className="text-gray-900 dark:text-white font-extrabold text-sm sm:text-base tracking-wide flex items-center gap-1.5">
                                             Optimum IELTS Hub
-                                            <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-[10px] rounded-full border border-red-500/30">ALL LEVELS</span>
+                                            <span className="px-2 py-0.5 bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 text-[10px] rounded-full border border-red-500/20 dark:border-red-500/30">ALL LEVELS</span>
                                         </h3>
-                                        <p className="text-gray-400 text-xs">Full Exam Practice Suite</p>
+                                        <p className="text-gray-500 dark:text-gray-400 text-xs">Full Exam Practice Suite</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <span className="text-2xl font-black bg-gradient-to-r from-red-400 to-rose-400 bg-clip-text text-transparent">TARGET 8.5</span>
-                                    <p className="text-[10px] text-emerald-400 font-bold flex items-center justify-end gap-1">
-                                        <FaCheckCircle className="text-emerald-400 text-[10px]" /> Universal System
+                                    <span className="text-2xl font-black bg-gradient-to-r from-red-500 to-rose-500 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">TARGET 8.5</span>
+                                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-end gap-1">
+                                        <FaCheckCircle className="text-emerald-600 dark:text-emerald-400 text-[10px]" /> Universal System
                                     </p>
                                 </div>
                             </div>
@@ -145,44 +145,44 @@ export default function Home() {
                             <div className="space-y-4 pt-4">
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-300 flex items-center gap-1.5"><FaLayerGroup className="text-red-400" /> Extensive Practice Library</span>
-                                        <span className="text-red-400 font-black">100+ Mock Tests</span>
+                                        <span className="text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><FaLayerGroup className="text-red-500 dark:text-red-400" /> Extensive Practice Library</span>
+                                        <span className="text-red-600 dark:text-red-400 font-black">100+ Mock Tests</span>
                                     </div>
-                                    <div className="w-full h-2.5 bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-800">
-                                        <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full w-[96%] shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-300 flex items-center gap-1.5"><FaLaptopCode className="text-rose-400" /> Full CDI Simulation</span>
-                                        <span className="text-rose-400 font-bold">Authentic Exam UI</span>
-                                    </div>
-                                    <div className="w-full h-2.5 bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-800">
-                                        <div className="h-full bg-gradient-to-r from-rose-500 to-red-500 rounded-full w-[98%] shadow-[0_0_10px_rgba(244,63,94,0.8)]"></div>
+                                    <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-300 dark:border-gray-800">
+                                        <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full w-[96%] shadow-[0_0_10px_rgba(239,68,68,0.5)] dark:shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="flex justify-between text-xs font-bold mb-1.5">
-                                        <span className="text-gray-300 flex items-center gap-1.5"><FaChartLine className="text-amber-400" /> Detailed Analytics</span>
-                                        <span className="text-amber-400 font-bold">Track Your Progress</span>
+                                        <span className="text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><FaLaptopCode className="text-rose-500 dark:text-rose-400" /> Full CDI Simulation</span>
+                                        <span className="text-rose-600 dark:text-rose-400 font-bold">Authentic Exam UI</span>
                                     </div>
-                                    <div className="w-full h-2.5 bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-800">
-                                        <div className="h-full bg-gradient-to-r from-red-500 to-amber-500 rounded-full w-[94%] shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
+                                    <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-300 dark:border-gray-800">
+                                        <div className="h-full bg-gradient-to-r from-rose-500 to-red-500 rounded-full w-[98%] shadow-[0_0_10px_rgba(244,63,94,0.5)] dark:shadow-[0_0_10px_rgba(244,63,94,0.8)]"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="flex justify-between text-xs font-bold mb-1.5">
+                                        <span className="text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><FaChartLine className="text-amber-500 dark:text-amber-400" /> Detailed Analytics</span>
+                                        <span className="text-amber-600 dark:text-amber-400 font-bold">Track Your Progress</span>
+                                    </div>
+                                    <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-900 rounded-full overflow-hidden p-0.5 border border-gray-300 dark:border-gray-800">
+                                        <div className="h-full bg-gradient-to-r from-red-500 to-amber-500 rounded-full w-[94%] shadow-[0_0_10px_rgba(245,158,11,0.5)] dark:shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Top Right Floating Badge: Real CDI Exam Engine */}
-                        <div className="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 bg-slate-900/95 backdrop-blur-xl border border-red-500/40 p-3.5 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
-                            <div className="w-8.5 h-8.5 rounded-lg bg-red-600/30 border border-red-500/50 flex items-center justify-center text-red-400">
+                        <div className="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-red-200 dark:border-red-500/40 p-3.5 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
+                            <div className="w-8.5 h-8.5 rounded-lg bg-red-100 dark:bg-red-600/30 border border-red-200 dark:border-red-500/50 flex items-center justify-center text-red-600 dark:text-red-400">
                                 <FaLaptopCode className="w-4 h-4" />
                             </div>
                             <div>
-                                <p className="text-[11px] font-bold text-gray-300">CDI Mock Engine</p>
-                                <div className="flex items-center gap-1 text-[10px] text-red-400 font-semibold pt-0.5">
+                                <p className="text-[11px] font-bold text-gray-800 dark:text-gray-300">CDI Mock Engine</p>
+                                <div className="flex items-center gap-1 text-[10px] text-red-600 dark:text-red-400 font-semibold pt-0.5">
                                     <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
                                     <span>Real Exam Simulator</span>
                                 </div>
@@ -190,14 +190,14 @@ export default function Home() {
                         </div>
 
                         {/* Bottom Left Floating Badge: Universal Success Rate */}
-                        <div className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-slate-900/95 backdrop-blur-xl border border-red-500/40 px-4 py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
-                            <div className="w-7.5 h-7.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                        <div className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-emerald-200 dark:border-red-500/40 px-4 py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
+                            <div className="w-7.5 h-7.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                                 <FaChartLine className="w-3.5 h-3.5" />
                             </div>
                             <div>
-                                <p className="text-[10px] uppercase font-extrabold tracking-wider text-gray-400">Success Rate</p>
-                                <p className="text-xs font-black text-white flex items-center gap-1">
-                                    10,000+ Learners <span className="text-emerald-400">Band 7.5+</span>
+                                <p className="text-[10px] uppercase font-extrabold tracking-wider text-gray-500 dark:text-gray-400">Success Rate</p>
+                                <p className="text-xs font-black text-gray-900 dark:text-white flex items-center gap-1">
+                                    10,000+ Learners <span className="text-emerald-600 dark:text-emerald-400">Band 7.5+</span>
                                 </p>
                             </div>
                         </div>
