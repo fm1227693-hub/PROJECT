@@ -54,6 +54,7 @@ export default function AdminORG() {
     const [newStudentGender, setNewStudentGender] = useState('erkak')
     const [deleteModalStudent, setDeleteModalStudent] = useState(null)
     const [editingGroupId, setEditingGroupId] = useState(null)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     const handleCreateLead = async (e) => {
         e.preventDefault()
@@ -544,6 +545,19 @@ const filteredLeads = leads
         return (b.id || 0) - (a.id || 0)
     })
 
+const getTranslatedType = (type) => {
+    if (!type) return t('adminPanel.typeMurojaat', "Murojaat");
+    if (type === "Ro'yxatdan o'tish") return t('adminPanel.typeRegistration', "Ro'yxatdan o'tish");
+    if (type === "Bepul maslahat") return t('adminPanel.typeFreeConsultation', "Bepul maslahat");
+    if (type === "Ingliz tili") return t('adminPanel.typeEnglish', "Ingliz tili");
+    if (type === "Rus tili") return t('adminPanel.typeRussian', "Rus tili");
+    if (type === "Arab tili") return t('adminPanel.typeArabic', "Arab tili");
+    if (type === "Mental Arifmetika") return t('adminPanel.typeMentalMath', "Mental Arifmetika");
+    if (type === "Ona tili va Adabiyot") return t('adminPanel.typeNativeLang', "Ona tili va Adabiyot");
+    if (type === "Matematika") return t('adminPanel.typeMath', "Matematika");
+    return type;
+};
+
 const SidebarItem = ({ icon, label, isActive, onClick }) => (
     <button
         onClick={onClick}
@@ -567,8 +581,16 @@ const StatCard = ({ value, label }) => (
 return (
     <div className="flex min-h-screen bg-gray-50/50 dark:bg-[#070b14] font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-gray-100 relative">
         <Toaster position="top-center" />
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+            <div 
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+                onClick={() => setIsMobileMenuOpen(false)}
+            />
+        )}
+
         {/* Sidebar Wrapper */}
-        <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 hidden lg:block shrink-0 relative">
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 transform transition-transform duration-300 lg:relative lg:translate-x-0 shrink-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             {/* Sticky Inner Container */}
             <div className="sticky top-0 flex flex-col h-screen">
                 <div className="p-6 flex items-center gap-3 border-b border-gray-100 dark:border-gray-800">
@@ -579,11 +601,11 @@ return (
                 </div>
 
                 <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto custom-scrollbar">
-                    <SidebarItem icon={<FaChartBar />} label={t('adminPanel.murojaatlarTab', "Murojaatlar")} isActive={activeTab === 'leads'} onClick={() => setActiveTab('leads')} />
-                    <SidebarItem icon={<FaCommentDots />} label={t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari")} isActive={activeTab === 'CommentsORG'} onClick={() => setActiveTab('CommentsORG')} />
-                    <SidebarItem icon={<FaCalendarAlt />} label={t('adminDashboard.schedulesTab')} isActive={activeTab === 'schedules'} onClick={() => setActiveTab('schedules')} />
-                    <SidebarItem icon={<FaUsers />} label={t('adminDashboard.groupsTab')} isActive={activeTab === 'groups'} onClick={() => setActiveTab('groups')} />
-                    <SidebarItem icon={<FaUserGraduate />} label={t('adminDashboard.studentsTab')} isActive={activeTab === 'students'} onClick={() => setActiveTab('students')} />
+                    <SidebarItem icon={<FaChartBar />} label={t('adminPanel.murojaatlarTab', "Murojaatlar")} isActive={activeTab === 'leads'} onClick={() => { setActiveTab('leads'); setIsMobileMenuOpen(false); }} />
+                    <SidebarItem icon={<FaCommentDots />} label={t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari")} isActive={activeTab === 'CommentsORG'} onClick={() => { setActiveTab('CommentsORG'); setIsMobileMenuOpen(false); }} />
+                    <SidebarItem icon={<FaCalendarAlt />} label={t('adminDashboard.schedulesTab')} isActive={activeTab === 'schedules'} onClick={() => { setActiveTab('schedules'); setIsMobileMenuOpen(false); }} />
+                    <SidebarItem icon={<FaUsers />} label={t('adminDashboard.groupsTab')} isActive={activeTab === 'groups'} onClick={() => { setActiveTab('groups'); setIsMobileMenuOpen(false); }} />
+                    <SidebarItem icon={<FaUserGraduate />} label={t('adminDashboard.studentsTab')} isActive={activeTab === 'students'} onClick={() => { setActiveTab('students'); setIsMobileMenuOpen(false); }} />
                     <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
                         <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-colors font-bold text-sm">
                             <FaSignOutAlt />
@@ -596,6 +618,26 @@ return (
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col min-w-0">
+            {/* Mobile Navbar */}
+            <div className="lg:hidden flex items-center justify-between px-5 py-4 bg-[#0a0f1c] border-b border-white/5 sticky top-0 z-30">
+                <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-[#ef4444] text-white flex items-center justify-center text-xl shadow-[0_0_20px_rgba(239,68,68,0.4)]">
+                        <FaUserShield />
+                    </div>
+                    <span className="font-black text-xl tracking-tight text-white uppercase">OPTIMUM</span>
+                </div>
+                <button 
+                    onClick={() => setIsMobileMenuOpen(true)}
+                    className="w-11 h-11 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+                >
+                    <div className="flex flex-col gap-[5px]">
+                        <span className="w-5 h-[2px] bg-white rounded-full"></span>
+                        <span className="w-5 h-[2px] bg-white rounded-full"></span>
+                        <span className="w-5 h-[2px] bg-white rounded-full"></span>
+                    </div>
+                </button>
+            </div>
+
             {/* Header */}
             <header className="px-4 lg:px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shrink-0">
                 <div className="flex items-center gap-3">
@@ -661,7 +703,7 @@ return (
                                             filteredLeads.map(lead => (
                                                 <tr key={lead.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
                                                     <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">{lead.name}</td>
-                                                    <td className="py-4 px-4 text-gray-600 dark:text-gray-300">{lead.type || "Murojaat"}</td>
+                                                    <td className="py-4 px-4 text-gray-600 dark:text-gray-300">{getTranslatedType(lead.type)}</td>
                                                     <td className="py-4 px-4 text-gray-600 dark:text-gray-300">{lead.phone}</td>
                                                     <td className="py-4 px-4 text-gray-500 whitespace-nowrap">{lead.date}</td>
                                                     <td className="py-4 px-4">
