@@ -11,6 +11,26 @@ import {
 } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { HexColorPicker } from 'react-colorful'
+
+moment.updateLocale('en', {
+    week: {
+        dow: 1, // Monday is the first day of the week.
+    },
+})
+const localizer = momentLocalizer(moment)
+
+const GROUP_COLORS = [
+    'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', // Red
+    'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', // Blue
+    'linear-gradient(135deg, #10b981 0%, #059669 100%)', // Emerald
+    'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', // Amber
+    'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)', // Violet
+    'linear-gradient(135deg, #ec4899 0%, #db2777 100%)', // Pink
+];
 
 export default function AdminORG() {
     const daysList = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
@@ -53,17 +73,22 @@ export default function AdminORG() {
     const [acceptToGroupId, setAcceptToGroupId] = useState('')
     const [newLeadName, setNewLeadName] = useState('')
     const [newLeadPhone, setNewLeadPhone] = useState('')
+    const [newLeadPhoneCode, setNewLeadPhoneCode] = useState('')
     const [newLeadType, setNewLeadType] = useState("Ro'yxatdan o'tish")
     const [newLeadStatus, setNewLeadStatus] = useState("Qabul qilindi")
     const [newLeadGroup, setNewLeadGroup] = useState('')
+    const [showLeadGroupDropdown, setShowLeadGroupDropdown] = useState(false)
     const [schedules, setSchedules] = useState([])
     const [loadingSchedules, setLoadingSchedules] = useState(false)
     const [showAddScheduleModal, setShowAddScheduleModal] = useState(false)
     const [deleteModalSchedule, setDeleteModalSchedule] = useState(null)
     const [newScheduleGroup, setNewScheduleGroup] = useState('')
-    const [newScheduleDays, setNewScheduleDays] = useState([])
-    const [newScheduleTime, setNewScheduleTime] = useState('')
+    const [newScheduleStart, setNewScheduleStart] = useState('')
+    const [newScheduleEnd, setNewScheduleEnd] = useState('')
     const [editingScheduleId, setEditingScheduleId] = useState(null)
+    const [selectedDateForModal, setSelectedDateForModal] = useState(null)
+    const [currentView, setCurrentView] = useState('month')
+    const [currentDate, setCurrentDate] = useState(new Date())
 
     const LanguageDropdown = ({ isMobile }) => {
         const [isOpen, setIsOpen] = useState(false);
@@ -119,6 +144,9 @@ export default function AdminORG() {
     const [groups, setGroups] = useState([])
     const [loadingGroups, setLoadingGroups] = useState(false)
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
+    const [editingGroupId, setEditingGroupId] = useState(null)
+    const [newGroupColor, setNewGroupColor] = useState(GROUP_COLORS[0])
+    const [showColorPicker, setShowColorPicker] = useState(false)
     const [deleteModalGroup, setDeleteModalGroup] = useState(null)
     const [newGroupNameInput, setNewGroupNameInput] = useState('')
     const [selectedGroupDetails, setSelectedGroupDetails] = useState(null)
@@ -128,7 +156,6 @@ export default function AdminORG() {
     const [newStudentPhone, setNewStudentPhone] = useState('')
     const [newStudentGender, setNewStudentGender] = useState('erkak')
     const [deleteModalStudent, setDeleteModalStudent] = useState(null)
-    const [editingGroupId, setEditingGroupId] = useState(null)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     const handleCreateLead = async (e) => {
@@ -202,6 +229,7 @@ export default function AdminORG() {
 
         setNewLeadName('')
         setNewLeadPhone('')
+        setNewLeadPhoneCode('')
         setNewLeadGroup('')
         setShowAddLeadModal(false)
     }
@@ -263,20 +291,33 @@ const loadSchedules = async () => {
         const res = await axios.get(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, {
             validateStatus: status => status < 500
         })
+        const safeParse = (arr) => arr.map(s => {
+            const startDate = new Date(s.start);
+            const endDate = new Date(s.end);
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) return null;
+            return {
+                ...s,
+                start: startDate,
+                end: endDate,
+                title: s.title || s.group
+            }
+        }).filter(Boolean);
+
         if (res.status === 200 && res.data !== null) {
             const dataArray = Array.isArray(res.data) ? res.data : Object.values(res.data)
-            setSchedules(dataArray)
+            const parsedArray = safeParse(dataArray)
+            setSchedules(parsedArray)
             localStorage.setItem('admin_schedules', JSON.stringify(dataArray))
         } else if (res.data === null) {
             setSchedules([])
             localStorage.setItem('admin_schedules', '[]')
         } else {
             const stored = JSON.parse(localStorage.getItem('admin_schedules') || '[]')
-            setSchedules(stored)
+            setSchedules(safeParse(stored))
         }
     } catch (e) {
         const stored = JSON.parse(localStorage.getItem('admin_schedules') || '[]')
-        setSchedules(stored)
+        setSchedules(safeParse(stored))
     } finally {
         setLoadingSchedules(false)
     }
@@ -395,7 +436,7 @@ const loadSchedules = async () => {
         if (editingGroupId) {
             const oldGroup = groups.find(g => g.id === editingGroupId);
             const oldName = oldGroup.name;
-            updatedList = groups.map(g => g.id === editingGroupId ? { ...g, name: newName } : g);
+            updatedList = groups.map(g => g.id === editingGroupId ? { ...g, name: newName, color: newGroupColor } : g);
             
             // Update schedules with new group name
             updatedSchedulesList = schedules.map(s => s.group === oldName ? { ...s, group: newName } : s);
@@ -406,6 +447,7 @@ const loadSchedules = async () => {
             const newGroup = {
                 id: Date.now(),
                 name: newName,
+                color: newGroupColor
             }
             updatedList = [newGroup, ...groups]
         }
@@ -422,6 +464,7 @@ const loadSchedules = async () => {
 
         setNewGroupNameInput('')
         setEditingGroupId(null)
+        setNewGroupColor(GROUP_COLORS[0])
         setShowAddGroupModal(false)
     }
 
@@ -440,22 +483,16 @@ const loadSchedules = async () => {
 
     const handleCreateOrUpdateSchedule = async (e) => {
     e.preventDefault()
-    if (!newScheduleGroup.trim() || newScheduleDays.length === 0 || !newScheduleTime.trim()) {
+    if (!newScheduleGroup.trim() || !newScheduleStart || !newScheduleEnd) {
         toast.error(t('adminDashboard.toast.fillAllFields'))
         return
     }
 
-    const isOverlap = schedules.some(s => {
-        if (editingScheduleId && s.id === editingScheduleId) return false;
-        if (s.time === newScheduleTime) {
-            const sDays = Array.isArray(s.days) ? s.days : [s.days];
-            return newScheduleDays.some(d => sDays.includes(d));
-        }
-        return false;
-    });
+    const start = new Date(newScheduleStart);
+    const end = new Date(newScheduleEnd);
 
-    if (isOverlap) {
-        toast.error(t('adminDashboard.toast.timeConflict'));
+    if (start >= end) {
+        toast.error("Tugash vaqti boshlanish vaqtidan keyin bo'lishi kerak!");
         return;
     }
 
@@ -464,17 +501,19 @@ const loadSchedules = async () => {
         updatedList = schedules.map(s => s.id === editingScheduleId ? {
             ...s,
             group: newScheduleGroup.trim(),
-            days: newScheduleDays,
-            time: newScheduleTime.trim()
+            title: newScheduleGroup.trim(),
+            start: start,
+            end: end
         } : s)
     } else {
         const newSchedule = {
             id: Date.now(),
             group: newScheduleGroup.trim(),
-            days: newScheduleDays,
-            time: newScheduleTime.trim()
+            title: newScheduleGroup.trim(),
+            start: start,
+            end: end
         }
-        updatedList = [newSchedule, ...schedules]
+        updatedList = [...schedules, newSchedule]
     }
 
     setSchedules(updatedList)
@@ -488,8 +527,8 @@ const loadSchedules = async () => {
     }
 
     setNewScheduleGroup('')
-    setNewScheduleDays([])
-    setNewScheduleTime('')
+    setNewScheduleStart('')
+    setNewScheduleEnd('')
     setEditingScheduleId(null)
     setShowAddScheduleModal(false)
 }
@@ -510,9 +549,9 @@ const handleDeleteSchedule = async (id) => {
 
 const handleEditScheduleClick = (schedule) => {
     setEditingScheduleId(schedule.id)
-    setNewScheduleGroup(schedule.group)
-    setNewScheduleDays(schedule.days)
-    setNewScheduleTime(schedule.time)
+    setNewScheduleGroup(schedule.group || schedule.title || '')
+    setNewScheduleStart(moment(schedule.start).format('YYYY-MM-DDTHH:mm'))
+    setNewScheduleEnd(moment(schedule.end).format('YYYY-MM-DDTHH:mm'))
     setShowAddScheduleModal(true)
 }
 
@@ -846,73 +885,151 @@ return (
                                 <button onClick={() => {
                                     setEditingScheduleId(null)
                                     setNewScheduleGroup('')
-                                    setNewScheduleDays('')
-                                    setNewScheduleTime('')
+                                    setNewScheduleStart('')
+                                    setNewScheduleEnd('')
                                     setShowAddScheduleModal(true)
                                 }} className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
                                     {t('adminDashboard.addGroupBtn', "+ Guruh qo'shish")}
                                 </button>
                             </div>
                             
-                            <div className="overflow-x-auto custom-scrollbar pb-4 relative">
-                                <table className="w-full text-left border-collapse border border-gray-100 dark:border-gray-800 min-w-[1400px]">
-                                    <thead>
-                                        <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-500 dark:text-gray-400 text-center">
-                                            <th className="py-4 px-3 border-r border-gray-100 dark:border-gray-800 sticky left-0 z-20 bg-gray-50 dark:bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.05)] w-32">{t('adminDashboard.daysAndTime')}</th>
-                                            {timesList.map(time => (
-                                                <th key={time} className="py-4 px-2 border-r border-gray-100 dark:border-gray-800 min-w-[120px]">{time}</th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {daysList.map(day => (
-                                            <tr key={day} className="border-b border-gray-100 dark:border-gray-800 transition text-sm">
-                                                <td className="py-4 px-4 font-bold text-gray-900 dark:text-white border-r border-gray-100 dark:border-gray-800 sticky left-0 z-10 bg-white dark:bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.05)] text-center">
-                                                    {t(`adminPanel.days.${day.toLowerCase()}`, day)}
-                                                </td>
-                                                {timesList.map(time => {
-                                                    const schedule = schedules.find(s => {
-                                                        const sDays = Array.isArray(s.days) ? s.days : [s.days];
-                                                        return sDays.includes(day) && s.time === time;
-                                                    });
-                                                    
-                                                    return (
-                                                        <td key={time} className="p-2 border-r border-gray-100 dark:border-gray-800 relative group min-w-[130px] align-middle hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
-                                                            {schedule ? (
-                                                                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-3 border border-indigo-100 dark:border-indigo-800/50 flex flex-col h-full items-center justify-center relative shadow-sm">
-                                                                    <span className="font-bold text-indigo-700 dark:text-indigo-400 text-center leading-snug">{schedule.group}</span>
-                                                                    
-                                                                    {/* Hover Actions */}
-                                                                    <div className="absolute inset-0 bg-indigo-900/90 rounded-xl flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                                                        <button onClick={() => handleEditScheduleClick(schedule)} className="text-white hover:scale-110 transition-transform" title={t('adminDashboard.editTitle')}>
-                                                                            <FaRegEye className="text-xl" />
-                                                                        </button>
-                                                                        <button onClick={() => setDeleteModalSchedule(schedule)} className="text-rose-400 hover:scale-110 transition-transform" title={t('adminDashboard.deleteTitle')}>
-                                                                            <FaTrash className="text-lg" />
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            ) : (
-                                                                <div 
-                                                                    className="w-full h-[60px] rounded-xl border-2 border-dashed border-transparent hover:border-gray-200 dark:hover:border-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer"
-                                                                    onClick={() => {
-                                                                        setEditingScheduleId(null)
-                                                                        setNewScheduleGroup('')
-                                                                        setNewScheduleDays([day])
-                                                                        setNewScheduleTime(time)
-                                                                        setShowAddScheduleModal(true)
-                                                                    }}
-                                                                >
-                                                                    <span className="text-xs font-bold text-gray-400">{t('adminDashboard.addBtn')}</span>
-                                                                </div>
-                                                            )}
-                                                        </td>
-                                                    );
-                                                })}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                            <div className="h-[700px] w-full mt-4 bg-white dark:bg-gray-900 rounded-xl overflow-hidden calendar-container">
+                                <style>{`
+                                    .calendar-container .rbc-calendar { font-family: 'Plus Jakarta Sans', sans-serif; border: none; }
+                                    .calendar-container .rbc-header { padding: 10px 0; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 1px solid #f3f4f6; color: #6b7280; }
+                                    .dark .calendar-container .rbc-header { border-bottom: 1px solid #1f2937; color: #9ca3af; }
+                                    
+                                    .calendar-container .rbc-month-view, .calendar-container .rbc-time-view, .calendar-container .rbc-agenda-view { border: 1px solid #f3f4f6; border-radius: 12px; overflow: hidden; background: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+                                    .dark .calendar-container .rbc-month-view, .dark .calendar-container .rbc-time-view, .dark .calendar-container .rbc-agenda-view { border-color: #1f2937; background: #111827; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
+                                    
+                                    .calendar-container .rbc-day-bg, .calendar-container .rbc-month-row, .calendar-container .rbc-time-header-content { border-color: #f3f4f6; transition: background-color 0.2s ease; cursor: pointer; }
+                                    .dark .calendar-container .rbc-day-bg, .dark .calendar-container .rbc-month-row, .dark .calendar-container .rbc-time-header-content { border-color: #1f2937; }
+                                    
+                                    .calendar-container .rbc-day-bg:hover { background-color: rgba(239, 68, 68, 0.03); }
+                                    .dark .calendar-container .rbc-day-bg:hover { background-color: rgba(239, 68, 68, 0.05); }
+                                    
+                                    .calendar-container .rbc-off-range-bg { background-color: transparent; }
+                                    .dark .calendar-container .rbc-off-range-bg { background-color: transparent; }
+                                    
+                                    .calendar-container .rbc-today { background-color: rgba(239, 68, 68, 0.05); border-top: 3px solid #ef4444; }
+                                    .dark .calendar-container .rbc-today { background-color: rgba(239, 68, 68, 0.1); border-top: 3px solid #ef4444; }
+                                    
+                                    .calendar-container .rbc-event { border-radius: 6px; padding: 3px 8px; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+                                    .calendar-container .rbc-event:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 5; }
+                                    
+                                    /* Hide events in Month View completely */
+                                    .calendar-container .rbc-month-view .rbc-event, .calendar-container .rbc-month-view .rbc-show-more { display: none !important; }
+                                    
+                                    .calendar-container .rbc-button-link { font-weight: 700; color: #4b5563; padding: 4px; display: inline-block; }
+                                    .dark .calendar-container .rbc-button-link { color: #d1d5db; }
+                                    
+                                    .calendar-container .rbc-toolbar { margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+                                    .calendar-container .rbc-toolbar > span:first-child { display: flex; gap: 4px; }
+                                    
+                                    .calendar-container .rbc-toolbar-label { font-size: 1.5rem; font-weight: 900; color: #111827; letter-spacing: -0.02em; }
+                                    .dark .calendar-container .rbc-toolbar-label { color: #ffffff; }
+                                    
+                                    .calendar-container .rbc-toolbar button { color: #4b5563; border: 1px solid #e5e7eb; border-radius: 8px; padding: 6px 16px; font-weight: 600; font-size: 0.875rem; background: #ffffff; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+                                    .dark .calendar-container .rbc-toolbar button { color: #d1d5db; border-color: #374151; background: #1f2937; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+                                    
+                                    .calendar-container .rbc-toolbar button:hover { background: #f9fafb; border-color: #d1d5db; color: #111827; }
+                                    .dark .calendar-container .rbc-toolbar button:hover { background: #374151; border-color: #4b5563; color: #ffffff; }
+                                    
+                                    .calendar-container .rbc-toolbar button:active, .calendar-container .rbc-toolbar button.rbc-active { background: #ef4444; color: white; border-color: #ef4444; box-shadow: 0 2px 4px rgba(239,68,68,0.2); }
+                                    .dark .calendar-container .rbc-toolbar button:active, .dark .calendar-container .rbc-toolbar button.rbc-active { background: #ef4444; color: white; border-color: #ef4444; box-shadow: 0 2px 4px rgba(239,68,68,0.2); }
+                                    
+                                    .calendar-container .rbc-show-more { background: rgba(239, 68, 68, 0.1); color: #ef4444; font-weight: 800; border-radius: 4px; padding: 2px 6px; margin-top: 2px; transition: background 0.2s ease; }
+                                    .calendar-container .rbc-show-more:hover { background: rgba(239, 68, 68, 0.2); color: #dc2626; }
+                                    
+                                    /* Week/Day View Enhancements */
+                                    .calendar-container .rbc-time-view, .calendar-container .rbc-time-header, .calendar-container .rbc-time-content, .calendar-container .rbc-timeslot-group, .calendar-container .rbc-time-header-content { border-color: #f3f4f6; }
+                                    .dark .calendar-container .rbc-time-view, .dark .calendar-container .rbc-time-header, .dark .calendar-container .rbc-time-content, .dark .calendar-container .rbc-timeslot-group, .dark .calendar-container .rbc-time-header-content { border-color: #1f2937; }
+                                    
+                                    .calendar-container .rbc-day-slot .rbc-time-slot { border-top: 1px solid #f9fafb; }
+                                    .dark .calendar-container .rbc-day-slot .rbc-time-slot { border-top: 1px solid #111827; }
+                                    
+                                    .calendar-container .rbc-label { font-size: 0.75rem; font-weight: 700; color: #9ca3af; padding: 0 8px; }
+                                    .dark .calendar-container .rbc-label { color: #6b7280; }
+                                    
+                                    .calendar-container .rbc-current-time-indicator { display: none !important; }
+                                    
+                                    .calendar-container .rbc-allday-cell { display: none; }
+                                    
+                                    /* datetime-local picker icon fix for dark mode */
+                                    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+                                        filter: invert(1) brightness(0.7);
+                                        opacity: 0.6;
+                                        cursor: pointer;
+                                        border-radius: 4px;
+                                        padding: 2px;
+                                        transition: opacity 0.2s;
+                                    }
+                                    input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+                                        opacity: 1;
+                                        filter: invert(1) brightness(1);
+                                    }
+                                `}</style>
+                                <Calendar
+                                    localizer={localizer}
+                                    events={schedules}
+                                    eventPropGetter={(event) => {
+                                        const group = groups.find(g => g.name === event.group);
+                                        const bgColor = group?.color || GROUP_COLORS[0];
+                                        return { style: { background: bgColor } };
+                                    }}
+                                    startAccessor="start"
+                                    endAccessor="end"
+                                    style={{ height: '100%', width: '100%' }}
+                                    views={['month', 'week', 'day', 'agenda']}
+                                    view={currentView}
+                                    onView={setCurrentView}
+                                    date={currentDate}
+                                    onNavigate={(newDate) => setCurrentDate(newDate)}
+                                    selectable={true}
+                                    min={new Date(1970, 1, 1, 8, 0, 0)}
+                                    max={new Date(1970, 1, 1, 20, 0, 0)}
+                                    formats={{
+                                        timeGutterFormat: 'HH:mm',
+                                        selectRangeFormat: ({ start, end }, culture, localizer) => `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`,
+                                        eventTimeRangeFormat: ({ start, end }, culture, localizer) => `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`,
+                                        agendaTimeRangeFormat: ({ start, end }, culture, localizer) => `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`
+                                    }}
+                                    onSelectSlot={(slotInfo) => {
+                                        const start = moment(slotInfo.start);
+                                        
+                                        if (start.isBefore(moment().startOf('day'))) {
+                                            toast.error(t('adminDashboard.pastDateError', "O'tib ketgan sanaga dars qo'shib bo'lmaydi!"));
+                                            return;
+                                        }
+                                        
+                                        if (start.hours() === 0 && start.minutes() === 0) {
+                                            setSelectedDateForModal(slotInfo.start);
+                                        } else {
+                                            setEditingScheduleId(null);
+                                            setNewScheduleGroup('');
+                                            let end = moment(slotInfo.end);
+                                            setNewScheduleStart(start.format('YYYY-MM-DDTHH:mm'));
+                                            setNewScheduleEnd(end.format('YYYY-MM-DDTHH:mm'));
+                                            setShowAddScheduleModal(true);
+                                        }
+                                    }}
+                                    onSelectEvent={(event) => handleEditScheduleClick(event)}
+                                    className="text-gray-800 dark:text-gray-300 text-sm"
+                                    messages={{
+                                        allDay: t('calendar.allDay', "Kun bo'yi"),
+                                        previous: "◀",
+                                        next: "▶",
+                                        today: t('calendar.today', "Bugun"),
+                                        month: t('calendar.month', "Oy"),
+                                        week: t('calendar.week', "Hafta"),
+                                        day: t('calendar.day', "Kun"),
+                                        agenda: t('calendar.agenda', "Ro'yxat"),
+                                        date: t('calendar.date', "Sana"),
+                                        time: t('calendar.time', "Vaqt"),
+                                        event: t('calendar.event', "Voqea"),
+                                        noEventsInRange: t('calendar.noEventsInRange', "Bu oraliqda darslar yo'q.")
+                                    }}
+                                />
                             </div>
                         </div>
 
@@ -957,6 +1074,7 @@ return (
                                                             <button onClick={() => {
                                                                 setEditingGroupId(group.id)
                                                                 setNewGroupNameInput(group.name)
+                                                                setNewGroupColor(group.color || GROUP_COLORS[0])
                                                                 setShowAddGroupModal(true)
                                                             }} className="text-indigo-500 hover:text-indigo-600 transition-colors" title={t('adminDashboard.editTitle')}>
                                                                 <FaPen className="text-lg" />
@@ -1036,6 +1154,113 @@ return (
         </main>
 
         {/* Modals are kept similar */}
+        {selectedDateForModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60] p-4 animate-fade-in overflow-y-auto">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-3xl w-full shadow-2xl space-y-6 relative my-8">
+                    <button onClick={() => setSelectedDateForModal(null)} className="absolute top-6 right-6 text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                        <FaTimes className="text-xl" />
+                    </button>
+                    
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 flex items-center justify-center text-2xl font-bold shrink-0">
+                            <FaCalendarAlt />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black text-gray-900 dark:text-white">{moment(selectedDateForModal).format('DD MMMM, YYYY')} - Dars jadvali</h3>
+                            <p className="text-sm font-bold text-gray-500 mt-1">Soatlar kesimida guruhlar</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-50/50 dark:bg-gray-800/20 rounded-3xl p-4 sm:p-6 border border-gray-100 dark:border-gray-800 max-h-[65vh] overflow-y-auto custom-scrollbar">
+                        <div className="relative border-l-2 border-gray-200 dark:border-gray-700 ml-12 sm:ml-16 space-y-6 pb-6">
+                            {Array.from({length: 13}).map((_, i) => {
+                                const hour = i + 8; // 08:00 dan 20:00 gacha
+                                const timeStr = `${hour.toString().padStart(2, '0')}:00`;
+                                
+                                const cellStart = moment(selectedDateForModal).hours(hour).minutes(0).seconds(0);
+                                const cellEnd = moment(selectedDateForModal).hours(hour+1).minutes(0).seconds(0);
+                                
+                                // Find if any schedule overlaps with this hour cell
+                                const cellSchedules = schedules.filter(s => {
+                                    const sStart = moment(s.start);
+                                    const sEnd = moment(s.end);
+                                    return sStart.isBefore(cellEnd) && sEnd.isAfter(cellStart);
+                                });
+
+                                return (
+                                    <div key={timeStr} className="relative pl-6 sm:pl-10">
+                                        {/* Timeline Dot */}
+                                        <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white dark:bg-gray-900 border-[4px] border-indigo-200 dark:border-indigo-900/60 shadow-sm z-10 transition-colors duration-300"></div>
+                                        
+                                        {/* Time Label */}
+                                        <div className="absolute -left-16 sm:-left-20 top-1 text-sm font-black text-gray-400 dark:text-gray-500 w-12 text-right">
+                                            {timeStr}
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="min-h-[44px]">
+                                            {cellSchedules.length > 0 ? (
+                                                <div className="grid gap-3">
+                                                    {cellSchedules.map(sch => (
+                                                        <div key={sch.id} className="bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl p-4 shadow-lg shadow-red-500/20 text-white relative group/item overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
+                                                            {/* Glass reflection effect */}
+                                                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+                                                            
+                                                            <div className="flex justify-between items-center relative z-10">
+                                                                <div>
+                                                                    <h4 className="text-lg font-black tracking-tight">{sch.group}</h4>
+                                                                    <p className="text-sm font-bold text-white/80 mt-0.5">{moment(sch.start).format('HH:mm')} - {moment(sch.end).format('HH:mm')}</p>
+                                                                </div>
+                                                                
+                                                                {/* Action buttons */}
+                                                                <div className="flex gap-2 opacity-0 group-hover/item:opacity-100 transition-all duration-300 translate-x-4 group-hover/item:translate-x-0">
+                                                                    <button onClick={() => {
+                                                                        handleEditScheduleClick(sch);
+                                                                        setSelectedDateForModal(null);
+                                                                    }} className="w-9 h-9 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center transition-colors shadow-sm"><FaRegEye className="text-white" /></button>
+                                                                    <button onClick={() => {
+                                                                        setDeleteModalSchedule(sch);
+                                                                        setSelectedDateForModal(null);
+                                                                    }} className="w-9 h-9 rounded-xl bg-black/20 hover:bg-black/30 backdrop-blur-md flex items-center justify-center transition-colors shadow-sm"><FaTrash className="text-white" /></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                cellStart.isBefore(moment().startOf('day')) ? (
+                                                    <div className="w-full text-left py-3.5 px-5 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/20 text-gray-400/60 dark:text-gray-600 font-bold text-sm">
+                                                        <span className="flex items-center gap-3">
+                                                            <FaCalendarAlt className="text-lg opacity-30" /> 
+                                                            <span>Bu vaqtda dars o'tilmagan</span>
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <button onClick={() => {
+                                                        setEditingScheduleId(null);
+                                                        setNewScheduleGroup('');
+                                                        setNewScheduleStart(cellStart.format('YYYY-MM-DDTHH:mm'));
+                                                        setNewScheduleEnd(cellEnd.format('YYYY-MM-DDTHH:mm'));
+                                                        setShowAddScheduleModal(true);
+                                                        setSelectedDateForModal(null);
+                                                    }} className="w-full text-left py-3.5 px-5 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700/60 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold text-sm transition-all duration-300 group shadow-sm hover:shadow-md">
+                                                        <span className="flex items-center gap-3">
+                                                            <FaCalendarAlt className="text-lg opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all" /> 
+                                                            <span>Bu vaqt bo'sh. Guruh qo'shish</span>
+                                                        </span>
+                                                    </button>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+
         {deleteModalSchedule && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
                 <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
@@ -1069,35 +1294,35 @@ return (
                     <form onSubmit={handleCreateOrUpdateSchedule} className="space-y-4">
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.groupName')}</label>
-                            <select value={newScheduleGroup} onChange={(e) => setNewScheduleGroup(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required>
-                                <option value="">Guruhni tanlang</option>
-                                {groups.map(g => <option key={g.id} value={g.name}>{g.name}</option>)}
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Kunlar</label>
-                            <div className="flex flex-wrap gap-2">
-                                {daysList.map(d => (
-                                    <label key={d} className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                        <input type="checkbox" checked={newScheduleDays.includes(d)} onChange={(e) => {
-                                            if (e.target.checked) setNewScheduleDays([...newScheduleDays, d])
-                                            else setNewScheduleDays(newScheduleDays.filter(day => day !== d))
-                                        }} className="w-4 h-4 text-red-600 rounded focus:ring-red-500" />
-                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{d}</span>
-                                    </label>
-                                ))}
+                            <div className="relative">
+                                <select value={newScheduleGroup} onChange={(e) => setNewScheduleGroup(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500 text-gray-900 dark:text-white appearance-none cursor-pointer transition-all" required>
+                                    <option value="">{t('adminDashboard.selectGroup', 'Guruhni tanlang')}</option>
+                                    {groups.map(g => <option key={g.id} value={g.name}>{g.name}</option>)}
+                                </select>
+                                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                    {newScheduleGroup && (() => { const g = groups.find(gr => gr.name === newScheduleGroup); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm" style={{ background: g.color }}></span> : null; })()}
+                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                </div>
                             </div>
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Vaqti</label>
-                            <select value={newScheduleTime} onChange={(e) => setNewScheduleTime(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required>
-                                <option value="">Vaqtni tanlang</option>
-                                {timesList.map(t => (
-                                    <option key={t} value={t}>{t}</option>
-                                ))}
-                            </select>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.startTime', 'Boshlanish vaqti')}</label>
+                            <input type="datetime-local" value={newScheduleStart} onChange={(e) => setNewScheduleStart(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.endTime', 'Tugash vaqti')}</label>
+                            <input type="datetime-local" value={newScheduleEnd} onChange={(e) => setNewScheduleEnd(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required />
                         </div>
                         <div className="flex gap-3 pt-2">
+                            {editingScheduleId && (
+                                <button type="button" onClick={() => {
+                                    const sch = schedules.find(s => s.id === editingScheduleId);
+                                    if (sch) setDeleteModalSchedule(sch);
+                                    setShowAddScheduleModal(false);
+                                }} className="w-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition">
+                                    <FaTrash />
+                                </button>
+                            )}
                             <button type="button" onClick={() => setShowAddScheduleModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
                             <button type="submit" className="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-sm shadow-md shadow-red-600/20 hover:from-red-500 hover:to-rose-500 transition">{t('adminDashboard.save')}</button>
                         </div>
@@ -1138,8 +1363,42 @@ return (
 
                     <form onSubmit={handleCreateGroup} className="space-y-4">
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruh nomi (Masalan: IELTS Beginner)</label>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.groupNameLabel', "Guruh nomi (Masalan: IELTS Beginner)")}</label>
                             <input type="text" value={newGroupNameInput} onChange={(e) => setNewGroupNameInput(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-2">{t('adminDashboard.groupColorLabel', "Guruh rangi (Kalendarda shunday ko'rinadi)")}</label>
+                            <div className="flex flex-wrap gap-3 items-center mt-1">
+                                {GROUP_COLORS.map((color, idx) => (
+                                    <button
+                                        key={idx}
+                                        type="button"
+                                        onClick={() => setNewGroupColor(color)}
+                                        className={`w-8 h-8 rounded-full shadow-sm transition-transform ${newGroupColor === color ? 'scale-125 ring-2 ring-offset-2 ring-gray-400' : 'hover:scale-110'}`}
+                                        style={{ background: color }}
+                                        title={`Rang ${idx + 1}`}
+                                    />
+                                ))}
+                                <div className="w-[1px] h-6 bg-gray-200 dark:bg-gray-700 mx-1"></div>
+                                <div className="relative">
+                                    <button
+                                        type="button" 
+                                        onClick={() => setShowColorPicker(!showColorPicker)}
+                                        className={`w-8 h-8 rounded-full shadow-sm flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 transition-transform ${(!GROUP_COLORS.includes(newGroupColor) || showColorPicker) ? 'scale-125 ring-2 ring-offset-2 ring-gray-400 border-none' : 'hover:scale-110'}`}
+                                        style={{ background: !GROUP_COLORS.includes(newGroupColor) ? newGroupColor : 'transparent' }}
+                                        title="Boshqa rang tanlash"
+                                    >
+                                        {GROUP_COLORS.includes(newGroupColor) && <span className="text-gray-400 text-lg leading-none font-light mb-0.5">+</span>}
+                                    </button>
+                                    
+                                    {showColorPicker && (
+                                        <div className="absolute top-full left-0 mt-3 z-[60] animate-fade-in shadow-2xl rounded-2xl overflow-hidden border-4 border-white dark:border-gray-800">
+                                            <div className="fixed inset-0 z-[-1]" onClick={() => setShowColorPicker(false)}></div>
+                                            <HexColorPicker color={newGroupColor.startsWith('#') ? newGroupColor : '#ff0000'} onChange={setNewGroupColor} />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                         <div className="flex gap-3 pt-2">
                             <button type="button" onClick={() => setShowAddGroupModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
@@ -1176,7 +1435,6 @@ return (
                                 setEditingStudentId(null)
                                 setNewStudentName('')
                                 setNewStudentPhone('')
-                                setNewStudentPhoto(null)
                                 setShowAddStudentModal(true)
                             }} className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white rounded-xl text-sm font-bold transition-all shadow-md flex items-center gap-2">
                                 <FaUserPlus /> {t('adminDashboard.addStudentBtn')}
@@ -1330,12 +1588,18 @@ return (
                         </div>
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruhni tanlang</label>
-                            <select value={acceptToGroupId} onChange={(e) => setAcceptToGroupId(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500 text-gray-900 dark:text-white transition-colors">
-                                <option value="">Tanlang...</option>
-                                {groups.map(g => (
-                                    <option key={g.id} value={g.id}>{g.name}</option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <select value={acceptToGroupId} onChange={(e) => setAcceptToGroupId(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 text-gray-900 dark:text-white appearance-none cursor-pointer transition-all">
+                                    <option value="">Tanlang...</option>
+                                    {groups.map(g => (
+                                        <option key={g.id} value={g.id}>{g.name}</option>
+                                    ))}
+                                </select>
+                                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                    {acceptToGroupId && (() => { const g = groups.find(gr => gr.id === Number(acceptToGroupId) || gr.id === acceptToGroupId); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm" style={{ background: g.color }}></span> : null; })()}
+                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1384,19 +1648,60 @@ return (
                         </div>
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminPanel.phoneLabel', "Telefon")}</label>
-                            <div className="relative flex items-center">
-                                <span className="absolute left-4 font-bold text-sm text-gray-400 pointer-events-none">+998</span>
-                                <input type="text" maxLength={9} value={newLeadPhone} onChange={(e) => setNewLeadPhone(e.target.value.replace(/\D/g, '').slice(0, 9))} className="w-full pl-14 pr-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-bold tracking-wider focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required />
+                            <div className="flex items-center bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden focus-within:border-red-500 transition-all">
+                                <span className="px-4 text-sm font-bold text-gray-400 whitespace-nowrap border-r border-gray-200 dark:border-gray-700 py-3">+998</span>
+                                <input
+                                    type="text"
+                                    maxLength={9}
+                                    value={newLeadPhone}
+                                    onChange={(e) => setNewLeadPhone(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                                    placeholder="(90) 123-45-67"
+                                    className="flex-1 px-4 py-3 bg-transparent text-sm font-bold tracking-wider focus:outline-none text-gray-900 dark:text-white placeholder:text-gray-400 placeholder:font-normal"
+                                    required
+                                />
                             </div>
                         </div>
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruhni tanlang (Majburiy emas)</label>
-                            <select value={newLeadGroup} onChange={(e) => setNewLeadGroup(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white transition-colors">
-                                <option value="">Tanlang...</option>
-                                {groups.map(g => (
-                                    <option key={g.id} value={g.id}>{g.name}</option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowLeadGroupDropdown(!showLeadGroupDropdown)}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-left flex items-center justify-between gap-2 transition-all hover:border-red-400 focus:outline-none focus:border-red-500"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        {newLeadGroup && (() => { const g = groups.find(gr => String(gr.id) === String(newLeadGroup)); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" style={{ background: g.color }}></span> : null; })()}
+                                        <span className={newLeadGroup ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-400'}>
+                                            {newLeadGroup ? groups.find(g => String(g.id) === String(newLeadGroup))?.name || 'Tanlang...' : 'Tanlang...'}
+                                        </span>
+                                    </div>
+                                    <svg className={`w-4 h-4 text-gray-400 transition-transform ${showLeadGroupDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+
+                                {showLeadGroupDropdown && (
+                                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
+                                        <div className="fixed inset-0 z-[-1]" onClick={() => setShowLeadGroupDropdown(false)}></div>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setNewLeadGroup(''); setShowLeadGroupDropdown(false); }}
+                                            className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${!newLeadGroup ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                        >
+                                            Tanlang...
+                                        </button>
+                                        {groups.map(g => (
+                                            <button
+                                                key={g.id}
+                                                type="button"
+                                                onClick={() => { setNewLeadGroup(g.id); setShowLeadGroupDropdown(false); }}
+                                                className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${String(newLeadGroup) === String(g.id) ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                            >
+                                                {g.color && <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: g.color }}></span>}
+                                                {g.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className="flex gap-3 pt-2">
                             <button type="button" onClick={() => setShowAddLeadModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminPanel.noBtn', "Bekor qilish")}</button>

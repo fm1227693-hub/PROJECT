@@ -559,6 +559,7 @@
         "viewReplies": "replies",
         "justNow": "Just now",
         "viewAllBtn": "View all comments",
+        "today": "Today",
         "closeBtn": "Close"
     },
     "principles": {
@@ -966,6 +967,9 @@
     "adminDashboard": {
         "schedulesTab": "Class Schedule",
         "groupsTab": "Groups",
+        "addGroupBtn": "+ Add group",
+        "actions": "Actions",
+        "noGroups": "No groups found",
         "daysAndTime": "Days \\ Time",
         "addBtn": "+ add",
         "editTitle": "Edit",
@@ -1005,7 +1009,22 @@
             "fillNameAndPhone": "Please enter name and phone number!",
             "enterGroupName": "Enter group name!"
         },
+        "pastDateError": "Cannot add classes to past dates!",
+        "groupNameLabel": "Group name (e.g. IELTS Beginner)",
+        "groupColorLabel": "Group color (will appear in Calendar)",
         "studentsTab": "Students",
         "studentName": "Student name"
+    },
+    "calendar": {
+        "allDay": "All day",
+        "today": "Today",
+        "month": "Month",
+        "week": "Week",
+        "day": "Day",
+        "agenda": "Agenda",
+        "date": "Date",
+        "time": "Time",
+        "event": "Event",
+        "noEventsInRange": "No classes in this range."
     }
 }

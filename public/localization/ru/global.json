@@ -560,6 +560,7 @@
         "viewReplies": "ответов",
         "justNow": "Только что",
         "viewAllBtn": "Посмотреть все комментарии",
+        "today": "Сегодня",
         "closeBtn": "Закрыть"
     },
     "principles": {
@@ -967,6 +968,9 @@
     "adminDashboard": {
         "schedulesTab": "Расписание занятий",
         "groupsTab": "Группы",
+        "addGroupBtn": "+ Добавить группу",
+        "actions": "Действия",
+        "noGroups": "Группы не найдены",
         "daysAndTime": "Дни \\ Время",
         "addBtn": "+ добавить",
         "editTitle": "Редактировать",
@@ -1006,7 +1010,22 @@
             "fillNameAndPhone": "Пожалуйста, введите имя и номер телефона!",
             "enterGroupName": "Введите название группы!"
         },
+        "pastDateError": "Невозможно добавить занятия на прошедшие даты!",
+        "groupNameLabel": "Название группы (например: IELTS Beginner)",
+        "groupColorLabel": "Цвет группы (будет отображаться в Календаре)",
         "studentsTab": "Студенты",
         "studentName": "Имя студента"
+    },
+    "calendar": {
+        "allDay": "Весь день",
+        "today": "Сегодня",
+        "month": "Месяц",
+        "week": "Неделя",
+        "day": "День",
+        "agenda": "Список",
+        "date": "Дата",
+        "time": "Время",
+        "event": "Событие",
+        "noEventsInRange": "В этом диапазоне нет занятий."
     }
 }

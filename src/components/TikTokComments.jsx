@@ -83,7 +83,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
         const newComment = {
             id: Date.now(),
             text: text.trim(),
-            date: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) + ' · Bugun',
+            date: `${new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })} · ${String(new Date().getDate()).padStart(2, '0')}.${String(new Date().getMonth() + 1).padStart(2, '0')}.${new Date().getFullYear()}`,
             replies: []
         }
 
@@ -273,7 +273,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                     </p>
 
                                     <div className="flex items-center gap-4 text-[11px] font-semibold text-gray-400 pt-0.5">
-                                        <span>{comment.date || t('studentCommentsORG.justNow')}</span>
+                                        <span>{comment.date ? comment.date.replace('Bugun', t('studentCommentsORG.today', 'Bugun')) : t('studentCommentsORG.justNow')}</span>
                                         <button
                                             type="button"
                                             onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
@@ -321,7 +321,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                                                     {reply.text}
                                                                 </p>
                                                                 <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-400 pt-1">
-                                                                    <span>{reply.date || t('studentCommentsORG.justNow')}</span>
+                                                                    <span>{reply.date ? reply.date.replace('Bugun', t('studentCommentsORG.today', 'Bugun')) : t('studentCommentsORG.justNow')}</span>
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}

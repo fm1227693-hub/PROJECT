@@ -654,6 +654,7 @@
         "viewReplies": "ta javobni ko'rish",
         "justNow": "Hozirgina",
         "viewAllBtn": "Barcha izohlarni ko'rish",
+        "today": "Bugun",
         "closeBtn": "Yopish"
     },
     "principles": {
@@ -1008,6 +1009,9 @@
     "adminDashboard": {
         "schedulesTab": "Dars jadvali",
         "groupsTab": "Guruhlar",
+        "addGroupBtn": "+ Guruh qo'shish",
+        "actions": "Amallar",
+        "noGroups": "Guruhlar topilmadi",
         "daysAndTime": "Kunlar \\ Vaqt",
         "addBtn": "+ qo'shish",
         "editTitle": "Tahrirlash",
@@ -1047,7 +1051,22 @@
             "fillNameAndPhone": "Iltimos, ism va telefon raqamni kiriting!",
             "enterGroupName": "Guruh nomini kiriting!"
         },
+        "pastDateError": "O'tib ketgan sanaga dars qo'shib bo'lmaydi!",
+        "groupNameLabel": "Guruh nomi (Masalan: IELTS Beginner)",
+        "groupColorLabel": "Guruh rangi (Kalendarda shunday ko'rinadi)",
         "studentsTab": "O'quvchilar",
         "studentName": "O'quvchi ismi"
+    },
+    "calendar": {
+        "allDay": "Kun bo'yi",
+        "today": "Bugun",
+        "month": "Oy",
+        "week": "Hafta",
+        "day": "Kun",
+        "agenda": "Ro'yxat",
+        "date": "Sana",
+        "time": "Vaqt",
+        "event": "Voqea",
+        "noEventsInRange": "Bu oraliqda darslar yo'q."
     }
 }
