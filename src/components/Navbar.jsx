@@ -449,12 +449,11 @@ export default function Navbar() {
                             <div className="relative z-10 flex-1 overflow-y-auto px-7 py-8 flex flex-col gap-10">
                                 
                                 {/* Main Links */}
-                                <div className="flex flex-col gap-6">
-                                    <Link to="/" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-gray-900 dark:text-white hover:text-[#c41e30] transition-colors flex items-center gap-3">
+                                <div className="flex flex-col gap-5">
+                                    <span className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('navbar.main', 'Asosiy')}</span>
+                                    <Link to="/" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">
+                                        <FaHome className="w-4 h-4 opacity-50" />
                                         {t('navbar.home', 'Bosh sahifa')}
-                                    </Link>
-                                    <Link to="/faq" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-gray-900 dark:text-white hover:text-[#c41e30] transition-colors flex items-center gap-3">
-                                        {t('navbar.faq', 'FAQ')}
                                     </Link>
                                 </div>
 
@@ -493,6 +492,15 @@ export default function Navbar() {
                                     <Link to="/games" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">
                                         <FaGamepad className="w-4 h-4 opacity-50" />
                                         {t('navbar.games', "O'yinlar")}
+                                    </Link>
+                                </div>
+
+                                {/* FAQ */}
+                                <div className="flex flex-col gap-5">
+                                    <span className="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('navbar.support', 'Yordam')}</span>
+                                    <Link to="/faq" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">
+                                        <FaQuestionCircle className="w-4 h-4 opacity-50" />
+                                        {t('navbar.faq', 'FAQ')}
                                     </Link>
                                 </div>
                             </div>
