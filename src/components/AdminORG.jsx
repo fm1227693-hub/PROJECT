@@ -71,6 +71,7 @@ export default function AdminORG() {
     const [showAcceptLeadModal, setShowAcceptLeadModal] = useState(false)
     const [leadToAccept, setLeadToAccept] = useState(null)
     const [acceptToGroupId, setAcceptToGroupId] = useState('')
+    const [showAcceptGroupDropdown, setShowAcceptGroupDropdown] = useState(false)
     const [newLeadName, setNewLeadName] = useState('')
     const [newLeadPhone, setNewLeadPhone] = useState('')
     const [newLeadPhoneCode, setNewLeadPhoneCode] = useState('')
@@ -606,10 +607,25 @@ const handleAcceptLeadToGroup = () => {
     } catch (e) {
         // silent
     }
-    if (newStatus === 'Qabul qilindi') {
+
+    if (newStatus === 'Rad etildi') {
+        // Find the lead to get their phone/name
+        const rejectedLead = leads.find(l => l.id === id)
+        if (rejectedLead) {
+            // Remove this student from all groups
+            const updatedGroups = groups.map(g => ({
+                ...g,
+                students: (g.students || []).filter(s =>
+                    s.phone !== rejectedLead.phone && s.name !== rejectedLead.name
+                )
+            }))
+            setGroups(updatedGroups)
+            localStorage.setItem('admin_groups', JSON.stringify(updatedGroups))
+            axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups).catch(() => {})
+        }
+        toast.error("So'rov rad etildi va o'quvchi guruhdan chiqarildi!")
+    } else if (newStatus === 'Qabul qilindi') {
         toast.success("So'rov qabul qilindi!")
-    } else if (newStatus === 'Rad etildi') {
-        toast.error("So'rov rad etildi!")
     }
 }
 
@@ -792,10 +808,18 @@ return (
                     <div className="space-y-8 max-w-[1400px] mx-auto">
                         {/* 4 Stats Cards */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                            <StatCard value={pendingCount} label={t('adminPanel.pending', "Kutilmoqda")} />
-                            <StatCard value={totalCount} label={t('adminPanel.totalLeads', "Jami Murojaatlar")} />
-                            <StatCard value={acceptedCount} label={t('adminPanel.accepted', "Qabul Qilindi")} />
-                            <StatCard value={rejectedCount} label={t('adminPanel.rejected', "Rad Etildi")} />
+                            <div onClick={() => setStatusFilter('Kutilmoqda')} className={`cursor-pointer transition-all ${statusFilter === 'Kutilmoqda' ? 'ring-2 ring-amber-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
+                                <StatCard value={pendingCount} label={t('adminPanel.pending', "Kutilmoqda")} />
+                            </div>
+                            <div onClick={() => setStatusFilter('all')} className={`cursor-pointer transition-all ${statusFilter === 'all' ? 'ring-2 ring-red-500 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
+                                <StatCard value={totalCount} label={t('adminPanel.totalLeads', "Jami Murojaatlar")} />
+                            </div>
+                            <div onClick={() => setStatusFilter('Qabul qilindi')} className={`cursor-pointer transition-all ${statusFilter === 'Qabul qilindi' ? 'ring-2 ring-emerald-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
+                                <StatCard value={acceptedCount} label={t('adminPanel.accepted', "Qabul Qilindi")} />
+                            </div>
+                            <div onClick={() => setStatusFilter('Rad etildi')} className={`cursor-pointer transition-all ${statusFilter === 'Rad etildi' ? 'ring-2 ring-rose-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
+                                <StatCard value={rejectedCount} label={t('adminPanel.rejected', "Rad Etildi")} />
+                            </div>
                         </div>
 
                         {/* Table Section */}
@@ -1338,7 +1362,7 @@ return (
                         <FaTrash />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-gray-900 dark:text-white">Ushbu guruhni o'chirmoqchimisiz?</h3>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminDashboard.deleteGroupConfirm', "Ushbu guruhni o'chirmoqchimisiz?")}</h3>
                         <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalGroup.name}</p>
                     </div>
                     <div className="flex items-center justify-center gap-3 pt-2">
@@ -1574,38 +1598,57 @@ return (
         {showAcceptLeadModal && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
                 <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 relative">
-                    <div className="flex flex-col gap-2 mb-2">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center text-xl font-bold shrink-0 mb-2">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center text-2xl shrink-0">
                             <FaCheckCircle />
                         </div>
-                        <h3 className="text-lg font-black text-gray-900 dark:text-white">O'quvchini qabul qilish</h3>
+                        <div>
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminPanel.acceptStudentTitle', "O'quvchini qabul qilish")}</h3>
+                            <p className="text-xs text-gray-400 mt-0.5">{leadToAccept?.name}</p>
+                        </div>
                     </div>
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Murojaatchi</label>
-                            <input type="text" value={leadToAccept?.name || ''} disabled className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 cursor-not-allowed" />
-                        </div>
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruhni tanlang</label>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.selectGroup', 'Guruhni tanlang')}</label>
                             <div className="relative">
-                                <select value={acceptToGroupId} onChange={(e) => setAcceptToGroupId(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 text-gray-900 dark:text-white appearance-none cursor-pointer transition-all">
-                                    <option value="">Tanlang...</option>
-                                    {groups.map(g => (
-                                        <option key={g.id} value={g.id}>{g.name}</option>
-                                    ))}
-                                </select>
-                                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                                    {acceptToGroupId && (() => { const g = groups.find(gr => gr.id === Number(acceptToGroupId) || gr.id === acceptToGroupId); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm" style={{ background: g.color }}></span> : null; })()}
-                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowAcceptGroupDropdown(!showAcceptGroupDropdown)}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-left flex items-center justify-between gap-2 transition-all hover:border-emerald-400 focus:outline-none focus:border-emerald-500"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        {acceptToGroupId && (() => { const g = groups.find(gr => String(gr.id) === String(acceptToGroupId)); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" style={{ background: g.color }}></span> : null; })()}
+                                        <span className={acceptToGroupId ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-400'}>
+                                            {acceptToGroupId ? groups.find(g => String(g.id) === String(acceptToGroupId))?.name || t('adminDashboard.selectGroup', 'Guruhni tanlang') : t('adminDashboard.selectGroup', 'Guruhni tanlang')}
+                                        </span>
+                                    </div>
+                                    <svg className={`w-4 h-4 text-gray-400 transition-transform ${showAcceptGroupDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+
+                                {showAcceptGroupDropdown && (
+                                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
+                                        <div className="fixed inset-0 z-[-1]" onClick={() => setShowAcceptGroupDropdown(false)}></div>
+                                        {groups.map(g => (
+                                            <button
+                                                key={g.id}
+                                                type="button"
+                                                onClick={() => { setAcceptToGroupId(g.id); setShowAcceptGroupDropdown(false); }}
+                                                className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${String(acceptToGroupId) === String(g.id) ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                            >
+                                                {g.color && <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: g.color }}></span>}
+                                                {g.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
-                    
+
                     <div className="flex gap-3 pt-2">
-                        <button onClick={() => setShowAcceptLeadModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">Bekor qilish</button>
-                        <button onClick={handleAcceptLeadToGroup} className="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-md shadow-emerald-500/20 transition">Qabul qilish</button>
+                        <button onClick={() => { setShowAcceptLeadModal(false); setShowAcceptGroupDropdown(false); }} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminPanel.noBtn', 'Bekor qilish')}</button>
+                        <button onClick={handleAcceptLeadToGroup} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold text-sm shadow-md shadow-emerald-500/20 transition">{t('adminPanel.acceptBtn', 'Qabul qilish')}</button>
                     </div>
                 </div>
             </div>
@@ -1672,7 +1715,7 @@ return (
                                     <div className="flex items-center gap-2">
                                         {newLeadGroup && (() => { const g = groups.find(gr => String(gr.id) === String(newLeadGroup)); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" style={{ background: g.color }}></span> : null; })()}
                                         <span className={newLeadGroup ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-400'}>
-                                            {newLeadGroup ? groups.find(g => String(g.id) === String(newLeadGroup))?.name || 'Tanlang...' : 'Tanlang...'}
+                                            {newLeadGroup ? groups.find(g => String(g.id) === String(newLeadGroup))?.name || t('adminDashboard.selectGroup', 'Guruhni tanlang') : t('adminDashboard.selectGroup', 'Guruhni tanlang')}
                                         </span>
                                     </div>
                                     <svg className={`w-4 h-4 text-gray-400 transition-transform ${showLeadGroupDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
@@ -1681,13 +1724,7 @@ return (
                                 {showLeadGroupDropdown && (
                                     <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
                                         <div className="fixed inset-0 z-[-1]" onClick={() => setShowLeadGroupDropdown(false)}></div>
-                                        <button
-                                            type="button"
-                                            onClick={() => { setNewLeadGroup(''); setShowLeadGroupDropdown(false); }}
-                                            className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${!newLeadGroup ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
-                                        >
-                                            Tanlang...
-                                        </button>
+
                                         {groups.map(g => (
                                             <button
                                                 key={g.id}
