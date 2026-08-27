@@ -84,6 +84,7 @@ export default function AdminORG() {
     const [showAddScheduleModal, setShowAddScheduleModal] = useState(false)
     const [deleteModalSchedule, setDeleteModalSchedule] = useState(null)
     const [newScheduleGroup, setNewScheduleGroup] = useState('')
+    const [showScheduleGroupDropdown, setShowScheduleGroupDropdown] = useState(false)
     const [newScheduleStart, setNewScheduleStart] = useState('')
     const [newScheduleEnd, setNewScheduleEnd] = useState('')
     const [editingScheduleId, setEditingScheduleId] = useState(null)
@@ -1355,14 +1356,36 @@ return (
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.groupName')}</label>
                             <div className="relative">
-                                <select value={newScheduleGroup} onChange={(e) => setNewScheduleGroup(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500 text-gray-900 dark:text-white appearance-none cursor-pointer transition-all" required>
-                                    <option value="">{t('adminDashboard.selectGroup', 'Guruhni tanlang')}</option>
-                                    {groups.map(g => <option key={g.id} value={g.name}>{g.name}</option>)}
-                                </select>
-                                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                                    {newScheduleGroup && (() => { const g = groups.find(gr => gr.name === newScheduleGroup); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm" style={{ background: g.color }}></span> : null; })()}
-                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowScheduleGroupDropdown(!showScheduleGroupDropdown)}
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-left flex items-center justify-between gap-2 transition-all hover:border-red-400 focus:outline-none focus:border-red-500"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        {newScheduleGroup && (() => { const g = groups.find(gr => gr.name === newScheduleGroup); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" style={{ background: g.color }}></span> : null; })()}
+                                        <span className={newScheduleGroup ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-400'}>
+                                            {newScheduleGroup || t('adminDashboard.selectGroup', 'Guruhni tanlang')}
+                                        </span>
+                                    </div>
+                                    <svg className={`w-4 h-4 text-gray-400 transition-transform ${showScheduleGroupDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+
+                                {showScheduleGroupDropdown && (
+                                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
+                                        <div className="fixed inset-0 z-[-1]" onClick={() => setShowScheduleGroupDropdown(false)}></div>
+                                        {groups.map(g => (
+                                            <button
+                                                key={g.id}
+                                                type="button"
+                                                onClick={() => { setNewScheduleGroup(g.name); setShowScheduleGroupDropdown(false); }}
+                                                className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${newScheduleGroup === g.name ? 'bg-gradient-to-r from-red-500 to-red-600 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                            >
+                                                {g.color && <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: g.color }}></span>}
+                                                {g.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div>
@@ -1673,7 +1696,7 @@ return (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
                 <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 relative">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center text-2xl shrink-0">
+                        <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center text-2xl shrink-0">
                             <FaCheckCircle />
                         </div>
                         <div>
@@ -1689,7 +1712,7 @@ return (
                                 <button
                                     type="button"
                                     onClick={() => setShowAcceptGroupDropdown(!showAcceptGroupDropdown)}
-                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-left flex items-center justify-between gap-2 transition-all hover:border-emerald-400 focus:outline-none focus:border-emerald-500"
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-left flex items-center justify-between gap-2 transition-all hover:border-red-400 focus:outline-none focus:border-red-500"
                                 >
                                     <div className="flex items-center gap-2">
                                         {acceptToGroupId && (() => { const g = groups.find(gr => String(gr.id) === String(acceptToGroupId)); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" style={{ background: g.color }}></span> : null; })()}
@@ -1708,7 +1731,7 @@ return (
                                                 key={g.id}
                                                 type="button"
                                                 onClick={() => { setAcceptToGroupId(g.id); setShowAcceptGroupDropdown(false); }}
-                                                className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${String(acceptToGroupId) === String(g.id) ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                                className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${String(acceptToGroupId) === String(g.id) ? 'bg-gradient-to-r from-red-500 to-red-600 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                                             >
                                                 {g.color && <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: g.color }}></span>}
                                                 {g.name}
@@ -1722,7 +1745,7 @@ return (
 
                     <div className="flex gap-3 pt-2">
                         <button onClick={() => { setShowAcceptLeadModal(false); setShowAcceptGroupDropdown(false); }} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminPanel.noBtn', 'Bekor qilish')}</button>
-                        <button onClick={handleAcceptLeadToGroup} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold text-sm shadow-md shadow-emerald-500/20 transition">{t('adminPanel.acceptBtn', 'Qabul qilish')}</button>
+                        <button onClick={handleAcceptLeadToGroup} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white font-bold text-sm shadow-md shadow-red-500/20 transition">{t('adminPanel.acceptBtn', 'Qabul qilish')}</button>
                     </div>
                 </div>
             </div>
