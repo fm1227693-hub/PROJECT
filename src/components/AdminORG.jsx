@@ -7,7 +7,7 @@ import {
     FaSignOutAlt, FaSync, FaFileCsv, FaFilter, FaChartBar, 
     FaCheckCircle, FaTimesCircle, FaUsers, FaTrash, FaHeadset, 
     FaChevronDown, FaUserShield, FaClipboardList, FaProjectDiagram, 
-    FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope, FaUserEdit, FaUserPlus, FaCamera, FaPen, FaUserCircle, FaUser, FaUserGraduate
+    FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope, FaUserEdit, FaUserPlus, FaCamera, FaPen, FaUserCircle, FaUser, FaUserGraduate, FaRegMoon, FaRegSun, FaTimes
 } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -15,7 +15,30 @@ import axios from 'axios'
 export default function AdminORG() {
     const daysList = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
     const timesList = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
+    const [dark, isDark] = useState(() => {
+        const saved = localStorage.getItem('theme')
+        return saved === null ? true : saved === 'true'
+    })
+
+    useEffect(() => {
+        const saved = localStorage.getItem('theme')
+        const shouldBeDark = saved === null ? true : saved === 'true'
+        if (shouldBeDark) document.documentElement.classList.add('dark')
+        else document.documentElement.classList.remove('dark')
+    }, [])
+
+    const Theme = () => {
+        window.dispatchEvent(new CustomEvent('trigger-theme-transition'));
+        setTimeout(() => {
+            const nextState = !dark;
+            isDark(nextState);
+            localStorage.setItem('theme', nextState);
+            if (nextState) document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+        }, 180);
+    }
+
     const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'CommentsORG'
     const [leads, setLeads] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -41,6 +64,58 @@ export default function AdminORG() {
     const [newScheduleDays, setNewScheduleDays] = useState([])
     const [newScheduleTime, setNewScheduleTime] = useState('')
     const [editingScheduleId, setEditingScheduleId] = useState(null)
+
+    const LanguageDropdown = ({ isMobile }) => {
+        const [isOpen, setIsOpen] = useState(false);
+        const dropdownRef = useRef(null);
+
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                    setIsOpen(false);
+                }
+            };
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => document.removeEventListener('mousedown', handleClickOutside);
+        }, []);
+
+        const langs = {
+            uz: "O'zbekcha",
+            ru: "Русский",
+            en: "English"
+        };
+        const currentLang = i18n.language || 'en';
+
+        return (
+            <div className={`relative ${isMobile ? 'w-full' : 'w-36 hidden sm:block shrink-0'}`} ref={dropdownRef}>
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={`flex items-center justify-between w-full px-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-900 dark:text-white transition-all hover:border-red-500/50 shadow-sm ${isMobile ? 'py-3' : 'py-2.5 h-10'}`}
+                >
+                    <span>{langs[currentLang] || langs['uz']}</span>
+                    <FaChevronDown className={`text-[10px] opacity-70 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <div 
+                    className={`absolute ${isMobile ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 right-0 origin-top'} w-full bg-white dark:bg-[#0a0f1c] border border-gray-100 dark:border-gray-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-50 flex flex-col p-1 gap-0.5 transition-all duration-200 ease-out ${isOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto visible' : 'opacity-0 scale-95 pointer-events-none invisible'} ${isOpen ? '' : isMobile ? 'translate-y-2' : '-translate-y-2'}`}
+                >
+                    {Object.entries(langs).map(([code, label]) => (
+                        <button
+                            key={code}
+                            onClick={() => {
+                                i18n.changeLanguage(code);
+                                setIsOpen(false);
+                                if (isMobile) setIsMobileMenuOpen(false);
+                            }}
+                            className={`px-3 py-2.5 rounded-lg text-sm font-bold text-left transition-all ${currentLang === code ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-md shadow-red-600/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+        )
+    }
+
     const [groups, setGroups] = useState([])
     const [loadingGroups, setLoadingGroups] = useState(false)
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
@@ -593,11 +668,21 @@ return (
         <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 transform transition-transform duration-300 lg:relative lg:translate-x-0 shrink-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             {/* Sticky Inner Container */}
             <div className="sticky top-0 flex flex-col h-screen">
-                <div className="p-6 flex items-center gap-3 border-b border-gray-100 dark:border-gray-800">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-lg shadow-lg shadow-red-600/30">
-                        <FaUserShield />
+                <div className="px-4 py-5 flex items-center justify-between border-b border-gray-100 dark:border-gray-800">
+                    <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-base shadow-lg shadow-red-600/30">
+                            <FaUserShield />
+                        </div>
+                        <span className="font-black text-lg tracking-tight text-gray-900 dark:text-white truncate">OPTIMUM</span>
                     </div>
-                    <span className="font-black text-xl tracking-tight text-gray-900 dark:text-white">OPTIMUM</span>
+                    <div className="flex items-center gap-1.5 lg:hidden shrink-0">
+                        <button onClick={Theme} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            {dark ? <FaRegSun className="text-sm" /> : <FaRegMoon className="text-sm" />}
+                        </button>
+                        <button onClick={() => setIsMobileMenuOpen(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <FaTimes className="text-sm" />
+                        </button>
+                    </div>
                 </div>
 
                 <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto custom-scrollbar">
@@ -606,7 +691,11 @@ return (
                     <SidebarItem icon={<FaCalendarAlt />} label={t('adminDashboard.schedulesTab')} isActive={activeTab === 'schedules'} onClick={() => { setActiveTab('schedules'); setIsMobileMenuOpen(false); }} />
                     <SidebarItem icon={<FaUsers />} label={t('adminDashboard.groupsTab')} isActive={activeTab === 'groups'} onClick={() => { setActiveTab('groups'); setIsMobileMenuOpen(false); }} />
                     <SidebarItem icon={<FaUserGraduate />} label={t('adminDashboard.studentsTab')} isActive={activeTab === 'students'} onClick={() => { setActiveTab('students'); setIsMobileMenuOpen(false); }} />
-                    <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+                    <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 space-y-2">
+                        <div className="lg:hidden">
+                            <LanguageDropdown isMobile={true} />
+                        </div>
+
                         <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-colors font-bold text-sm">
                             <FaSignOutAlt />
                             <span>{t('adminPanel.exitBtn', "Chiqish")}</span>
@@ -619,35 +708,40 @@ return (
         {/* Main Content */}
         <main className="flex-1 flex flex-col min-w-0">
             {/* Mobile Navbar */}
-            <div className="lg:hidden flex items-center justify-between px-5 py-4 bg-[#0a0f1c] border-b border-white/5 sticky top-0 z-30">
+            <div className="lg:hidden flex items-center justify-between px-5 py-4 bg-white dark:bg-[#0a0f1c] border-b border-gray-200 dark:border-white/5 sticky top-0 z-30 transition-colors duration-300">
                 <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-2xl bg-[#ef4444] text-white flex items-center justify-center text-xl shadow-[0_0_20px_rgba(239,68,68,0.4)]">
                         <FaUserShield />
                     </div>
-                    <span className="font-black text-xl tracking-tight text-white uppercase">OPTIMUM</span>
+                    <span className="font-black text-xl tracking-tight text-gray-900 dark:text-white uppercase transition-colors duration-300">OPTIMUM</span>
                 </div>
                 <button 
                     onClick={() => setIsMobileMenuOpen(true)}
-                    className="w-11 h-11 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className="w-11 h-11 rounded-[14px] bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-white/10 transition-colors duration-300"
                 >
                     <div className="flex flex-col gap-[5px]">
-                        <span className="w-5 h-[2px] bg-white rounded-full"></span>
-                        <span className="w-5 h-[2px] bg-white rounded-full"></span>
-                        <span className="w-5 h-[2px] bg-white rounded-full"></span>
+                        <span className="w-5 h-[2px] bg-gray-700 dark:bg-white rounded-full transition-colors duration-300"></span>
+                        <span className="w-5 h-[2px] bg-gray-700 dark:bg-white rounded-full transition-colors duration-300"></span>
+                        <span className="w-5 h-[2px] bg-gray-700 dark:bg-white rounded-full transition-colors duration-300"></span>
                     </div>
                 </button>
             </div>
 
             {/* Header */}
-            <header className="px-4 lg:px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shrink-0">
+            <header className="px-4 lg:px-8 py-4 flex items-center justify-between gap-4 bg-white/80 dark:bg-[#070b14]/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-800 shrink-0 sticky top-[76px] lg:top-0 z-20 shadow-sm transition-all">
                 <div className="flex items-center gap-3">
-                    {/* Mobile menu button could go here */}
-                    <h1 className="text-xl lg:text-3xl font-black uppercase text-gray-900 dark:text-white tracking-wide">
-                        {activeTab === 'leads' ? t('adminPanel.murojaatlarTab', 'Murojaatlar').toUpperCase() : activeTab === 'schedules' ? "DARS JADVALI" : activeTab === 'groups' ? "GURUHLAR" : t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari").toUpperCase()}
+                    <h1 className="text-lg sm:text-xl lg:text-2xl font-black uppercase text-gray-900 dark:text-white tracking-wide truncate max-w-[150px] sm:max-w-none">
+                        {activeTab === 'leads' ? t('adminPanel.murojaatlarTab', 'Murojaatlar').toUpperCase() : activeTab === 'schedules' ? t('adminDashboard.schedulesTab', 'DARS JADVALI').toUpperCase() : activeTab === 'groups' ? t('adminDashboard.groupsTab', 'GURUHLAR').toUpperCase() : t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari").toUpperCase()}
                     </h1>
                 </div>
-                <div className="flex items-center gap-4">
-                    <button onClick={() => { loadLeads(); loadSchedules(); loadGroups(); }} className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-3">
+                    <LanguageDropdown isMobile={false} />
+
+                    <button onClick={Theme} className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors border border-gray-200 dark:border-gray-700 shrink-0">
+                        {dark ? <FaRegSun className="text-lg" /> : <FaRegMoon className="text-lg" />}
+                    </button>
+
+                    <button onClick={() => { loadLeads(); loadSchedules(); loadGroups(); }} className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-200 dark:border-gray-700 shrink-0">
                         <FaSync className={loadingLeads || loadingSchedules || loadingGroups ? "animate-spin" : ""} />
                     </button>
                 </div>
@@ -748,7 +842,7 @@ return (
                     <div className="space-y-8 max-w-[1400px] mx-auto">
                         <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative">
                             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
-                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Dars jadvallari</h2>
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('adminDashboard.schedulesTab', 'Dars jadvallari')}</h2>
                                 <button onClick={() => {
                                     setEditingScheduleId(null)
                                     setNewScheduleGroup('')
@@ -756,7 +850,7 @@ return (
                                     setNewScheduleTime('')
                                     setShowAddScheduleModal(true)
                                 }} className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
-                                    + Guruh qo'shish
+                                    {t('adminDashboard.addGroupBtn', "+ Guruh qo'shish")}
                                 </button>
                             </div>
                             
@@ -774,7 +868,7 @@ return (
                                         {daysList.map(day => (
                                             <tr key={day} className="border-b border-gray-100 dark:border-gray-800 transition text-sm">
                                                 <td className="py-4 px-4 font-bold text-gray-900 dark:text-white border-r border-gray-100 dark:border-gray-800 sticky left-0 z-10 bg-white dark:bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.05)] text-center">
-                                                    {day}
+                                                    {t(`adminPanel.days.${day.toLowerCase()}`, day)}
                                                 </td>
                                                 {timesList.map(time => {
                                                     const schedule = schedules.find(s => {
@@ -835,7 +929,7 @@ return (
                                     setNewGroupNameInput('')
                                     setShowAddGroupModal(true)
                                 }} className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
-                                    + Guruh qo'shish
+                                    {t('adminDashboard.addGroupBtn', "+ Guruh qo'shish")}
                                 </button>
                             </div>
                             
@@ -843,15 +937,15 @@ return (
                                 <table className="w-full text-left border-collapse min-w-[500px]">
                                     <thead>
                                         <tr className="border-b border-gray-100 dark:border-gray-800 text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400">
-                                            <th className="py-4 px-4 font-medium">Guruh Nomi</th>
-                                            <th className="py-4 px-4 font-medium text-right">Amallar</th>
+                                            <th className="py-4 px-4 font-medium">{t('adminDashboard.groupName', 'Guruh Nomi')}</th>
+                                            <th className="py-4 px-4 font-medium text-right">{t('adminDashboard.actions', 'Amallar')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {groups.length === 0 ? (
                                             <tr>
                                                 <td colSpan="2" className="py-8 text-center text-gray-500">
-                                                    Guruhlar topilmadi
+                                                    {t('adminDashboard.noGroups', 'Guruhlar topilmadi')}
                                                 </td>
                                             </tr>
                                         ) : (
@@ -896,8 +990,8 @@ return (
                         {groups.flatMap(g => (g.students || []).map(s => ({...s, groupName: g.name, groupId: g.id}))).length === 0 ? (
                             <div className="text-center py-16">
                                 <FaUserGraduate className="text-6xl text-gray-200 dark:text-gray-700 mx-auto mb-4" />
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Hali o'quvchilar yo'q</h3>
-                                <p className="text-gray-500">Guruhlarga kirib o'quvchi qo'shishingiz mumkin.</p>
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('adminDashboard.noStudentsTitle', "Hali o'quvchilar yo'q")}</h3>
+                                <p className="text-gray-500">{t('adminDashboard.noStudentsDesc', "Guruhlarga kirib o'quvchi qo'shishingiz mumkin.")}</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
