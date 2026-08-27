@@ -15,27 +15,28 @@ export default function TermsOfUse() {
 
     return (
         <>
-            {/* Back button fixed top left */}
-            <Link 
-                to="/"
-                className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
-            >
-                <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
-            </Link>
-
             <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-['Plus_Jakarta_Sans',sans-serif]">
                 <div className="max-w-4xl mx-auto space-y-8">
 
+                    {/* Top Navigation */}
+                    <div className="flex items-center gap-4 relative z-10 pl-2">
+                        {/* Back button */}
+                        <Link 
+                            to="/"
+                            className="group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer"
+                        >
+                            <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
+                        </Link>
+                        {/* Breadcrumb only */}
+                        <div className="flex items-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400">
+                            <FaHome className="text-gray-500 dark:text-gray-400" />
+                            <span>/</span>
+                            <span className="text-red-500">{t('footer.terms', 'Foydalanish shartlari')}</span>
+                        </div>
+                    </div>
 
                 {/* Hero Header */}
                 <div className="relative p-8 sm:p-12 rounded-3xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden space-y-4">
-                    {/* Breadcrumb only */}
-                    <div className="flex items-center gap-2 text-xs font-bold text-gray-400 mb-6">
-                        <FaHome className="text-gray-400" />
-                        <span>/</span>
-                        <span className="text-red-500">{t('footer.terms', 'Foydalanish shartlari')}</span>
-                    </div>
-
                     <div className="pointer-events-none absolute -top-20 -right-20 w-64 h-64 bg-red-600/15 rounded-full blur-3xl" />
                     
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-2xl shadow-lg shadow-red-600/30">

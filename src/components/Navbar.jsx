@@ -502,6 +502,14 @@ export default function Navbar() {
                                         <FaQuestionCircle className="w-4 h-4 opacity-50" />
                                         {t('navbar.faq', 'FAQ')}
                                     </Link>
+                                    <Link to="/privacy-policy" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">
+                                        <FaUserShield className="w-4 h-4 opacity-50" />
+                                        {t('footer.privacy', 'Maxfiylik siyosati')}
+                                    </Link>
+                                    <Link to="/terms-of-use" onClick={() => setMenuOpen(false)} className="text-[17px] font-semibold text-gray-600 dark:text-gray-300 hover:text-[#c41e30] dark:hover:text-red-400 transition-colors flex items-center gap-3">
+                                        <FaClipboardList className="w-4 h-4 opacity-50" />
+                                        {t('footer.terms', 'Foydalanish shartlari')}
+                                    </Link>
                                 </div>
                             </div>
 
