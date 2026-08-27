@@ -156,6 +156,8 @@ export default function AdminORG() {
     const [newStudentName, setNewStudentName] = useState('')
     const [newStudentPhone, setNewStudentPhone] = useState('')
     const [newStudentGender, setNewStudentGender] = useState('erkak')
+    const [newStudentGroupId, setNewStudentGroupId] = useState('')
+    const [showStudentGroupDropdown, setShowStudentGroupDropdown] = useState(false)
     const [deleteModalStudent, setDeleteModalStudent] = useState(null)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -358,7 +360,15 @@ const loadSchedules = async () => {
             return;
         }
 
-        const currentGroup = groups.find(g => g.id === selectedGroupDetails.id);
+        const targetGroupId = selectedGroupDetails ? selectedGroupDetails.id : (newStudentGroupId ? Number(newStudentGroupId) : null);
+        
+        if (!targetGroupId) {
+            toast.error(t('adminDashboard.selectGroup', 'Guruhni tanlang'));
+            return;
+        }
+
+        const currentGroup = groups.find(g => g.id === targetGroupId);
+        if (!currentGroup) return;
         let students = currentGroup.students || [];
 
         let updatedStudents;
@@ -381,7 +391,9 @@ const loadSchedules = async () => {
 
         const updatedGroups = groups.map(g => g.id === currentGroup.id ? { ...g, students: updatedStudents } : g);
         setGroups(updatedGroups);
-        setSelectedGroupDetails({ ...currentGroup, students: updatedStudents });
+        if (selectedGroupDetails) {
+            setSelectedGroupDetails({ ...currentGroup, students: updatedStudents });
+        }
         localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
 
         try {
@@ -396,6 +408,8 @@ const loadSchedules = async () => {
         setNewStudentName('');
         setNewStudentPhone('');
         setNewStudentGender('erkak');
+        setNewStudentGroupId('');
+        setShowStudentGroupDropdown(false);
     };
 
     const handleDeleteStudent = async (studentId) => {
@@ -1127,13 +1141,35 @@ return (
                             <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
                                 {t('adminDashboard.studentsTab')}
                             </h2>
+                            {groups.flatMap(g => (g.students || [])).length > 0 && (
+                                <button onClick={() => {
+                                    setEditingStudentId(null);
+                                    setNewStudentName('');
+                                    setNewStudentPhone('');
+                                    setNewStudentGender('erkak');
+                                    setNewStudentGroupId('');
+                                    setShowAddStudentModal(true);
+                                }} className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2">
+                                    <FaUserPlus /> {t('adminDashboard.addStudentBtn', "O'quvchi qo'shish")}
+                                </button>
+                            )}
                         </div>
 
                         {groups.flatMap(g => (g.students || []).map(s => ({...s, groupName: g.name, groupId: g.id}))).length === 0 ? (
-                            <div className="text-center py-16">
-                                <FaUserGraduate className="text-6xl text-gray-200 dark:text-gray-700 mx-auto mb-4" />
+                            <div className="text-center py-16 flex flex-col items-center justify-center">
+                                <FaUserGraduate className="text-6xl text-gray-200 dark:text-gray-700 mb-4" />
                                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('adminDashboard.noStudentsTitle', "Hali o'quvchilar yo'q")}</h3>
-                                <p className="text-gray-500">{t('adminDashboard.noStudentsDesc', "Guruhlarga kirib o'quvchi qo'shishingiz mumkin.")}</p>
+                                <p className="text-gray-500 mb-6">{t('adminDashboard.noStudentsDesc', "Guruhlarga kirib o'quvchi qo'shishingiz mumkin.")}</p>
+                                <button onClick={() => {
+                                    setEditingStudentId(null);
+                                    setNewStudentName('');
+                                    setNewStudentPhone('');
+                                    setNewStudentGender('erkak');
+                                    setNewStudentGroupId('');
+                                    setShowAddStudentModal(true);
+                                }} className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-500/20 flex items-center gap-2">
+                                    <FaUserPlus /> {t('adminDashboard.addStudentBtn', "O'quvchi qo'shish")}
+                                </button>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -1535,6 +1571,44 @@ return (
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.fio')}</label>
                             <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder={t('adminDashboard.fioPlaceholder')} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500 text-gray-900 dark:text-white transition-colors" required />
                         </div>
+
+                        {!selectedGroupDetails && (
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.selectGroup', 'Guruhni tanlang')}</label>
+                                <div className="relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowStudentGroupDropdown(!showStudentGroupDropdown)}
+                                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium text-left flex items-center justify-between gap-2 transition-all hover:border-indigo-400 focus:outline-none focus:border-indigo-500"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            {newStudentGroupId && (() => { const g = groups.find(gr => String(gr.id) === String(newStudentGroupId)); return g?.color ? <span className="w-3 h-3 rounded-full shadow-sm flex-shrink-0" style={{ background: g.color }}></span> : null; })()}
+                                            <span className={newStudentGroupId ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-400'}>
+                                                {newStudentGroupId ? groups.find(g => String(g.id) === String(newStudentGroupId))?.name || t('adminDashboard.selectGroup', 'Guruhni tanlang') : t('adminDashboard.selectGroup', 'Guruhni tanlang')}
+                                            </span>
+                                        </div>
+                                        <svg className={`w-4 h-4 text-gray-400 transition-transform ${showStudentGroupDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                    </button>
+
+                                    {showStudentGroupDropdown && (
+                                        <div className="absolute z-50 top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto custom-scrollbar bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl animate-fade-in">
+                                            <div className="fixed inset-0 z-[-1]" onClick={() => setShowStudentGroupDropdown(false)}></div>
+                                            {groups.map(g => (
+                                                <button
+                                                    key={g.id}
+                                                    type="button"
+                                                    onClick={() => { setNewStudentGroupId(g.id); setShowStudentGroupDropdown(false); }}
+                                                    className={`w-full px-4 py-3 text-sm font-medium text-left transition-all flex items-center gap-3 ${String(newStudentGroupId) === String(g.id) ? 'bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                                >
+                                                    {g.color && <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: g.color }}></span>}
+                                                    {g.name}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.phone')}</label>
                             <div className="flex w-full bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl focus-within:border-indigo-500 transition-colors overflow-hidden">
