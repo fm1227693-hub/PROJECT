@@ -7,12 +7,14 @@ import {
     FaSignOutAlt, FaSync, FaFileCsv, FaFilter, FaChartBar, 
     FaCheckCircle, FaTimesCircle, FaUsers, FaTrash, FaHeadset, 
     FaChevronDown, FaUserShield, FaClipboardList, FaProjectDiagram, 
-    FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope
+    FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope, FaUserEdit, FaUserPlus, FaCamera, FaPen, FaUserCircle, FaUser, FaUserGraduate
 } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 export default function AdminORG() {
+    const daysList = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
+    const timesList = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
     const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('leads') // 'leads' or 'CommentsORG'
     const [leads, setLeads] = useState([])
@@ -23,10 +25,35 @@ export default function AdminORG() {
     const [loadingLeads, setLoadingLeads] = useState(false)
     const [deleteModalLead, setDeleteModalLead] = useState(null)
     const [showAddLeadModal, setShowAddLeadModal] = useState(false)
+    const [showAcceptLeadModal, setShowAcceptLeadModal] = useState(false)
+    const [leadToAccept, setLeadToAccept] = useState(null)
+    const [acceptToGroupId, setAcceptToGroupId] = useState('')
     const [newLeadName, setNewLeadName] = useState('')
     const [newLeadPhone, setNewLeadPhone] = useState('')
     const [newLeadType, setNewLeadType] = useState("Ro'yxatdan o'tish")
     const [newLeadStatus, setNewLeadStatus] = useState("Qabul qilindi")
+    const [newLeadGroup, setNewLeadGroup] = useState('')
+    const [schedules, setSchedules] = useState([])
+    const [loadingSchedules, setLoadingSchedules] = useState(false)
+    const [showAddScheduleModal, setShowAddScheduleModal] = useState(false)
+    const [deleteModalSchedule, setDeleteModalSchedule] = useState(null)
+    const [newScheduleGroup, setNewScheduleGroup] = useState('')
+    const [newScheduleDays, setNewScheduleDays] = useState([])
+    const [newScheduleTime, setNewScheduleTime] = useState('')
+    const [editingScheduleId, setEditingScheduleId] = useState(null)
+    const [groups, setGroups] = useState([])
+    const [loadingGroups, setLoadingGroups] = useState(false)
+    const [showAddGroupModal, setShowAddGroupModal] = useState(false)
+    const [deleteModalGroup, setDeleteModalGroup] = useState(null)
+    const [newGroupNameInput, setNewGroupNameInput] = useState('')
+    const [selectedGroupDetails, setSelectedGroupDetails] = useState(null)
+    const [showAddStudentModal, setShowAddStudentModal] = useState(false)
+    const [editingStudentId, setEditingStudentId] = useState(null)
+    const [newStudentName, setNewStudentName] = useState('')
+    const [newStudentPhone, setNewStudentPhone] = useState('')
+    const [newStudentGender, setNewStudentGender] = useState('erkak')
+    const [deleteModalStudent, setDeleteModalStudent] = useState(null)
+    const [editingGroupId, setEditingGroupId] = useState(null)
 
     const handleCreateLead = async (e) => {
         e.preventDefault()
@@ -34,6 +61,11 @@ export default function AdminORG() {
         if (!newLeadName.trim()) {
             toast.error(t('adminPanel.fillNameError', "Iltimos, F.I.O ni kiriting!"))
             return
+        }
+        
+        if (newLeadStatus === "Qabul qilindi" && !newLeadGroup) {
+            toast.error("Iltimos, guruhni tanlang!");
+            return;
         }
 
         const cleanDigits = newLeadPhone.replace(/\D/g, '')
@@ -46,9 +78,11 @@ export default function AdminORG() {
 
         const now = new Date()
         const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
+        
+        const leadId = Date.now();
 
         const newLead = {
-            id: Date.now(),
+            id: leadId,
             name: newLeadName.trim(),
             phone: formattedPhone,
             type: newLeadType || "Ro'yxatdan o'tish",
@@ -66,9 +100,33 @@ export default function AdminORG() {
         } catch (e) {
             toast.success(t('adminPanel.leadSavedSuccess', "Murojaat saqlandi!"))
         }
+        
+        // Add to group if a group is selected
+        if (newLeadGroup) {
+            const newStudent = {
+                id: leadId + 1, // slightly different id to avoid collision
+                name: newLeadName.trim(),
+                phone: formattedPhone,
+                image: null,
+                gender: 'erkak'
+            };
+            const updatedGroups = groups.map(g => {
+                if (g.id === parseInt(newLeadGroup)) {
+                    return {
+                        ...g,
+                        students: [...(g.students || []), newStudent]
+                    };
+                }
+                return g;
+            });
+            setGroups(updatedGroups);
+            localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+            axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups).catch(()=>{});
+        }
 
         setNewLeadName('')
         setNewLeadPhone('')
+        setNewLeadGroup('')
         setShowAddLeadModal(false)
     }
 
@@ -113,13 +171,312 @@ localStorage.setItem('admin_leads', '[]')
 
 useEffect(() => {
     loadLeads()
+    loadSchedules()
+    loadGroups()
     const interval = setInterval(() => {
         loadLeads()
+        loadSchedules()
+        loadGroups()
     }, 3000)
     return () => clearInterval(interval)
 }, [])
 
-const updateLeadStatus = async (id, newStatus) => {
+const loadSchedules = async () => {
+    setLoadingSchedules(true)
+    try {
+        const res = await axios.get(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, {
+            validateStatus: status => status < 500
+        })
+        if (res.status === 200 && res.data !== null) {
+            const dataArray = Array.isArray(res.data) ? res.data : Object.values(res.data)
+            setSchedules(dataArray)
+            localStorage.setItem('admin_schedules', JSON.stringify(dataArray))
+        } else if (res.data === null) {
+            setSchedules([])
+            localStorage.setItem('admin_schedules', '[]')
+        } else {
+            const stored = JSON.parse(localStorage.getItem('admin_schedules') || '[]')
+            setSchedules(stored)
+        }
+    } catch (e) {
+        const stored = JSON.parse(localStorage.getItem('admin_schedules') || '[]')
+        setSchedules(stored)
+    } finally {
+        setLoadingSchedules(false)
+    }
+}
+
+    const loadGroups = async () => {
+        setLoadingGroups(true)
+        try {
+            const res = await axios.get(import.meta.env.VITE_FIREBASE_GROUPS_URL, {
+                validateStatus: status => status < 500
+            })
+            if (res.status === 200 && res.data !== null) {
+                const dataArray = Array.isArray(res.data) ? res.data : Object.values(res.data)
+                setGroups(dataArray)
+                localStorage.setItem('admin_groups', JSON.stringify(dataArray))
+            } else if (res.data === null) {
+                setGroups([])
+                localStorage.setItem('admin_groups', '[]')
+            } else {
+                const stored = JSON.parse(localStorage.getItem('admin_groups') || '[]')
+                setGroups(stored)
+            }
+        } catch (e) {
+            const stored = JSON.parse(localStorage.getItem('admin_groups') || '[]')
+            setGroups(stored)
+        } finally {
+            setLoadingGroups(false)
+        }
+    }
+
+    
+
+    const handleCreateOrUpdateStudent = async (e) => {
+        e.preventDefault();
+        if (!newStudentName.trim() || !newStudentPhone.trim()) {
+            toast.error(t('adminDashboard.toast.fillNameAndPhone'));
+            return;
+        }
+
+        const currentGroup = groups.find(g => g.id === selectedGroupDetails.id);
+        let students = currentGroup.students || [];
+
+        let updatedStudents;
+        if (editingStudentId) {
+            updatedStudents = students.map(st => st.id === editingStudentId ? {
+                ...st,
+                name: newStudentName.trim(),
+                phone: newStudentPhone.trim(),
+                gender: newStudentGender
+            } : st);
+        } else {
+            const newStudent = {
+                id: Date.now(),
+                name: newStudentName.trim(),
+                phone: newStudentPhone.trim(),
+                gender: newStudentGender
+            };
+            updatedStudents = [newStudent, ...students];
+        }
+
+        const updatedGroups = groups.map(g => g.id === currentGroup.id ? { ...g, students: updatedStudents } : g);
+        setGroups(updatedGroups);
+        setSelectedGroupDetails({ ...currentGroup, students: updatedStudents });
+        localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+
+        try {
+            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups);
+            toast.success(editingStudentId ? t('adminDashboard.toast.studentUpdated') : t('adminDashboard.toast.studentAdded'));
+        } catch (err) {
+            toast.success("O'quvchi saqlandi (lokal)!");
+        }
+
+        setShowAddStudentModal(false);
+        setEditingStudentId(null);
+        setNewStudentName('');
+        setNewStudentPhone('');
+        setNewStudentGender('erkak');
+    };
+
+    const handleDeleteStudent = async (studentId) => {
+        const currentGroup = groups.find(g => g.id === selectedGroupDetails.id);
+        const updatedStudents = (currentGroup.students || []).filter(st => st.id !== studentId);
+        
+        const updatedGroups = groups.map(g => g.id === currentGroup.id ? { ...g, students: updatedStudents } : g);
+        setGroups(updatedGroups);
+        setSelectedGroupDetails({ ...currentGroup, students: updatedStudents });
+        localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+
+        try {
+            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups);
+            toast.success(t('adminDashboard.toast.studentDeleted'));
+        } catch (err) {
+        }
+        setDeleteModalStudent(null);
+    };
+
+    const handleEditStudentClick = (student) => {
+        setEditingStudentId(student.id);
+        setNewStudentName(student.name);
+        setNewStudentPhone(student.phone);
+        setNewStudentGender(student.gender || 'erkak');
+        setShowAddStudentModal(true);
+    };
+
+    const handleCreateGroup = async (e) => {
+        e.preventDefault()
+        const newName = newGroupNameInput.trim()
+        if (!newName) {
+            toast.error(t('adminDashboard.toast.enterGroupName'))
+            return
+        }
+
+        let updatedList = [];
+        let updatedSchedulesList = schedules;
+
+        if (editingGroupId) {
+            const oldGroup = groups.find(g => g.id === editingGroupId);
+            const oldName = oldGroup.name;
+            updatedList = groups.map(g => g.id === editingGroupId ? { ...g, name: newName } : g);
+            
+            // Update schedules with new group name
+            updatedSchedulesList = schedules.map(s => s.group === oldName ? { ...s, group: newName } : s);
+            setSchedules(updatedSchedulesList);
+            localStorage.setItem('admin_schedules', JSON.stringify(updatedSchedulesList));
+            axios.put(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, updatedSchedulesList).catch(()=>{});
+        } else {
+            const newGroup = {
+                id: Date.now(),
+                name: newName,
+            }
+            updatedList = [newGroup, ...groups]
+        }
+
+        setGroups(updatedList)
+        localStorage.setItem('admin_groups', JSON.stringify(updatedList))
+
+        try {
+            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedList)
+            toast.success(editingGroupId ? t('adminDashboard.toast.groupUpdated') : t('adminDashboard.toast.groupAdded'))
+        } catch (e) {
+            toast.success("Guruh saqlandi (lokal)!")
+        }
+
+        setNewGroupNameInput('')
+        setEditingGroupId(null)
+        setShowAddGroupModal(false)
+    }
+
+    const handleDeleteGroup = async (id) => {
+        const updatedList = groups.filter(item => item.id !== id)
+        setGroups(updatedList)
+        localStorage.setItem('admin_groups', JSON.stringify(updatedList))
+
+        try {
+            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedList)
+        } catch (e) {
+        }
+        toast.success(t('adminDashboard.toast.groupDeleted'))
+        setDeleteModalGroup(null)
+    }
+
+    const handleCreateOrUpdateSchedule = async (e) => {
+    e.preventDefault()
+    if (!newScheduleGroup.trim() || newScheduleDays.length === 0 || !newScheduleTime.trim()) {
+        toast.error(t('adminDashboard.toast.fillAllFields'))
+        return
+    }
+
+    const isOverlap = schedules.some(s => {
+        if (editingScheduleId && s.id === editingScheduleId) return false;
+        if (s.time === newScheduleTime) {
+            const sDays = Array.isArray(s.days) ? s.days : [s.days];
+            return newScheduleDays.some(d => sDays.includes(d));
+        }
+        return false;
+    });
+
+    if (isOverlap) {
+        toast.error(t('adminDashboard.toast.timeConflict'));
+        return;
+    }
+
+    let updatedList;
+    if (editingScheduleId) {
+        updatedList = schedules.map(s => s.id === editingScheduleId ? {
+            ...s,
+            group: newScheduleGroup.trim(),
+            days: newScheduleDays,
+            time: newScheduleTime.trim()
+        } : s)
+    } else {
+        const newSchedule = {
+            id: Date.now(),
+            group: newScheduleGroup.trim(),
+            days: newScheduleDays,
+            time: newScheduleTime.trim()
+        }
+        updatedList = [newSchedule, ...schedules]
+    }
+
+    setSchedules(updatedList)
+    localStorage.setItem('admin_schedules', JSON.stringify(updatedList))
+
+    try {
+        await axios.put(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, updatedList)
+        toast.success(editingScheduleId ? "Jadval yangilandi!" : "Jadval qo'shildi!")
+    } catch (e) {
+        toast.success("Jadval saqlandi (lokal)!")
+    }
+
+    setNewScheduleGroup('')
+    setNewScheduleDays([])
+    setNewScheduleTime('')
+    setEditingScheduleId(null)
+    setShowAddScheduleModal(false)
+}
+
+const handleDeleteSchedule = async (id) => {
+    const updatedList = schedules.filter(item => item.id !== id)
+    setSchedules(updatedList)
+    localStorage.setItem('admin_schedules', JSON.stringify(updatedList))
+
+    try {
+        await axios.put(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, updatedList)
+    } catch (e) {
+        // silent catch
+    }
+    toast.success(t('adminDashboard.toast.scheduleDeleted'))
+    setDeleteModalSchedule(null)
+}
+
+const handleEditScheduleClick = (schedule) => {
+    setEditingScheduleId(schedule.id)
+    setNewScheduleGroup(schedule.group)
+    setNewScheduleDays(schedule.days)
+    setNewScheduleTime(schedule.time)
+    setShowAddScheduleModal(true)
+}
+
+const handleAcceptLeadToGroup = () => {
+        if (!acceptToGroupId) {
+            toast.error("Iltimos, guruhni tanlang!");
+            return;
+        }
+        
+        const newStudent = {
+            id: Date.now(),
+            name: leadToAccept.name,
+            phone: leadToAccept.phone,
+            image: null,
+            gender: 'erkak'
+        };
+        
+        const updatedGroups = groups.map(g => {
+            if (g.id === parseInt(acceptToGroupId)) {
+                return {
+                    ...g,
+                    students: [...(g.students || []), newStudent]
+                };
+            }
+            return g;
+        });
+        
+        setGroups(updatedGroups);
+        localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+        axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups).catch(()=>{});
+        
+        updateLeadStatus(leadToAccept.id, 'Qabul qilindi');
+        
+        setShowAcceptLeadModal(false);
+        setLeadToAccept(null);
+        setAcceptToGroupId('');
+        toast.success("O'quvchi guruhga muvaffaqiyatli qo'shildi!");
+    };
+    
+    const updateLeadStatus = async (id, newStatus) => {
     const updatedList = leads.map(l => {
         if (l.id === id) {
             return { ...l, status: newStatus }
@@ -224,6 +581,9 @@ return (
                 <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto custom-scrollbar">
                     <SidebarItem icon={<FaChartBar />} label={t('adminPanel.murojaatlarTab', "Murojaatlar")} isActive={activeTab === 'leads'} onClick={() => setActiveTab('leads')} />
                     <SidebarItem icon={<FaCommentDots />} label={t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari")} isActive={activeTab === 'CommentsORG'} onClick={() => setActiveTab('CommentsORG')} />
+                    <SidebarItem icon={<FaCalendarAlt />} label={t('adminDashboard.schedulesTab')} isActive={activeTab === 'schedules'} onClick={() => setActiveTab('schedules')} />
+                    <SidebarItem icon={<FaUsers />} label={t('adminDashboard.groupsTab')} isActive={activeTab === 'groups'} onClick={() => setActiveTab('groups')} />
+                    <SidebarItem icon={<FaUserGraduate />} label={t('adminDashboard.studentsTab')} isActive={activeTab === 'students'} onClick={() => setActiveTab('students')} />
                     <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
                         <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-colors font-bold text-sm">
                             <FaSignOutAlt />
@@ -241,12 +601,12 @@ return (
                 <div className="flex items-center gap-3">
                     {/* Mobile menu button could go here */}
                     <h1 className="text-xl lg:text-3xl font-black uppercase text-gray-900 dark:text-white tracking-wide">
-                        {activeTab === 'leads' ? t('adminPanel.murojaatlarTab', 'Murojaatlar').toUpperCase() : t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari").toUpperCase()}
+                        {activeTab === 'leads' ? t('adminPanel.murojaatlarTab', 'Murojaatlar').toUpperCase() : activeTab === 'schedules' ? "DARS JADVALI" : activeTab === 'groups' ? "GURUHLAR" : t('adminPanel.CommentsORGTab', "O'quvchilar Izohlari").toUpperCase()}
                     </h1>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button onClick={loadLeads} className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-200 dark:border-gray-700">
-                        <FaSync className={loadingLeads ? "animate-spin" : ""} />
+                    <button onClick={() => { loadLeads(); loadSchedules(); loadGroups(); }} className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-200 dark:border-gray-700">
+                        <FaSync className={loadingLeads || loadingSchedules || loadingGroups ? "animate-spin" : ""} />
                     </button>
                 </div>
             </header>
@@ -318,7 +678,7 @@ return (
                                                                 <FaRegEye className="text-lg" />
                                                             </button>
                                                             {lead.status !== 'Qabul qilindi' ? (
-                                                                <button onClick={() => updateLeadStatus(lead.id, 'Qabul qilindi')} className="text-emerald-500 hover:text-emerald-600 transition-colors" title="Tasdiqlash">
+                                                                <button onClick={() => { setLeadToAccept(lead); setShowAcceptLeadModal(true); }} className="text-emerald-500 hover:text-emerald-600 transition-colors" title="Tasdiqlash">
                                                                     <FaCheckCircle className="text-xl" />
                                                                 </button>
                                                             ) : (
@@ -342,6 +702,195 @@ return (
                         </div>
                     </div>
                 )}
+                {activeTab === 'schedules' && (
+                    <div className="space-y-8 max-w-[1400px] mx-auto">
+                        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative">
+                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Dars jadvallari</h2>
+                                <button onClick={() => {
+                                    setEditingScheduleId(null)
+                                    setNewScheduleGroup('')
+                                    setNewScheduleDays('')
+                                    setNewScheduleTime('')
+                                    setShowAddScheduleModal(true)
+                                }} className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
+                                    + Guruh qo'shish
+                                </button>
+                            </div>
+                            
+                            <div className="overflow-x-auto custom-scrollbar pb-4 relative">
+                                <table className="w-full text-left border-collapse border border-gray-100 dark:border-gray-800 min-w-[1400px]">
+                                    <thead>
+                                        <tr className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-500 dark:text-gray-400 text-center">
+                                            <th className="py-4 px-3 border-r border-gray-100 dark:border-gray-800 sticky left-0 z-20 bg-gray-50 dark:bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.05)] w-32">{t('adminDashboard.daysAndTime')}</th>
+                                            {timesList.map(time => (
+                                                <th key={time} className="py-4 px-2 border-r border-gray-100 dark:border-gray-800 min-w-[120px]">{time}</th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {daysList.map(day => (
+                                            <tr key={day} className="border-b border-gray-100 dark:border-gray-800 transition text-sm">
+                                                <td className="py-4 px-4 font-bold text-gray-900 dark:text-white border-r border-gray-100 dark:border-gray-800 sticky left-0 z-10 bg-white dark:bg-gray-900 shadow-[2px_0_5px_rgba(0,0,0,0.05)] text-center">
+                                                    {day}
+                                                </td>
+                                                {timesList.map(time => {
+                                                    const schedule = schedules.find(s => {
+                                                        const sDays = Array.isArray(s.days) ? s.days : [s.days];
+                                                        return sDays.includes(day) && s.time === time;
+                                                    });
+                                                    
+                                                    return (
+                                                        <td key={time} className="p-2 border-r border-gray-100 dark:border-gray-800 relative group min-w-[130px] align-middle hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                                                            {schedule ? (
+                                                                <div className="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-3 border border-indigo-100 dark:border-indigo-800/50 flex flex-col h-full items-center justify-center relative shadow-sm">
+                                                                    <span className="font-bold text-indigo-700 dark:text-indigo-400 text-center leading-snug">{schedule.group}</span>
+                                                                    
+                                                                    {/* Hover Actions */}
+                                                                    <div className="absolute inset-0 bg-indigo-900/90 rounded-xl flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                                        <button onClick={() => handleEditScheduleClick(schedule)} className="text-white hover:scale-110 transition-transform" title={t('adminDashboard.editTitle')}>
+                                                                            <FaRegEye className="text-xl" />
+                                                                        </button>
+                                                                        <button onClick={() => setDeleteModalSchedule(schedule)} className="text-rose-400 hover:scale-110 transition-transform" title={t('adminDashboard.deleteTitle')}>
+                                                                            <FaTrash className="text-lg" />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <div 
+                                                                    className="w-full h-[60px] rounded-xl border-2 border-dashed border-transparent hover:border-gray-200 dark:hover:border-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer"
+                                                                    onClick={() => {
+                                                                        setEditingScheduleId(null)
+                                                                        setNewScheduleGroup('')
+                                                                        setNewScheduleDays([day])
+                                                                        setNewScheduleTime(time)
+                                                                        setShowAddScheduleModal(true)
+                                                                    }}
+                                                                >
+                                                                    <span className="text-xs font-bold text-gray-400">{t('adminDashboard.addBtn')}</span>
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                )}
+                
+                {activeTab === 'groups' && (
+                    <div className="space-y-8 max-w-[1400px] mx-auto">
+                        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative">
+                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('adminDashboard.groupsTab')}</h2>
+                                <button onClick={() => {
+                                    setNewGroupNameInput('')
+                                    setShowAddGroupModal(true)
+                                }} className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
+                                    + Guruh qo'shish
+                                </button>
+                            </div>
+                            
+                            <div className="overflow-x-auto custom-scrollbar pb-2">
+                                <table className="w-full text-left border-collapse min-w-[500px]">
+                                    <thead>
+                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400">
+                                            <th className="py-4 px-4 font-medium">Guruh Nomi</th>
+                                            <th className="py-4 px-4 font-medium text-right">Amallar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {groups.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="2" className="py-8 text-center text-gray-500">
+                                                    Guruhlar topilmadi
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            groups.map(group => (
+                                                <tr key={group.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
+                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">{group.name}</td>
+                                                    <td className="py-4 px-4 text-right">
+                                                        <div className="flex items-center justify-end gap-3">
+                                                            <button onClick={() => {
+                                                                setEditingGroupId(group.id)
+                                                                setNewGroupNameInput(group.name)
+                                                                setShowAddGroupModal(true)
+                                                            }} className="text-indigo-500 hover:text-indigo-600 transition-colors" title={t('adminDashboard.editTitle')}>
+                                                                <FaPen className="text-lg" />
+                                                            </button>
+                                                            <button onClick={() => setSelectedGroupDetails(group)} className="text-blue-500 hover:text-blue-600 transition-colors" title={t('adminDashboard.viewStudents')}>
+                                                                <FaRegEye className="text-xl" />
+                                                            </button>
+                                                            <button onClick={() => setDeleteModalGroup(group)} className="text-rose-500 hover:text-rose-600 transition-colors" title={t('adminDashboard.deleteTitle')}>
+                                                                <FaTimesCircle className="text-xl" />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
+                {activeTab === 'students' && (
+                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                            <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                                {t('adminDashboard.studentsTab')}
+                            </h2>
+                        </div>
+
+                        {groups.flatMap(g => (g.students || []).map(s => ({...s, groupName: g.name, groupId: g.id}))).length === 0 ? (
+                            <div className="text-center py-16">
+                                <FaUserGraduate className="text-6xl text-gray-200 dark:text-gray-700 mx-auto mb-4" />
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Hali o'quvchilar yo'q</h3>
+                                <p className="text-gray-500">Guruhlarga kirib o'quvchi qo'shishingiz mumkin.</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                {groups.flatMap(g => (g.students || []).map(s => ({...s, groupName: g.name, groupId: g.id}))).map(student => (
+                                    <div key={student.id} className="bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-4 hover:shadow-md hover:bg-white dark:hover:bg-gray-800 transition-all group">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-14 h-14 rounded-full shrink-0 border-2 border-gray-100 dark:border-gray-600 flex items-center justify-center text-3xl shadow-sm ${student.gender === 'ayol' ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-500' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-500'}`}>
+                                                <FaUser />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="font-bold text-gray-900 dark:text-white truncate" title={student.name}>{student.name}</h4>
+                                                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1 truncate">{student.phone}</p>
+                                            </div>
+                                        </div>
+                                        <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                                            <span className="inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400 truncate max-w-[150px]">
+                                                {student.groupName}
+                                            </span>
+                                            
+                                            <button onClick={() => {
+                                                const group = groups.find(g => g.id === student.groupId);
+                                                setSelectedGroupDetails(group);
+                                                setActiveTab('groups');
+                                                // We can also trigger editing the student, but viewing the group is good enough
+                                            }} className="w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-blue-50 hover:text-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-900/40 flex items-center justify-center transition-colors">
+                                                <FaRegEye className="text-xs" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+                
                 {activeTab === 'CommentsORG' && (
                     <div className="max-w-[1400px] mx-auto bg-white dark:bg-gray-900 rounded-3xl p-4 lg:p-6 shadow-sm border border-gray-100 dark:border-gray-800">
                         <CommentsORG isAdmin={true} />
@@ -351,6 +900,317 @@ return (
         </main>
 
         {/* Modals are kept similar */}
+        {deleteModalSchedule && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
+                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 flex items-center justify-center text-2xl mx-auto">
+                        <FaTrash />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">Ushbu jadvalni o'chirmoqchimisiz?</h3>
+                        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalSchedule.group}</p>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 pt-2">
+                        <button onClick={() => setDeleteModalSchedule(null)} className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
+                        <button onClick={() => handleDeleteSchedule(deleteModalSchedule.id)} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition">{t('adminDashboard.deleteConfirmBtn')}</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {showAddScheduleModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-5 relative">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 flex items-center justify-center text-xl font-bold shrink-0">
+                            <FaCalendarAlt />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white">{editingScheduleId ? "Jadvalni tahrirlash" : "Yangi jadval qo'shish"}</h3>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleCreateOrUpdateSchedule} className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.groupName')}</label>
+                            <select value={newScheduleGroup} onChange={(e) => setNewScheduleGroup(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required>
+                                <option value="">Guruhni tanlang</option>
+                                {groups.map(g => <option key={g.id} value={g.name}>{g.name}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Kunlar</label>
+                            <div className="flex flex-wrap gap-2">
+                                {daysList.map(d => (
+                                    <label key={d} className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                        <input type="checkbox" checked={newScheduleDays.includes(d)} onChange={(e) => {
+                                            if (e.target.checked) setNewScheduleDays([...newScheduleDays, d])
+                                            else setNewScheduleDays(newScheduleDays.filter(day => day !== d))
+                                        }} className="w-4 h-4 text-red-600 rounded focus:ring-red-500" />
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{d}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Vaqti</label>
+                            <select value={newScheduleTime} onChange={(e) => setNewScheduleTime(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required>
+                                <option value="">Vaqtni tanlang</option>
+                                {timesList.map(t => (
+                                    <option key={t} value={t}>{t}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button type="button" onClick={() => setShowAddScheduleModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
+                            <button type="submit" className="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-sm shadow-md shadow-red-600/20 hover:from-red-500 hover:to-rose-500 transition">{t('adminDashboard.save')}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
+
+        {deleteModalGroup && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
+                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 flex items-center justify-center text-2xl mx-auto">
+                        <FaTrash />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">Ushbu guruhni o'chirmoqchimisiz?</h3>
+                        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalGroup.name}</p>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 pt-2">
+                        <button onClick={() => setDeleteModalGroup(null)} className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
+                        <button onClick={() => handleDeleteGroup(deleteModalGroup.id)} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition">{t('adminDashboard.deleteConfirmBtn')}</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {showAddGroupModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-5 relative">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 flex items-center justify-center text-xl font-bold shrink-0">
+                            <FaUsers />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white">{editingGroupId ? t('adminDashboard.editGroup') : t('adminDashboard.addNewGroup')}</h3>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleCreateGroup} className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruh nomi (Masalan: IELTS Beginner)</label>
+                            <input type="text" value={newGroupNameInput} onChange={(e) => setNewGroupNameInput(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required />
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button type="button" onClick={() => setShowAddGroupModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
+                            <button type="submit" className="flex-1 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-sm shadow-md shadow-red-600/20 hover:from-red-500 hover:to-rose-500 transition">{t('adminDashboard.save')}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
+
+        {selectedGroupDetails && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[50] p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden">
+                    {/* Modal Header */}
+                    <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/50 dark:bg-gray-800/20">
+                        <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 flex items-center justify-center text-xl shadow-sm">
+                                <FaUsers />
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-black text-gray-900 dark:text-white">{selectedGroupDetails.name}</h3>
+                                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">{t('adminDashboard.studentsList')}</p>
+                            </div>
+                        </div>
+                        <button onClick={() => setSelectedGroupDetails(null)} className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 flex items-center justify-center transition-colors">
+                            <FaTimesCircle className="text-xl" />
+                        </button>
+                    </div>
+
+                    {/* Modal Body */}
+                    <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
+                        <div className="flex justify-end mb-6">
+                            <button onClick={() => {
+                                setEditingStudentId(null)
+                                setNewStudentName('')
+                                setNewStudentPhone('')
+                                setNewStudentPhoto(null)
+                                setShowAddStudentModal(true)
+                            }} className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white rounded-xl text-sm font-bold transition-all shadow-md flex items-center gap-2">
+                                <FaUserPlus /> {t('adminDashboard.addStudentBtn')}
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {(!selectedGroupDetails.students || selectedGroupDetails.students.length === 0) ? (
+                                <div className="col-span-full py-12 text-center">
+                                    <div className="w-20 h-20 mx-auto bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-3">
+                                        <FaUserCircle className="text-4xl text-gray-300 dark:text-gray-600" />
+                                    </div>
+                                    <p className="text-gray-500 font-semibold">{t('adminDashboard.noStudents')}</p>
+                                </div>
+                            ) : (
+                                selectedGroupDetails.students.map(student => (
+                                    <div key={student.id} className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-4 flex items-center gap-4 hover:shadow-md transition-shadow group">
+                                        <div className={`w-16 h-16 rounded-full shrink-0 border-2 border-gray-100 dark:border-gray-600 flex items-center justify-center text-3xl shadow-sm ${student.gender === 'ayol' ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-500' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-500'}`}>
+                                            <FaUser />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="font-bold text-gray-900 dark:text-white truncate" title={student.name}>{student.name}</h4>
+                                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate mt-0.5">{student.phone}</p>
+                                        </div>
+                                        <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button onClick={() => handleEditStudentClick(student)} className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 flex items-center justify-center transition-colors">
+                                                <FaPen className="text-xs" />
+                                            </button>
+                                            <button onClick={() => setDeleteModalStudent(student)} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-900/20 dark:hover:bg-rose-900/40 flex items-center justify-center transition-colors">
+                                                <FaTrash className="text-xs" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {showAddStudentModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60] p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6 relative">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 flex items-center justify-center text-xl font-bold shrink-0">
+                            {editingStudentId ? <FaUserEdit /> : <FaUserPlus />}
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white">{editingStudentId ? t('adminDashboard.editStudent') : t('adminDashboard.addNewStudent')}</h3>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleCreateOrUpdateStudent} className="space-y-4">
+                        <div className="flex justify-center gap-6">
+                            <label className={`cursor-pointer group flex flex-col items-center gap-2 ${newStudentGender === 'erkak' ? 'scale-110' : 'opacity-50 hover:opacity-100'} transition-all`}>
+                                <div className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl bg-blue-50 dark:bg-blue-900/20 border-2 ${newStudentGender === 'erkak' ? 'border-blue-500 shadow-md text-blue-500' : 'border-transparent text-gray-400'}`}>
+                                    <FaUser />
+                                </div>
+                                <span className="text-xs font-bold text-gray-500">{t('adminDashboard.boy')}</span>
+                                <input type="radio" name="gender" value="erkak" checked={newStudentGender === 'erkak'} onChange={(e) => setNewStudentGender(e.target.value)} className="hidden" />
+                            </label>
+                            
+                            <label className={`cursor-pointer group flex flex-col items-center gap-2 ${newStudentGender === 'ayol' ? 'scale-110' : 'opacity-50 hover:opacity-100'} transition-all`}>
+                                <div className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl bg-pink-50 dark:bg-pink-900/20 border-2 ${newStudentGender === 'ayol' ? 'border-pink-500 shadow-md text-pink-500' : 'border-transparent text-gray-400'}`}>
+                                    <FaUser />
+                                </div>
+                                <span className="text-xs font-bold text-gray-500">{t('adminDashboard.girl')}</span>
+                                <input type="radio" name="gender" value="ayol" checked={newStudentGender === 'ayol'} onChange={(e) => setNewStudentGender(e.target.value)} className="hidden" />
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.fio')}</label>
+                            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder={t('adminDashboard.fioPlaceholder')} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500 text-gray-900 dark:text-white transition-colors" required />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.phone')}</label>
+                            <div className="flex w-full bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl focus-within:border-indigo-500 transition-colors overflow-hidden">
+                                <div className="px-4 py-3 bg-gray-100/50 dark:bg-gray-800/50 border-r border-gray-100 dark:border-gray-800 flex items-center justify-center font-bold text-gray-700 dark:text-gray-300 text-sm">
+                                    +998
+                                </div>
+                                <input type="text" value={newStudentPhone} onChange={(e) => {
+                                    // Barcha raqam bo'lmagan belgilarni olib tashlaymiz
+                                    let val = e.target.value.replace(/\D/g, '');
+                                    
+                                    // 9 tadan ortiq raqam kiritilishiga yo'l qo'ymaymiz
+                                    if(val.length > 9) val = val.substring(0, 9);
+                                    
+                                    // Formatlash: (XX) XXX-XX-XX
+                                    let formatted = '';
+                                    if(val.length > 0) {
+                                        formatted += '(' + val.substring(0, 2);
+                                    }
+                                    if(val.length >= 3) {
+                                        formatted += ') ' + val.substring(2, 5);
+                                    }
+                                    if(val.length >= 6) {
+                                        formatted += '-' + val.substring(5, 7);
+                                    }
+                                    if(val.length >= 8) {
+                                        formatted += '-' + val.substring(7, 9);
+                                    }
+                                    
+                                    setNewStudentPhone(formatted);
+                                }} placeholder="(90) 123-45-67" className="flex-1 px-4 py-3 bg-transparent text-sm font-medium focus:outline-none text-gray-900 dark:text-white" required />
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 pt-4">
+                            <button type="button" onClick={() => setShowAddStudentModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
+                            <button type="submit" className="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-sm shadow-md transition-all">{t('adminDashboard.save')}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
+        
+        {deleteModalStudent && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
+                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 flex items-center justify-center text-2xl mx-auto">
+                        <FaTrash />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminDashboard.deleteStudentConfirm')}</h3>
+                        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalStudent.name}</p>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 pt-2">
+                        <button onClick={() => setDeleteModalStudent(null)} className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
+                        <button onClick={() => handleDeleteStudent(deleteModalStudent.id)} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition">{t('adminDashboard.deleteConfirmBtn')}</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {showAcceptLeadModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 relative">
+                    <div className="flex flex-col gap-2 mb-2">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 flex items-center justify-center text-xl font-bold shrink-0 mb-2">
+                            <FaCheckCircle />
+                        </div>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">O'quvchini qabul qilish</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Murojaatchi</label>
+                            <input type="text" value={leadToAccept?.name || ''} disabled className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 cursor-not-allowed" />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruhni tanlang</label>
+                            <select value={acceptToGroupId} onChange={(e) => setAcceptToGroupId(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500 text-gray-900 dark:text-white transition-colors">
+                                <option value="">Tanlang...</option>
+                                {groups.map(g => (
+                                    <option key={g.id} value={g.id}>{g.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div className="flex gap-3 pt-2">
+                        <button onClick={() => setShowAcceptLeadModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">Bekor qilish</button>
+                        <button onClick={handleAcceptLeadToGroup} className="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-md shadow-emerald-500/20 transition">Qabul qilish</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
         {deleteModalLead && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
                 <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
@@ -392,6 +1252,15 @@ return (
                                 <span className="absolute left-4 font-bold text-sm text-gray-400 pointer-events-none">+998</span>
                                 <input type="text" maxLength={9} value={newLeadPhone} onChange={(e) => setNewLeadPhone(e.target.value.replace(/\D/g, '').slice(0, 9))} className="w-full pl-14 pr-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-bold tracking-wider focus:outline-none focus:border-red-500 text-gray-900 dark:text-white" required />
                             </div>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruhni tanlang (Majburiy emas)</label>
+                            <select value={newLeadGroup} onChange={(e) => setNewLeadGroup(e.target.value)} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white transition-colors">
+                                <option value="">Tanlang...</option>
+                                {groups.map(g => (
+                                    <option key={g.id} value={g.id}>{g.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="flex gap-3 pt-2">
                             <button type="button" onClick={() => setShowAddLeadModal(false)} className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminPanel.noBtn', "Bekor qilish")}</button>
