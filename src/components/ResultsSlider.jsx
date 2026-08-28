@@ -166,11 +166,12 @@ export default function ResultsSlider() {
     const activeStudent = activeData[currentIndex];
 
     return (
-        <div className="w-full mb-10 px-2 sm:px-4 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px]">
-            <div id="results-section" className=" relative w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-6 bg-white/90 dark:bg-[#090623]/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-slate-900 dark:text-white my-2 sm:my-4 transition-colors duration-300 overflow-hidden">
+        <div className="w-full mb-10 px-2 sm:px-4 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px] relative overflow-visible">
+            {/* Ambient Background Glows - Crimson Red Theme */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
+            <div className="absolute bottom-10 right-10 w-[420px] h-[420px] bg-gradient-to-br from-rose-600/20 via-red-700/15 to-transparent rounded-full blur-[120px] pointer-events-none"></div>
 
-                {/* Dekorativ fon nuri */}
-                <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
+            <div id="results-section" className=" relative w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-6 glass-card backdrop-blur-xl border border-red-500/20 dark:border-red-500/20 rounded-2xl sm:rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] text-slate-900 dark:text-white my-2 sm:my-4 transition-colors duration-300 overflow-hidden">
 
                 {/* Sarlavha */}
                 <motion.h2

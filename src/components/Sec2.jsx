@@ -28,7 +28,7 @@ export default function Sec2() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 xs:gap-8 relative">
-                <div className="hidden md:block absolute top-16 left-[15%] right-[15%] h-0.5 border-t-2 border-dashed border-gray-200 dark:border-gray-800 pointer-events-none z-0"></div>
+                <div className="hidden md:block absolute top-16 left-[15%] right-[15%] h-0.5 border-t-2 border-dashed border-gray-200 dark:border-red-500/30 pointer-events-none z-0"></div>
 
                 {/* 1-qadam */}
                 <button
@@ -40,7 +40,7 @@ export default function Sec2() {
                     className="flex flex-col items-center text-center relative z-10 group cursor-pointer bg-transparent border-0 p-0 appearance-none"
                     aria-label={t('steps.step1Title')}
                 >
-                    <div className="w-14 h-14 xs:w-16 xs:h-16 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 rounded-xl xs:rounded-2xl flex items-center justify-center font-black text-lg xs:text-xl text-gray-900 dark:text-white shadow-md group-hover:border-red-500 group-hover:text-red-600 group-hover:scale-110 group-active:scale-95 transition-all duration-300 mb-4 xs:mb-6 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-900/50">
+                    <div className="w-14 h-14 xs:w-16 xs:h-16 rounded-xl xs:rounded-2xl flex items-center justify-center font-black text-lg xs:text-xl shadow-md group-hover:border-red-500 group-hover:text-red-400 group-hover:scale-110 group-active:scale-95 transition-all duration-300 mb-4 xs:mb-6 glass-card backdrop-blur-xl border border-red-500/30 bg-[#050505]/60 text-gray-900 dark:text-white">
                         01
                     </div>
                     <h3 className="text-lg xs:text-xl font-bold text-gray-950 dark:text-white mb-1.5 xs:mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
@@ -61,7 +61,7 @@ export default function Sec2() {
                     className="flex flex-col items-center text-center relative z-10 group cursor-pointer bg-transparent border-0 p-0 appearance-none"
                     aria-label={t('steps.step2Title')}
                 >
-                    <div className="w-14 h-14 xs:w-16 xs:h-16 bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 rounded-xl xs:rounded-2xl flex items-center justify-center font-black text-lg xs:text-xl text-gray-900 dark:text-white shadow-md group-hover:border-red-500 group-hover:text-red-600 group-hover:scale-110 group-active:scale-95 transition-all duration-300 mb-4 xs:mb-6 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-900/50">
+                    <div className="w-14 h-14 xs:w-16 xs:h-16 rounded-xl xs:rounded-2xl flex items-center justify-center font-black text-lg xs:text-xl shadow-md group-hover:border-red-500 group-hover:text-red-400 group-hover:scale-110 group-active:scale-95 transition-all duration-300 mb-4 xs:mb-6 glass-card backdrop-blur-xl border border-red-500/30 bg-[#050505]/60 text-gray-900 dark:text-white">
                         02
                     </div>
                     <h3 className="text-lg xs:text-xl font-bold text-gray-950 dark:text-white mb-1.5 xs:mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
@@ -82,7 +82,7 @@ export default function Sec2() {
                     className="flex flex-col items-center text-center relative z-10 group cursor-pointer bg-transparent border-0 p-0 appearance-none"
                     aria-label={t('steps.step3Title')}
                 >
-                    <div className="w-14 h-14 xs:w-16 xs:h-16 bg-gray-950 dark:bg-white text-white dark:text-gray-950 rounded-xl xs:rounded-2xl flex items-center justify-center font-black text-lg xs:text-xl shadow-lg shadow-gray-950/10 group-hover:bg-red-600 group-hover:text-white dark:group-hover:text-white group-hover:scale-110 group-active:scale-95 transition-all duration-300 mb-4 xs:mb-6">
+                    <div className="w-14 h-14 xs:w-16 xs:h-16 rounded-xl xs:rounded-2xl flex items-center justify-center font-black text-lg xs:text-xl shadow-[0_8px_30px_rgba(220,38,38,0.4)] group-hover:bg-red-500 group-hover:text-white group-hover:scale-110 group-active:scale-95 transition-all duration-300 mb-4 xs:mb-6 bg-gradient-to-br from-red-600 to-rose-600 text-white border border-red-400/50">
                         03
                     </div>
                     <h3 className="text-lg xs:text-xl font-bold text-gray-950 dark:text-white mb-1.5 xs:mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">

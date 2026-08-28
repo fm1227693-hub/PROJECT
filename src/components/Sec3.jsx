@@ -182,7 +182,7 @@ export default function Sec3() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -30, scale: 0.95 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="mx-auto w-full max-w-sm rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl relative group border border-slate-200 dark:border-white/10"
+              className="mx-auto w-full max-w-sm rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.6)] glass-card backdrop-blur-xl relative group border border-red-500/20 dark:border-red-500/20"
             >
               <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-b from-indigo-800 to-purple-900 overflow-hidden">
                 <motion.img
@@ -199,7 +199,7 @@ export default function Sec3() {
                   {currentTeacher.name.split(' ')[1]}
                 </span>
               </div>
-              <div className="px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-950">
+              <div className="px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5 bg-[#050505]/60 backdrop-blur-2xl border-t border-white/5">
                 <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none mb-3">
                   {currentTeacher.cert}
                 </h3>
@@ -245,7 +245,7 @@ export default function Sec3() {
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] p-3 sm:p-4"
+                    className="rounded-2xl border border-slate-200 dark:border-red-500/20 bg-slate-50/60 dark:bg-red-500/5 p-3 sm:p-4 glass-card"
                   >
                     <span className="block text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
                       {stat.value}
@@ -261,7 +261,7 @@ export default function Sec3() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-slate-100 dark:bg-white/[0.02] py-3 rounded-r-xl flex items-center"
+              className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-slate-100 dark:bg-red-500/[0.03] py-3 rounded-r-xl flex items-center"
             >
               <p>
                 {displayedText}
