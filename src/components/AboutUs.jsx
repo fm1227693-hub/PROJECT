@@ -23,13 +23,13 @@ export default function AboutUs() {
     
 
     return (
-        <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-sans text-gray-900 dark:text-white transition-colors duration-200">
+        <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-sans text-white transition-colors duration-200">
 
             {/* 1-Bo'lim: Sarlavha va matnlar */}
             <div
                 data-aos="fade-up"
                 data-aos-duration="800"
-                className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-200 dark:border-gray-800 p-6 sm:p-12 rounded-3xl shadow-xl overflow-hidden"
+                className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-black/40 backdrop-blur-xl border border-red-500/20 p-6 sm:p-12 rounded-[2.8rem] shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
             >
                 <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
 
@@ -38,16 +38,16 @@ export default function AboutUs() {
                         <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
                         {t('aboutUs.badge')}
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 dark:text-white mt-3 sm:mt-4 tracking-tight leading-tight">
+                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mt-3 sm:mt-4 tracking-tight leading-tight">
                         {t('aboutUs.title')}
                     </h2>
                     <div className="mt-5 sm:mt-6 w-14 h-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-400" />
                 </div>
                 <div className="relative lg:col-span-7 flex flex-col space-y-3 sm:space-y-4">
-                    <p className="text-gray-800 dark:text-gray-300 font-medium text-sm sm:text-base md:text-lg leading-relaxed">
+                    <p className="text-gray-200 font-medium text-sm sm:text-base md:text-lg leading-relaxed">
                         {t('aboutUs.description1')}
                     </p>
-                    <p className="text-gray-700 dark:text-gray-400 font-semibold text-xs sm:text-sm leading-relaxed">
+                    <p className="text-gray-300 font-semibold text-xs sm:text-sm leading-relaxed">
                         {t('aboutUs.description2')}
                     </p>
                 </div>
@@ -62,16 +62,16 @@ export default function AboutUs() {
                     data-aos="fade-up"
                     data-aos-duration="800"
                     data-aos-delay="100"
-                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300 block"
+                    className="bg-black/40 backdrop-blur-xl text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
                 >
                     <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
                     <div className="relative">
-                        <div className="w-12 h-12 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-gray-300 dark:border-gray-300 dark:border-gray-700 group-hover:scale-110 group-hover:border-red-800 transition-all duration-300">
+                        <div className="w-12 h-12 bg-black/50 backdrop-blur-md text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-red-500/30 group-hover:scale-110 group-hover:border-red-500 transition-all duration-300">
                             <HiLightningBolt className="w-6 h-6 text-red-400" />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card1Title')}</h3>
-                        <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                        <h3 className="text-lg sm:text-xl font-black text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card1Title')}</h3>
+                        <p className="text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
                             {t('aboutUs.card1Desc')}
                         </p>
                     </div>
@@ -87,16 +87,16 @@ export default function AboutUs() {
                     data-aos="fade-up"
                     data-aos-duration="800"
                     data-aos-delay="200"
-                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300 block"
+                    className="bg-black/40 backdrop-blur-xl text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
                 >
                     <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
                     <div className="relative">
-                        <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 text-gray-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-md shadow-red-500/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 text-white flex items-center justify-center rounded-2xl mb-6 shadow-md shadow-red-500/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-red-400/50">
                             <HiCheckCircle className="w-6 h-6 text-white" />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2">{t('aboutUs.card2Title')}</h3>
-                        <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                        <h3 className="text-lg sm:text-xl font-black text-white mb-2">{t('aboutUs.card2Title')}</h3>
+                        <p className="text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
                             {t('aboutUs.card2Desc')}
                         </p>
                     </div>
@@ -112,16 +112,16 @@ export default function AboutUs() {
                     data-aos="fade-up"
                     data-aos-duration="800"
                     data-aos-delay="300"
-                    className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-red-900/20 relative overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800 group hover:-translate-y-1.5 transition-all duration-300 block"
+                    className="bg-black/40 backdrop-blur-xl text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
                 >
                     <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
                     <div className="relative">
-                        <div className="w-12 h-12 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-gray-300 dark:border-gray-300 dark:border-gray-700 group-hover:scale-110 group-hover:border-red-800 transition-all duration-300">
+                        <div className="w-12 h-12 bg-black/50 backdrop-blur-md text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-red-500/30 group-hover:scale-110 group-hover:border-red-500 transition-all duration-300">
                             <HiSparkles className="w-6 h-6 text-red-400" />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card3Title')}</h3>
-                        <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                        <h3 className="text-lg sm:text-xl font-black text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card3Title')}</h3>
+                        <p className="text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
                             {t('aboutUs.card3Desc')}
                         </p>
                     </div>
@@ -137,7 +137,7 @@ export default function AboutUs() {
             <div
                 data-aos="fade-up"
                 data-aos-duration="900"
-                className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-200 dark:border-gray-800 p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm overflow-hidden"
+                className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-black/40 backdrop-blur-xl border border-red-500/20 p-6 sm:p-8 rounded-2xl sm:rounded-[2.8rem] shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
             >
                 <div className="pointer-events-none absolute -bottom-20 -left-20 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
 
@@ -145,29 +145,29 @@ export default function AboutUs() {
                     <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-900/30 inline-block">
                         {t('aboutUs.locationBadge')}
                     </span>
-                    <h3 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+                    <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                         {t('aboutUs.locationTitle')}
                     </h3>
-                    <p className="text-gray-800 dark:text-gray-300 font-medium text-sm sm:text-base leading-relaxed">
+                    <p className="text-gray-200 font-medium text-sm sm:text-base leading-relaxed">
                         {t('aboutUs.locationDesc')}
                     </p>
                     <div className="space-y-3 pt-2">
-                        <div className="flex items-center gap-3 sm:gap-4 bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-200 dark:border-gray-800 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300">
+                        <div className="flex items-center gap-3 sm:gap-4 bg-black/40 backdrop-blur-md border border-red-500/30 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300">
                             <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
                                 <HiLocationMarker className="w-5 h-5" />
                             </div>
-                            <span className="text-gray-800 dark:text-gray-300 font-semibold text-xs sm:text-sm">
+                            <span className="text-gray-200 font-semibold text-xs sm:text-sm">
                                 {t('aboutUs.address')}
                             </span>
                         </div>
                         <a
                             href="tel:+998900829979"
-                            className="flex items-center gap-3 sm:gap-4 bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-200 dark:border-gray-800 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300"
+                            className="flex items-center gap-3 sm:gap-4 bg-black/40 backdrop-blur-md border border-red-500/30 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300"
                         >
                             <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
                                 <HiPhone className="w-5 h-5" />
                             </div>
-                            <span className="text-gray-800 dark:text-gray-300 font-semibold text-xs sm:text-sm">
+                            <span className="text-gray-200 font-semibold text-xs sm:text-sm">
                                 +998 90 082 99 79
                             </span>
                         </a>
@@ -207,26 +207,26 @@ export default function AboutUs() {
             <div
                 data-aos="fade-up"
                 data-aos-duration="900"
-                className="relative bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-xl overflow-hidden border border-gray-200 dark:border-gray-200 dark:border-gray-800"
+                className="relative bg-black/40 backdrop-blur-xl text-white rounded-2xl sm:rounded-[2.8rem] p-6 sm:p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden border border-red-500/20"
             >
                 <div className="pointer-events-none absolute -top-16 right-1/4 w-56 h-56 bg-red-500/10 rounded-full blur-3xl" />
                 <div className="pointer-events-none absolute -bottom-16 left-0 w-56 h-56 bg-red-600/10 rounded-full blur-3xl" />
 
                 <div className="relative space-y-2 max-w-xl text-center md:text-left">
-                    <h4 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">{t('aboutUs.footerTitle')}</h4>
-                    <p className="text-gray-700 dark:text-gray-400 text-xs sm:text-sm font-medium leading-relaxed">
+                    <h4 className="text-xl sm:text-2xl font-black text-white">{t('aboutUs.footerTitle')}</h4>
+                    <p className="text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
                         {t('aboutUs.footerDesc')}
                     </p>
                 </div>
                 <div className="relative flex flex-wrap items-center justify-center gap-6 sm:gap-8 shrink-0">
                     <div className="text-center">
-                        <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 dark:text-white">100%</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-700 dark:text-gray-400">{t('aboutUs.stat1Label')}</span>
+                        <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-white">100%</span>
+                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-300">{t('aboutUs.stat1Label')}</span>
                     </div>
                     <div className="w-px h-10 bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
                     <div className="text-center">
                         <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-red-400">7/24</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-700 dark:text-gray-400">{t('aboutUs.stat2Label')}</span>
+                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gray-300">{t('aboutUs.stat2Label')}</span>
                     </div>
                 </div>
             </div>

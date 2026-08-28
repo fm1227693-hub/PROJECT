@@ -195,8 +195,8 @@ export default function App() {
 
       {/* Master Luxury Ambient Background Layers */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        {/* Base Gradient Canvas */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-slate-100/90 to-white dark:from-[#030712] dark:via-[#060a14] dark:to-[#090d1a] transition-colors duration-500" />
+        {/* Base Gradient Canvas (Disabled in favor of 3D Canvas) */}
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-slate-100/90 to-white dark:from-[#030712] dark:via-[#060a14] dark:to-[#090d1a] transition-colors duration-500" /> */}
 
         {/* Glow Radial Grid Matrix */}
         <div
