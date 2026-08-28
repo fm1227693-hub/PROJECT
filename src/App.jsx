@@ -87,15 +87,22 @@ export default function App() {
           }
           el.classList.add('aos-animate');
         } else {
-          observer.observe(el);
+          if (!el.classList.contains('aos-animate')) {
+            observer.observe(el);
+          }
         }
       });
     };
 
-    const timer1 = setTimeout(observeAll, 100);
+    // Sahifa render bo'lishi va AnimatePresence (0.4s) kutish vaqtlarini hisobga olib bir necha marta chaqiramiz
+    const timer1 = setTimeout(observeAll, 50);
+    const timer2 = setTimeout(observeAll, 450); // mode="wait" dan keyin yangi sahifa tushganda
+    const timer3 = setTimeout(observeAll, 800); // Xavfsizlik uchun
 
     return () => {
       clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
       observer.disconnect();
     };
   }, [isLoading, location.pathname]);
