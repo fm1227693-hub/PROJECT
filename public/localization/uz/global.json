@@ -1090,5 +1090,47 @@
         "cap2": "Kirish tasdiqlanmoqda",
         "cap3": "Deyarli tayyor",
         "cap4": "Xush kelibsiz"
+    },
+    "levels": {
+        "sectionBadge": "Kurs darajalari",
+        "sectionTitle": "O'z darajangizni tanlang",
+        "sectionDesc": "Har bir o'quvchi uchun individual yo'nalish — Beginner'dan Advanced'gacha.",
+        "cta": "Bepul sinov darsi olish",
+        "duration": "Davomiyligi",
+        "beginner": {
+            "label": "Beginner",
+            "desc": "Ingliz tilini noldan boshlaydiganlar uchun. Alifbo, oddiy so'zlar va asosiy grammatika.",
+            "f1": "Harflar va tovushlar",
+            "f2": "Kundalik iboralar",
+            "f3": "Asosiy grammatika"
+        },
+        "elementary": {
+            "label": "Elementary",
+            "desc": "Bazaviy bilimlarni mustahkamlab, oddiy suhbat va matnlarni tushunishni o'rganasiz.",
+            "f1": "Present va Past tense",
+            "f2": "So'z boyligini kengaytirish",
+            "f3": "Oddiy matn yozish"
+        },
+        "intermediate": {
+            "label": "Intermediate",
+            "desc": "IELTS 5.0-6.0 maqsadi. Murakkab grammatika, akademik lug'at va yozma nutq.",
+            "f1": "IELTS Writing Task 1 va 2",
+            "f2": "Academic vocabulary",
+            "f3": "Mock testlar"
+        },
+        "upper": {
+            "label": "Upper-Intermediate",
+            "desc": "IELTS 6.5-7.0 darajasi. CDI simulyatsiyasi va keng lug'at bazasi bilan.",
+            "f1": "CDI Listening va Reading",
+            "f2": "Advanced Grammar",
+            "f3": "Natija tahlili"
+        },
+        "advanced": {
+            "label": "Advanced",
+            "desc": "IELTS 7.5-8.5+ maqsad. Yuqori darajadagi barcha modullar va AI tahlil.",
+            "f1": "IELTS 8.5 strategiyasi",
+            "f2": "AI yozuv baholash",
+            "f3": "To'liq mock imtihon"
+        }
     }
 }

@@ -6,7 +6,8 @@ export default function BackgroundCanvas() {
     const sceneRef = useRef(null);
     const cameraRef = useRef(null);
     const rendererRef = useRef(null);
-    const clockRef = useRef(new THREE.Clock());
+    const timeRef = useRef(0);
+    const lastTimeRef = useRef(performance.now());
     const sparkParticlesRef = useRef(null);
     const sparkDataRef = useRef([]);
     const shaderUniformsRef = useRef(null);
@@ -70,7 +71,9 @@ export default function BackgroundCanvas() {
             gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 16, 16);
-            return new THREE.CanvasTexture(c);
+            const texture = new THREE.CanvasTexture(c);
+            texture.flipY = false;
+            return texture;
         }
 
         function createSparks(scene) {
@@ -252,7 +255,11 @@ export default function BackgroundCanvas() {
 
         function animate() {
             reqIdRef.current = requestAnimationFrame(animate);
-            const deltaTime = clockRef.current.getDelta();
+            
+            const now = performance.now();
+            const deltaTime = (now - lastTimeRef.current) / 1000;
+            lastTimeRef.current = now;
+            timeRef.current += deltaTime;
 
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -266,7 +273,7 @@ export default function BackgroundCanvas() {
 
             if (sparkParticlesRef.current && sparkDataRef.current.length > 0) {
                 const positions = sparkParticlesRef.current.geometry.attributes.position.array;
-                const time = clockRef.current.getElapsedTime();
+                const time = timeRef.current;
                 const scrollVelocity = Math.abs(targetScroll - scroll);
                 const speedMultiplier = 1.0 + scrollVelocity * 9.0;
                 const turbulence = scrollVelocity * 0.8;
@@ -309,7 +316,7 @@ export default function BackgroundCanvas() {
             }
 
             if (shaderUniformsRef.current) {
-                shaderUniformsRef.current.uTime.value = clockRef.current.getElapsedTime();
+                shaderUniformsRef.current.uTime.value = timeRef.current;
                 shaderUniformsRef.current.uMouse.value.set(mouseXRef.current, -mouseYRef.current);
                 shaderUniformsRef.current.uScroll.value = scroll;
                 

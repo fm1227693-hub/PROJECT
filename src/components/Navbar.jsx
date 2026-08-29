@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaHeadphones, FaBookOpen } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useEventEmitter } from '../utils/eventEmitter'
 
 const LANGS = {
     uz: { label: "O'zbekcha", short: 'UZ' },
@@ -25,10 +26,16 @@ export default function Navbar() {
     const [testsDropdownOpen, setTestsDropdownOpen] = useState(false)
     const [langOpen, setLangOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
+    const [navHidden, setNavHidden] = useState(false)
 
     const aboutRef = useRef(null)
     const testsRef = useRef(null)
     const langRef = useRef(null)
+
+    // eventBus orqali eshitib turish
+    useEventEmitter('toggle-nav', (payload) => {
+        setNavHidden(payload)
+    })
 
     const Theme = () => {
         // Trigger synthetic theme transition loading screen
@@ -155,7 +162,7 @@ export default function Navbar() {
     )
 
     return (
-        <div className={`fixed top-0 left-0 w-full z-50 font-['Merriweather',serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'}`}>
+        <div data-navbar-root className={`fixed top-0 left-0 w-full z-50 font-['Merriweather',serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? 'lvl-nav-hidden' : ''}`}>
             <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

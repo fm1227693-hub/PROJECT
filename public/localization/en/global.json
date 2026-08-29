@@ -1048,5 +1048,47 @@
         "cap2": "Confirming access",
         "cap3": "Almost ready",
         "cap4": "Welcome"
+    },
+    "levels": {
+        "sectionBadge": "Course Levels",
+        "sectionTitle": "Choose Your Level",
+        "sectionDesc": "An individual path for every learner — from Beginner to Advanced.",
+        "cta": "Get a Free Trial Lesson",
+        "duration": "Duration",
+        "beginner": {
+            "label": "Beginner",
+            "desc": "For those starting English from scratch. Alphabet, basic words, and fundamental grammar.",
+            "f1": "Letters and Sounds",
+            "f2": "Everyday Phrases",
+            "f3": "Basic Grammar"
+        },
+        "elementary": {
+            "label": "Elementary",
+            "desc": "Consolidate basic knowledge and learn to understand simple conversations and texts.",
+            "f1": "Present and Past Tense",
+            "f2": "Vocabulary Expansion",
+            "f3": "Simple Writing"
+        },
+        "intermediate": {
+            "label": "Intermediate",
+            "desc": "IELTS 5.0-6.0 target. Complex grammar, academic vocabulary, and written English.",
+            "f1": "IELTS Writing Task 1 and 2",
+            "f2": "Academic Vocabulary",
+            "f3": "Mock Tests"
+        },
+        "upper": {
+            "label": "Upper-Intermediate",
+            "desc": "IELTS 6.5-7.0 level. CDI simulation and extensive vocabulary base.",
+            "f1": "CDI Listening and Reading",
+            "f2": "Advanced Grammar",
+            "f3": "Results Analysis"
+        },
+        "advanced": {
+            "label": "Advanced",
+            "desc": "IELTS 7.5-8.5+ target. All high-level modules with AI-powered analysis.",
+            "f1": "IELTS 8.5 Strategy",
+            "f2": "AI Writing Assessment",
+            "f3": "Full Mock Exams"
+        }
     }
 }

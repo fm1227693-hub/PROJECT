@@ -111,7 +111,7 @@ export default function App() {
   }, [isLoading, location.pathname]);
 
   return (
-    <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-x-hidden font-sans">
       <CustomCursor />
       
       {/* Synthetic Theme Transition Loading Screen */}
