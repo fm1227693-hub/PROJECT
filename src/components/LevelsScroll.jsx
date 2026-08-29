@@ -159,14 +159,6 @@ export default function LevelsScroll() {
 
       ctxRef.current = gsap.context(() => {
         const panels = gsap.utils.toArray('.lvl-panel-anim');
-        
-        // Hide navbar while scrolling through these levels
-        navTriggerRef.current = ScrollTrigger.create({
-          trigger: wrapperRef.current,
-          start: 'top 5%',
-          end: 'bottom 95%',
-          onToggle: (self) => setNavHidden(self.isActive),
-        });
 
         // Create one master timeline for the whole wrapper
         const tl = gsap.timeline({
@@ -177,6 +169,8 @@ export default function LevelsScroll() {
             end: `+=${panels.length * 300}%`,
             scrub: 1, // Smooth out the scrub
             pin: true,
+            // Automatically hide navbar when this timeline is active
+            onToggle: (self) => setNavHidden(self.isActive),
           }
         });
 
