@@ -306,6 +306,16 @@ export default function PremiumLoader({
           color: var(--ash);
           margin-left: 2px;
         }
+
+        @media (max-width: 640px) {
+          .pl-content {
+            transform: scale(0.75);
+          }
+          .pl-corner {
+            width: 15px !important;
+            height: 15px !important;
+          }
+        }
       `}</style>
 
       <span className="pl-corner pl-corner-tl" />
@@ -366,4 +376,4 @@ export default function PremiumLoader({
       </div>
     </div>
   );
-} nuni
+}
