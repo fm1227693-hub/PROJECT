@@ -19,6 +19,8 @@ export default function AddComment({ getdata, setAddModal, editId }) {
         } catch (e) {
             console.log(e)
         }
+        
+
     }
 
     useEffect(() => {

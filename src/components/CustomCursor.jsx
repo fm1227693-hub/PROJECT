@@ -23,10 +23,14 @@ export default function CustomCursor() {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
+    // Barcha elementlarda oddiy kursorni yashirish
+    document.body.classList.add('hide-default-cursor');
+
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
+      document.body.classList.remove('hide-default-cursor');
     };
   }, [isVisible]);
 
@@ -39,25 +43,10 @@ export default function CustomCursor() {
     <>
       {/* Outer Ring */}
       <motion.div
-        className="fixed top-0 left-0 w-[50px] h-[50px] border-[1px] border-white/70 rounded-full pointer-events-none z-[99999]"
+        className="fixed top-0 left-0 w-[40px] h-[40px] border-[1px] border-white/70 rounded-full pointer-events-none z-[99999]"
         animate={{
-          x: mousePosition.x - 25,
-          y: mousePosition.y - 25,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 500,
-          damping: 28,
-          mass: 0.1,
-        }}
-      />
-      {/* Inner Dot */}
-      <motion.div
-        className="fixed top-0 left-0 w-[7px] h-[7px] border-[2px] border-white bg-transparent rounded-full pointer-events-none z-[99999]"
-        animate={{
-          x: mousePosition.x - 3.5,
-          y: mousePosition.y - 3.5,
+          x: mousePosition.x - 20,
+          y: mousePosition.y - 20,
           opacity: isVisible ? 1 : 0,
         }}
         transition={{
@@ -65,6 +54,19 @@ export default function CustomCursor() {
           stiffness: 1200,
           damping: 40,
           mass: 0.1,
+        }}
+      />
+      {/* Inner Dot */}
+      <motion.div
+        className="fixed top-0 left-0 w-[6px] h-[6px] border-[2px] border-white bg-transparent rounded-full pointer-events-none z-[99999]"
+        animate={{
+          x: mousePosition.x - 3,
+          y: mousePosition.y - 3,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{
+          type: 'tween',
+          duration: 0,
         }}
       />
     </>

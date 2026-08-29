@@ -4,7 +4,11 @@
         "school": "English Learning Center"
     },
     "themeLoader": {
-        "text": "Переключение режима..."
+        "text": "РЕЖИМ",
+        "cap1": "Смена режима",
+        "cap2": "Адаптация цветов",
+        "cap3": "Почти готово",
+        "cap4": "Готово"
     },
     "Welcome to React": "Добро пожаловать в React и react-i18next",
     "greating": "привет всем",
@@ -1001,7 +1005,7 @@
         "boy": "Мальчик",
         "girl": "Девочка",
         "deleteStudentConfirm": "Вы хотите удалить студента?",
-        "deleteGroupConfirm": "Вы хотите удалить группу?",
+        "deleteGroupConfirm": "Вы уверены, что хотите удалить эту группу?",
         "deleteConfirmBtn": "Удалить",
         "toast": {
             "fillAllFields": "Заполните все поля!",
@@ -1022,7 +1026,6 @@
         "selectGroup": "Выберите группу",
         "noStudentsTitle": "Студентов пока нет",
         "noStudentsDesc": "Вы можете добавить студентов, открыв группу.",
-        "deleteGroupConfirm": "Вы уверены, что хотите удалить эту группу?",
         "groupNameLabel": "Название группы (например: IELTS Beginner)",
         "groupColorLabel": "Цвет группы (будет отображаться в Календаре)",
         "studentsTab": "Студенты",
@@ -1039,5 +1042,12 @@
         "time": "Время",
         "event": "Событие",
         "noEventsInRange": "В этом диапазоне нет занятий."
+    },
+    "premiumLoader": {
+        "text": "ВХОД",
+        "cap1": "Проверка данных",
+        "cap2": "Подтверждение входа",
+        "cap3": "Почти готово",
+        "cap4": "Добро пожаловать"
     }
 }

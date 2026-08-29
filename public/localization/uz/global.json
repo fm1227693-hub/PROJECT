@@ -4,7 +4,11 @@
         "school": "English Learning Center"
     },
     "themeLoader": {
-        "text": "Rejim almashtirilmoqda..."
+        "text": "REJIM",
+        "cap1": "Rejim o'zgartirilmoqda",
+        "cap2": "Ranglar moslashtirilmoqda",
+        "cap3": "Deyarli tayyor",
+        "cap4": "Tayyor"
     },
     "Welcome to React": "React va react-i18nextga xush kelibsiz",
     "greating": "hammaga salom",
@@ -1042,7 +1046,7 @@
         "boy": "O'g'il bola",
         "girl": "Qiz bola",
         "deleteStudentConfirm": "O'quvchini o'chirmoqchimisiz?",
-        "deleteGroupConfirm": "Guruhni o'chirmoqchimisiz?",
+        "deleteGroupConfirm": "Ushbu guruhni o'chirmoqchimisiz?",
         "deleteConfirmBtn": "O'chirish",
         "toast": {
             "fillAllFields": "Barcha maydonlarni to'ldiring!",
@@ -1063,7 +1067,6 @@
         "selectGroup": "Guruhni tanlang",
         "noStudentsTitle": "Hali o'quvchilar yo'q",
         "noStudentsDesc": "Guruhlarga kirib o'quvchi qo'shishingiz mumkin.",
-        "deleteGroupConfirm": "Ushbu guruhni o'chirmoqchimisiz?",
         "groupNameLabel": "Guruh nomi (Masalan: IELTS Beginner)",
         "groupColorLabel": "Guruh rangi (Kalendarda shunday ko'rinadi)",
         "studentsTab": "O'quvchilar",
@@ -1080,5 +1083,12 @@
         "time": "Vaqt",
         "event": "Voqea",
         "noEventsInRange": "Bu oraliqda darslar yo'q."
+    },
+    "premiumLoader": {
+        "text": "KIRISH",
+        "cap1": "Ma'lumotlar tekshirilmoqda",
+        "cap2": "Kirish tasdiqlanmoqda",
+        "cap3": "Deyarli tayyor",
+        "cap4": "Xush kelibsiz"
     }
 }

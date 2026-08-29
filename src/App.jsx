@@ -28,6 +28,7 @@ import BackgroundCanvas from "./components/BackgroundCanvas";
 import ThemeTransitionLoader from "./components/ThemeTransitionLoader";
 import Principle from "./components/Principle";
 import CustomCursor from "./components/CustomCursor";
+import PremiumLoader from "./components/PremiumLoader";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -45,10 +46,11 @@ export default function App() {
   const location = useLocation();
 
   useEffect(() => {
-    // 5 soniya (5000ms) qilib belgilandi
+    setIsLoading(true);
+    // 3.5 soniya (3500ms) qilib belgilandi, faqat saytga kirganda chiqishi uchun
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -133,63 +135,18 @@ export default function App() {
         }
       `}</style>
 
-      {/* Premium Loading Ekrani (Har doim Dark Modeda) */}
+      {/* Premium Loading Ekrani */}
       {isLoading && (
-        <div className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-[#030712] text-white overflow-hidden select-none">
-
-          {/* Qizil tusdagi fon glow effektlari */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-red-500/20 via-rose-500/10 to-transparent rounded-full blur-[120px] animate-pulse" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-gradient-to-tr from-orange-500/15 via-red-500/10 to-transparent rounded-full blur-[100px] animate-pulse [animation-delay:0.5s]" />
-          </div>
-
-          <div className="relative flex flex-col items-center gap-6 p-8">
-
-            {/* Orbital spinner (Qizil rangda) */}
-            <div className="relative w-24 h-24 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full border-2 border-red-500/20" />
-              <div
-                className="absolute inset-0 rounded-full border-t-2 border-r-2 border-red-600 animate-spin"
-                style={{ animationDuration: "1.2s" }}
-              />
-              <div
-                className="absolute inset-2 rounded-full border-b-2 border-l-2 border-rose-400 animate-spin"
-                style={{ animationDuration: "1.8s", animationDirection: "reverse" }}
-              />
-              <div className="absolute w-3 h-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.6)] animate-ping" />
-              <div className="w-3 h-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.6)]" />
-            </div>
-
-            {/* Nom (Muxamedov Feruz) */}
-            <div className="flex flex-col items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-black tracking-wider text-red-500 font-heading">
-                OPTIMUM
-              </h1>
-              <p className="text-[11px] sm:text-xs font-semibold text-slate-400 tracking-[0.3em] uppercase">
-                {t('loader.school', 'English Learning Center')}
-              </p>
-            </div>
-
-            {/* Progress bar */}
-            <div className="w-48 h-1 bg-slate-800 rounded-full overflow-hidden mt-2">
-              <div
-                className="h-full w-1/3 bg-gradient-to-r from-red-500 via-rose-500 to-red-500 rounded-full"
-                style={{ animation: "loading-bar 1.2s ease-in-out infinite" }}
-              />
-            </div>
-
-            {/* Yuklanmoqda matni */}
-            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase flex items-center gap-1">
-              {t('loader.loading', 'Yuklanmoqda')}
-              <span className="flex gap-0.5">
-                <span className="w-1 h-1 bg-red-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1 h-1 bg-red-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1 h-1 bg-red-500 rounded-full animate-bounce" />
-              </span>
-            </p>
-          </div>
-
-        </div>
+        <PremiumLoader 
+          loop={false} 
+          text={t("premiumLoader.text", "KIRISH")}
+          captions={[
+            t("premiumLoader.cap1", "Ma'lumotlar tekshirilmoqda"),
+            t("premiumLoader.cap2", "Kirish tasdiqlanmoqda"),
+            t("premiumLoader.cap3", "Deyarli tayyor"),
+            t("premiumLoader.cap4", "Xush kelibsiz")
+          ]}
+        />
       )}
 
       {/* Interactive Particle Mesh & Light Node Canvas */}

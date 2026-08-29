@@ -54,8 +54,8 @@ const locales = {
 
 ['uz', 'ru', 'en'].forEach(lang => {
   const filePaths = [
-    path.join(__dirname, 'public/localization', lang, 'global.json'),
-    path.join(__dirname, 'dist/localization', lang, 'global.json')
+    path.join('c:/Users/user/Desktop/PROJECT/public/localization', lang, 'global.json'),
+    path.join('c:/Users/user/Desktop/PROJECT/dist/localization', lang, 'global.json')
   ];
   
   filePaths.forEach(filePath => {
