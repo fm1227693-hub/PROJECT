@@ -176,7 +176,7 @@ export default function Home() {
                         </div>
 
                         {/* Top Right Floating Badge: Real CDI Exam Engine */}
-                        <div className="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-red-200 dark:border-red-500/40 p-3.5 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
+                        <div className="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 bg-white/70 dark:bg-slate-900/95 backdrop-blur-xl border border-white/60 dark:border-red-500/40 p-3.5 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
                             <div className="w-8.5 h-8.5 rounded-lg bg-red-100 dark:bg-red-600/30 border border-red-200 dark:border-red-500/50 flex items-center justify-center text-red-600 dark:text-red-400">
                                 <FaLaptopCode className="w-4 h-4" />
                             </div>
@@ -190,7 +190,7 @@ export default function Home() {
                         </div>
 
                         {/* Bottom Left Floating Badge: Universal Success Rate */}
-                        <div className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-emerald-200 dark:border-red-500/40 px-4 py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
+                        <div className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-white/70 dark:bg-slate-900/95 backdrop-blur-xl border border-white/60 dark:border-red-500/40 px-4 py-3 rounded-xl shadow-[0_12px_35px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.8)] flex items-center gap-3 z-20">
                             <div className="w-7.5 h-7.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                                 <FaChartLine className="w-3.5 h-3.5" />
                             </div>

@@ -209,13 +209,13 @@ export default function App() {
         />
 
         {/* Dynamic Rotating Aurora Beams */}
-        <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/30 via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1" />
-        <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/25 via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2" />
-        <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/25 via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s]" />
+        <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/40 via-rose-500/30 dark:from-red-600/30 dark:via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1 transition-colors duration-500" />
+        <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/40 via-amber-500/30 dark:from-rose-600/25 dark:via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2 transition-colors duration-500" />
+        <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/40 via-rose-500/30 dark:from-red-600/25 dark:via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s] transition-colors duration-500" />
 
         {/* Floating Glowing Neon Rings */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-500/15 rounded-full blur-sm animate-float-orb" />
-        <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-700/30 dark:border-red-500/15 rounded-full blur-sm animate-float-orb transition-colors duration-500" />
+        <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-700/30 dark:border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s] transition-colors duration-500" />
 
         {/* Smooth Edge Fade Overlays */}
         <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100/90 dark:from-[#020509] to-transparent pointer-events-none" />

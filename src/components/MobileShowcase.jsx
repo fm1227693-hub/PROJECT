@@ -113,7 +113,7 @@ export default function MobileShowcase() {
                             </div>
 
                             {/* UPPER FLOATING WHITE CARD */}
-                            <div className="w-full bg-[#faf7f5] rounded-t-[34px] sm:rounded-t-[42px] rounded-b-[28px] sm:rounded-b-[36px] pt-2 sm:pt-2.5 px-2.5 sm:px-3.5 pb-2 sm:pb-3 font-sans text-slate-900 relative">
+                            <div className="w-full bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] rounded-t-[34px] sm:rounded-t-[42px] rounded-b-[28px] sm:rounded-b-[36px] pt-2 sm:pt-2.5 px-2.5 sm:px-3.5 pb-2 sm:pb-3 font-sans text-slate-900 relative">
 
                                 {/* Status Bar (Live Real-Time Uzbekistan HH:mm, Cellular Signal, Wi-Fi, Battery) */}
                                 <div className="flex items-center justify-between px-1 sm:px-1.5 pt-0.5 pb-1 text-slate-900 font-sans">
@@ -181,7 +181,7 @@ export default function MobileShowcase() {
                                 </div>
 
                                 {/* Main Account Card -> Ruhillo Asrorov IELTS Score & Experience */}
-                                <div className="mt-1 sm:mt-1.5 bg-gradient-to-br from-[#f3eae8] to-[#eee2e0] p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-red-500/20 text-slate-900 shadow-sm">
+                                <div className="mt-1 sm:mt-1.5 bg-white/50 backdrop-blur-sm p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-white/70 text-slate-900 shadow-sm">
                                     <div className="flex items-center justify-between">
                                         <span className="text-[11px] sm:text-[13px] font-bold text-red-950">Ruhillo Asrorov</span>
                                     </div>
@@ -245,7 +245,7 @@ export default function MobileShowcase() {
                             <div className="h-1.5 sm:h-2 bg-black w-full shrink-0" />
 
                             {/* LOWER FLOATING WHITE CARD */}
-                            <div className="w-full bg-[#faf7f5] rounded-t-[28px] sm:rounded-t-[36px] rounded-b-none p-2.5 sm:p-3 pt-2.5 sm:pt-3 shadow-sm flex flex-col justify-between flex-1 pb-2 sm:pb-3">
+                            <div className="w-full bg-white/70 backdrop-blur-xl border border-white/60 border-b-0 shadow-[0_-8px_32px_rgba(0,0,0,0.03)] rounded-t-[28px] sm:rounded-t-[36px] rounded-b-none p-2.5 sm:p-3 pt-2.5 sm:pt-3 flex flex-col justify-between flex-1 pb-2 sm:pb-3">
                                 <div className="flex items-center justify-between mb-2 sm:mb-3 px-0.5 sm:px-1">
                                     <h4 className="text-[14px] sm:text-[16px] font-black text-slate-900">
                                         {t('mobileShowcase.studentsTitle', "O'quvchilar Natijalari")}

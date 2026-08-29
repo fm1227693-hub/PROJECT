@@ -145,8 +145,8 @@ export default function Sec3() {
                 whileTap={{ scale: 0.95 }}
                 className={`shrink-0 rounded-full transition-all duration-300 ${
                   isActive
-                    ? 'flex items-center gap-2.5 sm:gap-3 bg-white dark:bg-slate-900 text-slate-900 dark:text-white p-1 pr-4 sm:pr-5 shadow-xl shadow-slate-900/10 dark:shadow-white/10 ring-2 ring-red-400'
-                    : 'p-1 opacity-80 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'
+                    ? 'flex items-center gap-2.5 sm:gap-3 bg-white/60 backdrop-blur-md border border-white/50 dark:bg-slate-900 text-slate-900 dark:text-white p-1 pr-4 sm:pr-5 shadow-xl shadow-slate-900/10 dark:shadow-white/10 ring-2 ring-red-400'
+                    : 'p-1 opacity-80 hover:opacity-100 bg-white/30 backdrop-blur-sm border border-white/40 dark:bg-white/5 dark:border-white/10'
                 }`}
               >
                 <img
@@ -199,7 +199,7 @@ export default function Sec3() {
                   {currentTeacher.name.split(' ')[1]}
                 </span>
               </div>
-              <div className="px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5 bg-[#050505]/60 backdrop-blur-2xl border-t border-white/5">
+              <div className="px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5 bg-white/60 dark:bg-[#050505]/60 backdrop-blur-2xl border-t border-white/40 dark:border-white/5">
                 <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none mb-3">
                   {currentTeacher.cert}
                 </h3>
@@ -261,7 +261,7 @@ export default function Sec3() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-slate-100 dark:bg-red-500/[0.03] py-3 rounded-r-xl flex items-center"
+              className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-transparent py-3 flex items-center"
             >
               <p>
                 {displayedText}
@@ -280,7 +280,7 @@ export default function Sec3() {
                 href={currentTeacher.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 text-center bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-900 dark:text-white text-xs font-semibold py-3.5 rounded-xl transition border border-slate-300 dark:border-white/5 shadow-md"
+                className="flex-1 text-center bg-white/50 backdrop-blur-md border border-white/60 dark:bg-white/10 hover:bg-white/70 dark:hover:bg-white/20 text-slate-900 dark:text-white text-xs font-semibold py-3.5 rounded-xl transition shadow-md"
               >
                 Telegram
               </motion.a>

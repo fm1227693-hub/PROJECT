@@ -114,7 +114,7 @@ export default function Gamess() {
                     whileHover={{ scale: 1.03, y: -5 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveGame(game.id)}
-                    className="relative group cursor-pointer overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none p-6"
+                    className="relative group cursor-pointer overflow-hidden rounded-3xl bg-white/70 dark:bg-[#050505]/60 backdrop-blur-xl border border-white/60 dark:border-red-500/20 shadow-xl shadow-slate-200/50 dark:shadow-none p-6 transition-all duration-300"
                   >
                     <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${game.color} opacity-10 rounded-bl-[100px] transition-transform duration-500 group-hover:scale-110`} />
                     
@@ -143,13 +143,13 @@ export default function Gamess() {
               <div className="mb-3 flex justify-start shrink-0">
                 <button
                   onClick={() => setActiveGame(null)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 dark:bg-red-500/10 hover:bg-slate-200 dark:hover:bg-red-500/20 text-slate-700 dark:text-red-400 border border-transparent dark:border-red-500/30 font-bold text-sm transition-colors shadow-sm cursor-pointer"
                 >
                   <FaArrowLeft /> {t('gamesPage.backBtn', "Ortga qaytish")}
                 </button>
               </div>
               
-              <div className="flex-1 bg-white/50 dark:bg-[#0b1120]/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 sm:p-4 overflow-y-auto relative custom-scrollbar flex flex-col justify-center">
+              <div className="flex-1 bg-white/50 dark:bg-[#050505]/60 backdrop-blur-md rounded-3xl shadow-2xl border border-white/60 dark:border-red-500/20 p-2 sm:p-4 overflow-y-auto relative custom-scrollbar flex flex-col justify-center">
                 {gamesList.find(g => g.id === activeGame)?.component}
               </div>
             </motion.div>

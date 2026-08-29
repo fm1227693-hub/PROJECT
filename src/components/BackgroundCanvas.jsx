@@ -23,6 +23,16 @@ export default function BackgroundCanvas() {
         const sparkCount = 450;
         let sizes = { width: window.innerWidth, height: window.innerHeight };
         
+        let isDark = document.documentElement.classList.contains('dark');
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    isDark = document.documentElement.classList.contains('dark');
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
+        
         function init() {
             const scene = new THREE.Scene();
             sceneRef.current = scene;
@@ -130,6 +140,7 @@ export default function BackgroundCanvas() {
                 uniform vec2 uResolution;
                 uniform vec2 uMouse;
                 uniform float uScroll;
+                uniform float uTheme;
 
                 float hash(float n) { return fract(sin(n) * 43758.5453123); }
                 void main() {
@@ -168,15 +179,35 @@ export default function BackgroundCanvas() {
                     float crispSpecular = pow(max(0.0, 1.0 - abs(waveField - 0.15)), 8.0);
                     float crest = wideSheen * 0.5 + crispSpecular * 0.9;
                     
-                    vec3 c0_shadow = vec3(0.05, 0.005, 0.005);
-                    vec3 c0_wave1  = vec3(0.2, 0.02, 0.01);
-                    vec3 c0_wave2  = vec3(0.1, 0.01, 0.01);
-                    vec3 c0_crest  = vec3(0.6, 0.1, 0.1);
+                    vec3 dark_c0_shadow = vec3(0.05, 0.005, 0.005);
+                    vec3 dark_c0_wave1  = vec3(0.2, 0.02, 0.01);
+                    vec3 dark_c0_wave2  = vec3(0.1, 0.01, 0.01);
+                    vec3 dark_c0_crest  = vec3(0.6, 0.1, 0.1);
                     
-                    vec3 c1_shadow = vec3(0.005, 0.005, 0.05);
-                    vec3 c1_wave1  = vec3(0.015, 0.035, 0.065);
-                    vec3 c1_wave2  = vec3(0.008, 0.020, 0.045);
-                    vec3 c1_crest  = vec3(0.18, 0.35, 0.55);
+                    vec3 dark_c1_shadow = vec3(0.005, 0.005, 0.05);
+                    vec3 dark_c1_wave1  = vec3(0.015, 0.035, 0.065);
+                    vec3 dark_c1_wave2  = vec3(0.008, 0.020, 0.045);
+                    vec3 dark_c1_crest  = vec3(0.18, 0.35, 0.55);
+
+                    vec3 light_c0_shadow = vec3(0.60, 0.62, 0.68);
+                    vec3 light_c0_wave1  = vec3(0.65, 0.55, 0.60);
+                    vec3 light_c0_wave2  = vec3(0.63, 0.58, 0.62);
+                    vec3 light_c0_crest  = vec3(0.70, 0.30, 0.35);
+                    
+                    vec3 light_c1_shadow = vec3(0.58, 0.62, 0.68);
+                    vec3 light_c1_wave1  = vec3(0.55, 0.60, 0.70);
+                    vec3 light_c1_wave2  = vec3(0.60, 0.63, 0.70);
+                    vec3 light_c1_crest  = vec3(0.25, 0.35, 0.75);
+                    
+                    vec3 c0_shadow = mix(light_c0_shadow, dark_c0_shadow, uTheme);
+                    vec3 c0_wave1  = mix(light_c0_wave1, dark_c0_wave1, uTheme);
+                    vec3 c0_wave2  = mix(light_c0_wave2, dark_c0_wave2, uTheme);
+                    vec3 c0_crest  = mix(light_c0_crest, dark_c0_crest, uTheme);
+                    
+                    vec3 c1_shadow = mix(light_c1_shadow, dark_c1_shadow, uTheme);
+                    vec3 c1_wave1  = mix(light_c1_wave1, dark_c1_wave1, uTheme);
+                    vec3 c1_wave2  = mix(light_c1_wave2, dark_c1_wave2, uTheme);
+                    vec3 c1_crest  = mix(light_c1_crest, dark_c1_crest, uTheme);
                     
                     float t = smoothstep(0.0, 1.0, scroll);
                     vec3 colShadow = mix(c0_shadow, c1_shadow, t);
@@ -199,7 +230,8 @@ export default function BackgroundCanvas() {
                 uTime: { value: 0 },
                 uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
                 uMouse: { value: new THREE.Vector2(0, 0) },
-                uScroll: { value: 0 }
+                uScroll: { value: 0 },
+                uTheme: { value: isDark ? 1.0 : 0.0 }
             };
             shaderUniformsRef.current = uniforms;
 
@@ -280,6 +312,17 @@ export default function BackgroundCanvas() {
                 shaderUniformsRef.current.uTime.value = clockRef.current.getElapsedTime();
                 shaderUniformsRef.current.uMouse.value.set(mouseXRef.current, -mouseYRef.current);
                 shaderUniformsRef.current.uScroll.value = scroll;
+                
+                const targetTheme = isDark ? 1.0 : 0.0;
+                shaderUniformsRef.current.uTheme.value += (targetTheme - shaderUniformsRef.current.uTheme.value) * 0.05;
+                
+                const darkBg = new THREE.Color('#050000');
+                const lightBg = new THREE.Color('#64748b');
+                const currentBg = new THREE.Color().lerpColors(lightBg, darkBg, shaderUniformsRef.current.uTheme.value);
+                if (sceneRef.current) {
+                    sceneRef.current.background = currentBg;
+                    sceneRef.current.fog.color = currentBg;
+                }
             }
 
             if (rendererRef.current && sceneRef.current && cameraRef.current) {
@@ -318,6 +361,7 @@ export default function BackgroundCanvas() {
         return () => {
             window.removeEventListener('mousemove', handleMouseMoveGlobal);
             window.removeEventListener('resize', handleResize);
+            observer.disconnect();
             if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current);
             if (rendererRef.current) {
                 rendererRef.current.dispose();
