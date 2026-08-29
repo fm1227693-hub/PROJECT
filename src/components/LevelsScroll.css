@@ -329,4 +329,338 @@
   font-weight: 700;
   color: rgba(255,255,255,0.28);
   z-index: 5;
+}a/*
+ * LevelsScroll.css
+ * Horizontal scrolling track with zoom-out animation per panel.
+ */
+
+.levels-wrapper {
+  position: relative;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -10%, rgba(30, 41, 59, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 100%, rgba(15, 23, 42, 0.5) 0%, transparent 50%),
+    linear-gradient(180deg, #050b1a 0%, #030712 45%, #020509 100%);
+  width: 100%;
+}
+
+/* The pinned container */
+.lvl-pin {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* The track that moves horizontally */
+.lvl-track {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: max-content; /* will contain 5 panels of 100vw each */
+  will-change: transform;
+}
+
+/* Each level panel takes up exactly 1 screen */
+.lvl-panel-anim {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Background elements inside each panel */
+.lvl-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lvl-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 90%);
+}
+
+.lvl-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Visual (Right Side Glass Card) - Starts Full Screen */
+.lvl-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 86vw;
+  height: 82vh;
+  transform: translate(-50%, -50%);
+  border-radius: 6px;
+  z-index: 2;
+
+  /* Glass aesthetics */
+  background: linear-gradient(
+    160deg,
+    rgba(255,255,255, 0.10) 0%,
+    rgba(255,255,255, 0.045) 35%,
+    rgba(255,255,255, 0.02) 70%,
+    rgba(255,255,255, 0.05) 100%
+  );
+  backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
+  -webkit-backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
+  border: 1px solid rgba(255,255,255, 0.12);
+
+  box-shadow:
+    0 50px 110px -18px rgba(0, 0, 0, 0.7),
+    0 20px 48px -10px rgba(0, 0, 0, 0.5),
+    0 6px 18px -6px  rgba(0, 0, 0, 0.35),
+    inset 0 1.5px 1px rgba(255,255,255, 0.20),
+    inset 0 -1px 1.5px rgba(0, 0, 0, 0.35),
+    inset 1px 0 0 rgba(255,255,255, 0.05),
+    0 0 0 1px rgba(var(--accent-rgb), 0.12),
+    0 0 70px -6px rgba(var(--accent-rgb), 0.28),
+    0 0 140px -20px rgba(var(--accent-rgb), 0.20);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem 2.25rem;
+  overflow: hidden;
+  will-change: width, height, transform, border-radius;
+}
+
+/* Accent spotlight inside the glass card */
+.lvl-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 15% 0%,
+      rgba(var(--accent-rgb), 0.20) 0%,
+      transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 100%,
+      rgba(var(--accent-rgb), 0.13) 0%,
+      transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lvl-visual-inner {
+  position: relative;
+  z-index: 2;
+}
+
+/* Text (Left Side Content) */
+.lvl-text {
+  position: absolute;
+  left: clamp(20px, 6vw, 100px);
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 45%;
+  z-index: 3;
+  visibility: hidden; /* GSAP will handle showing this via autoAlpha */
+  will-change: opacity, transform, visibility;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 900px) {
+  .lvl-visual {
+    width: 92vw;
+    height: auto;
+    padding: 2rem 1.5rem;
+    top: auto;
+    bottom: 5vh;
+    transform: translate(-50%, 0);
+  }
+  .lvl-text {
+    top: 10vh;
+    transform: none;
+    max-width: 90vw;
+    left: 5vw;
+  }
+}
+
+/* Text Inner Styles (matching original LevelsScroll) */
+.lvl-idx {
+  display: block;
+  font-size: clamp(6rem, 14vw, 12rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.09);
+  margin-bottom: -2rem;
+  margin-left: -0.12em;
+  user-select: none;
+}
+
+.lvl-band-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.lvl-band {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(var(--accent-rgb), 1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.30);
+}
+
+.lvl-band-sub {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.32);
+}
+
+.lvl-icon-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--accent-rgb), 0.10);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  margin-bottom: 1.5rem;
+}
+.lvl-icon {
+  width: 28px;
+  height: 28px;
+  color: rgb(var(--accent-rgb));
+}
+.lvl-icon svg { width: 100%; height: 100%; }
+
+.lvl-name {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+  color: #f8fafc;
+  margin-bottom: 1rem;
+}
+
+.lvl-desc {
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  color: rgba(226, 232, 240, 0.62);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.lvl-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #030712;
+  text-decoration: none;
+  background: rgb(var(--accent-rgb));
+  transition: transform 0.2s;
+}
+.lvl-cta:hover {
+  transform: translateY(-2px);
+}
+
+/* Visual Inner Styles */
+.lvl-right-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 1.5rem;
+}
+.lvl-right-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--accent-rgb));
+  box-shadow: 0 0 8px 1px rgba(var(--accent-rgb), 0.8);
+}
+
+.lvl-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.lvl-feature-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(255,255,255, 0.07);
+}
+
+.lvl-feature-num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  min-width: 26px;
+}
+
+.lvl-feature-text {
+  font-size: clamp(0.98rem, 1.4vw, 1.15rem);
+  font-weight: 500;
+  color: rgba(248,250,252,0.85);
+}
+
+.lvl-duration-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.lvl-duration-val {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lvl-panel-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.28);
+  z-index: 5;
 }

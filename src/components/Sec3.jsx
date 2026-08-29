@@ -13,7 +13,7 @@ export default function Sec3() {
     {
       id: 'ruxillo',
       name: 'Ruhillo Asrorov',
-      image: '/photo_2026-07-23_23-14-12.jpg',
+      image: '/ChatGPT Image Aug 29, 2026, 08_37_57 PM.png',
       score: '8.0',
       cert: 'IELTS 8.0',
       experience: '4+',
