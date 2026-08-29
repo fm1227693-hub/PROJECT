@@ -51,7 +51,7 @@ export default function AddComment({ getdata, setAddModal, editId }) {
 
     return (
         <div
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ fontFamily: "'Merriweather', serif" }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 dark:bg-black/70 backdrop-blur-md transition-opacity duration-300"
         >
             {/* Modal oynaning o'zi */}

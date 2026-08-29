@@ -94,7 +94,7 @@ export default function Game4() {
 
     return (
         <div 
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ fontFamily: "'Merriweather', serif" }}
             className="w-full py-0 px-3 sm:px-4 max-w-md mx-auto select-none flex flex-col justify-center items-center"
         >
             <div data-aos="fade-down" className="text-center mb-3 sm:mb-4">

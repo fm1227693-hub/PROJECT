@@ -724,7 +724,7 @@ const StatCard = ({ value, label }) => (
 )
 
 return (
-    <div className="flex min-h-screen bg-gray-50/50 dark:bg-[#070b14] font-['Plus_Jakarta_Sans',sans-serif] text-gray-900 dark:text-gray-100 relative">
+    <div className="flex min-h-screen bg-gray-50/50 dark:bg-[#070b14] font-['Merriweather',serif] text-gray-900 dark:text-gray-100 relative">
         <Toaster position="top-center" />
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
@@ -934,7 +934,7 @@ return (
                             
                             <div className="h-[700px] w-full mt-4 bg-white dark:bg-gray-900 rounded-xl overflow-hidden calendar-container">
                                 <style>{`
-                                    .calendar-container .rbc-calendar { font-family: 'Plus Jakarta Sans', sans-serif; border: none; }
+                                    .calendar-container .rbc-calendar { font-family: 'Merriweather', serif; border: none; }
                                     .calendar-container .rbc-header { padding: 10px 0; font-weight: 800; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 1px solid #f3f4f6; color: #6b7280; }
                                     .dark .calendar-container .rbc-header { border-bottom: 1px solid #1f2937; color: #9ca3af; }
                                     

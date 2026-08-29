@@ -17,7 +17,7 @@ export default function FAQ() {
     }));
 
     return (
-        <section id="faq" className="py-20 px-5 sm:px-8 font-['Plus_Jakarta_Sans',sans-serif] bg-transparent relative z-10">
+        <section id="faq" className="py-20 px-5 sm:px-8 font-['Merriweather',serif] bg-transparent relative z-10">
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#c41e30]/15 text-[#c41e30] text-xs font-bold uppercase tracking-wider mb-4 border border-[#c41e30]/20">

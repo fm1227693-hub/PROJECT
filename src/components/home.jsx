@@ -41,7 +41,7 @@ export default function Home() {
 
     return (
         <div 
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ fontFamily: "'Merriweather', serif" }}
             className="w-full mx-auto px-4 sm:px-6 lg:px-8 select-none transition-colors duration-200 pt-[105px] pb-8 min-h-screen flex items-center justify-center relative overflow-visible"
         >
             {/* Ambient Background Glows - Crimson Red Theme */}

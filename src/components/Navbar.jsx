@@ -155,7 +155,7 @@ export default function Navbar() {
     )
 
     return (
-        <div className={`fixed top-0 left-0 w-full z-50 font-['Plus_Jakarta_Sans',sans-serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'}`}>
+        <div className={`fixed top-0 left-0 w-full z-50 font-['Merriweather',serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'}`}>
             <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

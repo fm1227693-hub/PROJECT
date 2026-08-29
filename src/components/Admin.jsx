@@ -40,7 +40,7 @@ export default function Admin() {
 
     return (
         <div 
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ fontFamily: "'Merriweather', serif" }}
             className="min-h-screen flex flex-col items-center justify-center p-4 relative bg-[#030712] overflow-hidden"
         >
             {/* Ambient Background Layers */}

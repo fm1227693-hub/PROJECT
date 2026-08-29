@@ -174,7 +174,7 @@ export default function Game2() {
 
     return (
         <div 
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ fontFamily: "'Merriweather', serif" }}
             className="w-full py-4 px-3 sm:px-4 max-w-lg mx-auto select-none flex flex-col justify-center items-center"
         >
             {/* Sarlavha qismi */}

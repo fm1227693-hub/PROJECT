@@ -84,7 +84,7 @@ export default function Gamess() {
   ]
 
   return (
-    <div className={`px-4 font-['Plus_Jakarta_Sans',sans-serif] bg-transparent transition-all duration-300 ${activeGame ? 'h-[100dvh] pt-[85px] pb-2 flex flex-col overflow-hidden' : 'min-h-screen pt-24 pb-16'}`}>
+    <div className={`px-4 font-['Merriweather',serif] bg-transparent transition-all duration-300 ${activeGame ? 'h-[100dvh] pt-[85px] pb-2 flex flex-col overflow-hidden' : 'min-h-screen pt-24 pb-16'}`}>
       <div className={`max-w-7xl mx-auto w-full ${activeGame ? 'flex-1 flex flex-col min-h-0' : ''}`}>
         <AnimatePresence mode="wait">
           {!activeGame ? (

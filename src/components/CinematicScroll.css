@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
 
 /* Reset and basic styles */
 .cinematic-layout.landing-page {
@@ -9,7 +9,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     min-height: 900vh;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Merriweather', serif;
     color: #ffffff;
     overflow-x: hidden;
     cursor: none !important;
@@ -174,7 +174,7 @@
 .cinematic-layout #slide-4 { left: calc(25% + 40px); max-width: 600px; }
 
 .cinematic-layout .slide-title {
-    font-family: 'Italiana', serif;
+    font-family: 'Merriweather', serif;
     font-size: 116px;
     line-height: 1.0;
     font-weight: 400;

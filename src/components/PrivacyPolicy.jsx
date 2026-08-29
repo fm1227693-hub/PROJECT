@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
 
     return (
         <>
-            <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-['Plus_Jakarta_Sans',sans-serif]">
+            <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 font-['Merriweather',serif]">
                 <div className="max-w-4xl mx-auto space-y-8">
 
                     {/* Top Navigation */}

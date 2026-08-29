@@ -81,7 +81,7 @@ export default function ConsultationBooking() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-[#0f1016] text-white rounded-2xl border border-gray-800 shadow-xl my-10 font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="max-w-2xl mx-auto p-6 bg-[#0f1016] text-white rounded-2xl border border-gray-800 shadow-xl my-10 font-['Merriweather',serif]">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold mb-2">{t('consultationBooking.title', "Bepul 15 daqiqalik konsultatsiya")}</h2>
         <p className="text-gray-400 text-sm">{t('consultationBooking.subtitle', "Ustozni tanlang, o'zingizga qulay vaqtni belgilang va bepul maslahat oling.")}</p>

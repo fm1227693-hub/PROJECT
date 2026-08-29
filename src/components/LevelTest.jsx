@@ -196,7 +196,7 @@ export default function LevelTest() {
         if (stage === 'test' && !finished) {
             toast.custom(
                 (toastItem) => (
-                    <div className={`${toastItem.visible ? 'animate-enter' : 'animate-leave'} max-w-sm w-full bg-white dark:bg-gray-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl pointer-events-auto flex flex-col gap-4 p-5 sm:p-6 border border-gray-100 dark:border-gray-800 font-['Plus_Jakarta_Sans',sans-serif]`}>
+                    <div className={`${toastItem.visible ? 'animate-enter' : 'animate-leave'} max-w-sm w-full bg-white dark:bg-gray-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl pointer-events-auto flex flex-col gap-4 p-5 sm:p-6 border border-gray-100 dark:border-gray-800 font-['Merriweather',serif]`}>
                         <p className="text-sm sm:text-base font-bold text-gray-800 dark:text-white text-center leading-snug">
                             {t('levelTest.leaveConfirm') || "Testni tark etmoqchimisiz? Natijangiz saqlanmaydi."}
                         </p>
@@ -237,7 +237,7 @@ export default function LevelTest() {
     // INTRO
     if (stage === 'intro') {
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Merriweather',serif]">
                 <div className="absolute top-1/4 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
                 <Toaster position="top-center" />
 
@@ -291,7 +291,7 @@ export default function LevelTest() {
     if (stage === 'result' && showResult) {
         const { correct, total, percent, level } = computeScore()
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Merriweather',serif]">
                 <Toaster position="top-center" />
                 <ExitBtn />
 
@@ -359,7 +359,7 @@ export default function LevelTest() {
     // FINISHED but result hidden
     if (finished && !showResult) {
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Merriweather',serif]">
                 <Toaster position="top-center" />
                 <ExitBtn />
 
@@ -393,7 +393,7 @@ export default function LevelTest() {
 
     // TEST
     return (
-        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]">
+        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Merriweather',serif]">
             <Toaster position="top-center" />
             <ExitBtn />
             <div

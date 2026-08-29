@@ -38,7 +38,7 @@ export default function Pricing() {
     }
 
     return (
-        <div className="min-h-screen bg-transparent px-3 xs:px-4 pt-24 xs:pt-28 pb-16 xs:pb-20 transition-colors duration-300 relative font-['Plus_Jakarta_Sans',sans-serif]">
+        <div className="min-h-screen bg-transparent px-3 xs:px-4 pt-24 xs:pt-28 pb-16 xs:pb-20 transition-colors duration-300 relative font-['Merriweather',serif]">
             <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="max-w-6xl mx-auto relative z-10">

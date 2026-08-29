@@ -27,6 +27,7 @@ import IeltsWritingAssessor from "./components/IeltsWritingAssessor";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 import ThemeTransitionLoader from "./components/ThemeTransitionLoader";
 import Principle from "./components/Principle";
+import CustomCursor from "./components/CustomCursor";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -109,6 +110,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-hidden font-sans">
+      <CustomCursor />
       
       {/* Synthetic Theme Transition Loading Screen */}
       <ThemeTransitionLoader />

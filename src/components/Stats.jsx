@@ -45,7 +45,7 @@ export default function Stats() {
 
     return (
         /* Plus Jakarta Sans shrifti orqali ultra-premium ko'rinishga keltirildi */
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 mb-16 sm:mb-24 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 mb-16 sm:mb-24 select-none font-['Merriweather',serif] transition-colors duration-200">
 
             {/* Sarlavha qismi */}
             <div

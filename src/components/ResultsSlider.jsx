@@ -166,7 +166,7 @@ export default function ResultsSlider() {
     const activeStudent = activeData[currentIndex];
 
     return (
-        <div className="w-full mb-10 px-2 sm:px-4 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px] relative overflow-visible">
+        <div className="w-full mb-10 px-2 sm:px-4 font-['Merriweather',serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px] relative overflow-visible">
             {/* Ambient Background Glows - Crimson Red Theme */}
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
             <div className="absolute bottom-10 right-10 w-[420px] h-[420px] bg-gradient-to-br from-rose-600/20 via-red-700/15 to-transparent rounded-full blur-[120px] pointer-events-none"></div>

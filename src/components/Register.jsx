@@ -109,7 +109,7 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 pt-24 pb-16 bg-transparent font-['Plus_Jakarta_Sans',sans-serif] relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4 pt-24 pb-16 bg-transparent font-['Merriweather',serif] relative overflow-hidden">
 
             {/* Toast Xabarnoma */}
             <AnimatePresence>

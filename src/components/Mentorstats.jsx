@@ -235,7 +235,7 @@ Telefon: +998 ${formData.phone}
 
     if (activeMentorDetail) {
         return (
-            <div ref={detailTopRef} className="font-['Plus_Jakarta_Sans',sans-serif] bg-transparent min-h-screen flex flex-col justify-center py-6 pt-[80px] lg:pt-[100px] px-4 md:px-8 text-slate-900 dark:text-white transition-colors">
+            <div ref={detailTopRef} className="font-['Merriweather',serif] bg-transparent min-h-screen flex flex-col justify-center py-6 pt-[80px] lg:pt-[100px] px-4 md:px-8 text-slate-900 dark:text-white transition-colors">
                 <div className="max-w-3xl mx-auto space-y-6">
                     
                     {/* Back button */}
@@ -392,7 +392,7 @@ Telefon: +998 ${formData.phone}
     }
 
     return (
-        <div className="font-['Plus_Jakarta_Sans',sans-serif] pt-10">
+        <div className="font-['Merriweather',serif] pt-10">
             <section className="bg-transparent py-20 px-4 md:px-8 text-gray-900 dark:text-white transition-colors">
                 <div className="max-w-5xl mx-auto" data-aos="fade-up">
                     <div className="text-center mb-14">

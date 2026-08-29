@@ -171,7 +171,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     }
 
     return (
-        <div className="w-full max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif] my-6">
+        <div className="w-full max-w-4xl mx-auto font-['Merriweather',serif] my-6">
             <AnimatePresence mode="wait">
                 {!isOpen ? (
                     <motion.div

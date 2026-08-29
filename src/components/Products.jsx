@@ -177,7 +177,7 @@ export default function Products() {
     const activeStudent = activeData[currentIndex];
 
     return (
-        <div className="pt-28 pb-12 font-['Plus_Jakarta_Sans',sans-serif] px-4">
+        <div className="pt-28 pb-12 font-['Merriweather',serif] px-4">
             <div className="w-full max-w-5xl mx-auto p-6 sm:p-10 glass-card rounded-[2.5rem] shadow-2xl border border-slate-200/80 dark:border-white/10 mt-0 mb-10 transition-all duration-300 relative overflow-hidden">
                 {/* Sarlavha */}
                 <h2 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6 sm:mb-8">

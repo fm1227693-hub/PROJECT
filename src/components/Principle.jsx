@@ -37,7 +37,7 @@ export default function Principle() {
     const config = configs[principleId] || configs[1];
 
     return (
-        <div className="pb-10 min-h-screen font-['Plus_Jakarta_Sans',sans-serif] pt-[100px]  px-4 sm:px-6 relative overflow-hidden transition-colors duration-300 flex items-center">
+        <div className="pb-10 min-h-screen font-['Merriweather',serif] pt-[100px]  px-4 sm:px-6 relative overflow-hidden transition-colors duration-300 flex items-center">
             {/* Background elements */}
             <div className={`absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-bl ${config.bgGradient} rounded-full blur-[80px] sm:blur-[120px] -z-10`} />
             <div className={`absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-tr ${config.bgGradient} rounded-full blur-[80px] sm:blur-[120px] -z-10`} />

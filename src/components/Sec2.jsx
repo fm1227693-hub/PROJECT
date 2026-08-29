@@ -9,7 +9,7 @@ export default function Sec2() {
     
 
     return (
-        <div className="max-w-7xl mx-auto px-4 xs:px-5 sm:px-6 lg:px-8 mt-16 xs:mt-20 sm:mt-24 mb-16 xs:mb-20 sm:mb-24 select-none font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
+        <div className="max-w-7xl mx-auto px-4 xs:px-5 sm:px-6 lg:px-8 mt-16 xs:mt-20 sm:mt-24 mb-16 xs:mb-20 sm:mb-24 select-none font-['Merriweather',serif] transition-colors duration-200">
 
             <div
                 data-aos="fade-up"

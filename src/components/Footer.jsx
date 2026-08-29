@@ -64,7 +64,7 @@ export default function Footer() {
     return (
         <footer
             data-aos="fade-up"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ fontFamily: "'Merriweather', serif" }}
             className={`relative text-gray-600 dark:text-gray-400 pt-14 pb-8 px-5 border-t border-slate-200/60 dark:border-white/10 ${location.pathname === '/enter' ? '' : 'mt-16'} transition-colors duration-300 bg-white/75 dark:bg-[#030712]/80 backdrop-blur-2xl overflow-hidden z-10`}
         >
             {/* Ambient Footer Glow */}

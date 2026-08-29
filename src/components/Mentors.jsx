@@ -66,7 +66,7 @@ export default function Mentors() {
 
   return (
     <section
-      className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200 font-['Plus_Jakarta_Sans',sans-serif]"
+      className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200 font-['Merriweather',serif]"
     >
       <div className="max-w-6xl mx-auto">
         {/* Sarlavha qismi */}
