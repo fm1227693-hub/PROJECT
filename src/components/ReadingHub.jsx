@@ -50,7 +50,7 @@ export default function ReadingHub() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white/80 dark:bg-black/85 glass-card backdrop-blur-2xl rounded-3xl p-6 border border-slate-200 dark:border-red-500/30 shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_30px_rgba(220,38,38,0.15)] hover:shadow-xl dark:hover:shadow-[0_12px_40px_rgba(220,38,38,0.3)] hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full"
+              className="bg-white/80 dark:bg-black/95 glass-card backdrop-blur-2xl rounded-3xl p-6 border border-slate-200 dark:border-red-500/30 shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_30px_rgba(220,38,38,0.15)] hover:shadow-xl dark:hover:shadow-[0_12px_40px_rgba(220,38,38,0.3)] hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-500/20 text-red-600 flex items-center justify-center text-xl">
