@@ -44,61 +44,11 @@ const Icons = {
 };
 
 const LEVELS = [
-  {
-    key: 'beginner',
-    labelKey: 'levels.beginner.label',
-    band: 'A1 – A2',
-    descKey: 'levels.beginner.desc',
-    icon: Icons.beginner,
-    accentColor: '#34d399',
-    accentRgb: '52, 211, 153',
-    features: ['levels.beginner.f1', 'levels.beginner.f2', 'levels.beginner.f3'],
-    duration: '3–4 oy',
-  },
-  {
-    key: 'elementary',
-    labelKey: 'levels.elementary.label',
-    band: 'A2 – B1',
-    descKey: 'levels.elementary.desc',
-    icon: Icons.elementary,
-    accentColor: '#38bdf8',
-    accentRgb: '56, 189, 248',
-    features: ['levels.elementary.f1', 'levels.elementary.f2', 'levels.elementary.f3'],
-    duration: '3–4 oy',
-  },
-  {
-    key: 'intermediate',
-    labelKey: 'levels.intermediate.label',
-    band: 'B1 – B2',
-    descKey: 'levels.intermediate.desc',
-    icon: Icons.intermediate,
-    accentColor: '#a78bfa',
-    accentRgb: '167, 139, 250',
-    features: ['levels.intermediate.f1', 'levels.intermediate.f2', 'levels.intermediate.f3'],
-    duration: '4–5 oy',
-  },
-  {
-    key: 'upper',
-    labelKey: 'levels.upper.label',
-    band: 'B2 – C1',
-    descKey: 'levels.upper.desc',
-    icon: Icons.upper,
-    accentColor: '#fbbf24',
-    accentRgb: '251, 191, 36',
-    features: ['levels.upper.f1', 'levels.upper.f2', 'levels.upper.f3'],
-    duration: '4–5 oy',
-  },
-  {
-    key: 'advanced',
-    labelKey: 'levels.advanced.label',
-    band: 'C1 – C2',
-    descKey: 'levels.advanced.desc',
-    icon: Icons.advanced,
-    accentColor: '#fb7185',
-    accentRgb: '251, 113, 133',
-    features: ['levels.advanced.f1', 'levels.advanced.f2', 'levels.advanced.f3'],
-    duration: '5–6 oy',
-  },
+  { key: 'beginner', labelKey: 'levels.beginner.label', band: 'A1 – A2', descKey: 'levels.beginner.desc', icon: Icons.beginner, accentColor: '#34d399', accentRgb: '52, 211, 153', features: ['levels.beginner.f1', 'levels.beginner.f2', 'levels.beginner.f3'], duration: '3–4 oy' },
+  { key: 'elementary', labelKey: 'levels.elementary.label', band: 'A2 – B1', descKey: 'levels.elementary.desc', icon: Icons.elementary, accentColor: '#38bdf8', accentRgb: '56, 189, 248', features: ['levels.elementary.f1', 'levels.elementary.f2', 'levels.elementary.f3'], duration: '3–4 oy' },
+  { key: 'intermediate', labelKey: 'levels.intermediate.label', band: 'B1 – B2', descKey: 'levels.intermediate.desc', icon: Icons.intermediate, accentColor: '#a78bfa', accentRgb: '167, 139, 250', features: ['levels.intermediate.f1', 'levels.intermediate.f2', 'levels.intermediate.f3'], duration: '4–5 oy' },
+  { key: 'upper', labelKey: 'levels.upper.label', band: 'B2 – C1', descKey: 'levels.upper.desc', icon: Icons.upper, accentColor: '#fbbf24', accentRgb: '251, 191, 36', features: ['levels.upper.f1', 'levels.upper.f2', 'levels.upper.f3'], duration: '4–5 oy' },
+  { key: 'advanced', labelKey: 'levels.advanced.label', band: 'C1 – C2', descKey: 'levels.advanced.desc', icon: Icons.advanced, accentColor: '#fb7185', accentRgb: '251, 113, 133', features: ['levels.advanced.f1', 'levels.advanced.f2', 'levels.advanced.f3'], duration: '5–6 oy' },
 ];
 
 const D = {
@@ -145,8 +95,12 @@ export default function LevelsScroll() {
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
     const isMobile = window.matchMedia('(max-width: 900px)').matches;
+
+    // Mobil'da murakkab pin/zoom scroll animatsiyasi ishlatilmaydi —
+    // panellar oddiy vertikal stack sifatida CSS orqali ko'rsatiladi,
+    // shu bilan GSAP'ning inline style'lari CSS'ni bosib o'tmaydi.
+    if (prefersReduced || isMobile) return;
 
     const setNavHidden = (hidden) => {
       eventBus.emit('toggle-nav', hidden);
@@ -160,16 +114,13 @@ export default function LevelsScroll() {
       ctxRef.current = gsap.context(() => {
         const panels = gsap.utils.toArray('.lvl-panel-anim');
 
-        // Create one master timeline for the whole wrapper
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: wrapperRef.current,
             start: 'top top',
-            // Huge scroll space to give each phase plenty of time
             end: `+=${panels.length * 300}%`,
-            scrub: 1, // Smooth out the scrub
+            scrub: 1,
             pin: true,
-            // Automatically hide navbar when this timeline is active
             onToggle: (self) => setNavHidden(self.isActive),
           }
         });
@@ -178,35 +129,28 @@ export default function LevelsScroll() {
           const visual = panel.querySelector('.lvl-visual');
           const text = panel.querySelector('.lvl-text');
 
-          // Initial states
           gsap.set(visual, {
-             width: isMobile ? '92vw' : '86vw', // Nice and large initially!
-             height: isMobile ? 'auto' : '86vh',
-             borderRadius: 12,
-             x: 0
+            width: '86vw',
+            height: '86vh',
+            borderRadius: 12,
+            x: 0
           });
-          // Hide text initially
           gsap.set(text, { autoAlpha: 0, x: -40 });
 
-          // 0. Hold the initial full-screen state so the user DEFINITELY sees it
           tl.to({}, { duration: 1.0 });
 
-          // 1. Zoom out the current panel to the right
-          tl.to(visual, { 
-              width: isMobile ? '92vw' : '44vw', 
-              height: isMobile ? 'auto' : '62vh', 
-              borderRadius: 24, 
-              x: isMobile ? 0 : '24vw', 
-              ease: 'power2.inOut',
-              duration: 1.5
-            }, `+=0`)
-            // Fade in the text on the left simultaneously
+          tl.to(visual, {
+            width: '44vw',
+            height: '62vh',
+            borderRadius: 24,
+            x: '24vw',
+            ease: 'power2.inOut',
+            duration: 1.5
+          }, `+=0`)
             .to(text, { autoAlpha: 1, x: 0, ease: 'power2.inOut', duration: 1.5 }, `<`);
-          
-          // 2. Hold the shrunk state for reading
+
           tl.to({}, { duration: 1.5 });
 
-          // 3. If not the last panel, slide the track left to bring in the next panel's 80% screen
           if (i < panels.length - 1) {
             tl.to(trackRef.current, {
               x: `-${(i + 1) * 100}vw`,
@@ -252,7 +196,6 @@ export default function LevelsScroll() {
                 <div className="lvl-noise" />
               </div>
 
-              {/* Left side text that fades in */}
               <div className="lvl-text">
                 <span className="lvl-idx" aria-hidden="true">0{index + 1}</span>
 
@@ -272,18 +215,17 @@ export default function LevelsScroll() {
 
                 <Link to="/form" className="lvl-cta">
                   <span>{tr('levels.cta')}</span>
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" width="18" height="18" style={{marginLeft: 8}}>
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" width="18" height="18" style={{ marginLeft: 8 }}>
                     <path d="M4 10h12M11 6l4 4-4 4" stroke="currentColor"
                       strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Link>
               </div>
 
-              {/* Right side glass card that shrinks */}
               <div className="lvl-visual">
                 <div className="lvl-visual-inner">
                   <p className="lvl-right-label">Nima o'rganasiz?</p>
-                  
+
                   <ul className="lvl-features">
                     {level.features.map((fKey, fi) => (
                       <li key={fKey} className="lvl-feature-item">

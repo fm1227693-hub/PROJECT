@@ -1,337 +1,7 @@
 /*
  * LevelsScroll.css
- * Horizontal scrolling track with zoom-out animation per panel.
- */
-
-.levels-wrapper {
-  position: relative;
-  background: #030712;
-  width: 100%;
-}
-
-/* The pinned container */
-.lvl-pin {
-  position: relative;
-  height: 100vh;
-  overflow: hidden;
-  width: 100%;
-}
-
-/* The track that moves horizontally */
-.lvl-track {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: max-content; /* will contain 5 panels of 100vw each */
-  will-change: transform;
-}
-
-/* Each level panel takes up exactly 1 screen */
-.lvl-panel-anim {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-/* Background elements inside each panel */
-.lvl-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.lvl-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 90%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 90%);
-}
-
-.lvl-noise {
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Visual (Right Side Glass Card) - Starts Full Screen */
-.lvl-visual {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 86vw;
-  height: 82vh;
-  transform: translate(-50%, -50%);
-  border-radius: 6px;
-  z-index: 2;
-  
-  /* Glass aesthetics */
-  background: linear-gradient(
-    160deg,
-    rgba(255,255,255, 0.10) 0%,
-    rgba(255,255,255, 0.045) 35%,
-    rgba(255,255,255, 0.02) 70%,
-    rgba(255,255,255, 0.05) 100%
-  );
-  backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
-  -webkit-backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
-  border: 1px solid rgba(255,255,255, 0.12);
-  
-  box-shadow:
-    0 50px 110px -18px rgba(0, 0, 0, 0.7),
-    0 20px 48px -10px rgba(0, 0, 0, 0.5),
-    0 6px 18px -6px  rgba(0, 0, 0, 0.35),
-    inset 0 1.5px 1px rgba(255,255,255, 0.20),
-    inset 0 -1px 1.5px rgba(0, 0, 0, 0.35),
-    inset 1px 0 0 rgba(255,255,255, 0.05),
-    0 0 0 1px rgba(var(--accent-rgb), 0.12),
-    0 0 70px -6px rgba(var(--accent-rgb), 0.28),
-    0 0 140px -20px rgba(var(--accent-rgb), 0.20);
-    
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2.5rem 2.25rem;
-  overflow: hidden;
-  will-change: width, height, transform, border-radius;
-}
-
-/* Accent spotlight inside the glass card */
-.lvl-visual::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 90% 60% at 15% 0%,
-      rgba(var(--accent-rgb), 0.20) 0%,
-      transparent 55%),
-    radial-gradient(ellipse 70% 50% at 100% 100%,
-      rgba(var(--accent-rgb), 0.13) 0%,
-      transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.lvl-visual-inner {
-  position: relative;
-  z-index: 2;
-}
-
-/* Text (Left Side Content) */
-.lvl-text {
-  position: absolute;
-  left: clamp(20px, 6vw, 100px);
-  top: 50%;
-  transform: translateY(-50%);
-  max-width: 45%;
-  z-index: 3;
-  visibility: hidden; /* GSAP will handle showing this via autoAlpha */
-  will-change: opacity, transform, visibility;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 900px) {
-  .lvl-visual {
-    width: 92vw;
-    height: auto;
-    padding: 2rem 1.5rem;
-    top: auto;
-    bottom: 5vh;
-    transform: translate(-50%, 0);
-  }
-  .lvl-text {
-    top: 10vh;
-    transform: none;
-    max-width: 90vw;
-    left: 5vw;
-  }
-}
-
-/* Text Inner Styles (matching original LevelsScroll) */
-.lvl-idx {
-  display: block;
-  font-size: clamp(6rem, 14vw, 12rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.06em;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.09);
-  margin-bottom: -2rem;
-  margin-left: -0.12em;
-  user-select: none;
-}
-
-.lvl-band-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 1.5rem;
-}
-
-.lvl-band {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(var(--accent-rgb), 1);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: rgba(var(--accent-rgb), 0.12);
-  border: 1px solid rgba(var(--accent-rgb), 0.30);
-}
-
-.lvl-band-sub {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.32);
-}
-
-.lvl-icon-circle {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--accent-rgb), 0.10);
-  border: 1px solid rgba(var(--accent-rgb), 0.25);
-  margin-bottom: 1.5rem;
-}
-.lvl-icon {
-  width: 28px;
-  height: 28px;
-  color: rgb(var(--accent-rgb));
-}
-.lvl-icon svg { width: 100%; height: 100%; }
-
-.lvl-name {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1.03;
-  letter-spacing: -0.03em;
-  color: #f8fafc;
-  margin-bottom: 1rem;
-}
-
-.lvl-desc {
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
-  color: rgba(226, 232, 240, 0.62);
-  line-height: 1.6;
-  max-width: 480px;
-  margin-bottom: 2rem;
-  font-weight: 400;
-}
-
-.lvl-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 28px;
-  border-radius: 14px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #030712;
-  text-decoration: none;
-  background: rgb(var(--accent-rgb));
-  transition: transform 0.2s;
-}
-.lvl-cta:hover {
-  transform: translateY(-2px);
-}
-
-/* Visual Inner Styles */
-.lvl-right-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.38);
-  margin-bottom: 1.5rem;
-}
-.lvl-right-label::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgb(var(--accent-rgb));
-  box-shadow: 0 0 8px 1px rgba(var(--accent-rgb), 0.8);
-}
-
-.lvl-features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.75rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.lvl-feature-item {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid rgba(255,255,255, 0.07);
-}
-
-.lvl-feature-num {
-  font-size: 0.75rem;
-  font-weight: 800;
-  min-width: 26px;
-}
-
-.lvl-feature-text {
-  font-size: clamp(0.98rem, 1.4vw, 1.15rem);
-  font-weight: 500;
-  color: rgba(248,250,252,0.85);
-}
-
-.lvl-duration-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.lvl-duration-val {
-  font-size: 1.9rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.lvl-panel-counter {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.28);
-  z-index: 5;
-}a/*
- * LevelsScroll.css
- * Horizontal scrolling track with zoom-out animation per panel.
+ * Horizontal scrolling track with zoom-out animation per panel (desktop).
+ * Clean stacked-card layout on mobile.
  */
 
 .levels-wrapper {
@@ -356,11 +26,11 @@
   display: flex;
   flex-direction: row;
   height: 100%;
-  width: max-content; /* will contain 5 panels of 100vw each */
+  width: max-content;
   will-change: transform;
 }
 
-/* Each level panel takes up exactly 1 screen */
+/* Each level panel takes up exactly 1 screen (desktop) */
 .lvl-panel-anim {
   position: relative;
   width: 100vw;
@@ -381,8 +51,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 90%);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 90%);
@@ -397,7 +67,7 @@
   z-index: 1;
 }
 
-/* Visual (Right Side Glass Card) - Starts Full Screen */
+/* Visual (Right Side Glass Card) - Starts Full Screen (desktop) */
 .lvl-visual {
   position: absolute;
   top: 50%;
@@ -408,25 +78,22 @@
   border-radius: 6px;
   z-index: 2;
 
-  /* Glass aesthetics */
-  background: linear-gradient(
-    160deg,
-    rgba(255,255,255, 0.10) 0%,
-    rgba(255,255,255, 0.045) 35%,
-    rgba(255,255,255, 0.02) 70%,
-    rgba(255,255,255, 0.05) 100%
-  );
+  background: linear-gradient(160deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(255, 255, 255, 0.045) 35%,
+      rgba(255, 255, 255, 0.02) 70%,
+      rgba(255, 255, 255, 0.05) 100%);
   backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
   -webkit-backdrop-filter: blur(36px) saturate(190%) brightness(1.05);
-  border: 1px solid rgba(255,255,255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
   box-shadow:
     0 50px 110px -18px rgba(0, 0, 0, 0.7),
     0 20px 48px -10px rgba(0, 0, 0, 0.5),
-    0 6px 18px -6px  rgba(0, 0, 0, 0.35),
-    inset 0 1.5px 1px rgba(255,255,255, 0.20),
+    0 6px 18px -6px rgba(0, 0, 0, 0.35),
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.20),
     inset 0 -1px 1.5px rgba(0, 0, 0, 0.35),
-    inset 1px 0 0 rgba(255,255,255, 0.05),
+    inset 1px 0 0 rgba(255, 255, 255, 0.05),
     0 0 0 1px rgba(var(--accent-rgb), 0.12),
     0 0 70px -6px rgba(var(--accent-rgb), 0.28),
     0 0 140px -20px rgba(var(--accent-rgb), 0.20);
@@ -439,7 +106,6 @@
   will-change: width, height, transform, border-radius;
 }
 
-/* Accent spotlight inside the glass card */
 .lvl-visual::before {
   content: '';
   position: absolute;
@@ -460,7 +126,7 @@
   z-index: 2;
 }
 
-/* Text (Left Side Content) */
+/* Text (Left Side Content) - desktop */
 .lvl-text {
   position: absolute;
   left: clamp(20px, 6vw, 100px);
@@ -468,29 +134,10 @@
   transform: translateY(-50%);
   max-width: 45%;
   z-index: 3;
-  visibility: hidden; /* GSAP will handle showing this via autoAlpha */
+  visibility: hidden;
   will-change: opacity, transform, visibility;
 }
 
-/* Mobile Adjustments */
-@media (max-width: 900px) {
-  .lvl-visual {
-    width: 92vw;
-    height: auto;
-    padding: 2rem 1.5rem;
-    top: auto;
-    bottom: 5vh;
-    transform: translate(-50%, 0);
-  }
-  .lvl-text {
-    top: 10vh;
-    transform: none;
-    max-width: 90vw;
-    left: 5vw;
-  }
-}
-
-/* Text Inner Styles (matching original LevelsScroll) */
 .lvl-idx {
   display: block;
   font-size: clamp(6rem, 14vw, 12rem);
@@ -530,7 +177,7 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.32);
+  color: rgba(255, 255, 255, 0.32);
 }
 
 .lvl-icon-circle {
@@ -544,12 +191,17 @@
   border: 1px solid rgba(var(--accent-rgb), 0.25);
   margin-bottom: 1.5rem;
 }
+
 .lvl-icon {
   width: 28px;
   height: 28px;
   color: rgb(var(--accent-rgb));
 }
-.lvl-icon svg { width: 100%; height: 100%; }
+
+.lvl-icon svg {
+  width: 100%;
+  height: 100%;
+}
 
 .lvl-name {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
@@ -582,11 +234,11 @@
   background: rgb(var(--accent-rgb));
   transition: transform 0.2s;
 }
+
 .lvl-cta:hover {
   transform: translateY(-2px);
 }
 
-/* Visual Inner Styles */
 .lvl-right-label {
   display: flex;
   align-items: center;
@@ -595,9 +247,10 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.38);
+  color: rgba(255, 255, 255, 0.38);
   margin-bottom: 1.5rem;
 }
+
 .lvl-right-label::before {
   content: '';
   width: 6px;
@@ -620,7 +273,7 @@
   align-items: baseline;
   gap: 14px;
   padding: 0.9rem 0;
-  border-bottom: 1px solid rgba(255,255,255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .lvl-feature-num {
@@ -632,7 +285,7 @@
 .lvl-feature-text {
   font-size: clamp(0.98rem, 1.4vw, 1.15rem);
   font-weight: 500;
-  color: rgba(248,250,252,0.85);
+  color: rgba(248, 250, 252, 0.85);
 }
 
 .lvl-duration-label {
@@ -640,7 +293,7 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
   display: block;
   margin-bottom: 4px;
 }
@@ -661,6 +314,175 @@
   gap: 4px;
   font-size: 13px;
   font-weight: 700;
-  color: rgba(255,255,255,0.28);
+  color: rgba(255, 255, 255, 0.28);
   z-index: 5;
+}
+
+/* ==========================================================================
+   MOBILE — to'liq qayta qurilgan, stacked-card ko'rinish
+   GSAP pin/scrub animatsiyasi mobil'da o'chiriladi deb hisoblanadi
+   (JS'da isMobile bo'lsa oddiy vertical scroll qoldiring yoki
+   ScrollTrigger'ni faqat desktop uchun ishga tushiring).
+   ========================================================================== */
+@media (max-width: 900px) {
+  .lvl-pin {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .lvl-track {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+  }
+
+  .lvl-panel-anim {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 4.5rem 1.25rem 3.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Order counter badge at top instead of floating overlay */
+  .lvl-panel-counter {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    order: -1;
+    align-self: center;
+    margin-bottom: 1.25rem !important;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Text block: static, always visible, no GSAP hidden state fighting layout.
+     !important everywhere here so GSAP inline styles or leftover desktop
+     rules can never re-absolute-position or hide this block. */
+  .lvl-text {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-bottom: 2rem !important;
+    text-align: left;
+    z-index: auto !important;
+  }
+
+  .lvl-idx {
+    font-size: 4.25rem;
+    margin-bottom: -1.1rem;
+    margin-left: -0.06em;
+  }
+
+  .lvl-band-row {
+    margin-bottom: 1.1rem;
+  }
+
+  .lvl-icon-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    margin-bottom: 1.1rem;
+  }
+
+  .lvl-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .lvl-name {
+    font-size: 2.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .lvl-desc {
+    font-size: 0.98rem;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+    line-height: 1.55;
+  }
+
+  .lvl-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 15px 24px;
+    border-radius: 12px;
+  }
+
+  /* Visual card: static block below text, natural height, no absolute positioning.
+     !important everywhere here so GSAP inline width/height/x or leftover
+     desktop rules can never re-absolute-position this on top of the text. */
+  .lvl-visual {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1.5rem 1.25rem !important;
+    border-radius: 18px !important;
+    z-index: auto !important;
+    box-shadow:
+      0 24px 48px -16px rgba(0, 0, 0, 0.55),
+      inset 0 1px 1px rgba(255, 255, 255, 0.16),
+      0 0 0 1px rgba(var(--accent-rgb), 0.14),
+      0 0 40px -10px rgba(var(--accent-rgb), 0.25) !important;
+  }
+
+  .lvl-right-label {
+    margin-bottom: 1.1rem;
+    font-size: 10px;
+  }
+
+  .lvl-feature-item {
+    padding: 0.7rem 0;
+    gap: 10px;
+  }
+
+  .lvl-feature-text {
+    font-size: 0.95rem;
+  }
+
+  .lvl-duration {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+  }
+
+  .lvl-duration-val {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .lvl-panel-anim {
+    padding: 3.5rem 1rem 2.75rem;
+  }
+
+  .lvl-idx {
+    font-size: 3.5rem;
+  }
+
+  .lvl-name {
+    font-size: 1.8rem;
+  }
 }
