@@ -162,8 +162,9 @@ export default function Navbar() {
     )
 
     return (
-        <div data-navbar-root className={`fixed top-0 left-0 w-full z-50 font-['Merriweather',serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
-            <motion.header
+        <>
+            <div data-navbar-root className={`fixed top-0 left-0 w-full z-50 font-['Merriweather',serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
+                <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
@@ -381,10 +382,12 @@ export default function Navbar() {
                     </div>
                 </div>
             </motion.header>
+            </div>
 
             {/* Mobile Menu Drawer Overlay */}
-            <AnimatePresence>
-                {menuOpen && (
+            <div className="font-['Merriweather',serif] select-none">
+                <AnimatePresence>
+                    {menuOpen && (
                     <>
                         {/* Backdrop Blur Overlay */}
                         <motion.div
@@ -535,7 +538,8 @@ export default function Navbar() {
                         </motion.div>
                     </>
                 )}
-            </AnimatePresence>
-        </div>
+                </AnimatePresence>
+            </div>
+        </>
     )
 }

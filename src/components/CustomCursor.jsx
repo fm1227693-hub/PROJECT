@@ -11,6 +11,13 @@ export default function CustomCursor() {
       if (!isVisible) setIsVisible(true);
     };
 
+    const updateTouchPosition = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        setMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        if (!isVisible) setIsVisible(true);
+      }
+    };
+
     const handleMouseLeave = () => {
       setIsVisible(false);
     };
@@ -20,6 +27,9 @@ export default function CustomCursor() {
     };
 
     window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('touchmove', updateTouchPosition, { passive: true });
+    window.addEventListener('touchstart', updateTouchPosition, { passive: true });
+    window.addEventListener('touchend', handleMouseLeave);
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
@@ -28,16 +38,15 @@ export default function CustomCursor() {
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('touchmove', updateTouchPosition);
+      window.removeEventListener('touchstart', updateTouchPosition);
+      window.removeEventListener('touchend', handleMouseLeave);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.body.classList.remove('hide-default-cursor');
     };
   }, [isVisible]);
 
-  // Mobil qurilmalarda kursor effektini o'chirish uchun
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
-    return null;
-  }
 
   return (
     <>
