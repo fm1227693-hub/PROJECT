@@ -1,7 +1,6 @@
 /*
  * LevelsScroll.css
- * Horizontal scrolling track with zoom-out animation per panel (desktop).
- * Clean stacked-card layout on mobile.
+ * Horizontal scrolling track with zoom-out animation (Desktop & Mobile).
  */
 
 .levels-wrapper {
@@ -13,10 +12,11 @@
   width: 100%;
 }
 
-/* The pinned container */
+/* The pinned container - 100dvh for better mobile safari experience */
 .lvl-pin {
   position: relative;
   height: 100vh;
+  height: 100dvh; 
   overflow: hidden;
   width: 100%;
 }
@@ -30,11 +30,12 @@
   will-change: transform;
 }
 
-/* Each level panel takes up exactly 1 screen (desktop) */
+/* Each level panel takes up exactly 1 screen */
 .lvl-panel-anim {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -67,14 +68,11 @@
   z-index: 1;
 }
 
-/* Visual (Right Side Glass Card) - Starts Full Screen (desktop) */
+/* Visual (Glass Card) - Positioned centrally, GSAP handles the shrinking/moving */
 .lvl-visual {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 86vw;
-  height: 82vh;
-  transform: translate(-50%, -50%);
   border-radius: 6px;
   z-index: 2;
 
@@ -126,12 +124,9 @@
   z-index: 2;
 }
 
-/* Text (Left Side Content) - desktop */
+/* Text (Left Side Content on Desktop) */
 .lvl-text {
   position: absolute;
-  left: clamp(20px, 6vw, 100px);
-  top: 50%;
-  transform: translateY(-50%);
   max-width: 45%;
   z-index: 3;
   visibility: hidden;
@@ -319,170 +314,32 @@
 }
 
 /* ==========================================================================
-   MOBILE — to'liq qayta qurilgan, stacked-card ko'rinish
-   GSAP pin/scrub animatsiyasi mobil'da o'chiriladi deb hisoblanadi
-   (JS'da isMobile bo'lsa oddiy vertical scroll qoldiring yoki
-   ScrollTrigger'ni faqat desktop uchun ishga tushiring).
+   MOBILE — Kichraytirilgan O'lchamlar (Animatsiya va Gorizontal Scroll saqlangan)
    ========================================================================== */
 @media (max-width: 900px) {
-  .lvl-pin {
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  .lvl-track {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-    height: auto !important;
-    transform: none !important;
-  }
-
-  .lvl-panel-anim {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    padding: 4.5rem 1.25rem 3.5rem !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Order counter badge at top instead of floating overlay */
-  .lvl-panel-counter {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-    order: -1;
-    align-self: center;
-    margin-bottom: 1.25rem !important;
-    font-size: 12px;
-    letter-spacing: 0.05em;
-  }
-
-  /* Text block: static, always visible, no GSAP hidden state fighting layout.
-     !important everywhere here so GSAP inline styles or leftover desktop
-     rules can never re-absolute-position or hide this block. */
   .lvl-text {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    transform: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    margin-bottom: 2rem !important;
+    max-width: 90%;
     text-align: left;
-    z-index: auto !important;
   }
-
-  .lvl-idx {
-    font-size: 4.25rem;
-    margin-bottom: -1.1rem;
-    margin-left: -0.06em;
-  }
-
-  .lvl-band-row {
-    margin-bottom: 1.1rem;
-  }
-
-  .lvl-icon-circle {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    margin-bottom: 1.1rem;
-  }
-
-  .lvl-icon {
-    width: 24px;
-    height: 24px;
-  }
-
-  .lvl-name {
-    font-size: 2.1rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .lvl-desc {
-    font-size: 0.98rem;
-    max-width: 100%;
-    margin-bottom: 1.5rem;
-    line-height: 1.55;
-  }
-
-  .lvl-cta {
-    width: 100%;
-    justify-content: center;
-    padding: 15px 24px;
-    border-radius: 12px;
-  }
-
-  /* Visual card: static block below text, natural height, no absolute positioning.
-     !important everywhere here so GSAP inline width/height/x or leftover
-     desktop rules can never re-absolute-position this on top of the text. */
-  .lvl-visual {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 1.5rem 1.25rem !important;
-    border-radius: 18px !important;
-    z-index: auto !important;
-    box-shadow:
-      0 24px 48px -16px rgba(0, 0, 0, 0.55),
-      inset 0 1px 1px rgba(255, 255, 255, 0.16),
-      0 0 0 1px rgba(var(--accent-rgb), 0.14),
-      0 0 40px -10px rgba(var(--accent-rgb), 0.25) !important;
-  }
-
-  .lvl-right-label {
-    margin-bottom: 1.1rem;
-    font-size: 10px;
-  }
-
-  .lvl-feature-item {
-    padding: 0.7rem 0;
-    gap: 10px;
-  }
-
-  .lvl-feature-text {
-    font-size: 0.95rem;
-  }
-
-  .lvl-duration {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.5rem;
-  }
-
-  .lvl-duration-val {
-    font-size: 1.5rem;
-  }
+  .lvl-idx { font-size: 3.5rem; margin-bottom: -0.5rem; }
+  .lvl-band-row { margin-bottom: 0.75rem; }
+  .lvl-icon-circle { width: 44px; height: 44px; margin-bottom: 0.75rem; }
+  .lvl-name { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .lvl-desc { font-size: 0.9rem; margin-bottom: 1.2rem; line-height: 1.4; }
+  .lvl-cta { padding: 12px 20px; font-size: 0.9rem; width: max-content; }
+  
+  .lvl-visual { padding: 1.25rem; }
+  .lvl-right-label { margin-bottom: 0.5rem; }
+  .lvl-feature-item { padding: 0.5rem 0; gap: 8px; }
+  .lvl-feature-text { font-size: 0.85rem; }
+  .lvl-duration-val { font-size: 1.2rem; }
+  
+  .lvl-panel-counter { bottom: 15px; }
 }
 
 @media (max-width: 420px) {
-  .lvl-panel-anim {
-    padding: 3.5rem 1rem 2.75rem;
-  }
-
-  .lvl-idx {
-    font-size: 3.5rem;
-  }
-
-  .lvl-name {
-    font-size: 1.8rem;
-  }
+  .lvl-name { font-size: 1.6rem; }
+  .lvl-desc { font-size: 0.85rem; }
+  .lvl-feature-text { font-size: 0.8rem; }
+  .lvl-visual { padding: 1rem; }
 }

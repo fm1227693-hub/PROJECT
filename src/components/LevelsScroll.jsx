@@ -88,92 +88,99 @@ export default function LevelsScroll() {
   const { t } = useTranslation();
   const wrapperRef = useRef(null);
   const trackRef = useRef(null);
-  const ctxRef = useRef(null);
-  const navTriggerRef = useRef(null);
 
   const tr = (key) => t(key, D[key] || key);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = window.matchMedia('(max-width: 900px)').matches;
-
-    // Mobil'da murakkab pin/zoom scroll animatsiyasi ishlatilmaydi —
-    // panellar oddiy vertikal stack sifatida CSS orqali ko'rsatiladi,
-    // shu bilan GSAP'ning inline style'lari CSS'ni bosib o'tmaydi.
-    if (prefersReduced || isMobile) return;
+    if (prefersReduced) return;
 
     const setNavHidden = (hidden) => {
       eventBus.emit('toggle-nav', hidden);
     };
 
-    const init = () => {
-      if (ctxRef.current) {
-        ctxRef.current.revert();
-      }
+    let mm = gsap.matchMedia();
 
-      ctxRef.current = gsap.context(() => {
-        const panels = gsap.utils.toArray('.lvl-panel-anim');
+    mm.add({
+      isDesktop: "(min-width: 901px)",
+      isMobile: "(max-width: 900px)"
+    }, (context) => {
+      let { isMobile } = context.conditions;
+      const panels = gsap.utils.toArray('.lvl-panel-anim');
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrapperRef.current,
-            start: 'top top',
-            end: `+=${panels.length * 300}%`,
-            scrub: 1,
-            pin: true,
-            onToggle: (self) => setNavHidden(self.isActive),
-          }
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: 'top top',
+          end: `+=${panels.length * 300}%`,
+          scrub: 1,
+          pin: true,
+          onToggle: (self) => setNavHidden(self.isActive),
+        }
+      });
+
+      panels.forEach((panel, i) => {
+        const visual = panel.querySelector('.lvl-visual');
+        const text = panel.querySelector('.lvl-text');
+
+        // JS orqali boshlang'ich pozitsiyalarni o'rnatamiz (CSS dagi muammolarni oldini oladi)
+        gsap.set(visual, {
+          width: isMobile ? '90vw' : '86vw',
+          height: isMobile ? '80vh' : '82vh',
+          borderRadius: 12,
+          xPercent: -50,
+          yPercent: -50,
+          x: 0,
+          y: 0
         });
 
-        panels.forEach((panel, i) => {
-          const visual = panel.querySelector('.lvl-visual');
-          const text = panel.querySelector('.lvl-text');
+        gsap.set(text, {
+          autoAlpha: 0,
+          left: isMobile ? '5vw' : 'clamp(20px, 6vw, 100px)',
+          top: isMobile ? '22%' : '50%',
+          xPercent: 0,
+          yPercent: -50,
+          x: isMobile ? 0 : -40,
+          y: isMobile ? 20 : 0
+        });
 
-          gsap.set(visual, {
-            width: '86vw',
-            height: '86vh',
-            borderRadius: 12,
-            x: 0
+        tl.to({}, { duration: 1.0 });
+
+        // Animatsiya qismi (karta qisqarib, matn chiqib keladi)
+        tl.to(visual, {
+          width: isMobile ? '90vw' : '44vw',
+          height: isMobile ? '45vh' : '62vh',
+          borderRadius: 24,
+          x: isMobile ? 0 : '24vw',
+          y: isMobile ? '22vh' : 0, // Mobilda karta pastga tushib joy beradi
+          ease: 'power2.inOut',
+          duration: 1.5
+        }, `+=0`)
+        .to(text, {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          ease: 'power2.inOut',
+          duration: 1.5
+        }, `<`);
+
+        tl.to({}, { duration: 1.5 });
+
+        // Eng muhim qism: Panellar qator bo'lib O'NGGA yuradi (Gorizontal)
+        if (i < panels.length - 1) {
+          tl.to(trackRef.current, {
+            x: `-${(i + 1) * 100}vw`,
+            ease: 'power3.inOut',
+            duration: 2.0
           });
-          gsap.set(text, { autoAlpha: 0, x: -40 });
+        }
+      });
 
-          tl.to({}, { duration: 1.0 });
-
-          tl.to(visual, {
-            width: '44vw',
-            height: '62vh',
-            borderRadius: 24,
-            x: '24vw',
-            ease: 'power2.inOut',
-            duration: 1.5
-          }, `+=0`)
-            .to(text, { autoAlpha: 1, x: 0, ease: 'power2.inOut', duration: 1.5 }, `<`);
-
-          tl.to({}, { duration: 1.5 });
-
-          if (i < panels.length - 1) {
-            tl.to(trackRef.current, {
-              x: `-${(i + 1) * 100}vw`,
-              ease: 'power3.inOut',
-              duration: 2.0
-            });
-          }
-        });
-
-        ScrollTrigger.refresh();
-      }, wrapperRef);
-    };
-
-    const timer = setTimeout(init, 100);
+      return () => tl.kill();
+    });
 
     return () => {
-      clearTimeout(timer);
-      if (ctxRef.current) {
-        ctxRef.current.revert();
-      }
-      if (navTriggerRef.current) {
-        navTriggerRef.current.kill();
-      }
+      mm.revert();
       setNavHidden(false);
     };
   }, []);
