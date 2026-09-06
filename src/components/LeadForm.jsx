@@ -1,243 +1,226 @@
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaSpinner, FaArrowRight, FaTimes, FaArrowLeft } from 'react-icons/fa'
-import { HiArrowLeft } from 'react-icons/hi'
-import axios from 'axios'
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { FaUser, FaPaperPlane, FaCheckCircle, FaSpinner, FaArrowLeft, FaPhoneAlt } from 'react-icons/fa';
 import { IMaskInput } from 'react-imask';
+import axios from 'axios';
 
 export default function LeadForm() {
-    const { t } = useTranslation()
-    const [isOpen, setIsOpen] = useState(false)
-    const [name, setName] = useState('')
-    const [phone, setPhone] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
-    const [error, setError] = useState('')
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_2
-    
-    // Ikkita admin chat ID lari massiv ko'rinishida
-    const CHAT_IDS = ["334572168", "6383523156"]
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [course, setCourse] = useState('General English / IELTS');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (!name.trim() || !phone.trim()) {
-            setError(t('leadForm.errorAllFields', "Iltimos, barcha maydonlarni to'ldiring!"))
-            return
-        }
+  const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_1 || 'bot_token';
+  const ADMIN_CHAT_IDS = ['6383523156', '334572168'];
 
-        const digitsOnly = phone.replace(/\D/g, '')
-        if (digitsOnly.length < 9) {
-            setError(t('leadForm.errorPhoneDigits', "Iltimos, 9 ta raqamni to'liq kiriting!"))
-            return
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const cleanDigits = phone.replace(/\D/g, '');
 
-        setError('')
-        setLoading(true)
+    if (!name.trim()) {
+      setError(t('sec3.namePlaceholder', 'Ismingizni kiriting'));
+      return;
+    }
 
-        const message = `Yangi murojaat (Optimum):\n\nIsm: ${name}\nTel: +998${digitsOnly}`
+    if (cleanDigits.length < 9) {
+      setError(t('register.phoneError', "Telefon raqamini to'liq kiriting"));
+      return;
+    }
 
+    setLoading(true);
+    setError('');
+
+    const newLead = {
+      id: Date.now(),
+      name: name.trim(),
+      phone: `+998 ${cleanDigits}`,
+      course: course,
+      type: `Bepul Dars Forma (${course})`,
+      date: new Date().toLocaleString('uz-UZ'),
+      status: 'Kutilmoqda'
+    };
+
+    const telegramText = `🔔 Yangi Ro'yxatdan O'tish:\n\n👤 Ism: ${name}\n📱 Tel: +998 ${cleanDigits}\n📚 Kurs: ${course}\n📅 Sana: ${new Date().toLocaleString('uz-UZ')}`;
+
+    try {
+      ADMIN_CHAT_IDS.forEach((chatId) => {
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: telegramText })
+        }).catch((err) => console.error(err));
+      });
+
+      const dbUrl = import.meta.env.VITE_FIREBASE_DB_URL;
+      if (dbUrl) {
         try {
-            const promises = CHAT_IDS.map(chatId =>
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'HTML'
-                    }),
-                })
-            )
-
-            const responses = await Promise.all(promises)
-            const allSuccess = responses.every(res => res.ok)
-
-            if (allSuccess) {
-                const newLead = {
-                    id: Date.now(),
-                    isLead: true,
-                    name: name,
-                    phone: `+998 ${digitsOnly}`,
-                    type: t('leadForm.badge', 'Bepul maslahat'),
-                    date: new Date().toLocaleString('uz-UZ'),
-                    status: 'Kutilmoqda'
-                }
-
-                try {
-                    const res = await axios.get(import.meta.env.VITE_FIREBASE_DB_URL)
-                    let currentLeads = []
-                    if (res.data !== null) {
-                        currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
-                    }
-                    const updatedLeads = [newLead, ...currentLeads]
-                    await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads)
-                    localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
-                } catch (err) {
-                    console.error("API error:", err)
-                    const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
-                    localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
-                }
-
-                setSuccess(true)
-                setName('')
-                setPhone('')
-                setTimeout(() => {
-                    setSuccess(false)
-                    setIsOpen(false)
-                }, 4000)
-            } else {
-                setError(t('leadForm.errorGeneric', "Xatolik yuz berdi. Qaytadan urinib ko'ring."))
-            }
-        } catch (err) {
-            setError(t('leadForm.errorNetwork', "Internet aloqasini tekshiring."))
-        } finally {
-            setLoading(false)
+          const res = await axios.get(dbUrl);
+          let currentLeads = [];
+          if (res.data !== null) {
+            currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data);
+          }
+          const updatedLeads = [newLead, ...currentLeads];
+          await axios.put(dbUrl, updatedLeads);
+        } catch (dbErr) {
+          console.warn('Firebase sync notice:', dbErr.message);
         }
+      }
+
+      const existing = JSON.parse(localStorage.getItem('admin_leads') || '[]');
+      localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existing]));
+
+      setSuccess(true);
+      setName('');
+      setPhone('');
+    } catch (err) {
+      console.error(err);
+      setError("Tarmoqda xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const handleGoBack = () => {
-        window.history.back()
-    }
+  return (
+    <div className="min-h-screen font-sans pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 relative select-none">
+      
+      {/* Back button */}
+      <div className="max-w-2xl mx-auto mb-6">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 transition-colors cursor-pointer"
+        >
+          <FaArrowLeft className="text-xs" />
+          <span>Ortga qaytish</span>
+        </button>
+      </div>
 
-    return (
-        <>
+      <div className="max-w-2xl mx-auto premium-surface p-6 sm:p-12 rounded-[28px] sm:rounded-[36px] bg-white dark:bg-[#0e121e] border border-slate-200 dark:border-slate-800 shadow-2xl">
+        
+        {success ? (
+          <div className="py-12 flex flex-col items-center text-center space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 text-3xl">
+              <FaCheckCircle />
+            </div>
+            <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-white">
+              {t('leadForm.successTitle', 'Murojaatingiz qabul qilindi!')}
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm">
+              {t('leadForm.successDesc', "Tez orada operatorlarimiz siz bilan bog'lanib, bepul sinov darsingiz vaqtini tasdiqlashadi.")}
+            </p>
+            <button
+              onClick={() => setSuccess(false)}
+              className="btn-primary mt-4"
+            >
+              Yangi so'rov qoldirish
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="mb-8">
+              <span className="badge-pill mb-2">
+                ✦ {t('leadForm.badge', 'Bepul Sinov Darsi')}
+              </span>
+              <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+                {t('leadForm.titlePrefix', 'Ingliz tilini o\'rganishni')}{' '}
+                <span className="text-gradient-accent">
+                  {t('leadForm.titleHighlight', 'bugun boshlang!')}
+                </span>
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                {t('leadForm.description', "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan bog'lanib, barcha savollaringizga javob berishadi.")}
+              </p>
+            </div>
 
+            {error && (
+              <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold">
+                {error}
+              </div>
+            )}
 
-            {/* Asosiy Forma qismi */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6 select-none pt-24 sm:pt-28 lg:pt-32">
-                {/* Orqaga qaytish tugmasi */}
-                <button 
-                    onClick={handleGoBack}
-                    className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
-                >
-                    <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
-                </button>
-
-                <div className="relative glass-card p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] shadow-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden transition-all duration-300">
-                    
-
-                    {/* Orqa fon nur effekti */}
-                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-red-600/20 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
-                    <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
-
-                    <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
-                        
-                        {/* Chap matn va tugma qismi */}
-                        <div className="lg:w-1/2 text-left space-y-4">
-                            <div className="inline-block mb-3">
-                                <span className="px-3.5 py-1.5 bg-red-600/10 dark:bg-red-600/20 text-red-600 dark:text-red-500 rounded-xl text-xs font-black tracking-wide border border-red-500/20 dark:border-red-500/30 uppercase">
-                                    {t('leadForm.badge', 'Bepul maslahat')}
-                                </span>
-                            </div>
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                                {t('leadForm.titlePrefix', "Ingliz tilini o'rganishni")}{' '}
-                                <span className="text-red-600 dark:text-red-500">
-                                    {t('leadForm.titleHighlight', 'bugun boshlang!')}
-                                </span>
-                            </h2>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-medium leading-relaxed">
-                                {t('leadForm.description', "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.")}
-                            </p>
-
-                            {!isOpen && (
-                                <div className="pt-2">
-                                    <button
-                                        onClick={() => setIsOpen(true)}
-                                        className="px-8 py-4 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black rounded-2xl shadow-lg shadow-red-600/35 transition-all duration-300 flex items-center gap-3 text-sm cursor-pointer hover:scale-105"
-                                    >
-                                        <span>{t('leadForm.applyNowBtn', 'Hozirdan yozilish')}</span>
-                                        <FaArrowRight className="text-xs" />
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* O'ng Forma qismi */}
-                        <div className={`lg:w-1/2 w-full max-w-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-500 ${isOpen ? 'opacity-100 scale-100 block' : 'hidden'}`}>
-                            {success ? (
-                                <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
-                                    <FaCheckCircle className="text-emerald-500 text-5xl animate-bounce" />
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('leadForm.successTitle', 'Murojaatingiz qabul qilindi!')}</h3>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm">{t('leadForm.successDesc', 'Tez orada operatorlarimiz siz bilan bog\'lanishadi.')}</p>
-                                </div>
-                            ) : (
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <h3 className="text-xl font-black text-gray-900 dark:text-white">{t('leadForm.formTitle', 'Bepul darsga yozilish')}</h3>
-                                        <button 
-                                            type="button" 
-                                            onClick={() => setIsOpen(false)}
-                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 cursor-pointer"
-                                        >
-                                            <FaTimes />
-                                        </button>
-                                    </div>
-
-                                    {error && (
-                                        <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs rounded-xl font-medium">
-                                            {error}
-                                        </div>
-                                    )}
-
-                                    <div>
-                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">{t('leadForm.nameLabel', 'Ismingiz')}</label>
-                                        <div className="relative">
-                                            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 dark:text-gray-500">
-                                                <FaUser className="text-sm" />
-                                            </span>
-                                            <input
-                                                type="text"
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                placeholder={t('leadForm.namePlaceholder', 'Masalan: Aziz')}
-                                                className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:border-red-600 transition-colors"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">{t('leadForm.phoneLabel', 'Telefon raqamingiz')}</label>
-                                        <div className="relative flex items-center bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden focus-within:border-red-600 transition-colors">
-                                            <span className="pl-4 pr-2 text-gray-600 dark:text-gray-400 text-sm font-bold select-none border-r border-gray-200 dark:border-gray-800/80 py-3 bg-gray-100 dark:bg-gray-900/40">
-                                                +998
-                                            </span>
-                                            <IMaskInput
-                                                mask="(00) 000-00-00"
-                                                value={phone}
-                                                onAccept={(value) => setPhone(value)}
-                                                placeholder="(90) 123-45-67"
-                                                className="w-full px-4 py-3 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        type="submit"
-                                        disabled={loading}
-                                        className="w-full mt-2 px-5 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer disabled:opacity-50 text-center"
-                                    >
-                                        {loading ? (
-                                            <>
-                                                <FaSpinner className="animate-spin text-base" />
-                                                <span>{t('leadForm.submitting', 'Yuborilmoqda...')}</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>{t('leadForm.submitBtn', 'Joy band qilish')}</span>
-                                                <FaPaperPlane className="text-xs" />
-                                            </>
-                                        )}
-                                    </button>
-                                </form>
-                            )}
-                        </div>
-
-                    </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+                  {t('leadForm.nameLabel', 'Ism va Familiyangiz')}
+                </label>
+                <div className="relative flex items-center">
+                  <FaUser className="absolute left-3.5 text-slate-400 text-xs" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={t('leadForm.namePlaceholder', 'Masalan: Sardor')}
+                    className="w-full pl-10 pr-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-rose-500 transition-colors"
+                  />
                 </div>
-            </section>
-        </>
-    )
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+                  {t('leadForm.phoneLabel', 'Telefon raqamingiz')}
+                </label>
+                <div className="relative flex items-center bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden focus-within:border-rose-500 transition-colors">
+                  <span className="pl-3.5 pr-2.5 text-sm font-bold text-slate-500 dark:text-slate-400 border-r border-slate-200 dark:border-slate-800 select-none py-3.5">
+                    +998
+                  </span>
+                  <IMaskInput
+                    mask="(00) 000-00-00"
+                    value={phone}
+                    onAccept={(val) => setPhone(val)}
+                    placeholder="(90) 123-45-67"
+                    className="w-full px-3.5 py-3.5 bg-transparent text-slate-900 dark:text-white text-sm focus:outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+                  Qiziqqan yo'nalishingiz
+                </label>
+                <select
+                  value={course}
+                  onChange={(e) => setCourse(e.target.value)}
+                  className="w-full px-3.5 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-rose-500 transition-colors"
+                >
+                  <option value="General English / IELTS">General English / IELTS</option>
+                  <option value="Beginner (A1-A2)">Beginner (A1 - A2)</option>
+                  <option value="Elementary (A2-B1)">Elementary (A2 - B1)</option>
+                  <option value="Pre-IELTS (B1-B2)">Pre-IELTS / Intermediate (B1 - B2)</option>
+                  <option value="IELTS Intensive (B2-C1)">IELTS Intensive (B2 - C1)</option>
+                  <option value="IELTS Mastery 8.5+ (C1-C2)">IELTS Mastery 8.5+ (C1 - C2)</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full py-4 mt-4 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 text-sm"
+              >
+                {loading ? (
+                  <>
+                    <FaSpinner className="animate-spin text-sm" />
+                    <span>{t('leadForm.submitting', 'Yuborilmoqda...')}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{t('leadForm.submitBtn', 'Joy band qilish')}</span>
+                    <FaPaperPlane className="text-xs" />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
 }

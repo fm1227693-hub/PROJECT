@@ -4,16 +4,15 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <meta name="description" content="Optimum School of English - Ingliz tilini noldan mukammallikkacha o'rganing. Professional o'qituvchilar va intensiv kurslar." />
-    <meta name="theme-color" content="#030712" />
-    <title>Optimum School of English — Premium Language Learning</title>
+    <meta name="description" content="OptimumELC — Premier English & IELTS Academy. Computer-delivered mock exams, AI writing assessment, intensive speaking clubs, and verified 8.5+ band mentors in Bukhara." />
+    <meta name="theme-color" content="#090a0f" />
+    <title>OptimumELC — Premier English & IELTS Academy</title>
     
-    <!-- Dark mode FOUC oldini olish: React yuklanishidan oldin tema qo'llanadi -->
+    <!-- Dark mode FOUC prevention -->
     <script>
       (function() {
         var saved = localStorage.getItem('theme');
-        // Saqlangan qiymat yo'q bo'lsa yoki 'true' bo'lsa — dark mode
-        if (saved === null || saved === 'true') {
+        if (saved === null || saved === 'true' || saved === 'dark') {
           document.documentElement.classList.add('dark');
         } else {
           document.documentElement.classList.remove('dark');
@@ -21,12 +20,12 @@
       })();
     </script>
 
-    <!-- Google Fonts Preconnect & Fonts -->
+    <!-- Google Fonts Preconnect & Modern Typefaces -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-white dark:bg-[#030712] text-slate-900 dark:text-slate-100 font-['Merriweather',serif] antialiased selection:bg-red-600 selection:text-white">
+  <body class="bg-slate-50 dark:bg-[#090a0f] text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-rose-600 selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

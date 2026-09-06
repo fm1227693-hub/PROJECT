@@ -32,7 +32,7 @@ export default function ListeningHub() {
   ];
 
   return (
-    <div className="min-h-screen pt-28 pb-12 font-['Merriweather',serif] flex flex-col gap-6 w-full text-slate-800 dark:text-slate-200">
+    <div className="min-h-screen pt-28 pb-12 font-sans flex flex-col gap-6 w-full text-slate-800 dark:text-slate-200">
       
       {!activeTest ? (
         <div className="w-full max-w-5xl mx-auto px-4 lg:px-8">
