@@ -593,7 +593,7 @@ export default function ListeningTest6({ onExit }) {
   return (
     <CdiListeningLayout
       testTitle="Practice Test 6"
-      audioSrc="/audios/LISTENING6.mp3"
+      audioSrc="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/AUDIOS/LISTENING6.mp3"
       parts={parts}
       answers={answers}
       answerKey={answerKey}
