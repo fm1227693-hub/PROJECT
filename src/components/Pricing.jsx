@@ -1,171 +1,153 @@
-import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { FaCheck, FaPhoneAlt, FaTelegramPlane, FaArrowRight, FaGraduationCap } from 'react-icons/fa';
+import { PRICING_PLANS } from '../data/coursesData';
+import ConsultationModal from './ui/ConsultationModal';
 
-const TELEGRAM_USERNAME = 'optimum_school'
-const PHONE_NUMBER = '+998 90 082 99 79'
-
-const PLANS = [
-    { id: 'basic', price: '500 000', levelKeys: ['starter', 'beginner', 'elementary'], levelsLabel: 'Starter — Elementary' },
-    { id: 'standard', price: '600 000', levelKeys: ['intermediate', 'upperIntermediate'], levelsLabel: 'Elementary — Advanced' },
-    { id: 'advanced', price: '700 000', levelKeys: ['advanced'], levelsLabel: 'Advanced' },
-]
-
-function getPlanForLevel(levelKey) {
-    return PLANS.find((p) => p.levelKeys.includes(levelKey)) || null
-}
+const PHONE_NUMBER = '+998 90 082 99 79';
 
 export default function Pricing() {
-    const { t } = useTranslation()
-    const location = useLocation()
-    const navigate = useNavigate()
+  const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const levelKey = location.state?.levelKey || null
-    const levelLabel = location.state?.levelLabel || null
-    const matchedPlan = levelKey ? getPlanForLevel(levelKey) : null
+  const levelKey = location.state?.levelKey || null;
+  const levelLabel = location.state?.levelLabel || null;
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
-    
+  const contactTelegram = (planName) => {
+    const text = encodeURIComponent(
+      `Salom! Men ${levelLabel ? `"${levelLabel}"` : ''} darajasi bo'yicha "${planName}" tarifiga yozilmoqchiman.`
+    );
+    window.open(`https://t.me/rukhillo?text=${text}`, '_blank');
+  };
 
-    const contactTelegram = (planId) => {
-        const text = encodeURIComponent(
-            `Salom! Men ${levelLabel ? `"${levelLabel}"` : ''} darajasi bo'yicha "${planId}" tarifiga yozilmoqchiman.`
-        )
-        window.open(`https://t.me/rukhillo?text=${text}`, '_blank')
-    }
+  const contactPhone = () => {
+    window.location.href = `tel:${PHONE_NUMBER}`;
+  };
 
-    const contactPhone = () => {
-        window.location.href = `tel:${PHONE_NUMBER}`
-    }
+  return (
+    <div className="min-h-screen px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-20 relative select-none font-sans">
+      
+      {/* Background Lighting */}
+      <div className="pointer-events-none absolute top-1/4 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl" />
 
-    return (
-        <div className="min-h-screen bg-transparent px-3 xs:px-4 pt-24 xs:pt-28 pb-16 xs:pb-20 transition-colors duration-300 relative font-['Merriweather',serif]">
-            <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="max-w-6xl mx-auto relative z-10">
-
-
-
-                <div data-aos="fade-up" data-aos-duration="700" className="text-center max-w-2xl mx-auto mb-10 xs:mb-14">
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1 rounded-full inline-block border border-red-500/20 shadow-sm">
-                        {t('pricing.badge') || 'Natijaga erishish'}
-                    </span>
-                    <h2 className="text-2xl xs:text-3xl md:text-4xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight">
-                        {t('pricing.title') || "O'zingizga mos kursni tanlang"}
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-300 mt-2.5 xs:mt-3 font-medium text-xs xs:text-sm md:text-base px-2">
-                        {levelLabel
-                            ? (t('pricing.descriptionWithLevel') || 'Sizning darajangiz: {{level}}. Quyidagi tarif sizga mos keladi.').replace('{{level}}', levelLabel)
-                            : t('pricing.description') || 'Darajangizga mos tarifni tanlab, biz bilan bog\'laning.'}
-                    </p>
-
-                    {matchedPlan && (
-                        <div
-                            data-aos="fade-up"
-                            data-aos-delay="100"
-                            className="mt-4 xs:mt-5 inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2.5 rounded-2xl animate-pulse-slow"
-                        >
-                            <span className="text-xs xs:text-sm font-bold text-red-600 dark:text-red-400">
-                                {(t('pricing.recommendationText') || "Sizga {{price}} so'mlik kurs tavsiya etiladi")
-                                    .replace('{{price}}', matchedPlan.price)}
-                            </span>
-                        </div>
-                    )}
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-6">
-                    {PLANS.map((plan, idx) => {
-                        const isMatched = matchedPlan?.id === plan.id
-                        return (
-                            <div
-                                key={plan.id}
-                                data-aos="fade-up"
-                                data-aos-delay={idx * 100}
-                                data-aos-duration="700"
-                                className={`relative rounded-2xl xs:rounded-3xl p-6 xs:p-8 transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl ${isMatched
-                                    ? 'bg-gradient-to-b from-red-50 to-white dark:from-red-950/90 dark:to-slate-900/90 border-2 border-red-500/60 shadow-2xl shadow-red-600/20 scale-[1.02] xs:scale-[1.03]'
-                                    : 'glass-card border border-slate-200/80 dark:border-white/10 hover:border-red-500/40 shadow-lg'
-                                    }`}
-                            >
-                                {isMatched && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
-                                        <span className="inline-block text-[10px] xs:text-[11px] font-bold uppercase tracking-widest bg-red-600 text-white px-2.5 xs:px-3 py-1 rounded-full shadow-lg shadow-red-500/30 animate-bounce-subtle">
-                                            {t('pricing.recommendedBadge') || 'Tavsiya etiladi'}
-                                        </span>
-                                    </div>
-                                )}
-
-                                <p className={`text-[10px] xs:text-xs font-bold uppercase tracking-widest mb-2.5 xs:mb-3 ${isMatched ? 'text-red-600 dark:text-red-500' : 'text-red-600 dark:text-red-400'}`}>
-                                    {plan.levelsLabel}
-                                </p>
-
-                                <div className="flex items-baseline gap-1.5 mb-4 xs:mb-6">
-                                    <span className={`text-2xl xs:text-3xl font-black tracking-tight text-gray-900 dark:text-white`}>
-                                        {plan.price}
-                                    </span>
-                                    <span className={`text-xs xs:text-sm font-bold text-gray-400 dark:text-gray-500`}>
-                                        {t('pricing.currency') || "so'm"}
-                                    </span>
-                                </div>
-
-                                {isMatched && (
-                                    <p className="text-[11px] xs:text-xs font-bold text-red-500 dark:text-red-400 mb-3 xs:mb-4 -mt-2 xs:-mt-4">
-                                        {t('pricing.recommendedInline') || "Sizning darajangiz uchun tavsiya etiladi"}
-                                    </p>
-                                )}
-
-                                <p className={`text-xs xs:text-sm font-medium leading-relaxed mb-6 xs:mb-8 text-gray-500 dark:text-gray-400`}>
-                                    {t(`pricing.${plan.id}Desc`) ||
-                                        (plan.id === 'basic'
-                                            ? "Boshlang'ich bosqichdagilar uchun mustahkam fundament kursi."
-                                            : plan.id === 'standard'
-                                                ? "O'rta darajadagilar uchun erkin muloqot va grammatika kursi."
-                                                : "Yuqori darajadagilar uchun professional va ravon muloqot kursi.")}
-                                </p>
-
-                                <button
-                                    onClick={() => contactTelegram(plan.levelsLabel)}
-                                    className={`w-full py-3 xs:py-3.5 rounded-xl xs:rounded-2xl font-bold text-xs xs:text-sm transition-all cursor-pointer active:scale-95 ${isMatched
-                                        ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/30 hover:shadow-xl'
-                                        : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:opacity-90'
-                                        }`}
-                                >
-                                    {t('pricing.contactBtn') || 'Bog\'lanish'}
-                                </button>
-                            </div>
-                        )
-                    })}
-                </div>
-
-                <div
-                    data-aos="fade-up"
-                    data-aos-duration="700"
-                    className="mt-8 xs:mt-12 max-w-lg mx-auto text-center bg-white dark:bg-gray-900 rounded-2xl xs:rounded-3xl p-5 xs:p-6 border border-gray-100 dark:border-gray-800/80 shadow-sm"
-                >
-                    <p className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 xs:mb-4">
-                        {t('pricing.otherContact') || 'Yoki bevosita qo\'ng\'iroq qiling:'}
-                    </p>
-                    <button
-                        onClick={contactPhone}
-                        className="text-red-600 dark:text-red-400 font-black text-base xs:text-lg tracking-tight cursor-pointer hover:underline transition-transform hover:scale-105 inline-block"
-                    >
-                        {PHONE_NUMBER}
-                    </button>
-                </div>
-
-            </div>
-
-            <style>{`
-                @keyframes pulse-soft {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.7; }
-                }
-                .animate-pulse-soft { animation: pulse-soft 2.5s ease-in-out infinite; }
-                @keyframes bounce-subtle {
-                    0%, 100% { transform: translateX(-50%) translateY(0); }
-                    50% { transform: translateX(-50%) translateY(-2px); }
-                }
-                .animate-bounce-subtle { animation: bounce-subtle 2s ease-in-out infinite; }
-            `}</style>
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <span className="badge-pill mb-3">
+            ✦ {t('pricing.badge', 'Shaffof Narxlar')}
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-slate-900 dark:text-white tracking-tight">
+            {t('pricing.title', "O'zingizga mos tarifni tanlang")}
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-3 font-normal text-sm sm:text-base">
+            {levelLabel
+              ? `Sizning darajangiz: "${levelLabel}". Quyidagi tavsiya etilgan tarif orqali tezda boshlang.`
+              : t('pricing.description', 'Barcha darsliklar, materiallar va Speaking Club mashg\'ulotlari oylik to\'lov ichiga kiritilgan.')}
+          </p>
         </div>
-    )
+
+        {/* Pricing Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {PRICING_PLANS.map((plan) => {
+            const isPopular = plan.popular;
+            return (
+              <div
+                key={plan.id}
+                className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 ${
+                  isPopular
+                    ? 'bg-white dark:bg-[#0e121e] border-2 border-rose-500 shadow-xl shadow-rose-600/15 scale-[1.02]'
+                    : 'bg-white/80 dark:bg-[#0e121e]/80 border border-slate-200 dark:border-slate-800 shadow-md'
+                }`}
+              >
+                {isPopular && (
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-rose-600 text-white shadow-md shadow-rose-600/30">
+                      Tavsiya etiladi
+                    </span>
+                  </div>
+                )}
+
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 mb-2">
+                    {plan.levels}
+                  </div>
+                  <h3 className="text-xl font-display font-extrabold text-slate-900 dark:text-white mb-4">
+                    {plan.name}
+                  </h3>
+
+                  <div className="flex items-baseline gap-1.5 mb-6">
+                    <span className="text-3xl sm:text-4xl font-display font-black text-slate-900 dark:text-white">
+                      {plan.price}
+                    </span>
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+                      {plan.currency}
+                    </span>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                    {plan.description}
+                  </p>
+
+                  <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-white/10 mb-8">
+                    {plan.features.map((feat, fIdx) => (
+                      <div key={fIdx} className="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300">
+                        <FaCheck className="text-emerald-500 shrink-0 mt-0.5 text-[10px]" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <button
+                    onClick={() => setSelectedPlan(plan.name)}
+                    className={`w-full py-3.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                      isPopular
+                        ? 'btn-primary'
+                        : 'btn-secondary'
+                    }`}
+                  >
+                    Ushbu tarifga yozilish
+                  </button>
+
+                  <button
+                    onClick={() => contactTelegram(plan.name)}
+                    className="w-full py-2.5 rounded-xl text-xs font-semibold text-sky-500 hover:text-sky-600 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <FaTelegramPlane />
+                    <span>Telegramda so'rash</span>
+                  </button>
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Phone Assistance */}
+        <div className="mt-14 max-w-md mx-auto text-center premium-surface p-6 rounded-3xl bg-white dark:bg-[#0e121e] border border-slate-200 dark:border-slate-800">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">
+            Savollaringiz bormi yoki yordam kerakmi?
+          </p>
+          <a
+            href="tel:+998900829979"
+            className="text-rose-600 dark:text-rose-400 font-display font-bold text-lg hover:underline inline-block"
+          >
+            {PHONE_NUMBER}
+          </a>
+        </div>
+
+      </div>
+
+      <ConsultationModal
+        isOpen={!!selectedPlan}
+        onClose={() => setSelectedPlan(null)}
+        defaultCourse={selectedPlan ? `Tarif: ${selectedPlan}` : 'General Course'}
+      />
+    </div>
+  );
 }
