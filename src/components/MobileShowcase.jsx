@@ -173,7 +173,7 @@ export default function MobileShowcase() {
                                             <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full" />
                                         </div>
                                         <img
-                                            src="/photo_2026-07-23_23-14-12.jpg"
+                                            src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-23_23-14-12.jpg"
                                             alt="Mentor Ruhillo Asrorov"
                                             className="w-6.5 sm:w-7.5 h-6.5 sm:h-7.5 rounded-full object-cover object-top ring-2 ring-red-500 shadow-sm"
                                         />
@@ -288,7 +288,7 @@ export default function MobileShowcase() {
                                     <div className="flex items-center justify-between py-0.5 sm:py-1">
                                         <div className="flex items-center gap-2 sm:gap-3">
                                             <img
-                                                src="/photo_2026-07-14_23-35-27.jpg"
+                                                src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg"
                                                 alt="Javohir Munirov"
                                                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover shrink-0 ring-2 ring-red-500/40 shadow-sm"
                                             />
@@ -307,7 +307,7 @@ export default function MobileShowcase() {
                                     <div className="flex items-center justify-between py-0.5 sm:py-1 border-t border-slate-200/70">
                                         <div className="flex items-center gap-2 sm:gap-3">
                                             <img
-                                                src="/photo_2026-07-14_23-35-01.jpg"
+                                                src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg"
                                                 alt="Jahongir Zayniddinov"
                                                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover shrink-0 ring-2 ring-red-500/40 shadow-sm"
                                             />

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 /**
  * PremiumLoader — "VIP Access" uslubidagi premium yuklovchi (loader).
  * Bu variant markazga PTIMUM ning TO'LIQ logotipini (matni bilan) joylaydi.
- * Nishon rasmi tashqi faylga havola qilingan: public/ptimum-logo-transparent-full.png
+ * Nishon rasmi tashqi faylga havola qilingan: publichttps://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/ptimum-logo-transparent-full.png
  *
  * Props:
  *  - text        : markaziy wordmark matni (default: "KIRISH")
@@ -22,8 +22,8 @@ const DEFAULT_CAPTIONS = [
 ];
 
 // PTIMUM ning to'liq logotipi (matni bilan), foni olib tashlangan.
-// Faylni public/ptimum-logo-transparent-full.png sifatida loyihangizga joylashtiring.
-const EMBLEM_SRC = '/ptimum-logo-transparent-full.png';
+// Faylni publichttps://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/ptimum-logo-transparent-full.png sifatida loyihangizga joylashtiring.
+const EMBLEM_SRC = 'https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/ptimum-logo-transparent-full.png';
 
 export default function PremiumLoader({
   text = 'KIRISH',

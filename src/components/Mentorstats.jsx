@@ -12,7 +12,7 @@ const staticMentorsData = [
         experience: "4+ yil tajriba",
         bio: "Ingliz tili va IELTS imtihoniga tayyorlash bo'yicha yuqori darajadagi malakali mutaxassis.",
         skills: ["IELTS 8.0", "Grammar & Speaking", "Business English"],
-        image: "/photo_2026-07-23_23-14-12.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-23_23-14-12.jpg",
         telegram: "https://t.me/rukhillo",
         birthYear: 2001,
         age: 25,

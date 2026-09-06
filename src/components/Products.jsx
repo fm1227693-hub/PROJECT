@@ -6,8 +6,8 @@ const ieltsData = [
     {
         id: 1,
         name: "Javohir Munirov",
-        image: "/photo_2026-07-14_23-35-27.jpg",
-        certImage: "/photo_2026-07-14_23-35-27.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg",
         scores: {
             listening: "9.0",
             reading: "7.5",
@@ -19,8 +19,8 @@ const ieltsData = [
     {
         id: 2,
         name: "Jahongir Zayniddinov",
-        image: "/photo_2026-07-14_23-35-01.jpg",
-        certImage: "/photo_2026-07-14_23-35-01.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg",
         scores: {
             listening: "8.5",
             reading: "6.5",
@@ -32,8 +32,8 @@ const ieltsData = [
     {
         id: 3,
         name: "Mehrangiz Umedova",
-        image: "/photo_2026-07-14_23-35-06.jpg",
-        certImage: "/photo_2026-07-14_23-35-06.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-06.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-06.jpg",
         scores: {
             listening: "7.0",
             reading: "7.0",
@@ -45,8 +45,8 @@ const ieltsData = [
     {
         id: 4,
         name: "Nozigul G'aybilloyeva",
-        image: "/photo_2026-07-14_23-35-09.jpg",
-        certImage: "/photo_2026-07-14_23-35-09.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-09.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-09.jpg",
         scores: {
             listening: "7.5",
             reading: "7.5",
@@ -58,8 +58,8 @@ const ieltsData = [
     {
         id: 5,
         name: "Laziza Djamolova",
-        image: "/photo_2026-07-14_23-35-11.jpg",
-        certImage: "/photo_2026-07-14_23-35-11.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-11.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-11.jpg",
         scores: {
             listening: "6.5",
             reading: "6.5",
@@ -74,8 +74,8 @@ const cefrData = [
     {
         id: 1,
         name: "In'omjon Izomov",
-        image: "/photo_2026-07-14_23-35-19.jpg",
-        certImage: "/photo_2026-07-14_23-35-19.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-19.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-19.jpg",
         scores: {
             listening: "60",
             reading: "61",
@@ -87,8 +87,8 @@ const cefrData = [
     {
         id: 2,
         name: "Sohibjon Sa'dullayev",
-        image: "/photo_2026-07-14_23-35-21.jpg",
-        certImage: "/photo_2026-07-14_23-35-21.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-21.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-21.jpg",
         scores: {
             listening: "55",
             reading: "65",
@@ -100,8 +100,8 @@ const cefrData = [
     {
         id: 3,
         name: "Gulnoza Mirxonova",
-        image: "/photo_2026-07-14_23-35-25.jpg",
-        certImage: "/photo_2026-07-14_23-35-25.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-25.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-25.jpg",
         scores: {
             listening: "47",
             reading: "46",
@@ -113,8 +113,8 @@ const cefrData = [
     {
         id: 4,
         name: "Zarnigor Muxiddinova",
-        image: "/photo_2026-07-14_23-35-23.jpg",
-        certImage: "/photo_2026-07-14_23-35-23.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-23.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-23.jpg",
         scores: {
             listening: "61",
             reading: "58",
@@ -126,8 +126,8 @@ const cefrData = [
     {
         id: 5,
         name: "Rayxon Ashurova",
-        image: "/CEFR68.jpg",
-        certImage: "/CEFR68.jpg",
+        image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/CEFR68.jpg",
+        certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/CEFR68.jpg",
         scores: {
             listening: "66",
             reading: "61",
