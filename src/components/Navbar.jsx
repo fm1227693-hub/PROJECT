@@ -178,7 +178,7 @@ export default function Navbar() {
                         <Link to="/" className="flex items-center gap-2.5 group">
                             <motion.div whileHover={{ scale: 1.12, rotate: -5 }} whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 400, damping: 15 }} className="relative shrink-0">
                                 <img
-                                    src="/Снимок экрана 2026-07-13 125121.png"
+                                    src="/favicon.png"
                                     alt="Optimum Logo"
                                     className="relative w-9 h-9 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/20 shadow-sm"
                                 />
@@ -412,7 +412,7 @@ export default function Navbar() {
                                 <div className="flex items-center gap-3">
                                     <div className="relative shrink-0">
                                         <img
-                                            src="/Снимок экрана 2026-07-13 125121.png"
+                                            src="/favicon.png"
                                             alt="Optimum Logo"
                                             className="relative w-9 h-9 rounded-xl object-cover ring-1 ring-black/10 dark:ring-white/20 shadow-sm"
                                         />
