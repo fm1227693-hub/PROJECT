@@ -135,7 +135,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -8 }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} ${large ? 'bottom-full mb-2 w-full' : 'top-full mt-2 w-40'} bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1`}
+                        className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} ${large ? 'bottom-full mb-2 w-full' : 'top-full mt-2 w-40'} bg-white dark:bg-[#070b14] rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1`}
                     >
                         {Object.entries(LANGS).map(([code, { label, short }]) => (
                             <motion.button
@@ -169,15 +169,14 @@ export default function Navbar() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 className={`mx-auto transition-all duration-500 pointer-events-auto relative ${scrolled
-                    ? 'max-w-[1216px] rounded-2xl bg-white/80 dark:bg-[#030712]/80 backdrop-blur-2xl border border-gray-200/70 dark:border-white/[0.09] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]'
-                    : 'max-w-full rounded-none bg-white/40 dark:bg-[#030712]/30 backdrop-blur-md border-b border-transparent'
+                    ? 'max-w-[1216px] rounded-2xl bg-white/95 dark:bg-[#030712]/95 border border-gray-200/70 dark:border-white/[0.09] shadow-lg dark:shadow-xl'
+                    : 'max-w-full rounded-none bg-white dark:bg-[#030712] border-b border-transparent'
                 }`}
             >
                 <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 shrink-0">
                         <Link to="/" className="flex items-center gap-2.5 group">
                             <motion.div whileHover={{ scale: 1.12, rotate: -5 }} whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 400, damping: 15 }} className="relative shrink-0">
-                                <div className="absolute -inset-1 bg-gradient-to-r from-[#c41e30] to-rose-600 rounded-xl blur-[8px] opacity-50 group-hover:opacity-90 transition duration-300" />
                                 <img
                                     src="/Снимок экрана 2026-07-13 125121.png"
                                     alt="Optimum Logo"
@@ -225,7 +224,7 @@ export default function Navbar() {
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.95, y: -8 }}
                                         transition={{ duration: 0.2 }}
-                                        className="absolute left-0 top-full mt-2 w-48 bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1"
+                                        className="absolute left-0 top-full mt-2 w-48 bg-white dark:bg-[#070b14] rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1"
                                     >
                                         <Link
                                             to="/about"
@@ -278,7 +277,7 @@ export default function Navbar() {
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.95, y: -8 }}
                                         transition={{ duration: 0.2 }}
-                                        className="absolute left-0 top-full mt-2 w-52 bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1"
+                                        className="absolute left-0 top-full mt-2 w-52 bg-white dark:bg-[#070b14] rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-1.5 z-[110] flex flex-col gap-1"
                                     >
                                         <Link
                                             to="/ielts-writing"
@@ -396,7 +395,7 @@ export default function Navbar() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
                             onClick={() => setMenuOpen(false)}
-                            className="lg:hidden fixed inset-0 z-[95] bg-black/60 backdrop-blur-sm"
+                            className="lg:hidden fixed inset-0 z-[95] bg-black/80"
                         />
 
                         {/* Premium Slide-in Drawer */}
@@ -412,7 +411,6 @@ export default function Navbar() {
                             <div className="flex items-center justify-between px-6 py-5 border-b border-black/[0.05] dark:border-white/[0.08] shrink-0">
                                 <div className="flex items-center gap-3">
                                     <div className="relative shrink-0">
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-[#c41e30] to-rose-600 rounded-xl blur-[8px] opacity-60" />
                                         <img
                                             src="/Снимок экрана 2026-07-13 125121.png"
                                             alt="Optimum Logo"

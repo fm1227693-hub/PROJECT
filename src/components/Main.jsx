@@ -16,26 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Main() {
   useEffect(() => {
-    const lenis = new Lenis({
-      lerp: 0.06, // Super smooth interpolation for that premium heavy float
-      smoothWheel: true,
-      wheelMultiplier: 1,
-    });
-
-    // Lenis ni GSAP ScrollTrigger bilan ulash:
-    // Lenis scroll eventida ScrollTrigger.update() chaqiriladi
-    lenis.on('scroll', ScrollTrigger.update);
-
-    // GSAP ticker orqali Lenis ni yangilash (rAF zanjirida)
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      lenis.destroy();
-      gsap.ticker.remove();
-    };
+    // Lenis smooth scroll and GSAP ScrollTrigger ticker removed to prevent site freezing
   }, []);
 
   return (

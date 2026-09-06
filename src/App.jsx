@@ -55,64 +55,14 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Ultra-Smooth Premium Scroll Reveal Observer
+  // Ultra-Smooth Premium Scroll Reveal Observer removed for performance
   useEffect(() => {
-    if (isLoading) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const delayAttr = el.getAttribute('data-aos-delay');
-            if (delayAttr) {
-              const delayMs = parseInt(delayAttr, 10);
-              el.style.transitionDelay = `${delayMs}ms`;
-            }
-            el.classList.add('aos-animate');
-            observer.unobserve(el);
-          }
-        });
-      },
-      { rootMargin: '0px 0px -50px 0px', threshold: 0.1 }
-    );
-
-    const observeAll = () => {
-      const elements = document.querySelectorAll('[data-aos]');
-      elements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        // Ekranda ko'rinib turgan qismini darhol ko'rsatamiz
-        if (rect.top <= (window.innerHeight || document.documentElement.clientHeight) - 50) {
-          const delayAttr = el.getAttribute('data-aos-delay');
-          if (delayAttr) {
-            const delayMs = parseInt(delayAttr, 10);
-            el.style.transitionDelay = `${delayMs}ms`;
-          }
-          el.classList.add('aos-animate');
-        } else {
-          if (!el.classList.contains('aos-animate')) {
-            observer.observe(el);
-          }
-        }
-      });
-    };
-
-    // Sahifa render bo'lishi va AnimatePresence (0.4s) kutish vaqtlarini hisobga olib bir necha marta chaqiramiz
-    const timer1 = setTimeout(observeAll, 50);
-    const timer2 = setTimeout(observeAll, 450); // mode="wait" dan keyin yangi sahifa tushganda
-    const timer3 = setTimeout(observeAll, 800); // Xavfsizlik uchun
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      observer.disconnect();
-    };
+    // Removed intersection observer animations to prevent site freezing
   }, [isLoading, location.pathname]);
 
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-x-hidden font-sans">
-      <CustomCursor />
+      {/* CustomCursor removed for performance */}
       
       {/* Synthetic Theme Transition Loading Screen */}
       <ThemeTransitionLoader />

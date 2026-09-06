@@ -14,10 +14,6 @@
 }
 
 /* Custom Luxury Scrollbar */
-body.hide-default-cursor, 
-body.hide-default-cursor * {
-  cursor: none !important;
-}
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -205,26 +201,11 @@ body.hide-default-cursor * {
   pointer-events-none: true;
 }
 
-/* Premium Ultra-Smooth Scroll Reveal */
+/* Premium Ultra-Smooth Scroll Reveal removed for performance */
 [data-aos] {
-  opacity: 0;
-  transition-property: opacity, transform, filter;
-  transition-duration: 1.2s;
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
-  filter: blur(12px);
-}
-
-[data-aos="fade-up"]:not(.aos-animate) { transform: translate3d(0, 60px, 0) scale(0.95); opacity: 0; filter: blur(12px); }
-[data-aos="fade-down"]:not(.aos-animate) { transform: translate3d(0, -60px, 0) scale(0.95); opacity: 0; filter: blur(12px); }
-[data-aos="fade-left"]:not(.aos-animate) { transform: translate3d(60px, 0, 0) scale(0.95); opacity: 0; filter: blur(12px); }
-[data-aos="fade-right"]:not(.aos-animate) { transform: translate3d(-60px, 0, 0) scale(0.95); opacity: 0; filter: blur(12px); }
-[data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.85); opacity: 0; filter: blur(12px); }
-
-[data-aos].aos-animate {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0px);
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
 }
 
 @keyframes float-slow {
