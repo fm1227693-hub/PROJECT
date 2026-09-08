@@ -99,36 +99,36 @@ export default function App() {
         />
       )}
 
-      {/* Interactive Particle Mesh & Light Node Canvas */}
+      {/* Eski fon animatsiyalari va effektlari (mijoz talabiga binoan olib tashlanmadi, shunchaki ishlatilmaydi) */}
+      {/* 
       <BackgroundCanvas />
 
-      {/* Master Luxury Ambient Background Layers */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        {/* Base Gradient Canvas (Disabled in favor of 3D Canvas) */}
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-slate-100/90 to-white dark:from-[#030712] dark:via-[#060a14] dark:to-[#090d1a] transition-colors duration-500" /> */}
-
-        {/* Glow Radial Grid Matrix */}
-        <div
-          className="absolute inset-0 opacity-[0.4] dark:opacity-[0.16]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(225,29,72,0.35) 1.2px, transparent 1.2px)",
-            backgroundSize: "36px 36px",
-          }}
-        />
-
-        {/* Dynamic Rotating Aurora Beams */}
+        <div className="absolute inset-0 opacity-[0.4] dark:opacity-[0.16]" style={{ backgroundImage: "radial-gradient(circle, rgba(225,29,72,0.35) 1.2px, transparent 1.2px)", backgroundSize: "36px 36px" }} />
         <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/40 via-rose-500/30 dark:from-red-600/30 dark:via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1 transition-colors duration-500" />
         <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/40 via-amber-500/30 dark:from-rose-600/25 dark:via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2 transition-colors duration-500" />
         <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/40 via-rose-500/30 dark:from-red-600/25 dark:via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s] transition-colors duration-500" />
-
-        {/* Floating Glowing Neon Rings */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-700/30 dark:border-red-500/15 rounded-full blur-sm animate-float-orb transition-colors duration-500" />
         <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-700/30 dark:border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s] transition-colors duration-500" />
-
-        {/* Smooth Edge Fade Overlays */}
         <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100/90 dark:from-[#020509] to-transparent pointer-events-none" />
         <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/80 dark:from-[#030712]/90 to-transparent pointer-events-none" />
+      </div> 
+      */}
+
+      {/* Yangi, yengil va sayt dizayniga mos fon */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        {/* Soft subtle mesh background */}
+        <div 
+          className="absolute inset-0 opacity-[0.3] dark:opacity-[0.1]"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(225,29,72,0.1) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        
+        {/* Elegant static glows */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-100/40 dark:bg-rose-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-slate-200/50 dark:bg-blue-900/10 rounded-full blur-[100px]" />
       </div>
 
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
