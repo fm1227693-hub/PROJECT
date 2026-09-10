@@ -99,9 +99,10 @@ export default function LanguageSwitcher({ variant = 'menu' }) {
     );
   }
 
+  // React normalises focus events, so `onBlur` on the wrapper is the focusout
+  // we want: `relatedTarget` is where focus is going, and if that is outside the
+  // widget the list has been tabbed or clicked away from.
   const onLeave = (e) => {
-    // `relatedTarget` is where focus is going; if that is outside the widget the
-    // list has been tabbed or clicked away from.
     if (!rootRef.current?.contains(e.relatedTarget)) setOpen(false);
   };
 
@@ -109,7 +110,7 @@ export default function LanguageSwitcher({ variant = 'menu' }) {
     <div
       ref={rootRef}
       className={`lang${open ? ' is-open' : ''}`}
-      onFocusOut={onLeave}
+      onBlur={onLeave}
       onKeyDown={(e) => {
         if (e.key === 'Escape' && open) {
           e.preventDefault();
