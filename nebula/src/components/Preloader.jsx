@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { markBooted } from '@/lib/boot';
 import { isReducedMotion } from '@/lib/motion';
+import { SITE } from '@/data/site';
+import { useCopy } from '@/i18n/prefs';
 
 /**
  * Preloader — a 1.5 second curtain, not a queue.
@@ -26,6 +28,7 @@ function lockScroll(locked) {
 }
 
 export default function Preloader() {
+  const t = useCopy();
   const rootRef = useRef(null);
   const [mounted, setMounted] = useState(false);
   const [done, setDone] = useState(false);
@@ -109,11 +112,11 @@ export default function Preloader() {
   return (
     <div ref={rootRef} className="preload">
       <span className="preload__ghost" data-preload-ghost aria-hidden="true">
-        N
+        {SITE.name.charAt(0)}
       </span>
       <div className="relative flex flex-col items-center gap-4 px-6">
         <p className="preload__mark">
-          {'NEBULA'.split('').map((ch, i) => (
+          {SITE.name.split('').map((ch, i) => (
             <span key={`${ch}-${i}`} className="preload__letter">
               <span data-preload-letter style={{ opacity: 0 }}>
                 {ch}
@@ -127,15 +130,13 @@ export default function Preloader() {
           style={{ transform: 'translateY(6px)' }}
         >
           <span className="inline-block h-px w-6 bg-ember/70" aria-hidden="true" />
-          AI CREATIVE STUDIO — BERLIN
+          {t.meta.tagline.toUpperCase()} — {t.meta.city.toUpperCase()}
           <span className="inline-block h-px w-6 bg-ember/70" aria-hidden="true" />
         </p>
       </div>
 
       <div className="preload__foot">
-        <p className="eyebrow eyebrow--dim max-w-[22ch]">
-          ENTERING THE STUDIO
-        </p>
+        <p className="eyebrow eyebrow--dim max-w-[22ch]">{t.ui.entering}</p>
         <p className="preload__count" aria-hidden="true">
           <span data-preload-count>000</span>
           <span className="text-ember">%</span>
@@ -145,7 +146,7 @@ export default function Preloader() {
       <div className="preload__bar" aria-hidden="true">
         <span data-preload-bar />
       </div>
-      <span className="sr-only">Loading the NEBULA studio experience</span>
+      <span className="sr-only">{t.ui.loading}</span>
     </div>
   );
 }

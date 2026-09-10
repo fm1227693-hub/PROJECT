@@ -8,7 +8,12 @@ import { registerGsap, EASE } from '@/lib/animations';
 import { scrollToSection } from '@/lib/scroll';
 import { whenBooted } from '@/lib/boot';
 import { isReducedMotion } from '@/lib/motion';
-import { NAV_LINKS, SITE } from '@/data/site';
+import { SITE } from '@/data/site';
+import { LANG_EVENT, useCopy, useLang } from '@/i18n/prefs';
+import { useNavLinks } from '@/i18n/use-copy';
+import { LOCALES } from '@/i18n/config';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import ThemeToggle from '@/components/ThemeToggle';
 import MagneticButton from '@/components/MagneticButton';
 
 registerGsap();
@@ -26,6 +31,9 @@ const SHEET_EASE = [0.22, 1, 0.36, 1];
  */
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const t = useCopy();
+  const lang = useLang();
+  const navLinks = useNavLinks();
   const headRef = useRef(null);
   const listRef = useRef(null);
   const markerRef = useRef(null);
@@ -38,6 +46,7 @@ export default function Navbar() {
     // Listeners this effect owns are removed by hand — gsap.context reverts
     // tweens and triggers, not addEventListener.
     let offReveal = null;
+    let offLang = null;
     const ctx = gsap.context(() => {
       const links = gsap.utils.toArray('[data-nav-link]', el);
       const marker = markerRef.current;
@@ -56,7 +65,9 @@ export default function Navbar() {
         }
         marker.classList.add('is-on');
       };
+      let activeHref = null;
       const setActive = (href) => {
+        activeHref = href;
         links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === href));
         if (href) place(href);
         else marker.classList.remove('is-on');
@@ -96,6 +107,14 @@ export default function Navbar() {
       el.addEventListener('focusin', reveal);
       offReveal = () => el.removeEventListener('focusin', reveal);
 
+      // A translated label is a different width, so the hairline under the
+      // active link has to be re-measured — instantly, without a slide.
+      const onLang = () => {
+        if (activeHref) place(activeHref, false);
+      };
+      window.addEventListener(LANG_EVENT, onLang, { passive: true });
+      offLang = () => window.removeEventListener(LANG_EVENT, onLang);
+
       // Active section: one trigger per anchor.
       links.forEach((link) => {
         const href = link.getAttribute('href');
@@ -122,17 +141,19 @@ export default function Navbar() {
 
     return () => {
       offReveal?.();
+      offLang?.();
       ctx.revert();
     };
   }, []);
 
-  // Berlin time — a text write once a second, never a re-render.
+  // The studio clock — a text write every 30s, never a re-render. The locale
+  // follows the language so the separator matches what the reader expects.
   useEffect(() => {
     const node = clockRef.current;
     if (!node) return undefined;
     const tick = () => {
       try {
-        node.textContent = new Intl.DateTimeFormat('en-GB', {
+        node.textContent = new Intl.DateTimeFormat(LOCALES[lang] ?? 'en-GB', {
           timeZone: SITE.timeZoneId,
           hour: '2-digit',
           minute: '2-digit',
@@ -145,7 +166,7 @@ export default function Navbar() {
     tick();
     const id = setInterval(tick, 30000);
     return () => clearInterval(id);
-  }, []);
+  }, [lang]);
 
   // Lock the scroll (Lenis and native) while the sheet is open.
   useEffect(() => {
@@ -193,16 +214,16 @@ export default function Navbar() {
               scrollToSection('#top', { offset: 0, duration: 1.5 });
             }}
             className="nav-word group"
-            aria-label={`${SITE.name} — back to top`}
+            aria-label={`${SITE.name} — ${t.ui.backToTop}`}
             data-cursor="expand"
           >
             <span className="nav-word__mark">{SITE.name}</span>
             <span className="nav-word__dot" aria-hidden="true" />
-            <span className="nav-word__label hidden sm:inline">STUDIO</span>
+            <span className="nav-word__label hidden sm:inline">{t.ui.studio}</span>
           </a>
 
-          <nav aria-label="Primary" ref={listRef} className="nav-list">
-            {NAV_LINKS.map((link, i) => (
+          <nav aria-label={t.ui.primary} ref={listRef} className="nav-list">
+            {navLinks.map((link, i) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -220,13 +241,20 @@ export default function Navbar() {
             <span className="nav-marker" ref={markerRef} aria-hidden="true" />
           </nav>
 
-          <div className="flex items-center gap-6">
-            <p className="nav-clock eyebrow hidden text-[9px] lg:block" aria-label="Local studio time">
-              <span ref={clockRef} /> BERLIN
+          <div className="flex items-center gap-4 sm:gap-6">
+            <p className="nav-clock eyebrow hidden text-[9px] lg:block" aria-label={t.ui.localTime}>
+              <span ref={clockRef} /> {t.meta.city.toUpperCase()}
             </p>
+
+            {/* The two global controls, in the navbar's own type voice. */}
+            <div className="nav-tools">
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
+
             <span className="nav-cta">
               <MagneticButton href="#contact" className="!px-4 !py-2.5" strength={0.85}>
-                START A PROJECT
+                {t.ui.startProject}
               </MagneticButton>
             </span>
 
@@ -235,11 +263,11 @@ export default function Navbar() {
               onClick={toggleMenu}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={menuOpen ? t.ui.closeMenu : t.ui.openMenu}
               className="nav-burger"
               data-cursor="expand"
             >
-              <span className="nav-burger__label">{menuOpen ? 'CLOSE' : 'MENU'}</span>
+              <span className="nav-burger__label">{menuOpen ? t.ui.close : t.ui.menu}</span>
               <span className="nav-burger__box" aria-hidden="true">
                 <span className="nav-burger__bar" />
                 <span className="nav-burger__bar" />
@@ -259,8 +287,8 @@ export default function Navbar() {
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.6, ease: SHEET_EASE }}
           >
-            <nav aria-label="Mobile" className="flex flex-col">
-              {NAV_LINKS.map((link, i) => (
+            <nav aria-label={t.ui.mobileNav} className="flex flex-col">
+              {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
@@ -281,8 +309,23 @@ export default function Navbar() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6, ease: SHEET_EASE }}
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-7"
             >
+              {/* Language + theme live here on small screens: the bar itself only
+                  has room for the wordmark and the menu button. */}
+              <div className="sheet__controls">
+                <LanguageSwitcher variant="chips" />
+                <ThemeToggle variant="sheet" />
+              </div>
+
+              <MagneticButton
+                href="#contact"
+                className="w-full justify-center !px-5"
+                onClick={() => setMenuOpen(false)}
+              >
+                {t.ui.startProject}
+              </MagneticButton>
+
               <a
                 href={`mailto:${SITE.email}`}
                 className="link-underline w-fit font-display text-[6.5vw] leading-none sm:text-2xl"
@@ -291,10 +334,10 @@ export default function Navbar() {
               </a>
               <p className="eyebrow eyebrow--dim flex items-center gap-2.5 text-[9px]">
                 <span className="status-dot" aria-hidden="true" />
-                AVAILABLE FOR SELECT PROJECTS
+                {t.ui.availability}
               </p>
               <p className="eyebrow eyebrow--dim text-[9px]">
-                {SITE.city.toUpperCase()} · {SITE.timezone}
+                {t.meta.city.toUpperCase()} · {t.meta.timezone}
               </p>
             </motion.div>
           </motion.div>

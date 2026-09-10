@@ -4,16 +4,12 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { registerGsap } from '@/lib/animations';
+import { useCopy } from '@/i18n/prefs';
 
 registerGsap();
 
-const SECTIONS = [
-  { id: 'hero', label: 'NEBULA' },
-  { id: 'capabilities', label: 'CAPABILITIES' },
-  { id: 'work', label: 'WORK' },
-  { id: 'engine', label: 'ENGINE' },
-  { id: 'contact', label: 'CONTACT' },
-];
+/** Anchors the rail mirrors — the tab titles come from `rail` in the dictionary. */
+const SECTIONS = ['hero', 'capabilities', 'work', 'engine', 'contact'];
 
 /** How far the thumb travels, as a share of its own height. */
 const TRAVEL = 212.5;
@@ -28,6 +24,7 @@ const TRAVEL = 212.5;
  * pure CSS, keyed off the same `data-tone` the section seams already maintain.
  */
 export default function ScrollProgress() {
+  const t = useCopy();
   const barRef = useRef(null);
   const thumbRef = useRef(null);
   const pctRef = useRef(null);
@@ -71,8 +68,8 @@ export default function ScrollProgress() {
           <span className="rail-index__thumb" ref={thumbRef} />
         </span>
         <span className="rail-index__ticks">
-          {SECTIONS.map((s) => (
-            <span key={s.id} className="rail-index__tick" data-for={s.id} title={s.label} />
+          {SECTIONS.map((id, i) => (
+            <span key={id} className="rail-index__tick" data-for={id} title={t.rail[i]} />
           ))}
         </span>
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { SEAM_TICKER } from '@/data/site';
+import { useCopy } from '@/i18n/prefs';
 
 /**
  * Ticker — the connective tissue between sections. One CSS transform
@@ -10,8 +10,10 @@ import { SEAM_TICKER } from '@/data/site';
  * the viewport: an infinite animation should never cost frames nobody can see.
  * No JavaScript per frame, no RAF, no layout work.
  */
-export default function Ticker({ items = SEAM_TICKER, className = '' }) {
+export default function Ticker({ items, className = '' }) {
   const ref = useRef(null);
+  const t = useCopy();
+  const words = items ?? t.ticker;
 
   useEffect(() => {
     const el = ref.current;
@@ -31,7 +33,7 @@ export default function Ticker({ items = SEAM_TICKER, className = '' }) {
       <div className="ticker__track">
         {[0, 1].map((half) => (
           <div key={half} className="flex shrink-0">
-            {items.map((label) => (
+            {words.map((label) => (
               <span className="ticker__item" key={`${half}-${label}`}>
                 {label}
                 <span className="ticker__dot" />

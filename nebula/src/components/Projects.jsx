@@ -8,7 +8,8 @@ import { registerGsap, EASE } from '@/lib/animations';
 import ProjectCard from '@/components/ProjectCard';
 import Reveal from '@/components/Reveal';
 import Seam from '@/components/Seam';
-import { PROJECTS } from '@/data/site';
+import { useCopy } from '@/i18n/prefs';
+import { useProjects } from '@/i18n/use-copy';
 
 registerGsap();
 
@@ -29,6 +30,8 @@ export default function Projects() {
   const sectionRef = useRef(null);
   const railRef = useRef(null);
   const trackRef = useRef(null);
+  const t = useCopy();
+  const projects = useProjects();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -230,62 +233,64 @@ export default function Projects() {
   return (
     <section ref={sectionRef} id="work" aria-labelledby="work-title" className="relative">
       <div className="shell">
-        <Seam index="02" label="SELECTED WORK" note="2025 — 2026" tone="work" />
+        <Seam index="02" label={t.seams.work.label} note={t.seams.work.note} tone="work" />
 
         <div className="section-head">
           <div>
             <Reveal>
               <p className="eyebrow mb-6 flex items-center gap-3">
                 <span className="inline-block h-px w-8 bg-ember/70" aria-hidden="true" />
-                THREE WORLDS, SHIPPED END TO END
+                {t.projects.eyebrow}
               </p>
             </Reveal>
             <Reveal from="lines" stagger={0.12}>
               <h2 id="work-title" data-projects-heading className="headline-anim display-lg">
-                <span className="line-mask">
-                  <span data-reveal-line className="line-inner">
-                    THREE WORLDS
+                {t.projects.heading.map((line, i) => (
+                  <span className="line-mask" key={`prj-line-${i}`}>
+                    <span
+                      data-reveal-line
+                      className={`line-inner${i === 1 ? ' hairline-type' : ''}`}
+                    >
+                      {line}
+                    </span>
                   </span>
-                </span>
-                <span className="line-mask">
-                  <span data-reveal-line className="line-inner hairline-type">
-                    WE SHIPPED
-                  </span>
-                </span>
+                ))}
               </h2>
             </Reveal>
           </div>
 
           <Reveal delay={0.18} className="hidden max-w-[34ch] lg:block">
-            <p className="lead">
-              Scrolling advances the rail. Every project below shipped end to end — concept,
-              interface, engine, and the night we made it production-ready.
-            </p>
-            <p className="eyebrow eyebrow--dim mt-6 text-[9px]">HOLD AND DRAG · OR KEEP SCROLLING</p>
+            <p className="lead">{t.projects.lead}</p>
+            <p className="eyebrow eyebrow--dim mt-6 text-[9px]">{t.ui.holdDrag}</p>
           </Reveal>
         </div>
       </div>
 
       {/* Desktop: pinned horizontal stage */}
-      <div ref={railRef} className="rail no-scrollbar" data-cursor="drag" data-cursor-label="DRAG">
+      <div
+        ref={railRef}
+        className="rail no-scrollbar"
+        data-cursor="drag"
+        data-cursor-label={t.ui.drag}
+      >
         <span className="rail__edge rail__edge--l" aria-hidden="true" />
         <span className="rail__edge rail__edge--r" aria-hidden="true" />
 
         <div ref={trackRef} className="rail__track">
-          {PROJECTS.map((project, i) => (
+          {projects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} layout="rail" />
           ))}
         </div>
 
         <div className="rail__hud">
           <p className="eyebrow eyebrow--dim text-[9px]">
-            <span data-rail-readout>01 / {String(PROJECTS.length).padStart(2, '0')}</span>
+            <span data-rail-readout>01 / {String(projects.length).padStart(2, '0')}</span>
           </p>
           <span className="rail__bar" aria-hidden="true">
             <span data-rail-bar />
           </span>
           <div className="rail__ticks" aria-hidden="true">
-            {PROJECTS.map((p, i) => (
+            {projects.map((p, i) => (
               <span key={p.id} data-rail-tick className={`rail__tick${i === 0 ? ' is-on' : ''}`} />
             ))}
           </div>
@@ -295,7 +300,7 @@ export default function Projects() {
       {/* Mobile / tablet: vertical list */}
       <div className="shell pb-20 pt-4 lg:hidden">
         <div className="prj-stack">
-          {PROJECTS.map((project, i) => (
+          {projects.map((project, i) => (
             <Reveal key={project.id} from="clip" className="w-full">
               <ProjectCard project={project} index={i} layout="stack" />
             </Reveal>

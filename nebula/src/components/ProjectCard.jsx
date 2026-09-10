@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 
+import { useCopy } from '@/i18n/prefs';
+
 /**
  * ProjectCard — one editorial plate.
  *
@@ -15,19 +17,24 @@ import Image from 'next/image';
  */
 export default function ProjectCard({ project, index, layout = 'rail' }) {
   const { id, title, category, year, role, blurb, image, width, height, stack, outcome } = project;
+  const t = useCopy();
 
   return (
     <article
       data-project-card
       data-cursor="view"
-      data-cursor-label="VIEW"
+      data-cursor-label={t.ui.view}
       className={`prj group${layout === 'stack' ? ' prj--stack' : ''}`}
     >
       <span className="prj__num" aria-hidden="true">
         {id}
       </span>
 
-      <a href="#contact" className="prj__link" aria-label={`${title} — ${category}. Open case`}>
+      <a
+        href="#contact"
+        className="prj__link"
+        aria-label={`${title} — ${category}. ${t.ui.caseAria}`}
+      >
         <div className="prj__lift">
           <div className="prj__head">
             <span className="num text-halo/70 transition-colors duration-500 group-hover:text-halo">
@@ -45,7 +52,7 @@ export default function ProjectCard({ project, index, layout = 'rail' }) {
             <div className="prj__zoom" data-reveal-media>
               <Image
                 src={image}
-                alt={`${title} — ${category} project visual`}
+                alt={`${title} — ${category} ${t.ui.visual}`}
                 width={width}
                 height={height}
                 loading={layout === 'rail' && index === 0 ? 'eager' : 'lazy'}
@@ -68,7 +75,7 @@ export default function ProjectCard({ project, index, layout = 'rail' }) {
             </span>
           </div>
 
-          <ul className="prj__stack" aria-label="Built with">
+          <ul className="prj__stack" aria-label={t.ui.builtWith}>
             {stack.map((s) => (
               <li key={s}>{s}</li>
             ))}
@@ -78,7 +85,9 @@ export default function ProjectCard({ project, index, layout = 'rail' }) {
             <p className="prj__desc">{blurb}</p>
             <p className="eyebrow eyebrow--dim shrink-0 text-right text-[9px]">
               {role}
-              <span className="mt-1 block text-halo/80">OPEN CASE ↗</span>
+              <span className="mt-1 block text-halo/80">
+                {t.ui.openCase} <span aria-hidden="true">↗</span>
+              </span>
             </p>
           </div>
         </div>

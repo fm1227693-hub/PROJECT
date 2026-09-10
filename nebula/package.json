@@ -1,5 +1,5 @@
 {
-  "name": "nebula-studio",
+  "name": "nuvane",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 3000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "i18n:audit": "node scripts/i18n-audit.mjs"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.5",

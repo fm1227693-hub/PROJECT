@@ -7,7 +7,9 @@ import { registerGsap, EASE, depth, countUp } from '@/lib/animations';
 import { whenBooted } from '@/lib/boot';
 import dynamic from 'next/dynamic';
 import MagneticButton from '@/components/MagneticButton';
-import { HERO_LINES, STATS, SITE } from '@/data/site';
+import { SITE } from '@/data/site';
+import { useCopy } from '@/i18n/prefs';
+import { useStats } from '@/i18n/use-copy';
 
 registerGsap();
 
@@ -35,6 +37,8 @@ const HeroScene = dynamic(() => import('@/components/HeroScene'), {
 export default function Hero() {
   const sectionRef = useRef(null);
   const started = useRef(false);
+  const t = useCopy();
+  const stats = useStats();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -278,7 +282,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-[-10%] -z-30"
         style={{
           background:
-            'radial-gradient(115% 80% at 74% 6%, rgba(200,112,58,0.16) 0%, rgba(200,112,58,0.035) 40%, transparent 70%), radial-gradient(90% 70% at 4% 96%, rgba(126,140,168,0.09) 0%, transparent 62%)',
+            'radial-gradient(115% 80% at 74% 6%, rgb(var(--ember-rgb) / 0.16) 0%, rgb(var(--ember-rgb) / 0.035) 40%, transparent 70%), radial-gradient(90% 70% at 4% 96%, rgb(var(--cool-rgb) / 0.09) 0%, transparent 62%)',
         }}
       />
 
@@ -300,7 +304,7 @@ export default function Hero() {
         style={{
           opacity: 0.6,
           background:
-            'linear-gradient(to bottom, transparent, rgba(7,7,10,0.8) 62%, var(--color-void))',
+            'linear-gradient(to bottom, transparent, rgb(var(--bg-rgb) / 0.8) 62%, var(--color-void))',
         }}
       />
 
@@ -308,11 +312,11 @@ export default function Hero() {
       <div className="shell hero-stage relative">
         <p className="hero-side hero-side--left" data-hero-rail="left" aria-hidden="true">
           <span>
-            EST. {SITE.established} — INDEPENDENT STUDIO
+            {t.ui.established} {SITE.established} — {t.ui.independent}
           </span>
         </p>
         <p className="hero-side hero-side--right" data-hero-rail="right" aria-hidden="true">
-          <span>SCROLL TO DESCEND</span>
+          <span>{t.ui.scrollDescend}</span>
         </p>
 
         {/* Echo of the engine dial — the same instrument, smaller. It answers
@@ -340,11 +344,11 @@ export default function Hero() {
         <div data-hero-top className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
           <p data-hero-eyebrow className="eyebrow flex items-center gap-3">
             <span className="inline-block h-px w-8 bg-ember/70" aria-hidden="true" />
-            {SITE.name} — {SITE.tagline.toUpperCase()}
+            {SITE.name} — {t.meta.tagline.toUpperCase()}
           </p>
           <p className="eyebrow eyebrow--dim hidden items-center gap-2.5 md:flex">
             <span className="status-dot" aria-hidden="true" />
-            {SITE.city.toUpperCase()} · {SITE.coordinates}
+            {t.meta.city.toUpperCase()} · {SITE.coordinates}
           </p>
         </div>
 
@@ -354,8 +358,10 @@ export default function Hero() {
             data-hero-headline
             className="headline-anim display-xl hero-bleed"
           >
-            {HERO_LINES.map((line, i) => (
-              <span key={line} className="line-mask">
+            {t.hero.lines.map((line, i) => (
+              // Keyed by position: a language change then updates the text in the
+              // same node, so the masks keep the transforms their timeline wrote.
+              <span key={`hero-line-${i}`} className="line-mask">
                 <span
                   data-reveal-line
                   className={`line-inner${i === 1 ? ' hairline-type hero-line--em' : ''}${
@@ -376,17 +382,16 @@ export default function Hero() {
 
           <div className="mt-8 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
             <p data-hero-lead className="hero-pre lead">
-              A studio for experiences that feel inevitable. We compose intelligence, design and
-              real-time graphics into products people remember — engineered to stay weightless.
+              {t.hero.lead}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <span data-hero-cta className="hero-pre">
-                <MagneticButton href="#contact">START A PROJECT</MagneticButton>
+                <MagneticButton href="#contact">{t.ui.startProject}</MagneticButton>
               </span>
               <span data-hero-cta className="hero-pre">
                 <MagneticButton href="#work" variant="ghost">
-                  VIEW WORK
+                  {t.ui.viewWork}
                 </MagneticButton>
               </span>
             </div>
@@ -399,7 +404,7 @@ export default function Hero() {
           style={{ borderColor: 'var(--line)' }}
         >
           <ul className="flex flex-wrap items-end gap-x-9 gap-y-5 sm:gap-x-14">
-            {STATS.map((s) => (
+            {stats.map((s) => (
               <li key={s.label} data-hero-stat data-count-to={s.value} className="hero-stat hero-pre">
                 <span className="hero-stat__value block" data-count>
                   {s.value}
@@ -410,7 +415,7 @@ export default function Hero() {
           </ul>
 
           <div data-hero-cue className="scroll-cue hero-pre eyebrow eyebrow--dim text-[9px]">
-            <span>SCROLL</span>
+            <span>{t.ui.scroll}</span>
             <span className="scroll-cue__track" aria-hidden="true" />
           </div>
         </div>

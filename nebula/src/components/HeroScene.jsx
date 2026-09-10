@@ -8,6 +8,7 @@ import { scrollProgress } from '@/lib/scroll';
 import { subscribePointer } from '@/lib/pointer';
 import { whenBooted } from '@/lib/boot';
 import { isFinePointer, isReducedMotion } from '@/lib/motion';
+import { getTheme, subscribeTheme } from '@/i18n/prefs';
 
 /**
  * HeroScene — the site's only WebGL scene.
@@ -67,8 +68,41 @@ export default function HeroScene({ className = '' }) {
     world.rotation.z = -0.18;
     scene.add(world);
 
+    /* The two shared colours are mutated by the theme switch below — the
+       shell, the rings and the particle shader all point at these instances. */
     const accent = new THREE.Color('#c8703a');
     const pale = new THREE.Color('#d8d5cd');
+
+    /* Additive light on void, normal ink on paper: the same object, painted for
+       whatever ground it sits on. The loop reads its numbers from `level`, so a
+       switch is a data change and never a rebuild. */
+    const PAL = {
+      dark: {
+        accent: '#c8703a',
+        pale: '#d8d5cd',
+        shell: 0.28,
+        ring: 0.22,
+        pts: isSmall ? 0.5 : 0.6,
+        blend: THREE.AdditiveBlending,
+        ambient: 0x0e0e12,
+        ambientI: 1.2,
+        keyI: 1.6,
+        rimI: 1.8,
+      },
+      light: {
+        accent: '#a8481a',
+        pale: '#2a2a31',
+        shell: 0.46,
+        ring: 0.34,
+        pts: isSmall ? 0.26 : 0.34,
+        blend: THREE.NormalBlending,
+        ambient: 0xffffff,
+        ambientI: 0.95,
+        keyI: 1.1,
+        rimI: 0.6,
+      },
+    };
+    const level = { ...PAL.dark };
 
     /* Core — low-poly faceted body */
     const coreGeo = new THREE.IcosahedronGeometry(2.05, isSmall ? 1 : 2);
@@ -176,11 +210,30 @@ export default function HeroScene({ className = '' }) {
     world.add(points);
 
     /* Lights */
-    const key = new THREE.DirectionalLight(0xffd9b8, 1.6);
+    const key = new THREE.DirectionalLight(0xffd9b8, level.keyI);
     key.position.set(4, 3.4, 5);
-    const rim = new THREE.DirectionalLight(0x8f9bb0, 1.8);
+    const rim = new THREE.DirectionalLight(0x8f9bb0, level.rimI);
     rim.position.set(-5, -1.6, -3.4);
-    scene.add(key, rim, new THREE.AmbientLight(0x0e0e12, 1.2));
+    const ambient = new THREE.AmbientLight(level.ambient, level.ambientI);
+    scene.add(key, rim, ambient);
+
+    const applyTheme = (name) => {
+      const next = PAL[name] ?? PAL.dark;
+      Object.assign(level, next);
+      accent.set(next.accent);
+      pale.set(next.pale);
+      shellMat.blending = next.blend;
+      ringMat.blending = next.blend;
+      ptsMat.blending = next.blend;
+      shellMat.transparent = ringMat.transparent = ptsMat.transparent = true;
+      shellMat.needsUpdate = ringMat.needsUpdate = ptsMat.needsUpdate = true;
+      key.intensity = next.keyI;
+      rim.intensity = next.rimI;
+      ambient.intensity = next.ambientI;
+      ambient.color.set(next.ambient);
+      ptsMat.uniforms.uOpacity.value = next.pts;
+      renderer.render(scene, camera);
+    };
 
     /* Sizing — measured from the mount, never from viewport state in React */
     const resize = () => {
@@ -193,6 +246,9 @@ export default function HeroScene({ className = '' }) {
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(mount);
+
+    applyTheme(getTheme());
+    const offTheme = subscribeTheme(() => applyTheme(getTheme()));
 
     /* Pointer parallax — rides the shared bus, no extra listener */
     const spin = { x: 0, y: 0 };
@@ -245,7 +301,7 @@ export default function HeroScene({ className = '' }) {
       const easeIn = 0.84 + 0.16 * intro;
 
       ptsMat.uniforms.uTime.value = t;
-      ptsMat.uniforms.uOpacity.value = (isSmall ? 0.5 : 0.6) * intro;
+      ptsMat.uniforms.uOpacity.value = level.pts * intro;
 
       core.rotation.y = t * 0.13 + p * 1.25 + spin.y;
       core.rotation.x = Math.sin(t * 0.22) * 0.12 + p * 0.42 + spin.x;
@@ -266,8 +322,8 @@ export default function HeroScene({ className = '' }) {
       camera.position.x = p * 1.15 + spin.x * 0.4;
       camera.position.y = -p * 0.95 + spin.y * 0.2;
       world.scale.setScalar(1 + p * 0.2);
-      shellMat.opacity = (0.28 + Math.sin(t * 0.9) * 0.06 + p * 0.18) * intro;
-      ringMat.opacity = (0.22 + p * 0.16) * intro;
+      shellMat.opacity = (level.shell + Math.sin(t * 0.9) * 0.06 + p * 0.18) * intro;
+      ringMat.opacity = (level.ring + p * 0.16) * intro;
 
       renderer.render(scene, camera);
       raf = requestAnimationFrame(render);
@@ -302,6 +358,7 @@ export default function HeroScene({ className = '' }) {
       ro.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       offPointer();
+      offTheme();
       pxTo.tween?.kill();
       pyTo.tween?.kill();
       coreGeo.dispose();

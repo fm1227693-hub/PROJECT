@@ -6,28 +6,41 @@ import Navbar from '@/components/Navbar';
 import CustomCursor from '@/components/CustomCursor';
 import ScrollProgress from '@/components/ScrollProgress';
 import SmoothScroll from '@/components/SmoothScroll';
+import LocaleSync from '@/components/LocaleSync';
+import SkipLink from '@/components/SkipLink';
 
+import { en } from '@/i18n/dictionaries/en';
+
+/**
+ * Metadata is authored in English — the dictionaries under src/i18n hold the
+ * other four, and LocaleSync writes the matching title/description once the
+ * stored preference is known, so the shared preview always matches what the
+ * visitor is reading.
+ */
 export const metadata = {
-  title: 'NEBULA — AI Creative Studio',
-  description:
-    'NEBULA is an AI creative studio building digital worlds: AI experiences, digital products, interactive systems and creative technology.',
+  title: en.meta.title,
+  description: en.meta.description,
   openGraph: {
-    title: 'NEBULA — AI Creative Studio',
-    description: 'We build digital worlds for the AI era.',
+    title: en.meta.title,
+    description: en.meta.ogDescription,
     type: 'website',
   },
 };
 
-// Matches the near-black canvas, so the browser chrome disappears into it.
+// Matches the canvas of each theme, so the browser chrome disappears into it.
 export const viewport = {
-  themeColor: '#07070a',
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#07070a' },
+    { media: '(prefers-color-scheme: light)', color: '#f6f4ef' },
+  ],
 };
 
 /**
  * Runs in <head>, before the first paint and before hydration, so the document
- * already knows its motion tier. The tiers are written as data attributes by
- * this script only — React never renders them, so there is no server/client
- * attribute disagreement to reconcile during hydration.
+ * already knows its motion tier, its theme and its language. The tiers and the
+ * two preference attributes are written by this script only — React never
+ * renders them, so there is no server/client attribute disagreement to
+ * reconcile during hydration, and neither theme nor language can flash.
  */
 const BOOTSTRAP = `
 (function () {
@@ -37,12 +50,38 @@ const BOOTSTRAP = `
   d.dataset.motion = reduced ? 'reduced' : 'full';
   d.dataset.pointer = fine ? 'fine' : 'coarse';
   d.dataset.cursor = fine && !reduced ? 'on' : 'off';
+
+  var store = null;
+  try { store = window.localStorage; } catch (e) { store = null; }
+  var get = function (k) { try { return store ? store.getItem(k) : null; } catch (e) { return null; } };
+
+  var theme = get('theme');
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+  d.dataset.theme = theme;
+
+  var LANGS = { en: 1, es: 1, zh: 1, de: 1, fr: 1 };
+  var ATTRS = { en: 'en', es: 'es', zh: 'zh-Hans', de: 'de', fr: 'fr' };
+  var lang = get('language');
+  if (!lang || !LANGS[lang]) {
+    lang = null;
+    var tags = window.navigator.languages || [window.navigator.language];
+    for (var i = 0; i < tags.length && !lang; i++) {
+      var base = String(tags[i] || '').toLowerCase().slice(0, 2);
+      if (base === 'zh') lang = 'zh';
+      else if (LANGS[base] && base !== 'en') lang = base;
+    }
+  }
+  lang = lang || 'en';
+  d.dataset.lang = lang;
+  d.lang = ATTRS[lang];
 })();
 `;
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOTSTRAP }} />
         {/* Reveal states are hidden by CSS until GSAP plays them; with JS off
@@ -52,12 +91,8 @@ export default function RootLayout({ children }) {
         </noscript>
       </head>
       <body className="text-mist antialiased">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[130] focus:bg-mist focus:px-4 focus:py-2 focus:text-[11px] focus:uppercase focus:tracking-[0.2em] focus:text-void"
-        >
-          Skip to content
-        </a>
+        <LocaleSync />
+        <SkipLink />
         <Preloader />
         <Atmosphere />
         <CustomCursor />

@@ -5,7 +5,9 @@ import gsap from 'gsap';
 import { registerGsap, EASE } from '@/lib/animations';
 import { scrollToSection } from '@/lib/scroll';
 import { isReducedMotion } from '@/lib/motion';
-import { FOOTER_SOCIAL, NAV_LINKS, SITE } from '@/data/site';
+import { FOOTER_SOCIAL, SITE } from '@/data/site';
+import { useCopy } from '@/i18n/prefs';
+import { useNavLinks } from '@/i18n/use-copy';
 
 registerGsap();
 
@@ -19,6 +21,8 @@ registerGsap();
 export default function Footer() {
   const footRef = useRef(null);
   const year = new Date().getFullYear();
+  const t = useCopy();
+  const navLinks = useNavLinks();
 
   useEffect(() => {
     const el = footRef.current;
@@ -55,19 +59,18 @@ export default function Footer() {
           <div>
             <p className="font-display text-3xl leading-none tracking-[0.06em]">{SITE.name}</p>
             <p className="mt-4 max-w-[30ch] text-[13px] leading-relaxed text-ash">
-              An independent AI creative studio building interfaces, products and interactive
-              systems for people who care how it feels.
+              {t.footer.blurb}
             </p>
             <p className="avail mt-7">
               <span className="status-dot" aria-hidden="true" />
-              <span className="eyebrow text-[9px]">AVAILABLE FOR SELECT PROJECTS</span>
+              <span className="eyebrow text-[9px]">{t.ui.availability}</span>
             </p>
           </div>
 
-          <nav aria-label="Footer">
-            <h2 className="eyebrow eyebrow--dim mb-5 text-[9px]">INDEX</h2>
+          <nav aria-label={t.ui.footerNav}>
+            <h2 className="eyebrow eyebrow--dim mb-5 text-[9px]">{t.ui.index}</h2>
             <ul className="flex flex-col gap-2.5">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} onClick={onJump(link.href)} className="foot-link">
                     <span className="link-underline">{link.label}</span>
@@ -78,7 +81,7 @@ export default function Footer() {
           </nav>
 
           <div>
-            <h2 className="eyebrow eyebrow--dim mb-5 text-[9px]">CONTACT</h2>
+            <h2 className="eyebrow eyebrow--dim mb-5 text-[9px]">{t.ui.contact}</h2>
             <ul className="flex flex-col gap-2.5 text-[15px]">
               <li>
                 <a href={`mailto:${SITE.email}`} className="foot-link">
@@ -89,13 +92,13 @@ export default function Footer() {
               <li className="leading-relaxed text-ash">
                 {SITE.address}
                 <br />
-                {SITE.city}, {SITE.country}
+                {t.meta.city}, {t.meta.country}
               </li>
             </ul>
           </div>
 
           <div>
-            <h2 className="eyebrow eyebrow--dim mb-5 text-[9px]">ELSEWHERE</h2>
+            <h2 className="eyebrow eyebrow--dim mb-5 text-[9px]">{t.ui.elsewhere}</h2>
             <ul className="flex flex-col gap-2.5 text-[15px]">
               {FOOTER_SOCIAL.map(([label, href]) => (
                 <li key={label}>
@@ -105,7 +108,7 @@ export default function Footer() {
                     rel="noreferrer noopener"
                     className="foot-link"
                     data-cursor="open"
-                    data-cursor-label="OPEN"
+                    data-cursor-label={t.ui.open}
                   >
                     {label}
                     <span className="foot-link__arrow" aria-hidden="true">
@@ -124,13 +127,13 @@ export default function Footer() {
           style={{ borderColor: 'var(--line)' }}
         >
           <p className="eyebrow eyebrow--dim text-[9px]">
-            © {year} {SITE.name} STUDIO — ALL RIGHTS RESERVED
+            © {year} {SITE.name} — {t.ui.rights}
           </p>
           <p className="eyebrow eyebrow--dim text-[9px]">
-            DESIGNED IN {SITE.city.toUpperCase()} · {SITE.timezone}
+            {t.ui.designedIn} {t.meta.city.toUpperCase()} · {t.meta.timezone}
           </p>
-          <button type="button" onClick={toTop} className="foot-link group" aria-label="Back to top">
-            <span className="link-underline text-[9px] eyebrow">BACK TO TOP</span>
+          <button type="button" onClick={toTop} className="foot-link group" aria-label={t.ui.backToTop}>
+            <span className="link-underline text-[9px] eyebrow">{t.ui.backToTop}</span>
             <span
               className="inline-block text-[11px] transition-transform duration-500 group-hover:-translate-y-1"
               aria-hidden="true"

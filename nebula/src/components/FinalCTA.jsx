@@ -6,7 +6,8 @@ import { registerGsap, EASE, depth, typeSpread } from '@/lib/animations';
 import { isReducedMotion } from '@/lib/motion';
 import MagneticButton from '@/components/MagneticButton';
 import Seam from '@/components/Seam';
-import { AVAILABILITY, SITE } from '@/data/site';
+import { SITE } from '@/data/site';
+import { useCopy } from '@/i18n/prefs';
 
 registerGsap();
 
@@ -20,6 +21,7 @@ registerGsap();
  */
 export default function FinalCTA() {
   const sectionRef = useRef(null);
+  const t = useCopy();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -70,7 +72,12 @@ export default function FinalCTA() {
   return (
     <section ref={sectionRef} id="contact" aria-labelledby="cta-title" className="cta">
       <div className="shell">
-        <Seam index="04" label="CONTACT" note="TWO PARTNERSHIPS OPEN" tone="contact" />
+        <Seam
+          index="04"
+          label={t.seams.contact.label}
+          note={t.seams.contact.note}
+          tone="contact"
+        />
       </div>
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -84,7 +91,8 @@ export default function FinalCTA() {
           className="absolute inset-0"
           style={{
             opacity: 0,
-            background: 'radial-gradient(90% 70% at 50% 104%, rgba(200,112,58,0.13) 0%, transparent 64%)',
+            background:
+              'radial-gradient(90% 70% at 50% 104%, rgb(var(--ember-rgb) / 0.13) 0%, transparent 64%)',
           }}
         />
       </div>
@@ -92,29 +100,26 @@ export default function FinalCTA() {
       <div className="shell pb-10 pt-16 lg:pb-14 lg:pt-24">
         <p className="eyebrow mb-8 flex flex-wrap items-center gap-3">
           <span className="status-dot" aria-hidden="true" />
-          OPEN COMMISSIONS — Q1 2027
+          {t.cta.eyebrow}
         </p>
 
         <h2 id="cta-title" data-cta-title className="cta__title headline-anim">
-          <span className="line-mask">
-            <span data-cta-line className="line-inner">
-              LET&apos;S BUILD
+          {t.cta.heading.map((line, i) => (
+            <span className="line-mask" key={`cta-line-${i}`}>
+              <span
+                data-cta-line
+                className={`line-inner${
+                  i === 1 ? ' hairline-type' : i === 2 ? ' text-ember' : ''
+                }`}
+              >
+                {line}
+              </span>
             </span>
-          </span>
-          <span className="line-mask">
-            <span data-cta-line className="line-inner hairline-type">
-              SOMETHING
-            </span>
-          </span>
-          <span className="line-mask">
-            <span data-cta-line className="line-inner text-ember">
-              UNEXPECTED.
-            </span>
-          </span>
+          ))}
         </h2>
 
-        <dl className="cta__facts mt-12 lg:mt-16" aria-label="Studio availability">
-          {AVAILABILITY.map(([k, v]) => (
+        <dl className="cta__facts mt-12 lg:mt-16" aria-label={t.ui.studioAvailability}>
+          {t.cta.facts.map(([k, v]) => (
             <div key={k} data-cta-fact className="cta__fact">
               <dt className="eyebrow eyebrow--dim text-[9px]">{k}</dt>
               <dd className="mt-2 text-[13px] tracking-[0.02em] text-mist/85">{v}</dd>
@@ -123,14 +128,11 @@ export default function FinalCTA() {
         </dl>
 
         <div className="mt-12 flex flex-col gap-9 sm:mt-16 sm:flex-row sm:items-end sm:justify-between">
-          <p data-cta-sub className="lead max-w-[40ch]">
-            Have an ambitious idea? Let&apos;s turn it into an experience. Two weeks of discovery,
-            then a working prototype you can feel.
-          </p>
+          <p data-cta-sub className="lead max-w-[40ch]">{t.cta.lead}</p>
 
           <div data-cta-button className="shrink-0">
             <MagneticButton href={`mailto:${SITE.email}`} strength={1.15}>
-              START A PROJECT
+              {t.ui.startProject}
             </MagneticButton>
           </div>
         </div>
@@ -144,15 +146,15 @@ export default function FinalCTA() {
             href={`mailto:${SITE.email}`}
             className="cta__mail"
             data-cursor="solid"
-            data-cursor-label="WRITE"
-            aria-label={`Email the studio at ${SITE.email}`}
+            data-cursor-label={t.ui.write}
+            aria-label={`${t.ui.emailAria} ${SITE.email}`}
           >
             {SITE.email}
           </a>
         </span>
         <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-2 border-t pt-4" style={{ borderColor: 'var(--line)' }}>
           <span className="eyebrow eyebrow--dim text-[9px]">
-            {SITE.address} · {SITE.city}, {SITE.country}
+            {SITE.address} · {t.meta.city}, {t.meta.country}
           </span>
           <span className="eyebrow eyebrow--dim ml-auto text-[9px]">{SITE.coordinates}</span>
         </div>

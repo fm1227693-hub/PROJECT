@@ -7,7 +7,9 @@ import { isReducedMotion } from '@/lib/motion';
 import Reveal from '@/components/Reveal';
 import Seam from '@/components/Seam';
 import Ticker from '@/components/Ticker';
-import { TECH_PILLARS, SITE } from '@/data/site';
+import { SITE } from '@/data/site';
+import { LANG_EVENT, useCopy } from '@/i18n/prefs';
+import { usePillars } from '@/i18n/use-copy';
 
 registerGsap();
 
@@ -53,6 +55,15 @@ const NODES = [
 export default function Technology() {
   const sectionRef = useRef(null);
   const stageRef = useRef(null);
+  const t = useCopy();
+  const pillars = usePillars();
+  // The dial's readout is a DOM write owned by the pinned timeline; reading it
+  // through a ref keeps a language swap from having to rebuild that timeline.
+  const pillarsRef = useRef(pillars);
+
+  useEffect(() => {
+    pillarsRef.current = pillars;
+  }, [pillars]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -77,7 +88,7 @@ export default function Technology() {
         step = next;
         items.forEach((it, i) => it.classList.toggle('is-active', i === next));
         nodes.forEach((n, i) => n.classList.toggle('is-on', i === next));
-        if (readout) readout.textContent = TECH_PILLARS[next].word;
+        if (readout) readout.textContent = pillarsRef.current[next].word;
         if (stepLabel) stepLabel.textContent = String(next + 1).padStart(2, '0');
       };
 
@@ -138,7 +149,17 @@ export default function Technology() {
         });
       }, el);
 
-      return () => ctx.revert();
+      // Re-label the readout in the new language, after React has committed.
+      const onLang = () =>
+        requestAnimationFrame(() => {
+          if (readout && step >= 0) readout.textContent = pillarsRef.current[step].word;
+        });
+      window.addEventListener(LANG_EVENT, onLang, { passive: true });
+
+      return () => {
+        window.removeEventListener(LANG_EVENT, onLang);
+        ctx.revert();
+      };
     });
 
     mm.add('(max-width: 1023px)', () => {
@@ -156,7 +177,12 @@ export default function Technology() {
   return (
     <section ref={sectionRef} id="about" aria-labelledby="about-title" className="relative">
       <div className="shell">
-        <Seam index="03" label="TECHNOLOGY / EXPERIENCE" note="AI · DESIGN · CODE · MOTION" tone="engine" />
+        <Seam
+          index="03"
+          label={t.seams.engine.label}
+          note={t.seams.engine.note}
+          tone="engine"
+        />
       </div>
 
       <div className="shell">
@@ -165,27 +191,27 @@ export default function Technology() {
             <Reveal>
               <p className="eyebrow mb-6 flex items-center gap-3">
                 <span className="inline-block h-px w-8 bg-ember/70" aria-hidden="true" />
-                THE ENGINE / 04 DISCIPLINES
+                {t.technology.eyebrow}
               </p>
             </Reveal>
 
             <Reveal from="lines">
               <h2 id="about-title" className="headline-anim display-md max-w-[20ch]">
-                <span className="line-mask">
-                  <span data-reveal-line className="line-inner">
-                    FOUR DISCIPLINES.
+                {t.technology.heading.map((line, i) => (
+                  <span className="line-mask" key={`tech-line-${i}`}>
+                    <span
+                      data-reveal-line
+                      className={`line-inner${i === 1 ? ' hairline-type' : ''}`}
+                    >
+                      {line}
+                    </span>
                   </span>
-                </span>
-                <span className="line-mask">
-                  <span data-reveal-line className="line-inner hairline-type">
-                    ONE SYSTEM.
-                  </span>
-                </span>
+                ))}
               </h2>
             </Reveal>
 
             <div className="tech-words mt-9 lg:mt-12">
-              {TECH_PILLARS.map((p, i) => (
+              {pillars.map((p, i) => (
                 <div
                   key={p.word}
                   data-tech-item
@@ -211,7 +237,7 @@ export default function Technology() {
                 <span data-tech-bar />
               </span>
               <span className="eyebrow eyebrow--dim text-[9px]">
-                <span data-tech-step>01</span> / {String(TECH_PILLARS.length).padStart(2, '0')}
+                <span data-tech-step>01</span> / {String(pillars.length).padStart(2, '0')}
               </span>
             </div>
           </div>
@@ -245,7 +271,7 @@ export default function Technology() {
               <g className="tech-nodes">
                 {NODES.map((n, i) => (
                   <text
-                    key={TECH_PILLARS[i].word}
+                    key={pillars[i].word}
                     data-tech-node
                     x={n.x}
                     y={n.y}
@@ -253,7 +279,7 @@ export default function Technology() {
                     dominantBaseline="middle"
                     className="tech-node"
                   >
-                    {TECH_PILLARS[i].word}
+                    {pillars[i].word}
                   </text>
                 ))}
               </g>
@@ -267,11 +293,11 @@ export default function Technology() {
         <div className="shell py-14 lg:py-20">
           <Reveal stagger={0.14}>
             <p data-reveal-item className="manifesto">
-              We are a studio of eleven: designers who read papers, engineers who kern, and one
-              director who refuses to ship anything at 55 frames per second.
+              {t.technology.manifesto}
             </p>
             <p data-reveal-item className="eyebrow eyebrow--dim mt-7 text-[9px]">
-              {SITE.city.toUpperCase()} · EST. {SITE.established} · INDEPENDENT
+              {t.meta.city.toUpperCase()} · {t.ui.established} {SITE.established} ·{' '}
+              {t.technology.independent}
             </p>
           </Reveal>
         </div>

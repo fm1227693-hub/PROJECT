@@ -7,7 +7,8 @@ import { registerGsap, EASE, countUp, typeSpread } from '@/lib/animations';
 import { isReducedMotion } from '@/lib/motion';
 import Seam from '@/components/Seam';
 import Reveal from '@/components/Reveal';
-import { CAPABILITIES } from '@/data/site';
+import { LANG_EVENT, useCopy } from '@/i18n/prefs';
+import { useCapabilities } from '@/i18n/use-copy';
 
 registerGsap();
 
@@ -26,6 +27,15 @@ registerGsap();
  */
 export default function Capabilities() {
   const sectionRef = useRef(null);
+  const t = useCopy();
+  const capabilities = useCapabilities();
+  // The metric readout is written straight to the DOM by the scroll timeline, so
+  // it reads through a ref: language swaps update the ref, never the timeline.
+  const capsRef = useRef(capabilities);
+
+  useEffect(() => {
+    capsRef.current = capabilities;
+  }, [capabilities]);
 
   // The heading opens as it climbs: one scrubbed gesture, both tiers.
   useEffect(() => {
@@ -54,7 +64,7 @@ export default function Capabilities() {
         rows.forEach((row, i) => row.classList.toggle('is-active', i === index));
         dots.forEach((dot, i) => dot.classList.toggle('is-on', i === index));
         figs.forEach((fig, i) => fig.classList.toggle('is-on', i === index));
-        if (metric) metric.textContent = CAPABILITIES[index].metric;
+        if (metric) metric.textContent = capsRef.current[index].metric;
       };
 
       const offs = [];
@@ -135,6 +145,12 @@ export default function Capabilities() {
         );
 
         paint(0);
+
+        // New language, new words: re-paint the readout one frame later, after
+        // React has committed, instead of rebuilding the whole timeline.
+        const onLang = () => requestAnimationFrame(() => paint(activeIndex));
+        window.addEventListener(LANG_EVENT, onLang, { passive: true });
+        offs.push(() => window.removeEventListener(LANG_EVENT, onLang));
       }, el);
 
       return () => {
@@ -177,8 +193,8 @@ export default function Capabilities() {
       <div className="shell">
         <Seam
           index="01"
-          label="CAPABILITIES"
-          note="FOUR PRACTICES — ONE TEAM"
+          label={t.seams.capabilities.label}
+          note={t.seams.capabilities.note}
           tone="capabilities"
         />
 
@@ -187,7 +203,7 @@ export default function Capabilities() {
             <Reveal>
               <p className="eyebrow mb-6 flex items-center gap-3">
                 <span className="inline-block h-px w-8 bg-ember/70" aria-hidden="true" />
-                WHAT WE DO / 04
+                {t.capabilities.eyebrow}
               </p>
             </Reveal>
 
@@ -196,34 +212,27 @@ export default function Capabilities() {
                 id="capabilities-title"
                 className="headline-anim display-md max-w-[22ch]"
               >
-                <span className="line-mask">
-                  <span data-reveal-line data-cap-spread className="line-inner">
-                    WE TURN COMPLEX
+                {t.capabilities.heading.map((line, i) => (
+                  <span className="line-mask" key={`cap-line-${i}`}>
+                    <span
+                      data-reveal-line
+                      data-cap-spread={i < 2 ? '' : undefined}
+                      className={`line-inner${i === 2 ? ' text-ember' : ''}`}
+                    >
+                      {line}
+                    </span>
                   </span>
-                </span>
-                <span className="line-mask">
-                  <span data-reveal-line data-cap-spread className="line-inner">
-                    TECHNOLOGY INTO
-                  </span>
-                </span>
-                <span className="line-mask">
-                  <span data-reveal-line className="line-inner text-ember">
-                    EXPERIENCES.
-                  </span>
-                </span>
+                ))}
               </h2>
             </Reveal>
 
             <Reveal delay={0.2}>
-              <p className="lead mt-7 max-w-[38ch]">
-                Four practices, one team. We move between research, design and engineering without
-                hand-offs — which is the only way to ship intelligent work that feels considered.
-              </p>
+              <p className="lead mt-7 max-w-[38ch]">{t.capabilities.lead}</p>
             </Reveal>
 
             {/* Focus visual — cross-faded by hover and scroll together */}
             <div className="cap-view" aria-hidden="true">
-              {CAPABILITIES.map((cap, i) => (
+              {capabilities.map((cap, i) => (
                 <figure key={cap.id} data-cap-fig className={`cap-view__fig${i === 0 ? ' is-on' : ''}`}>
                   <img src={cap.image} alt="" loading="lazy" width={1408} height={768} />
                   <span className="cap-view__grid" />
@@ -237,23 +246,23 @@ export default function Capabilities() {
 
             <div className="mt-9 flex items-center gap-5">
               <ul className="cap-dots" aria-hidden="true">
-                {CAPABILITIES.map((cap, i) => (
+                {capabilities.map((cap, i) => (
                   <li key={cap.id} data-cap-dot className={`cap-dot${i === 0 ? ' is-on' : ''}`} />
                 ))}
               </ul>
-              <p className="eyebrow eyebrow--dim text-[9px] lg:hidden">04 PRACTICES</p>
+              <p className="eyebrow eyebrow--dim text-[9px] lg:hidden">{t.capabilities.count}</p>
               <p
                 data-cap-metric
                 className="num ml-auto hidden text-[9px] text-halo/70 lg:block"
                 aria-hidden="true"
               >
-                {CAPABILITIES[0].metric}
+                {capabilities[0].metric}
               </p>
             </div>
           </div>
 
           <ul className="cap-list">
-            {CAPABILITIES.map((cap) => (
+            {capabilities.map((cap) => (
               <li key={cap.id} data-cap-row className="cap-row">
                 <span className="cap-row__bar" aria-hidden="true" />
                 <span className="cap-ghost" aria-hidden="true">
