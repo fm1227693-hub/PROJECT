@@ -2754,16 +2754,8 @@ html[data-theme='light'] .foot-word__text {
   -webkit-text-stroke-color: rgb(var(--fg-rgb) / 0.14);
 }
 
-/* The scene is WebGL, so it cannot read CSS variables on its own; it samples
-   these two at build and on every theme switch. */
-html[data-theme='light'] {
-  --scene-bg: #f3f0ea;
-  --scene-fog: #e6e1d6;
-}
-:root {
-  --scene-bg: #0b0b0e;
-  --scene-fog: #150d07;
-}
+/* The WebGL hero cannot read CSS variables, so it carries its own palette table
+   in components/HeroScene.jsx and re-tints on a store subscription. */
 
 /* ================================================================== */
 /* Theme + language transitions                                        */
