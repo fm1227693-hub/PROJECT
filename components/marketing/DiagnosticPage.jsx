@@ -44,7 +44,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
         title={copy.title}
         body={copy.body}
         actions={[
-          { label: `Start the ${isMath ? "Mathematics" : "English"} diagnostic`, href: `/student/diagnostic/${subject}/test` },
+          { label: `Start the ${isMath ? "Mathematics" : "English"} diagnostic`, href: `/student/diagnostic/${subject}` },
           { label: "See a sample report", href: "/sample-report", variant: "secondary" },
         ]}
         meta={[
@@ -112,7 +112,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
                 ))}
               </div>
 
-              <Link href={`/student/diagnostic/${subject}-analysis`} className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand hover:underline">
+              <Link href="/student/diagnostic/analysis" className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-brand hover:underline">
                 Open the full analysis
                 <ArrowRight className="size-3.5" aria-hidden="true" />
               </Link>
@@ -320,7 +320,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
       <CtaBand
         title={isMath ? "Find out which part of mathematics is holding you back." : "Find out which part of English is holding you back."}
         body="The diagnostic is free on the entry plan, runs in about fifteen minutes for a single subject, and reports every skill separately."
-        primary={{ label: `Start the ${isMath ? "Mathematics" : "English"} test`, href: `/student/diagnostic/${subject}/test` }}
+        primary={{ label: `Start the ${isMath ? "Mathematics" : "English"} test`, href: `/student/diagnostic/${subject}` }}
         secondary={{ label: "Browse the topic map", href: `/${subject}` }}
       />
     </>

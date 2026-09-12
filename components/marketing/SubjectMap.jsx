@@ -36,7 +36,7 @@ export default function SubjectMap({ subject, copy }) {
         title={copy.mapTitle}
         body={copy.mapBody}
         actions={[
-          { label: `Start the ${subject === "math" ? "Mathematics" : "English"} diagnostic`, href: `/student/diagnostic/${subject}/test` },
+          { label: `Start the ${subject === "math" ? "Mathematics" : "English"} diagnostic`, href: `/student/diagnostic/${subject}` },
           { label: "How scoring works", href: "/how-it-works", variant: "secondary" },
         ]}
         meta={[
@@ -199,7 +199,7 @@ export default function SubjectMap({ subject, copy }) {
       <CtaBand
         title={copy.ctaTitle}
         body={copy.ctaBody}
-        primary={{ label: "Start the diagnostic", href: `/student/diagnostic/${subject}/test` }}
+        primary={{ label: "Start the diagnostic", href: `/student/diagnostic/${subject}` }}
         secondary={{ label: "Read a sample report", href: "/sample-report" }}
         note={
           <>

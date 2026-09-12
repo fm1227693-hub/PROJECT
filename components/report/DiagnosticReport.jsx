@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Download, Printer, RotateCcw, Sparkles } from "lucide-react";
 
 import { cn, formatDate } from "@/lib/utils";
+import { topicHref } from "@/lib/data/topicRoutes";
 import { SUBJECT_META, TONE_CLASSES, bandFor } from "@/lib/data/brand";
 import { DOMAINS } from "@/lib/data/topics";
 import { buildResult } from "@/lib/engine/scoring";
@@ -190,7 +191,7 @@ export function TopicBreakdown({ topicScores, subjects = ["math", "english"], pr
                       score={topic.score}
                       size="sm"
                       delay={index * 40}
-                      href={`/student/${tab}/topic?id=${topic.id}`}
+                      href={topicHref(topic.id)}
                       meta={`${topic.weight}% weight${topic.attempts ? ` · ${topic.attempts} items` : ""}`}
                     />
                     {typeof delta === "number" && delta !== 0 ? (
@@ -270,7 +271,7 @@ export function ImpactTable({ topicScores, subjects = ["math", "english"], limit
                   </td>
                   <td className="px-3 py-3">
                     <Link
-                      href={`/student/${row.subject}/topic?id=${row.id}`}
+                      href={topicHref(row.id)}
                       className="text-[13.5px] font-medium text-ink transition-colors group-hover:text-brand"
                     >
                       {row.name}
