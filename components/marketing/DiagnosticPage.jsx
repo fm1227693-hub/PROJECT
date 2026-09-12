@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock, Layers, ListChecks } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { topicHref } from "@/lib/data/topicRoutes";
 import { FAQS } from "@/lib/data/faq";
 import { MATH_DOMAINS, ENGLISH_DOMAINS, topicsForDomain, SUBJECT_TOPICS } from "@/lib/data/topics";
 import { SAMPLE_TOPIC_SCORES } from "@/lib/data/sampleResult";
@@ -128,7 +129,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
             title={isMath ? "Twelve measured skills across three domains." : "Thirteen measured skills across four domains."}
             body="Each percentage beside a topic is its weight in the diagnostic — the share of your score it explains. Weights are what allow Prisma to rank gaps by real impact."
             action={
-              <Button href={`/subjects/${subject}`} variant="secondary" size="sm" iconRight={ArrowRight}>
+              <Button href={`/${subject}`} variant="secondary" size="sm" iconRight={ArrowRight}>
                 Full topic map
               </Button>
             }
@@ -161,7 +162,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
                         <li key={topic.id}>
                           <div className="mb-1 flex items-baseline justify-between gap-3">
                             <Link
-                              href={`/student/${subject}/topic?id=${topic.id}`}
+                              href={topicHref(topic.id)}
                               className="truncate text-[13px] text-ink-soft transition-colors hover:text-brand"
                             >
                               {topic.name}
@@ -297,7 +298,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
                         size="sm"
                         delay={index * 60}
                         meta={`worth ~${gap.impact} pts`}
-                        href={`/student/${subject}/topic?id=${gap.id}`}
+                        href={topicHref(gap.id)}
                       />
                     </li>
                   ))}
@@ -320,7 +321,7 @@ export default function DiagnosticPage({ subject, copy, faqCategory }) {
         title={isMath ? "Find out which part of mathematics is holding you back." : "Find out which part of English is holding you back."}
         body="The diagnostic is free on the entry plan, runs in about fifteen minutes for a single subject, and reports every skill separately."
         primary={{ label: `Start the ${isMath ? "Mathematics" : "English"} test`, href: `/student/diagnostic/${subject}/test` }}
-        secondary={{ label: "Browse the topic map", href: `/subjects/${subject}` }}
+        secondary={{ label: "Browse the topic map", href: `/${subject}` }}
       />
     </>
   );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, GitBranch, Layers } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { topicHref } from "@/lib/data/topicRoutes";
 import { SUBJECT_DOMAINS, SUBJECT_TOPICS } from "@/lib/data/topics";
 import { SAMPLE_TOPIC_SCORES } from "@/lib/data/sampleResult";
 import { buildResult } from "@/lib/engine/scoring";
@@ -115,7 +116,7 @@ export default function SubjectMap({ subject, copy }) {
                           return (
                             <Link
                               key={topic.id}
-                              href={`/student/${subject}/topic?id=${topic.id}`}
+                              href={topicHref(topic.id)}
                               className="group flex-1 rounded-md border border-line bg-surface p-3 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-px hover:border-line-3 hover:shadow-sm"
                             >
                               <div className="flex items-start justify-between gap-2">
@@ -176,7 +177,7 @@ export default function SubjectMap({ subject, copy }) {
                 .filter((topic) => topic.domain === domain.id)
                 .map((topic) => (
                   <div key={topic.id} className="flex flex-col">
-                    <TopicCard topic={topic} score={SAMPLE_TOPIC_SCORES[topic.id]} href={`/student/${subject}/topic?id=${topic.id}`} className="flex-1" />
+                    <TopicCard topic={topic} score={SAMPLE_TOPIC_SCORES[topic.id]} href={topicHref(topic.id)} className="flex-1" />
                     <div className="mt-2 rounded-md border border-line bg-surface-2 px-3 py-2.5">
                       <p className="eyebrow mb-1.5">Common errors</p>
                       <ul className="space-y-1">

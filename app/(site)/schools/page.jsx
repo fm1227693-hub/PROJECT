@@ -48,8 +48,8 @@ export default function SchoolsPage() {
       related={[
         { title: "School dashboard", href: "/school/dashboard", body: "Headline statistics for the whole organisation." },
         { title: "School analytics", href: "/school/analytics", body: "Mathematics vs English, strongest and weakest topics, improvement rate." },
-        { title: "Students", href: "/school/students", body: "Every learner in the organisation with their current diagnosis." },
-        { title: "Teachers", href: "/school/teachers", body: "Staff, their classes and diagnostic coverage." },
+        { title: "Students", href: "/school/analytics", body: "Every learner in the organisation with their current diagnosis." },
+        { title: "Teachers", href: "/school/dashboard", body: "Staff, their classes and diagnostic coverage." },
         { title: "Pricing", href: "/pricing", body: "School plan structure and volume pricing." },
         { title: "Contact", href: "/contact", body: "Request a quote for your enrolment." },
       ]}

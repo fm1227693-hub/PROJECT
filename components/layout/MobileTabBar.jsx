@@ -11,14 +11,14 @@ const ROLE_TABS = {
   teacher: [
     { label: "Dashboard", href: "/teacher/dashboard", icon: "layout-dashboard" },
     { label: "Students", href: "/teacher/students", icon: "users" },
-    { label: "Assign", href: "/teacher/assign", icon: "send" },
+    { label: "Assign", href: "/teacher/classes", icon: "send" },
     { label: "Classes", href: "/teacher/classes", icon: "bar-chart-3" },
-    { label: "Bank", href: "/teacher/question-bank", icon: "library" },
+    { label: "Bank", href: "/teacher/analytics", icon: "library" },
   ],
   school: [
     { label: "Dashboard", href: "/school/dashboard", icon: "layout-dashboard" },
-    { label: "Students", href: "/school/students", icon: "users" },
-    { label: "Teachers", href: "/school/teachers", icon: "presentation" },
+    { label: "Students", href: "/school/analytics", icon: "users" },
+    { label: "Teachers", href: "/school/dashboard", icon: "presentation" },
     { label: "Analytics", href: "/school/analytics", icon: "activity" },
   ],
   account: [

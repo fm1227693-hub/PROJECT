@@ -37,8 +37,8 @@ export default function TeachersPage() {
         { title: "Teacher dashboard", href: "/teacher/dashboard", body: "Class averages, weak topics and recent diagnostics." },
         { title: "Student list", href: "/teacher/students", body: "Filter the roster by class, score, trend and diagnosis status." },
         { title: "Class analytics", href: "/teacher/classes", body: "Strongest and weakest topics across the cohort." },
-        { title: "Assign a diagnostic", href: "/teacher/assign", body: "Set subjects, a due date and the students who receive it." },
-        { title: "Question bank", href: "/teacher/question-bank", body: "Filter by subject, topic, difficulty, grade and item type." },
+        { title: "Assign a diagnostic", href: "/teacher/classes", body: "Set subjects, a due date and the students who receive it." },
+        { title: "Question bank", href: "/teacher/analytics", body: "Filter by subject, topic, difficulty, grade and item type." },
         { title: "For tutors", href: "/tutors", body: "The same analytics for one-to-one teaching." },
       ]}
     />

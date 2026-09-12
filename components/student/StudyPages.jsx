@@ -17,22 +17,9 @@ import ProgressBar from "@/components/ui/ProgressBar";
 import { SpectrumRow } from "@/components/domain/Primitives";
 import { ChartCard, TopicBars } from "@/components/charts";
 
-export const TOPIC_ROUTES = {
-  linear_equations: "/student/math/linear-equations",
-  quadratic_equations: "/student/math/quadratic-equations",
-  inequalities: "/student/math/inequalities",
-};
+import { TOPIC_ROUTES, DOMAIN_ROUTES, topicHref, domainHref } from "@/lib/data/topicRoutes";
 
-export const DOMAIN_ROUTES = {
-  algebra: "/student/math/algebra",
-  grammar: "/student/english/grammar",
-  vocabulary: "/student/english/vocabulary",
-  reading: "/student/english/reading",
-  listening: "/student/english/listening",
-};
-
-export const topicHref = (topicId) => TOPIC_ROUTES[topicId] ?? `/student/practice?topic=${topicId}`;
-export const domainHref = (domainId) => DOMAIN_ROUTES[domainId] ?? `/student/skills?domain=${domainId}`;
+export { TOPIC_ROUTES, DOMAIN_ROUTES, topicHref, domainHref };
 
 const bandTone = (score) => (score >= 80 ? "strong" : score >= 60 ? "developing" : "risk");
 const BAND_TEXT = { strong: "text-strong", developing: "text-developing", risk: "text-risk" };

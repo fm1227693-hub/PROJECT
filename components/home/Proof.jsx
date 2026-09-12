@@ -133,7 +133,7 @@ export function ReportProof() {
                   </ol>
                 </div>
 
-                <Button href="/student/recommended-plan" size="sm" className="mt-5 w-full" iconRight={ArrowRight}>
+                <Button href="/student/recommendations" size="sm" className="mt-5 w-full" iconRight={ArrowRight}>
                   View my learning path
                 </Button>
               </div>

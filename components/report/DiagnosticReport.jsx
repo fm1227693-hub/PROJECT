@@ -316,7 +316,7 @@ export function PlanPreview({ topicScores, weeks = 3, className }) {
           </h2>
           <p className="mt-0.5 text-[12.5px] text-muted">{path.summary}</p>
         </div>
-        <Button href="/student/recommended-plan" size="sm" variant="secondary" iconRight={ArrowRight}>
+        <Button href="/student/recommendations" size="sm" variant="secondary" iconRight={ArrowRight}>
           Open the plan
         </Button>
       </header>

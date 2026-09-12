@@ -101,7 +101,7 @@ export default function ProgressPreview() {
             Quadratic Equations is still the largest remaining gap — which is exactly why the generated
             plan starts there.
           </p>
-          <Link href="/student/recommended-plan" className="mt-2 inline-flex items-center gap-1 text-[12.5px] font-medium text-brand hover:underline">
+          <Link href="/student/recommendations" className="mt-2 inline-flex items-center gap-1 text-[12.5px] font-medium text-brand hover:underline">
             See the current plan
             <ArrowRight className="size-3.5" aria-hidden="true" />
           </Link>

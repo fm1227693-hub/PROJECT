@@ -37,7 +37,7 @@ export default function PersonalizedLearningPage() {
         title={COPY.title}
         body={COPY.body}
         actions={[
-          { label: "See your plan", href: "/student/recommended-plan" },
+          { label: "See your plan", href: "/student/recommendations" },
           { label: "Read a sample report", href: "/sample-report", variant: "secondary" },
         ]}
         meta={[
@@ -159,7 +159,7 @@ export default function PersonalizedLearningPage() {
                       <span className="font-semibold text-strong">{learner.plan.projection.math.after}%</span>
                     </p>
                     <Link
-                      href={learnerIndex === 0 ? "/student/recommended-plan" : "/student/recommended-plan"}
+                      href={learnerIndex === 0 ? "/student/recommendations" : "/student/recommendations"}
                       className="inline-flex items-center gap-1 text-[12.5px] font-medium text-brand hover:underline"
                     >
                       {learnerIndex === 0 ? "Open this plan" : "Compare in the planner"}
@@ -225,7 +225,7 @@ export default function PersonalizedLearningPage() {
       <CtaBand
         title="Generate your own plan."
         body={STORY.personalization.body}
-        primary={{ label: "Open my recommended plan", href: "/student/recommended-plan" }}
+        primary={{ label: "Open my recommended plan", href: "/student/recommendations" }}
         secondary={{ label: "Take a Diagnostic first", href: "/student/diagnostic/start" }}
         note={
           <>

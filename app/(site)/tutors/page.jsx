@@ -35,9 +35,9 @@ export default function TutorsPage() {
       faqCategory="teachers"
       related={[
         { title: "Student detail", href: "/teacher/students/stu_0001", body: "The full analytic view of one learner." },
-        { title: "Learning plans", href: "/teacher/learning-plans", body: "Review and adjust the plan generated for each student." },
-        { title: "Assessment results", href: "/teacher/assessments/results", body: "Every submission from an assigned diagnostic." },
-        { title: "Create assessment", href: "/teacher/assessments/create", body: "Build a paper from the question bank in minutes." },
+        { title: "Learning plans", href: "/teacher/students", body: "Review and adjust the plan generated for each student." },
+        { title: "Assessment results", href: "/teacher/analytics", body: "Every submission from an assigned diagnostic." },
+        { title: "Create assessment", href: "/teacher/classes", body: "Build a paper from the question bank in minutes." },
         { title: "For teachers", href: "/teachers", body: "Classroom-sized analytics and assignment workflows." },
         { title: "Pricing", href: "/pricing", body: "One plan covers tutoring and classroom use." },
       ]}
