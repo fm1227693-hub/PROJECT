@@ -25,9 +25,10 @@ const bandTone = (score) => (score >= 80 ? "strong" : score >= 60 ? "developing"
 const BAND_TEXT = { strong: "text-strong", developing: "text-developing", risk: "text-risk" };
 const bandText = (score) => BAND_TEXT[bandTone(score)];
 
-function startPractice(router, startTest, topicId, toast) {
+function startPractice(router, startTest, topicId, toast, pool = null) {
   const topic = getTopic(topicId);
-  startTest({ subject: topic.subject, questions: questionsForTopic(topicId).slice(0, 6), timed: false });
+  const source = (pool ?? questionsForTopic(topicId)).filter((q) => (pool ? q.topicId === topicId : true));
+  startTest({ subject: topic.subject, questions: source.slice(0, 6), timed: false, adaptive: true });
   toast(`Practice set: ${topic.name}. Explanations after every answer.`, { tone: "info", title: "Practice started" });
   router.push(`/student/practice?topic=${topicId}`);
 }
@@ -36,7 +37,7 @@ function startPractice(router, startTest, topicId, toast) {
 
 export function SubjectHub({ subject }) {
   const router = useRouter();
-  const { topicScores, derived, startTest, toast } = useApp();
+  const { topicScores, derived, startTest, toast, questions } = useApp();
   const meta = derived.breakdown[subject];
   const domains = meta.domains;
   const isMath = subject === "math";
@@ -67,7 +68,7 @@ export function SubjectHub({ subject }) {
           </div>
         </div>
         <div className="relative mt-5 flex flex-wrap gap-2.5">
-          <Button size="md" onClick={() => startPractice(router, startTest, meta.topics[meta.topics.length - 1]?.id ?? meta.topics[0].id, toast)}>
+          <Button size="md" onClick={() => startPractice(router, startTest, meta.topics[meta.topics.length - 1]?.id ?? meta.topics[0].id, toast, questions)}>
             <Dumbbell className="size-4" aria-hidden="true" />
             Practice weakest topic
           </Button>
@@ -118,7 +119,7 @@ export function SubjectHub({ subject }) {
 
 export function DomainStudy({ domainId }) {
   const router = useRouter();
-  const { derived, startTest, toast } = useApp();
+  const { derived, startTest, toast, questions } = useApp();
   const domain = derived.breakdown.math.domains.find((d) => d.id === domainId) ?? derived.breakdown.english.domains.find((d) => d.id === domainId);
   if (!domain) return null;
   const subject = domain.topics[0]?.subject ?? "math";
@@ -139,7 +140,7 @@ export function DomainStudy({ domainId }) {
           </div>
           <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-muted">{domain.description}</p>
           <div className="mt-5 flex flex-wrap gap-2.5">
-            <Button size="md" onClick={() => startPractice(router, startTest, weakest.id, toast)}>
+            <Button size="md" onClick={() => startPractice(router, startTest, weakest.id, toast, questions)}>
               <Dumbbell className="size-4" aria-hidden="true" />
               Practice {weakest.name}
             </Button>
@@ -178,11 +179,11 @@ export function DomainStudy({ domainId }) {
 
 export function TopicStudy({ topicId }) {
   const router = useRouter();
-  const { topicScores, attempts, derived, startTest, toast, path } = useApp();
+  const { topicScores, attempts, derived, startTest, toast, path, questions, unitsFor } = useApp();
   const topic = TOPIC_BY_ID[topicId];
   const score = topicScores[topicId] ?? null;
   const band = score === null ? null : classify(score);
-  const questions = useMemo(() => questionsForTopic(topicId).slice(0, 3), [topicId]);
+  const previewQuestions = useMemo(() => questions.filter((q) => q.topicId === topicId).slice(0, 3), [questions, topicId]);
   const plan = derived.plan;
   const plannedUnits = plan.weeks.flatMap((w) => w.units).filter((u) => u.topicId === topicId);
 
@@ -224,7 +225,7 @@ export function TopicStudy({ topicId }) {
           <ProgressBar value={score ?? 0} tone={bandTone(score ?? 0)} size="sm" />
         </div>
         <div className="relative mt-5 flex flex-wrap gap-2.5">
-          <Button size="md" onClick={() => startPractice(router, startTest, topicId, toast)}>
+          <Button size="md" onClick={() => startPractice(router, startTest, topicId, toast, questions)}>
             <Dumbbell className="size-4" aria-hidden="true" />
             Start practice
           </Button>
@@ -268,7 +269,7 @@ export function TopicStudy({ topicId }) {
       <Card className="p-5">
         <SectionHeading eyebrow="Example problems" title="What this topic asks of you." size="sm" />
         <div className="mt-4 grid gap-3 md:grid-cols-3">
-          {questions.map((question, index) => (
+          {previewQuestions.map((question, index) => (
             <div key={question.id} className="rounded-lg border border-line bg-canvas p-4">
               <p className="tnum font-mono text-[10.5px] text-faint">{String(index + 1).padStart(2, "0")} · {question.difficulty}</p>
               <p className="mt-2 font-mono text-[12.5px] leading-relaxed tracking-tight text-ink">{question.prompt}</p>
@@ -282,7 +283,7 @@ export function TopicStudy({ topicId }) {
         <Card className="p-5">
           <SectionHeading eyebrow="Recommended lessons" title={plannedUnits.length ? "Already in your path." : "Units this topic would add."} size="sm" />
           <ol className="mt-4 space-y-2">
-            {(plannedUnits.length ? plannedUnits : topic.units.map((u, i) => ({ title: u.title, minutes: u.minutes, type: u.type, key: `preview-${i}` }))).map((unit, index) => (
+            {(plannedUnits.length ? plannedUnits : unitsFor(topicId).map((u, i) => ({ title: u.title, minutes: u.minutes, type: u.type, key: u.key ?? `preview-${i}` }))).map((unit, index) => (
               <li key={unit.key ?? index} className="flex items-center justify-between gap-3 rounded-md border border-line bg-canvas px-3.5 py-2.5">
                 <span className="flex min-w-0 items-center gap-2.5 text-[12.5px] text-ink-soft">
                   <span className="tnum font-mono text-[10px] text-faint">{String(index + 1).padStart(2, "0")}</span>
@@ -302,7 +303,7 @@ export function TopicStudy({ topicId }) {
             </p>
           </div>
           <div className="mt-5 grid gap-2.5">
-            <Button size="md" onClick={() => startPractice(router, startTest, topicId, toast)}>
+            <Button size="md" onClick={() => startPractice(router, startTest, topicId, toast, questions)}>
               <Target className="size-4" aria-hidden="true" />
               Start practice set
             </Button>

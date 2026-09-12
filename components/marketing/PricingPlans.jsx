@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Check, Minus, Sparkles } from "lucide-react";
 
 import { cn, formatCurrency } from "@/lib/utils";
-import { BILLING_CYCLES, PLAN_COMPARISON, PLANS } from "@/lib/data/plans";
+import { BILLING_CYCLES, PLAN_COMPARISON } from "@/lib/data/plans";
 import { Segmented } from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -14,13 +14,13 @@ import { useApp } from "@/lib/store/AppProvider";
 /** Plan cards with a monthly / annual toggle. */
 export function PricingPlans({ defaultCycle = "monthly" }) {
   const [cycle, setCycle] = useState(defaultCycle);
-  const { subscription, toast } = useApp();
+  const { subscription, toast, plans } = useApp();
 
   const saving = useMemo(() => {
-    const monthlyTotal = PLANS.reduce((acc, plan) => acc + (plan.price.monthly ?? 0), 0);
-    const annualTotal = PLANS.reduce((acc, plan) => acc + (plan.price.annual ?? 0), 0);
+    const monthlyTotal = plans.reduce((acc, plan) => acc + (plan.price.monthly ?? 0), 0);
+    const annualTotal = plans.reduce((acc, plan) => acc + (plan.price.annual ?? 0), 0);
     return monthlyTotal > 0 ? Math.round(((monthlyTotal - annualTotal) / monthlyTotal) * 100) : 0;
-  }, []);
+  }, [plans]);
 
   return (
     <div>
@@ -41,7 +41,7 @@ export function PricingPlans({ defaultCycle = "monthly" }) {
       </div>
 
       <div className="mt-10 grid gap-5 lg:grid-cols-3 xl:grid-cols-5">
-        {PLANS.map((plan) => {
+        {plans.map((plan) => {
           const price = plan.price[cycle] ?? plan.price.monthly;
           const isCurrent = subscription?.planId === plan.id;
 

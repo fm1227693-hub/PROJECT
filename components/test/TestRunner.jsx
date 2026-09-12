@@ -1,17 +1,115 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, Clock, Flag, ListChecks, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clock, Flag, ListChecks, Pause, Play, RotateCcw, Sparkles, Volume2, X } from "lucide-react";
 
 import { cn, formatDuration } from "@/lib/utils";
 import { useApp } from "@/lib/store/AppProvider";
 import { getStimulus } from "@/lib/data/questions";
+import { isAnswerCorrect } from "@/lib/engine/scoring";
 import Button from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { EmptyState } from "@/components/ui/States";
-import { Input } from "@/components/ui/Field";
+import { Input, Textarea } from "@/components/ui/Field";
+
+/**
+ * Simulated audio player for listening items. The demo has no audio files, so
+ * playback is a deterministic timer over the track duration — the UI, the
+ * pacing and the transcript reveal all behave like a real player.
+ */
+function AudioPlayerUI({ track }) {
+  const [playing, setPlaying] = useState(false);
+  const [position, setPosition] = useState(0);
+  const [listened, setListened] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
+  const timer = useRef(null);
+  const duration = track.durationSeconds ?? 45;
+
+  useEffect(() => () => window.clearInterval(timer.current), []);
+
+  const toggle = () => {
+    if (playing) {
+      window.clearInterval(timer.current);
+      setPlaying(false);
+      return;
+    }
+    setPlaying(true);
+    /* 4× speed so the demo stays brisk; one tick per 250 ms = 1 s of audio */
+    timer.current = window.setInterval(() => {
+      setPosition((prev) => {
+        const next = prev + 1;
+        if (next >= duration) {
+          window.clearInterval(timer.current);
+          setPlaying(false);
+          setListened(true);
+          return duration;
+        }
+        return next;
+      });
+    }, 250);
+  };
+
+  const pctPlayed = Math.min(100, (position / duration) * 100);
+
+  return (
+    <div className="mt-3 rounded-lg border border-line bg-canvas p-4">
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? "Pause audio" : "Play audio"}
+          className={cn(
+            "grid size-10 shrink-0 place-items-center rounded-full border transition-transform duration-200 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+            playing ? "border-accent bg-accent text-white" : "border-accent-line bg-accent-soft text-accent",
+          )}
+        >
+          {playing ? <Pause className="size-4" aria-hidden="true" /> : <Play className="ml-0.5 size-4" aria-hidden="true" />}
+        </button>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-2 text-[11px] text-muted">
+            <span className="flex min-w-0 items-center gap-1.5">
+              <Volume2 className="size-3.5 shrink-0 text-accent" aria-hidden="true" />
+              <span className="truncate font-medium text-ink-soft">{track.title}</span>
+              <Badge tone="accent" size="xs">{track.level}</Badge>
+            </span>
+            <span className="tnum shrink-0 font-mono">
+              {formatDuration(position)} / {formatDuration(duration)}
+            </span>
+          </div>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-line" role="progressbar" aria-valuenow={Math.round(pctPlayed)} aria-valuemin={0} aria-valuemax={100} aria-label="Audio progress">
+            <div
+              className="h-full origin-left rounded-full bg-accent transition-transform duration-200 ease-linear"
+              style={{ width: "100%", transform: `scaleX(${pctPlayed / 100})` }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-[11px] text-faint">
+          {listened ? "Track finished. Answer from memory first, then check the transcript if you need to." : playing ? "Playing… (demo simulation)" : "Press play — the track runs once at a time."}
+        </p>
+        {listened ? (
+          <button
+            type="button"
+            onClick={() => setShowTranscript((v) => !v)}
+            aria-expanded={showTranscript}
+            className="text-[11.5px] font-medium text-brand hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            {showTranscript ? "Hide transcript" : "Show transcript"}
+          </button>
+        ) : null}
+      </div>
+      {listened && showTranscript ? (
+        <div className="mt-2 rounded-md border border-line bg-surface p-3.5">
+          <p className="eyebrow mb-1">Transcript</p>
+          <p className="whitespace-pre-line text-[12px] leading-relaxed text-ink-soft">{track.transcript}</p>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 const SUBJECT_LABEL = { math: "Mathematics", english: "English", both: "Full diagnostic" };
 
@@ -22,7 +120,7 @@ const SUBJECT_LABEL = { math: "Mathematics", english: "English", both: "Full dia
 export default function TestRunner({ subject, mode = "test", onFinish, finishHref }) {
   const router = useRouter();
   const app = useApp();
-  const { activeTest, answerQuestion, flagQuestion, goToQuestion, tickTest, cancelTest } = app;
+  const { activeTest, answerQuestion, adaptAfterAnswer, flagQuestion, goToQuestion, tickTest, cancelTest } = app;
   const [showPalette, setShowPalette] = useState(false);
 
   const test = activeTest;
@@ -62,7 +160,13 @@ export default function TestRunner({ subject, mode = "test", onFinish, finishHre
   const isLast = (test.index ?? 0) === questions.length - 1;
   const flagged = test.flagged?.includes(question?.id);
 
-  const select = (value) => answerQuestion(question.id, value);
+  const select = (value) => {
+    answerQuestion(question.id, value);
+    /* deterministic adaptivity: push a harder/easier same-topic follow-up */
+    if (mode === "test" && test?.adaptive && question) {
+      adaptAfterAnswer(question, isAnswerCorrect(question, value));
+    }
+  };
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px]">
@@ -132,20 +236,28 @@ export default function TestRunner({ subject, mode = "test", onFinish, finishHre
                 ))}
               </div>
             ) : null}
-            {stimulus.transcript ? (
-              <div className="mt-3 rounded-md border border-line bg-canvas p-4">
-                <p className="text-[12px] leading-relaxed text-ink-soft">{stimulus.transcript}</p>
-              </div>
-            ) : null}
+            {stimulus.transcript ? <AudioPlayerUI track={stimulus} /> : null}
           </article>
         ) : null}
 
         {/* question */}
         {question ? (
           <article className="mt-4 rounded-xl border border-line bg-surface p-5 md:p-6">
-            <p className="text-[11.5px] font-medium uppercase tracking-[0.09em] text-faint">
-              {question.topicName ?? question.topicId}
-            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-[11.5px] font-medium uppercase tracking-[0.09em] text-faint">
+                {question.topicName ?? question.topicId}
+              </p>
+              {question.type && question.type !== "mcq" ? (
+                <Badge tone="neutral" size="xs">
+                  {question.type === "boolean" ? "True / false" : question.type === "fill" ? "Fill in the blank" : question.type === "short" ? "Short answer" : question.type === "equation" ? "Equation" : question.type === "numeric" ? "Numeric" : question.type}
+                </Badge>
+              ) : null}
+              {question.adapted ? (
+                <Badge tone="accent" size="xs" icon={Sparkles}>
+                  Adaptive follow-up
+                </Badge>
+              ) : null}
+            </div>
             <p className="mt-2.5 font-mono text-[15px] leading-relaxed tracking-tight text-ink md:text-[16px]">{question.prompt}</p>
 
             {question.type === "numeric" ? (
@@ -157,6 +269,66 @@ export default function TestRunner({ subject, mode = "test", onFinish, finishHre
                   onChange={(event) => select(event.target.value === "" ? undefined : Number(event.target.value))}
                   placeholder="Type a number"
                 />
+              </div>
+            ) : question.type === "boolean" ? (
+              <div className="mt-5 grid max-w-xs grid-cols-2 gap-2" role="radiogroup" aria-label={question.prompt}>
+                {[true, false].map((value) => {
+                  const isChosen = chosen === value || String(chosen) === String(value);
+                  const isCorrect = isAnswerCorrect(question, value);
+                  const state = !revealed ? (isChosen ? "chosen" : "idle") : isCorrect ? "correct" : isChosen ? "wrong" : "dim";
+                  return (
+                    <button
+                      key={String(value)}
+                      type="button"
+                      role="radio"
+                      aria-checked={isChosen}
+                      onClick={() => select(value)}
+                      className={cn(
+                        "flex items-center justify-center gap-2 rounded-md border px-4 py-3 text-[13.5px] font-semibold transition-[border-color,background-color,transform] duration-200",
+                        state === "idle" && "border-line bg-canvas text-ink-soft hover:-translate-y-px hover:border-line-3 hover:text-ink",
+                        state === "chosen" && "border-brand bg-brand-soft text-ink shadow-[inset_0_0_0_1px_var(--color-brand)]",
+                        state === "correct" && "border-strong/40 bg-strong-soft text-strong",
+                        state === "wrong" && "border-risk/40 bg-risk-soft text-risk",
+                        state === "dim" && "border-line bg-canvas text-faint",
+                      )}
+                    >
+                      {state === "correct" ? <Check className="size-3.5" aria-hidden="true" /> : state === "wrong" ? <X className="size-3.5" aria-hidden="true" /> : null}
+                      {value ? "True" : "False"}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : question.type === "fill" ? (
+              <div className="mt-5 max-w-md">
+                <Input
+                  aria-label="Your answer"
+                  value={chosen ?? ""}
+                  onChange={(event) => select(event.target.value)}
+                  placeholder="Type the missing word or value"
+                  className={question.subject === "math" ? "font-mono" : undefined}
+                />
+                <p className="mt-1.5 text-[11px] text-faint">Spelling counts in English items; spacing does not in math items.</p>
+              </div>
+            ) : question.type === "short" ? (
+              <div className="mt-5 max-w-lg">
+                <Textarea
+                  aria-label="Your answer"
+                  rows={2}
+                  value={chosen ?? ""}
+                  onChange={(event) => select(event.target.value)}
+                  placeholder="Answer in a word, number or short phrase"
+                />
+              </div>
+            ) : question.type === "equation" ? (
+              <div className="mt-5 max-w-md">
+                <Input
+                  aria-label="Your answer"
+                  value={chosen ?? ""}
+                  onChange={(event) => select(event.target.value)}
+                  placeholder="e.g. x=7  or  2,3  or  8x-12"
+                  className="font-mono"
+                />
+                <p className="mt-1.5 text-[11px] text-faint">Spaces and operator spellings (×, *) are normalised before checking.</p>
               </div>
             ) : (
               <div className="mt-5 grid gap-2" role="radiogroup" aria-label={question.prompt}>
@@ -201,8 +373,8 @@ export default function TestRunner({ subject, mode = "test", onFinish, finishHre
 
             {revealed ? (
               <p className="mt-4 rounded-md border border-line bg-canvas px-4 py-3 text-[12.5px] leading-relaxed text-muted">
-                <span className={cn("font-semibold", chosen === question.answer ? "text-strong" : "text-risk")}>
-                  {chosen === question.answer ? "Correct. " : "Not quite. "}
+                <span className={cn("font-semibold", isAnswerCorrect(question, chosen) ? "text-strong" : "text-risk")}>
+                  {isAnswerCorrect(question, chosen) ? "Correct. " : "Not quite. "}
                 </span>
                 {question.explanation}
               </p>

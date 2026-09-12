@@ -40,16 +40,22 @@ function downloadCsv(filename, rows) {
 /* ------------------------------------------------------- shared modals ---- */
 
 export function AddStudentModal({ open, onClose, classId }) {
-  const { toast } = useApp();
+  const { studentAdd } = useApp();
   const [values, setValues] = useState({ name: "", email: "", classId: classId ?? "cls_10b" });
   const [error, setError] = useState("");
 
   const submit = () => {
     if (values.name.trim().length < 2) return setError("Enter the student's full name.");
     setError("");
-    toast(`${values.name} added to ${CLASSES_WITH_SIZE.find((c) => c.id === values.classId)?.name}. Invite email simulated.`, {
-      tone: "success",
-      title: "Student added",
+    const klass = CLASSES_WITH_SIZE.find((c) => c.id === values.classId);
+    studentAdd({
+      name: values.name.trim(),
+      firstName: values.name.trim().split(" ")[0],
+      email: values.email.trim() || null,
+      classId: values.classId,
+      className: klass?.name ?? "—",
+      grade: klass?.grade ?? 10,
+      teacherId: klass?.teacherId ?? "tch_002",
     });
     setValues({ name: "", email: "", classId: values.classId });
     onClose();
@@ -76,15 +82,28 @@ export function AddStudentModal({ open, onClose, classId }) {
 }
 
 export function AssignModal({ open, onClose, defaultClass }) {
-  const { toast } = useApp();
+  const { assignmentCreate } = useApp();
   const [values, setValues] = useState({ classId: defaultClass ?? "cls_10b", subject: "both", due: "2026-09-26", timed: "untimed" });
   const roster = studentsInClass(values.classId);
 
   const submit = () => {
-    toast(
-      `Diagnostic assigned to ${roster.length} students in ${CLASSES_WITH_SIZE.find((c) => c.id === values.classId)?.name}, due ${formatDate(values.due)}.`,
-      { tone: "success", title: "Assignment sent" },
-    );
+    const klass = CLASSES_WITH_SIZE.find((c) => c.id === values.classId);
+    const paper = values.subject === "both"
+      ? { id: "tst_baseline", title: "Autumn baseline · Full diagnostic", count: 30, minutes: 26 }
+      : values.subject === "math"
+        ? { id: "tst_algebra", title: "Algebra checkpoint · Equations & inequalities", count: 12, minutes: 14 }
+        : { id: "tst_literacy", title: "Literacy checkpoint · Reading & vocabulary", count: 12, minutes: 14 };
+    assignmentCreate({
+      title: `${paper.title} — Class ${klass?.name ?? ""}`.trim(),
+      testId: paper.id,
+      subject: values.subject,
+      classId: values.classId,
+      assignedTo: [],
+      dueAt: values.due,
+      estimatedMinutes: paper.minutes,
+      questionCount: paper.count,
+      timed: values.timed === "timed",
+    });
     onClose();
   };
 
@@ -114,14 +133,21 @@ export function AssignModal({ open, onClose, defaultClass }) {
 }
 
 export function CreateClassModal({ open, onClose }) {
-  const { toast } = useApp();
+  const { classCreate } = useApp();
   const [values, setValues] = useState({ name: "", grade: "10", room: "" });
   const [error, setError] = useState("");
 
   const submit = () => {
     if (!values.name.trim()) return setError("Give the class a name, e.g. 10-C.");
     setError("");
-    toast(`Class ${values.name} created. Add students or sync a roster from the school system.`, { tone: "success", title: "Class created" });
+    classCreate({
+      name: values.name.trim(),
+      grade: Number(values.grade),
+      room: values.room.trim() || "—",
+      subject: "Mixed",
+      teacherId: "tch_002",
+    });
+    setValues({ name: "", grade: "10", room: "" });
     onClose();
   };
 
@@ -218,6 +244,13 @@ export function TeacherDashboard() {
           <Button size="md" variant="secondary" onClick={() => setModal("class")}>
             <Plus className="size-4" aria-hidden="true" />
             Create Class
+          </Button>
+          <Button size="md" variant="secondary" href="/teacher/assignments">
+            <ClipboardList className="size-4" aria-hidden="true" />
+            Create Assignment
+          </Button>
+          <Button size="md" variant="ghost" href="/teacher/analytics">
+            View Class Analytics
           </Button>
           <Button size="md" variant="ghost" onClick={exportReport}>
             <Download className="size-4" aria-hidden="true" />
@@ -417,9 +450,9 @@ export function StudentsManagement() {
             <p className="rounded-md border border-brand-line bg-brand-soft/60 p-3.5 text-[12.5px] leading-relaxed text-ink">{detail.headline}</p>
             <div className="flex flex-wrap justify-end gap-2.5">
               <Button variant="ghost" size="md" onClick={() => setSelected(null)}>Close</Button>
-              <Button size="md" onClick={() => { toast(`Learning plan for ${selected.name} opened in the planner.`, { tone: "info" }); setSelected(null); }}>
+              <Button size="md" href="/teacher/assignments" onClick={() => setSelected(null)}>
                 <ClipboardList className="size-4" aria-hidden="true" />
-                Open learning plan
+                Create a targeted assignment
               </Button>
             </div>
           </div>

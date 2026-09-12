@@ -1,7 +1,7 @@
-import { RegisterForm } from "@/components/auth/AuthForms";
+import { SchoolRegisterForm } from "@/components/auth/AuthForms";
 
-export const metadata = { title: "Create school account", alternates: { canonical: "/register/school" } };
+export const metadata = { title: "Register your school", description: "Organisation-wide analytics and rollout reporting for schools and centres.", alternates: { canonical: "/register/school" } };
 
 export default function RegisterSchoolPage() {
-  return <RegisterForm role="school" />;
+  return <SchoolRegisterForm />;
 }

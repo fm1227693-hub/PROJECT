@@ -33,7 +33,7 @@ const BAND_TEXT = { strong: "text-strong", developing: "text-developing", risk: 
 
 export function DashboardHome() {
   const router = useRouter();
-  const { user, derived, diagnostics, activity, gamification, topicScores, startTest, toast } = useApp();
+  const { user, derived, diagnostics, activity, gamification, topicScores, startTest, toast, questions } = useApp();
   const { breakdown, nextStep, currentUnit, plan } = derived;
   const diagnosis = useMemo(() => diagnose(topicScores), [topicScores]);
 
@@ -58,7 +58,7 @@ export function DashboardHome() {
 
   function beginPractice(topicId) {
     const topic = getTopic(topicId);
-    startTest({ subject: topic.subject, questions: buildTopicSet(topicId, 6), timed: false });
+    startTest({ subject: topic.subject, questions: buildTopicSet(topicId, 6, 11, questions), timed: false, adaptive: true });
     toast(`Practice: ${topic.name}. Explanations after every answer.`, { tone: "info", title: "Practice started" });
     router.push(`/student/practice?topic=${topicId}`);
   }
@@ -362,7 +362,7 @@ export function LearningPathView() {
 
 export function PracticeCenter() {
   const router = useRouter();
-  const { activeTest, topicScores, derived, startTest, cancelTest, patch, gamification, activity, toast } = useApp();
+  const { activeTest, topicScores, derived, startTest, cancelTest, patch, gamification, activity, toast, questions } = useApp();
   const [topicId, setTopicId] = useState(null);
   const [summary, setSummary] = useState(null);
 
@@ -378,7 +378,7 @@ export function PracticeCenter() {
 
   const begin = (id) => {
     const topic = getTopic(id);
-    startTest({ subject: topic.subject, questions: buildTopicSet(id, 6), timed: false });
+    startTest({ subject: topic.subject, questions: buildTopicSet(id, 6, 11, questions), timed: false, adaptive: true });
     setSummary(null);
     toast(`Six questions on ${topic.name}.`, { tone: "info", title: "Practice started" });
   };

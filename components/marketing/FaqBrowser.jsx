@@ -4,28 +4,30 @@ import { useMemo, useState } from "react";
 import { Search, SearchX } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { FAQS, FAQ_CATEGORIES } from "@/lib/data/faq";
+import { FAQ_CATEGORIES } from "@/lib/data/faq";
+import { useApp } from "@/lib/store/AppProvider";
 import Accordion from "@/components/ui/Accordion";
 import { EmptyState } from "@/components/ui/States";
 import Button from "@/components/ui/Button";
 
 /** Searchable, categorised FAQ browser. */
 export default function FaqBrowser({ initialCategory = "all" }) {
+  const { faqs } = useApp();
   const [category, setCategory] = useState(initialCategory);
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return FAQS.filter((item) => {
+    return faqs.filter((item) => {
       const inCategory = category === "all" || item.category === category;
       const inQuery = !q || item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q);
       return inCategory && inQuery;
     });
-  }, [category, query]);
+  }, [faqs, category, query]);
 
   const counts = useMemo(() => {
-    const map = { all: FAQS.length };
-    for (const item of FAQS) map[item.category] = (map[item.category] ?? 0) + 1;
+    const map = { all: faqs.length };
+    for (const item of faqs) map[item.category] = (map[item.category] ?? 0) + 1;
     return map;
   }, []);
 

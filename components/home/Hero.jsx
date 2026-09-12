@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { HERO } from "@/lib/data/content";
+import { useApp } from "@/lib/store/AppProvider";
 import { useGsap } from "@/lib/hooks/useGsap";
 import { countUp, fadeUp, gsap, parallax, prefersReducedMotion, staggerReveal } from "@/lib/gsap";
 import Button from "@/components/ui/Button";
@@ -129,6 +130,16 @@ function ReportVisual({ onReady }) {
  * ------------------------------------------------------------------ */
 
 export default function Hero() {
+  const { cms } = useApp();
+  const hero = {
+    eyebrow: cms?.hero?.eyebrow || HERO.eyebrow,
+    titleLines: [cms?.hero?.titleLine1 || HERO.titleLines[0], cms?.hero?.titleLine2 || HERO.titleLines[1]],
+    body: cms?.hero?.body || HERO.body,
+    primaryCta: { label: cms?.hero?.primaryLabel || HERO.primaryCta.label, href: cms?.hero?.primaryHref || HERO.primaryCta.href },
+    secondaryCta: { label: cms?.hero?.secondaryLabel || HERO.secondaryCta.label, href: cms?.hero?.secondaryHref || HERO.secondaryCta.href },
+    meta: HERO.meta,
+  };
+
   const root = useRef(null);
   const visual = useRef(null);
 
@@ -169,12 +180,12 @@ export default function Hero() {
             <p data-hero="eyebrow" className="eyebrow flex items-center gap-2.5">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-soft">
                 <span className="size-1.5 rounded-full bg-strong" aria-hidden="true" />
-                {HERO.eyebrow}
+                {hero.eyebrow}
               </span>
             </p>
 
             <h1 className="mt-6 font-display text-[clamp(2.35rem,6vw,3.9rem)] font-medium leading-[1.04] tracking-[-0.032em] text-ink">
-              {HERO.titleLines.map((line) => (
+              {hero.titleLines.map((line) => (
                 <span key={line} className="block overflow-hidden pb-[0.06em]">
                   <span data-hero="line" className="block will-change-transform">
                     {line}
@@ -184,24 +195,24 @@ export default function Hero() {
             </h1>
 
             <p data-hero="body" className="mt-6 max-w-lg text-[16px] leading-relaxed text-ink-soft md:text-[17px]">
-              {HERO.body}
+              {hero.body}
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <span data-hero="cta">
-                <Button href={HERO.primaryCta.href} size="lg" iconRight={ArrowRight}>
-                  {HERO.primaryCta.label}
+                <Button href={hero.primaryCta.href} size="lg" iconRight={ArrowRight}>
+                  {hero.primaryCta.label}
                 </Button>
               </span>
               <span data-hero="cta">
-                <Button href={HERO.secondaryCta.href} size="lg" variant="secondary">
-                  {HERO.secondaryCta.label}
+                <Button href={hero.secondaryCta.href} size="lg" variant="secondary">
+                  {hero.secondaryCta.label}
                 </Button>
               </span>
             </div>
 
             <dl className="mt-10 grid max-w-md grid-cols-3 gap-px overflow-hidden rounded-lg border border-line bg-line">
-              {HERO.meta.map((item) => (
+              {hero.meta.map((item) => (
                 <div key={item.label} data-hero="stat" className="bg-surface/80 px-4 py-3">
                   <dt className="text-[10.5px] uppercase tracking-[0.09em] text-faint">{item.label}</dt>
                   <dd className="tnum mt-1 font-display text-[20px] leading-none text-ink">

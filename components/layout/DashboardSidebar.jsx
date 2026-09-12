@@ -11,7 +11,7 @@ import Logo from "@/components/brand/Logo";
 import { Badge } from "@/components/ui/Badge";
 import { Dropdown, DropdownItem, DropdownLabel, DropdownSeparator } from "@/components/ui/Dropdown";
 import { useApp } from "@/lib/store/AppProvider";
-import { ArrowLeftRight, Building, GraduationCap, LogOut, Presentation, Settings, X } from "lucide-react";
+import { ArrowLeftRight, Building, GraduationCap, LogOut, Presentation, Settings, ShieldCheck, X } from "lucide-react";
 
 const WORKSPACES = [
   { id: "student", label: "Student workspace", href: "/student/dashboard", icon: GraduationCap, description: "Your diagnostics, plan and progress" },
@@ -28,6 +28,11 @@ export default function DashboardSidebar({ navKey = "student", open = false, onC
 
   const groups = NAV_BY_ROLE[navKey] ?? NAV_BY_ROLE.student;
   const role = navKey === "teacher" ? "teacher" : navKey === "school" ? "school" : "student";
+
+  /* the admin console only ever appears for the admin account */
+  const workspaces = user?.role === "admin"
+    ? [...WORKSPACES, { id: "admin", label: "Admin console", href: "/admin", icon: ShieldCheck, description: "Platform administration" }]
+    : WORKSPACES;
 
   const isActive = (href, end) => (end ? pathname === href : pathname === href || pathname.startsWith(`${href}/`) || pathname.startsWith(`${href}?`));
 
@@ -55,11 +60,11 @@ export default function DashboardSidebar({ navKey = "student", open = false, onC
           align="left"
           variant="outline"
           className="w-full justify-between"
-          label={WORKSPACES.find((w) => w.id === role)?.label ?? "Workspace"}
+          label={workspaces.find((w) => w.id === role)?.label ?? "Workspace"}
           icon={ArrowLeftRight}
         >
           <DropdownLabel>Switch workspace</DropdownLabel>
-          {WORKSPACES.map((workspace) => {
+          {workspaces.map((workspace) => {
             const Icon = workspace.icon;
             return (
               <DropdownItem key={workspace.id} href={workspace.href} icon={Icon} description={workspace.description} selected={workspace.id === role}>

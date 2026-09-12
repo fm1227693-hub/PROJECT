@@ -10,6 +10,7 @@ import {
 import { EnglishPreview, MathPreview, PathPreview } from "@/components/home/Diagnostics";
 import { EducatorsSection, ProgressSection, ReportProof, TestimonialsSection } from "@/components/home/Proof";
 import { HomeFaq, InteractiveDemoSection } from "@/components/home/Interactive";
+import CmsSection from "@/components/home/CmsSection";
 
 export const metadata = {
   title: "Prisma — Know exactly what to learn next",
@@ -28,19 +29,19 @@ export default function HomePage() {
     <>
       <Hero />
       <TrustStrip />
-      <InteractiveDemoSection />
-      <ProblemSection />
+      <CmsSection section="demoQuiz"><InteractiveDemoSection /></CmsSection>
+      <CmsSection section="problem"><ProblemSection /></CmsSection>
       <SolutionSection />
-      <ReportProof />
-      <MathPreview />
-      <EnglishPreview />
-      <PathPreview />
+      <CmsSection section="reportProof"><ReportProof /></CmsSection>
+      <CmsSection section="subjects"><MathPreview /></CmsSection>
+      <CmsSection section="subjects"><EnglishPreview /></CmsSection>
+      <CmsSection section="path"><PathPreview /></CmsSection>
       <HowItWorksHome />
-      <ProgressSection />
+      <CmsSection section="progress"><ProgressSection /></CmsSection>
       <BenefitsHome />
-      <EducatorsSection />
-      <TestimonialsSection />
-      <HomeFaq />
+      <CmsSection section="educators"><EducatorsSection /></CmsSection>
+      <CmsSection section="testimonials"><TestimonialsSection /></CmsSection>
+      <CmsSection section="faq"><HomeFaq /></CmsSection>
       <FinalCTA />
     </>
   );

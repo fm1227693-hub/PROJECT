@@ -4,7 +4,7 @@ A premium EdTech product that answers one question properly: **what exactly does
 
 One score is not information. Prisma decomposes it into 25 measured skills across Mathematics and English, ranks the gaps by how many points each one costs, and generates a week-by-week learning plan from that ranking.
 
-> **Demo build.** No backend, no database, no payments. All data is local mock data persisted to `localStorage` (`prisma.state.v1`), so the full loop — register → onboarding → diagnostic → animated results → analysis → plan → practice → progress → teacher & school dashboards → pricing — runs end to end in the browser.
+> **Demo build.** No backend, no database, no payments. All data is local mock data persisted to `localStorage` (`prisma.state.v2`), so the full loop — register (student **or** teacher application) → admin approval → onboarding → adaptive diagnostic → animated results → analysis → plan → practice → assignments → progress → teacher, school & **admin** consoles → CMS edits that change the live site — runs end to end in the browser.
 
 ---
 
@@ -91,22 +91,26 @@ The engine is pure functions over plain data, so it drops straight onto a backen
 
 `/` · `/about` · `/how-it-works` · `/features` · `/math` · `/english` · `/math-diagnostic` · `/english-diagnostic` · `/personalized-learning` · `/progress` · `/students` · `/teachers` · `/schools` · `/sample-report` · `/pricing` · `/contact` · `/privacy` · `/terms` · `/faq` · `/tutors`
 
-### Auth (7) + Onboarding (4)
+### Auth (8) + Onboarding (4)
 
-`/login` · `/register` · `/register/student` · `/register/teacher` · `/register/school` · `/forgot-password` · `/verify-email`
+`/login` · `/register` (two-card chooser: Student / Teacher) · `/register/student` · `/register/teacher` (creates a **pending application**) · `/register/school` · `/forgot-password` · `/verify-email` · `/pending-approval`
 `/onboarding` · `/onboarding/profile` · `/onboarding/goals` · `/onboarding/assessment`
 
-### Student (26)
+### Student (27)
 
-`/student/dashboard` · `/profile` · `/skills` · `/progress` · `/learning-path` · `/math` · `/english` · `/math/algebra` · `/math/linear-equations` · `/math/quadratic-equations` · `/math/inequalities` · `/english/grammar` · `/english/vocabulary` · `/english/reading` · `/english/listening` · `/practice` · `/diagnostic` · `/diagnostic/start` · `/diagnostic/math` · `/diagnostic/english` · `/diagnostic/review` · `/diagnostic/completed` · `/diagnostic/results` · `/diagnostic/analysis` · `/recommendations` · `/achievements` · `/history` · `/certificates`
+`/student/dashboard` · `/assignments` · `/profile` · `/skills` · `/progress` · `/learning-path` · `/math` · `/english` · `/math/algebra` · `/math/linear-equations` · `/math/quadratic-equations` · `/math/inequalities` · `/english/grammar` · `/english/vocabulary` · `/english/reading` · `/english/listening` · `/practice` · `/diagnostic` · `/diagnostic/start` · `/diagnostic/math` · `/diagnostic/english` · `/diagnostic/review` · `/diagnostic/completed` · `/diagnostic/results` · `/diagnostic/analysis` · `/recommendations` · `/achievements` · `/history` · `/certificates`
 
-### Teacher (4) · School (2) · Account (2)
+### Teacher (5) · School (2) · Account (2)
 
-`/teacher/dashboard` · `/teacher/students` · `/teacher/classes` · `/teacher/analytics`
+`/teacher/dashboard` · `/teacher/students` · `/teacher/classes` · `/teacher/assignments` · `/teacher/analytics`
 `/school/dashboard` · `/school/analytics`
 `/settings` · `/billing`
 
-Legacy paths (`/diagnostic/math`, `/subjects/*`, old student analysis URLs) 308-redirect to their replacements.
+### Admin (23)
+
+`/admin` (KPI dashboard) · `/admin/login` · `/admin/users` · `/admin/students` · `/admin/teachers` · `/admin/teacher-applications` · `/admin/teacher-applications/[id]` · `/admin/classes` · `/admin/subjects` · `/admin/questions` · `/admin/tests` · `/admin/test-results` · `/admin/learning-content` (+ `/math`, `/english`) · `/admin/analytics` · `/admin/reports` · `/admin/notifications` · `/admin/announcements` · `/admin/faq` · `/admin/pricing` · `/admin/homepage` · `/admin/settings`
+
+**93 real routes total.** Legacy paths (`/diagnostic/math`, `/subjects/*`, old student analysis URLs) 308-redirect to their replacements.
 
 ---
 
@@ -120,6 +124,29 @@ The demo learner is **Amina Karimova, Grade 10**, with an internally consistent 
 - Largest gaps: Quadratic Equations 41 (impact +7.1 pts), Academic Vocabulary 54, Systems of Equations 50
 
 `SAMPLE_TIMELINE` holds six attempts (March → September 2026) so every progress chart is a real comparison rather than a decorative line. Taking a diagnostic in the app recomputes and replaces this data.
+
+### Demo accounts
+
+| Account | Sign-in | Lands on |
+| --- | --- | --- |
+| **Demo Student** — Amina Karimova | `/login` quick button | `/student/dashboard` |
+| **Demo Teacher** — Ms. Amara Adeyemi (approved) | `/login` quick button | `/teacher/dashboard` |
+| **Demo Admin** | `/admin/login` (or `/login` → role "Platform administrator") | `/admin` |
+
+Teacher registration deliberately does **not** activate: it files an application (`lib/data/platform.js` seeds two more pending ones) and parks the user on `/pending-approval` until an admin approves or rejects it in `/admin/teacher-applications`.
+
+### Platform layer (admin CMS)
+
+Everything the admin console edits is real local state that the rest of the app reads:
+
+- **Homepage** hero copy + section toggles → `components/home/Hero.jsx`, `CmsSection` on `/`
+- **FAQ** CRUD + reordering → `/faq` and the homepage FAQ band
+- **Pricing** plans/prices/features → `/pricing`
+- **Question bank** CRUD (MCQ, true/false, fill-in-blank, short answer, equation, numeric, reading & listening via stimuli) → diagnostics, practice sets and assignments draw from the same store
+- **Tests** create/publish/unpublish → teacher assignment picker
+- **Learning content** units per topic → topic study pages
+- **Users** search/filter/suspend/activate · **Announcements** → site-wide banner + notification bells
+- **Notifications** per role (student / teacher / school / admin) with unread badges everywhere
 
 ---
 
@@ -138,3 +165,6 @@ All tokens live in `app/globals.css` under `@theme`; change them there and the w
 - Pricing values are **placeholder** data. No fake partnerships, no invented statistics, no "trusted by 10,000 schools".
 - Copy is centralised in `lib/data/` so the product is i18n-ready (English first).
 - Empty, loading (skeleton) and error states are implemented in `components/ui/States.jsx`.
+- Role protection is a mock layer (`components/auth/RoleGate.jsx` + store): students/teachers can never open `/admin/*`, pending teachers never reach `/teacher/*`. Swapping in real auth means changing `lib/store/AppProvider.jsx` and the gate only.
+- Global search (`Cmd/Ctrl+K`) covers pages, topics, students, questions and tests, scoped to the signed-in role.
+- Diagnostics are **adaptive** in a deterministic way: a correct answer pushes a harder same-topic item, a wrong answer an easier one (capped), and every added item is badged "Adaptive follow-up".

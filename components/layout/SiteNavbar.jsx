@@ -10,6 +10,7 @@ import { PUBLIC_NAV, PUBLIC_ACTIONS } from "@/lib/data/navigation";
 import Logo from "@/components/brand/Logo";
 import Button from "@/components/ui/Button";
 import { useLockBodyScroll, useOnClickOutside, useReducedMotion } from "@/lib/hooks/useMotion";
+import { useApp } from "@/lib/store/AppProvider";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 
 const ICONS = {
@@ -137,6 +138,11 @@ function DesktopDropdown({ item, open, onToggle, onLeave, pathname }) {
 
 export default function SiteNavbar() {
   const pathname = usePathname();
+  const { cms, settings } = useApp();
+  const announcement = cms?.announcement?.enabled && cms?.announcement?.text ? cms.announcement.text : null;
+  const maintenance = settings?.platform?.maintenance
+    ? "Scheduled maintenance this Sunday 02:00–04:00. Diagnostics may pause briefly."
+    : null;
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
@@ -253,109 +259,6 @@ export default function SiteNavbar() {
         </div>
         {scrolled ? <ScrollProgress /> : null}
       </header>
-
-      {/* Mobile navigation */}
-      <AnimatePresence>
-        {mobileOpen ? (
-          <motion.div
-            className="fixed inset-0 z-[70] lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0 : 0.18 }}
-          >
-            <div className="absolute inset-0 bg-ink/35 backdrop-blur-[2px]" onClick={() => setMobileOpen(false)} aria-hidden="true" />
-            <motion.div
-              initial={{ y: reduced ? 0 : "-100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: reduced ? 0 : "-100%" }}
-              transition={{ duration: reduced ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-0 top-0 max-h-[92vh] overflow-y-auto rounded-b-2xl border-b border-line bg-canvas shadow-xl scroll-slim"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation"
-            >
-              <div className="flex h-16 items-center justify-between border-b border-line px-5">
-                <Logo suffix="Diagnostic Center" compact />
-                <button
-                  type="button"
-                  onClick={() => setMobileOpen(false)}
-                  className="grid size-10 place-items-center rounded-md border border-line bg-surface text-ink"
-                  aria-label="Close menu"
-                >
-                  <X className="size-[18px]" aria-hidden="true" />
-                </button>
-              </div>
-
-              <nav className="px-3 py-4" aria-label="Mobile">
-                {PUBLIC_NAV.map((item) =>
-                  item.children ? (
-                    <div key={item.label} className="border-b border-line last:border-b-0">
-                      <button
-                        type="button"
-                        onClick={() => setOpenMobileGroup((g) => (g === item.label ? null : item.label))}
-                        aria-expanded={openMobileGroup === item.label}
-                        className="flex w-full items-center justify-between gap-3 px-2 py-3 text-left"
-                      >
-                        <span className="text-[15px] font-medium text-ink">{item.label}</span>
-                        <ChevronDown
-                          className={cn("size-4 text-faint transition-transform duration-200", openMobileGroup === item.label && "rotate-180")}
-                          aria-hidden="true"
-                        />
-                      </button>
-                      <div
-                        className="grid"
-                        style={{ gridTemplateRows: openMobileGroup === item.label ? "1fr" : "0fr", transition: reduced ? "none" : "grid-template-rows 260ms cubic-bezier(0.22,1,0.36,1)" }}
-                      >
-                        <div className="overflow-hidden">
-                          <div className="space-y-0.5 pb-3">
-                            {item.children.map((child) => (
-                              <Link
-                                key={child.href}
-                                href={child.href}
-                                className="flex items-start gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-surface-2"
-                              >
-                                <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-md border border-line bg-surface text-muted">
-                                  <NavIcon name={child.icon} />
-                                </span>
-                                <span className="min-w-0">
-                                  <span className="block text-[13.5px] font-medium text-ink">{child.label}</span>
-                                  <span className="mt-0.5 block text-[12px] leading-snug text-muted">{child.description}</span>
-                                </span>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center justify-between border-b border-line px-2 py-3.5 text-[15px] font-medium last:border-b-0",
-                        isActive(item.href) ? "text-brand" : "text-ink",
-                      )}
-                    >
-                      {item.label}
-                      <ArrowUpRight className="size-4 text-line-3" aria-hidden="true" />
-                    </Link>
-                  ),
-                )}
-              </nav>
-
-              <div className="sticky bottom-0 grid grid-cols-2 gap-2 border-t border-line bg-canvas px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-                <Button href="/login" variant="secondary" size="md">
-                  Log in
-                </Button>
-                <Button href="/register" size="md">
-                  Get started
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
     </>
   );
 }

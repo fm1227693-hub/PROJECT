@@ -9,11 +9,12 @@ import {
   Sparkles, Target, Timer,
 } from "lucide-react";
 
-import { cn, formatDate, formatDuration } from "@/lib/utils";
+import { cn, formatDate, formatDuration, uid } from "@/lib/utils";
 import { useApp } from "@/lib/store/AppProvider";
 import { buildDiagnosticSet, buildSubjectSet } from "@/lib/data/questions";
 import { diagnose, compareSnapshots } from "@/lib/engine/diagnose";
 import { MATH_TOPICS, ENGLISH_TOPICS } from "@/lib/data/topics";
+import { topicHref } from "@/lib/data/topicRoutes";
 import Button from "@/components/ui/Button";
 import { Badge, DeltaTag } from "@/components/ui/Badge";
 import { Card, SectionHeading } from "@/components/ui/Card";
@@ -186,7 +187,7 @@ export function DiagnosticCenter() {
 
 export function DiagnosticSetup() {
   const router = useRouter();
-  const { startTest, patch, toast, settings } = useApp();
+  const { startTest, patch, toast, settings, questions: questionsPool } = useApp();
   const [subject, setSubject] = useState("both");
   const [timed, setTimed] = useState("untimed");
   const [length, setLength] = useState("standard");
@@ -198,9 +199,9 @@ export function DiagnosticSetup() {
   const begin = () => {
     const first = subject === "english" ? "english" : "math";
     const queue = subject === "both" ? ["english"] : [];
-    const questions = subject === "both" ? buildSubjectSet("math", counts.math) : buildSubjectSet(subject, 15);
+    const questions = subject === "both" ? buildSubjectSet("math", counts.math, 7, questionsPool) : buildSubjectSet(subject, 15, 7, questionsPool);
     patch({ pendingSubjects: queue, flowTimed: timed === "timed" });
-    startTest({ subject: first, questions, timed: timed === "timed", durationMinutes: minutes ?? 13 });
+    startTest({ subject: first, questions, timed: timed === "timed", durationMinutes: minutes ?? 13, adaptive: true });
     toast(`${SUBJECT_META[first].label} paper started. Good luck — answer honestly.`, { tone: "info", title: "Diagnostic started" });
     router.push(`/student/diagnostic/${first}`);
   };
@@ -307,7 +308,7 @@ export function DiagnosticSetup() {
 
 export function DiagnosticReview() {
   const router = useRouter();
-  const { activeTest, goToQuestion, finishTest, startTest, patch, pendingSubjects, flowTimed, toast } = useApp();
+  const { activeTest, goToQuestion, finishTest, startTest, patch, pendingSubjects, flowTimed, toast, questions: questionsPool, submissionRecord, user } = useApp();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   if (!activeTest) {
@@ -327,14 +328,37 @@ export function DiagnosticReview() {
 
   const submit = () => {
     const queue = pendingSubjects ?? [];
-    finishTest();
+    const meta = activeTest;
+    const result = finishTest();
     if (queue.length) {
       const next = queue[0];
       patch({ pendingSubjects: queue.slice(1) });
-      startTest({ subject: next, questions: buildSubjectSet(next, 15), timed: Boolean(flowTimed), durationMinutes: 13 });
+      startTest({
+        subject: next,
+        questions: buildSubjectSet(next, 15, 7, questionsPool),
+        timed: Boolean(flowTimed),
+        durationMinutes: 13,
+        adaptive: true,
+        label: meta?.label ?? null,
+        assignmentId: meta?.assignmentId ?? null,
+        assignmentTitle: meta?.assignmentTitle ?? null,
+      });
       toast(`${SUBJECT_META[next].label} paper is next. Same conditions.`, { tone: "info", title: "Half way there" });
       router.push(`/student/diagnostic/${next}`);
     } else {
+      if (meta?.assignmentId && result) {
+        submissionRecord({
+          id: uid("sub"),
+          assignmentId: meta.assignmentId,
+          assignmentTitle: meta.assignmentTitle ?? meta.label ?? "Assignment",
+          studentId: user?.id ?? "stu_0001",
+          studentName: user?.name ?? "Demo Student",
+          className: user?.className ?? "10-B",
+          subject: meta.subject,
+          score: result.scored?.accuracy ?? 0,
+          submittedAt: new Date().toISOString().slice(0, 10),
+        });
+      }
       router.push("/student/diagnostic/completed");
     }
   };
@@ -529,6 +553,48 @@ export function DiagnosticResults() {
           </ul>
         </Card>
       </div>
+
+      <section aria-labelledby="study-next">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <p className="eyebrow">What should you study next?</p>
+            <h2 id="study-next" className="mt-1 font-display text-[20px] leading-tight tracking-[-0.02em] text-ink">
+              Three topics, in the order that moves your score most.
+            </h2>
+          </div>
+          <Link href="/student/recommendations" className="text-[12px] font-medium text-brand hover:underline">
+            Full recommendation engine →
+          </Link>
+        </div>
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          {diagnosis.topGaps.slice(0, 3).map((gap, index) => {
+            const topic = MATH_TOPICS.concat(ENGLISH_TOPICS).find((t) => t.id === gap.id);
+            const isMath = topic?.subject === "math";
+            return (
+              <Card key={gap.id} className="flex flex-col p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <Badge tone={isMath ? "brand" : "accent"} size="xs">{isMath ? "Mathematics" : "English"}</Badge>
+                  <span className="tnum font-mono text-[10.5px] text-faint">Priority {index + 1}</span>
+                </div>
+                <p className="mt-2 text-[14px] font-semibold text-ink">{gap.name}</p>
+                <p className="mt-1 flex-1 text-[12px] leading-relaxed text-muted">
+                  You are at <strong className="font-semibold text-ink">{gap.score}%</strong> right now. This topic
+                  carries high weight in your {isMath ? "mathematics" : "English"} score — closing the gap adds about{" "}
+                  <strong className="font-semibold text-strong">+{gap.impact} pts</strong> overall.
+                </p>
+                <div className="mt-3 flex gap-2">
+                  <Button size="sm" href={topicHref(gap.id)} className="flex-1">
+                    Study {gap.name}
+                  </Button>
+                  <Button size="sm" variant="ghost" href="/student/learning-path" aria-label={`Add ${gap.name} to my plan`}>
+                    <Route className="size-3.5" aria-hidden="true" />
+                  </Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
 
       <Card className="p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">

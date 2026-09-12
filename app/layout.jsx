@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { AppProvider } from "@/lib/store/AppProvider";
 import Toaster from "@/components/ui/Toast";
+import CommandPalette from "@/components/layout/CommandPalette";
 import AppearanceSync from "@/components/layout/AppearanceSync";
 import ScrollManager from "@/components/layout/ScrollManager";
 import { BRAND } from "@/lib/data/brand";
@@ -97,6 +98,7 @@ export default function RootLayout({ children }) {
             Skip to content
           </a>
           {children}
+          <CommandPalette />
           <Toaster />
         </AppProvider>
       </body>
