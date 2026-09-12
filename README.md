@@ -89,27 +89,24 @@ The engine is pure functions over plain data, so it drops straight onto a backen
 
 ### Public (15 + legal)
 
-`/` · `/about` · `/how-it-works` · `/diagnostic/math` · `/diagnostic/english` · `/subjects/math` · `/subjects/english` · `/sample-report` · `/personalized-learning` · `/students` · `/teachers` · `/tutors` · `/schools` · `/pricing` · `/faq` · `/contact` · `/privacy` · `/terms`
+`/` · `/about` · `/how-it-works` · `/features` · `/math` · `/english` · `/math-diagnostic` · `/english-diagnostic` · `/personalized-learning` · `/progress` · `/students` · `/teachers` · `/schools` · `/sample-report` · `/pricing` · `/contact` · `/privacy` · `/terms` · `/faq` · `/tutors`
 
-### Auth (5)
+### Auth (7) + Onboarding (4)
 
-`/login` · `/register` · `/forgot-password` · `/verify-email` · `/onboarding`
+`/login` · `/register` · `/register/student` · `/register/teacher` · `/register/school` · `/forgot-password` · `/verify-email`
+`/onboarding` · `/onboarding/profile` · `/onboarding/goals` · `/onboarding/assessment`
 
-### Student (20)
+### Student (26)
 
-`/student/dashboard` · `/profile` · `/skills` · `/progress` · `/learning-path` · `/math` · `/english` · `/math/topic` · `/english/topic` · `/practice` · `/diagnostic/start` · `/diagnostic/math/test` · `/diagnostic/english/test` · `/diagnostic/results` · `/diagnostic/math-analysis` · `/diagnostic/english-analysis` · `/recommended-plan` · `/achievements` · `/history` · `/certificates`
+`/student/dashboard` · `/profile` · `/skills` · `/progress` · `/learning-path` · `/math` · `/english` · `/math/algebra` · `/math/linear-equations` · `/math/quadratic-equations` · `/math/inequalities` · `/english/grammar` · `/english/vocabulary` · `/english/reading` · `/english/listening` · `/practice` · `/diagnostic` · `/diagnostic/start` · `/diagnostic/math` · `/diagnostic/english` · `/diagnostic/review` · `/diagnostic/completed` · `/diagnostic/results` · `/diagnostic/analysis` · `/recommendations` · `/achievements` · `/history` · `/certificates`
 
-### Teacher (9)
+### Teacher (4) · School (2) · Account (2)
 
-`/teacher/dashboard` · `/students` · `/students/[id]` · `/classes` · `/assign` · `/assessments/create` · `/assessments/results` · `/question-bank` · `/learning-plans`
-
-### School (4)
-
-`/school/dashboard` · `/students` · `/teachers` · `/analytics`
-
-### Account (2)
-
+`/teacher/dashboard` · `/teacher/students` · `/teacher/classes` · `/teacher/analytics`
+`/school/dashboard` · `/school/analytics`
 `/settings` · `/billing`
+
+Legacy paths (`/diagnostic/math`, `/subjects/*`, old student analysis URLs) 308-redirect to their replacements.
 
 ---
 
