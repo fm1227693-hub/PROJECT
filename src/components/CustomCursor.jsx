@@ -1,83 +1,102 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import {useEffect, useRef} from 'react'
 
+/**
+ * CustomCursor — minimal dot + trailing ring cursor.
+ *
+ * - Activates ONLY on: desktop (≥1024px) + fine pointer + motion allowed
+ * - rAF loop with lerp; zero React re-renders after mount
+ * - Ring expands over interactive elements (a, button, [role=button], inputs)
+ * - mix-blend-difference ring keeps it visible on any background
+ * - Completely inert (renders nothing) on mobile / tablet / reduced-motion
+ */
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [isVisible, setIsVisible] = useState(false);
+  const dotRef = useRef(null)
+  const ringRef = useRef(null)
 
   useEffect(() => {
-    const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
-    };
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const wide = window.matchMedia('(min-width: 1024px)').matches
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!fine || !wide || reduced) return undefined
 
-    const updateTouchPosition = (e) => {
-      if (e.touches && e.touches.length > 0) {
-        setMousePosition({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-        if (!isVisible) setIsVisible(true);
+    const dot = dotRef.current
+    const ring = ringRef.current
+    if (!dot || !ring) return undefined
+
+    let x = window.innerWidth / 2
+    let y = window.innerHeight / 2
+    let rx = x
+    let ry = y
+    let scale = 1
+    let targetScale = 1
+    let visible = false
+    let raf = 0
+
+    document.documentElement.classList.add('has-cursor')
+
+    const onMove = (e) => {
+      x = e.clientX
+      y = e.clientY
+      if (!visible) {
+        visible = true
+        dot.style.opacity = '1'
+        ring.style.opacity = '1'
       }
-    };
+    }
 
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
+    const onOver = (e) => {
+      const t = e.target
+      targetScale = t.closest && t.closest('a, button, [role="button"], input, textarea, select, label, [data-cursor]')
+        ? 1.7
+        : 1
+    }
 
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
+    const onDown = () => { targetScale = 0.75 }
+    const onUp = () => { targetScale = 1 }
+    const onLeave = () => {
+      visible = false
+      dot.style.opacity = '0'
+      ring.style.opacity = '0'
+    }
+    const onEnter = () => {
+      visible = true
+      dot.style.opacity = '1'
+      ring.style.opacity = '1'
+    }
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('touchmove', updateTouchPosition, { passive: true });
-    window.addEventListener('touchstart', updateTouchPosition, { passive: true });
-    window.addEventListener('touchend', handleMouseLeave);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+    const loop = () => {
+      rx += (x - rx) * 0.18
+      ry += (y - ry) * 0.18
+      scale += (targetScale - scale) * 0.2
+      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) scale(${scale.toFixed(3)})`
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
 
-    // Barcha elementlarda oddiy kursorni yashirish
-    document.body.classList.add('hide-default-cursor');
+    window.addEventListener('mousemove', onMove, { passive: true })
+    window.addEventListener('mouseover', onOver, { passive: true })
+    window.addEventListener('mousedown', onDown, { passive: true })
+    window.addEventListener('mouseup', onUp, { passive: true })
+    document.documentElement.addEventListener('mouseleave', onLeave)
+    document.documentElement.addEventListener('mouseenter', onEnter)
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('touchmove', updateTouchPosition);
-      window.removeEventListener('touchstart', updateTouchPosition);
-      window.removeEventListener('touchend', handleMouseLeave);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      document.body.classList.remove('hide-default-cursor');
-    };
-  }, [isVisible]);
-
+      cancelAnimationFrame(raf)
+      document.documentElement.classList.remove('has-cursor')
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseover', onOver)
+      window.removeEventListener('mousedown', onDown)
+      window.removeEventListener('mouseup', onUp)
+      document.documentElement.removeEventListener('mouseleave', onLeave)
+      document.documentElement.removeEventListener('mouseenter', onEnter)
+    }
+  }, [])
 
   return (
-    <>
-      {/* Outer Ring */}
-      <motion.div
-        className="fixed top-0 left-0 w-[40px] h-[40px] border-[1px] border-white/70 rounded-full pointer-events-none z-[99999]"
-        animate={{
-          x: mousePosition.x - 20,
-          y: mousePosition.y - 20,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 1200,
-          damping: 40,
-          mass: 0.1,
-        }}
-      />
-      {/* Inner Dot */}
-      <motion.div
-        className="fixed top-0 left-0 w-[6px] h-[6px] border-[2px] border-white bg-transparent rounded-full pointer-events-none z-[99999]"
-        animate={{
-          x: mousePosition.x - 3,
-          y: mousePosition.y - 3,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: 'tween',
-          duration: 0,
-        }}
-      />
-    </>
-  );
+    <div aria-hidden="true">
+      <div ref={ringRef} className="cursor-ring" />
+      <div ref={dotRef} className="cursor-dot" />
+    </div>
+  )
 }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import {useState} from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaChevronDown, FaQuestionCircle } from 'react-icons/fa'
+import { FaChevronDown } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function FAQ() {
@@ -17,66 +17,68 @@ export default function FAQ() {
     }));
 
     return (
-        <section id="faq" className="py-20 px-5 sm:px-8 font-['Merriweather',serif] bg-transparent relative z-10">
-            <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#c41e30]/15 text-[#c41e30] text-xs font-bold uppercase tracking-wider mb-4 border border-[#c41e30]/20">
-                        <FaQuestionCircle className="w-3.5 h-3.5" />
-                        <span>{t('faq.badge')}</span>
+        <section id="faq" className="section-pad pt-[130px] !pb-16 relative z-10">
+            <div className="container-site">
+                <div className="max-w-3xl mx-auto">
+                    <div data-reveal className="mb-10 sm:mb-14">
+                        <span className="eyebrow">{t('faq.badge', 'Savol-javob')}</span>
+                        <h1 className="display-2 mt-5 text-ink">
+                            {t('faq.title')}
+                        </h1>
+                        <p className="lede mt-4">
+                            {t('faq.subtitle')}
+                        </p>
                     </div>
-                    <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                        {t('faq.title')}
-                    </h2>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 max-w-lg mx-auto">
-                        {t('faq.subtitle')}
-                    </p>
-                </div>
 
-                <div className="flex flex-col gap-4">
-                    {FAQ_ITEMS.map((item, index) => {
-                        const isOpen = activeIndex === index
-                        return (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className="rounded-2xl bg-white/80 dark:bg-[#070b14]/80 backdrop-blur-xl border border-gray-200/80 dark:border-white/10 overflow-hidden shadow-sm transition-all duration-300"
-                            >
-                                <button
-                                    onClick={() => toggleAccordion(index)}
-                                    className="w-full flex items-center justify-between p-5 text-left cursor-pointer gap-4"
+                    <div className="flex flex-col" data-reveal data-reveal-delay="120">
+                        {FAQ_ITEMS.map((item, index) => {
+                            const isOpen = activeIndex === index
+                            return (
+                                <div
+                                    key={index}
+                                    className="border-t border-line last:border-b"
                                 >
-                                    <span className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-100">
-                                        {item.question}
-                                    </span>
-                                    <motion.div
-                                        animate={{ rotate: isOpen ? 180 : 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="w-8 h-8 rounded-full bg-black/[0.04] dark:bg-white/[0.06] flex items-center justify-center shrink-0 text-gray-500 dark:text-gray-400"
+                                    <button
+                                        onClick={() => toggleAccordion(index)}
+                                        aria-expanded={isOpen}
+                                        className="w-full flex items-center justify-between gap-6 py-5 sm:py-6 text-left cursor-pointer group"
                                     >
-                                        <FaChevronDown className="w-3 h-3" />
-                                    </motion.div>
-                                </button>
-
-                                <AnimatePresence>
-                                    {isOpen && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                                        <span className="flex items-baseline gap-4">
+                                            <span className="text-[11px] font-bold text-muted tabular-nums shrink-0">
+                                                {String(index + 1).padStart(2, '0')}
+                                            </span>
+                                            <span className={`font-display text-[19px] sm:text-[22px] font-semibold leading-snug transition-colors duration-300 ${isOpen ? 'text-accent' : 'text-ink group-hover:text-accent'}`}>
+                                                {item.question}
+                                            </span>
+                                        </span>
+                                        <motion.span
+                                            animate={{ rotate: isOpen ? 180 : 0 }}
+                                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                            className={`w-8 h-8 rounded-full border flex items-center justify-center shrink-0 transition-colors duration-300 ${isOpen ? 'border-accent text-accent' : 'border-line text-muted group-hover:border-linestrong'}`}
                                         >
-                                            <div className="px-5 pb-5 pt-0 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-white/[0.04] pt-4">
-                                                {item.answer}
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
-                        )
-                    })}
+                                            <FaChevronDown className="w-3 h-3" />
+                                        </motion.span>
+                                    </button>
+
+                                    <AnimatePresence>
+                                        {isOpen && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="pl-8 sm:pl-9 pr-4 pb-6 text-[14px] text-soft leading-relaxed max-w-[64ch]">
+                                                    {item.answer}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </section>

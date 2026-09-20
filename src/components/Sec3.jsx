@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import {useState, useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaTimes, FaCheckCircle, FaSpinner } from 'react-icons/fa'
+import { FaTimes, FaCheckCircle, FaSpinner, FaTelegramPlane, FaArrowRight } from 'react-icons/fa'
 import axios from 'axios'
+import { observeReveals } from '../hooks/useReveal'
 
 export default function Sec3() {
-  const { t, i18n } = useTranslation()
-
-  
+  const { t } = useTranslation()
 
   const teachers = [
     {
@@ -24,7 +23,6 @@ export default function Sec3() {
   ]
 
   const [activeTeacher, setActiveTeacher] = useState(teachers[0])
-  const [displayedText, setDisplayedText] = useState('')
   const [modal, setModal] = useState(false)
   const [selectedMentor, setSelectedMentor] = useState('')
   const [toast, setToast] = useState(false)
@@ -37,21 +35,10 @@ export default function Sec3() {
 
   const currentTeacher = teachers.find((tch) => tch.id === activeTeacher.id) || teachers[0]
 
-  // Matnni sekinroq va silliq yozish effekti (45ms)
+  // O'qituvchi almashganda yangi .mask-reveal elementlarni kuzatish
   useEffect(() => {
-    setDisplayedText('')
-    let i = 0
-    const fullText = currentTeacher.quote || ''
-    const typingInterval = setInterval(() => {
-      if (i <= fullText.length) {
-        setDisplayedText(fullText.substring(0, i))
-        i++
-      } else {
-        clearInterval(typingInterval)
-      }
-    }, 45)
-    return () => clearInterval(typingInterval)
-  }, [currentTeacher.id, i18n.language])
+    observeReveals()
+  }, [activeTeacher.id])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -102,291 +89,224 @@ export default function Sec3() {
   }
 
   return (
-    <section className="relative pt-2 sm:pt-4 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-300 font-['Merriweather',serif]">
-      {/* Orqa fondagi jozibali va sekin pulslanuvchi nurlar */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-10 left-5 sm:left-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-red-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
-      />
-      <motion.div
-        animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-10 right-5 sm:right-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
-      />
-      <div className="relative max-w-7xl mx-auto ">
-        <div data-aos="fade-up" className="text-center mb-3">
-          <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
-            {t('sec3.badge')}
-          </span>
-        </div>
-        <h2
-          data-aos="fade-up"
-          data-aos-delay="100"
-          className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center mb-4 sm:mb-6 px-2"
-        >
-          {t('sec3.title')}
-        </h2>
+    <section className="section-pad !pt-0 select-none">
+      <div className="container-site">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
 
-        {/* O'qituvchilar tanlash paneli */}
-        <div
-          data-aos="fade-up"
-          data-aos-delay="150"
-          className="flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 scrollbar-none px-2 pt-1"
-        >
-          {teachers.map((teacher) => {
-            const isActive = currentTeacher.id === teacher.id
-            return (
-              <motion.button
-                key={teacher.id}
-                onClick={() => setActiveTeacher(teacher)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`shrink-0 rounded-full transition-all duration-300 ${
-                  isActive
-                    ? 'flex items-center gap-2.5 sm:gap-3 bg-white/60 backdrop-blur-md border border-white/50 dark:bg-slate-900 text-slate-900 dark:text-white p-1 pr-4 sm:pr-5 shadow-xl shadow-slate-900/10 dark:shadow-white/10 ring-2 ring-red-400'
-                    : 'p-1 opacity-80 hover:opacity-100 bg-white/30 backdrop-blur-sm border border-white/40 dark:bg-white/5 dark:border-white/10'
-                }`}
-              >
-                <img
-                  src={teacher.image}
-                  alt={teacher.name}
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-red-400 "
-                />
-                {isActive && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="text-left"
-                  >
-                    <h4 className="text-xs sm:text-sm font-bold leading-tight">
-                      {teacher.name.split(' ')[0]}
-                    </h4>
-                    <span className="text-[10px] sm:text-xs font-semibold opacity-80">{teacher.cert}</span>
-                  </motion.div>
-                )}
-              </motion.button>
-            )
-          })}
-        </div>
-
-        {/* Asosiy kontent grid qismi */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 items-center">
-
-          {/* Chap qism: O'qituvchi kartochkasi */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentTeacher.id}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -30, scale: 0.95 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="mx-auto w-full max-w-sm rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.6)] glass-card backdrop-blur-xl relative group border border-red-500/20 dark:border-red-500/20"
-            >
-              <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-b from-indigo-800 to-purple-900 overflow-hidden">
-                <motion.img
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  src={currentTeacher.image}
-                  alt={currentTeacher.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <span className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white text-[11px] sm:text-xs font-semibold text-right leading-tight bg-black/40 backdrop-blur-md px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border border-white/10">
-                  {currentTeacher.name.split(' ')[0]}
-                  <br />
-                  {currentTeacher.name.split(' ')[1]}
-                </span>
-              </div>
-              <div className="px-4 pt-3 pb-4 sm:px-5 sm:pt-4 sm:pb-5 bg-white/60 dark:bg-[#050505]/60 backdrop-blur-2xl border-t border-white/40 dark:border-white/5">
-                <h3 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none mb-3">
-                  {currentTeacher.cert}
-                </h3>
-                <div className="flex flex-wrap gap-2 mb-3">
-                  <span className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-1 rounded-lg shadow-sm">
-                    {t('sec3.students')}: {currentTeacher.students}
-                  </span>
-                  <span className="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-1 rounded-lg shadow-sm">
-                    {t('sec3.experience')}: {currentTeacher.experience}
-                  </span>
-                </div>
-
-                {/* Kartochka ichidagi matn ham silliq animatsiya bilan chiqadi */}
-                <motion.p
-                  key={currentTeacher.id + '-desc'}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-4"
-                >
-                  {currentTeacher.quote}
-                </motion.p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* O'ng qism: Statistika va matnlar */}
-          <div className="flex flex-col space-y-6 sm:space-y-8">
+          {/* Chap — portret */}
+          <div className="lg:col-span-5">
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentTeacher.id + '-stats'}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="grid grid-cols-2 gap-2 sm:gap-3"
+                key={currentTeacher.id}
+                initial={{ opacity: 0, scale: 0.985 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.985 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="img-frame mask-reveal relative aspect-[4/5] max-w-[460px] mx-auto lg:mx-0 w-full shadow-[var(--shadow-lift)]"
               >
-                {[
-                  { value: currentTeacher.score, label: t('sec3.ieltsScore') },
-                  { value: currentTeacher.cert, label: t('sec3.certified') },
-                  { value: currentTeacher.experience, label: t('sec3.experience') },
-                  { value: currentTeacher.students, label: t('sec3.students') },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-2xl border border-slate-200 dark:border-red-500/20 bg-slate-50/60 dark:bg-red-500/5 p-3 sm:p-4 glass-card"
-                  >
-                    <span className="block text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent">
-                      {stat.value}
-                    </span>
-                    <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{stat.label}</span>
+                <img
+                  src={currentTeacher.image}
+                  alt={currentTeacher.name}
+                  loading="lazy"
+                />
+                {/* Kredito'lchov chipi */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] backdrop-blur-md border border-line rounded-[14px] px-4 py-3">
+                  <div>
+                    <p className="font-display text-[19px] font-semibold text-ink leading-none">
+                      {currentTeacher.name}
+                    </p>
+                    <p className="text-[11px] text-muted mt-1">{t('ruxillo.role', 'Senior English Teacher')}</p>
                   </div>
-                ))}
+                  <span className="font-display text-[24px] font-semibold text-accent leading-none shrink-0">
+                    {currentTeacher.cert}
+                  </span>
+                </div>
               </motion.div>
             </AnimatePresence>
 
-            {/* Sekin yoziladigan matn bloki */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed border-l-2 border-red-500 pl-3 sm:pl-4 min-h-[120px] sm:min-h-[140px] bg-transparent py-3 flex items-center"
-            >
-              <p>
-                {displayedText}
-                <motion.span
-                  animate={{ opacity: [1, 0, 1] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                  className="inline-block w-1.5 h-4 ml-1 bg-red-500 align-middle"
-                />
-              </p>
-            </motion.div>
+            {/* O'qituvchi tanlash paneli */}
+            <div className="flex items-center justify-center lg:justify-start gap-2.5 mt-6">
+              {teachers.map((teacher) => {
+                const isActive = currentTeacher.id === teacher.id
+                return (
+                  <button
+                    key={teacher.id}
+                    onClick={() => setActiveTeacher(teacher)}
+                    aria-pressed={isActive}
+                    className={`shrink-0 rounded-full flex items-center gap-2.5 p-1.5 pr-4 transition-all duration-300 cursor-pointer ${
+                      isActive
+                        ? 'bg-surface border border-accent shadow-soft'
+                        : 'border border-line hover:border-linestrong'
+                    }`}
+                  >
+                    <img
+                      src={teacher.image}
+                      alt={teacher.name}
+                      loading="lazy"
+                      className={`w-9 h-9 rounded-full object-cover transition-all duration-300 ${isActive ? 'ring-2 ring-[var(--accent)]' : 'opacity-70'}`}
+                    />
+                    {isActive && (
+                      <span className="text-[12.5px] font-semibold text-ink">{teacher.name.split(' ')[0]}</span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          {/* O'ng — tahririy profil */}
+          <div className="lg:col-span-6 lg:col-start-7">
+            <span className="eyebrow" data-reveal>{t('sec3.badge', 'Professional o‘qituvchilar')}</span>
+
+            <h2 className="display-2 mt-5 text-ink" data-reveal data-reveal-delay="80">
+              {t('sec3.title', 'Bizning mutaxassisimiz bilan tanishing')}
+            </h2>
+
+            {/* Iqtibor — katta serif italic */}
+            <blockquote className="relative mt-7 pl-6 border-l-2 border-accent" data-reveal data-reveal-delay="160">
+              <p className="font-display italic text-[19px] sm:text-[21px] leading-[1.5] text-soft line-clamp-5">
+                “{currentTeacher.quote}”
+              </p>
+            </blockquote>
+
+            {/* Meta statistika */}
+            <div
+              className="grid grid-cols-2 sm:grid-cols-4 mt-9 border-t border-l border-line"
+              data-reveal
+              data-reveal-delay="220"
+            >
+              {[
+                { value: currentTeacher.score, label: t('sec3.ieltsScore', 'IELTS score') },
+                { value: 'IELTS', label: t('sec3.certified', 'Certified') },
+                { value: currentTeacher.experience, label: t('sec3.experience', 'Experience') },
+                { value: currentTeacher.students, label: t('sec3.students', 'Students') },
+              ].map((stat, i) => (
+                <div key={i} className="border-b border-r border-line p-4 sm:p-5">
+                  <p className="font-display text-[26px] sm:text-[30px] font-semibold text-ink leading-none">
+                    {stat.value}
+                  </p>
+                  <p className="text-[11px] font-semibold tracking-[0.08em] uppercase text-muted mt-2">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Harakatlar */}
+            <div className="flex flex-col sm:flex-row gap-3.5 mt-8" data-reveal data-reveal-delay="280">
               <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.97 }}
                 href={currentTeacher.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 text-center bg-white/50 backdrop-blur-md border border-white/60 dark:bg-white/10 hover:bg-white/70 dark:hover:bg-white/20 text-slate-900 dark:text-white text-xs font-semibold py-3.5 rounded-xl transition shadow-md"
+                className="btn btn-outline flex-1"
               >
+                <FaTelegramPlane className="w-4 h-4" />
                 Telegram
               </motion.a>
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   setSelectedMentor(currentTeacher.name)
                   setModal(true)
                 }}
-                className="flex-1 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs font-bold py-3.5 rounded-xl transition-all duration-300 shadow-[0_6px_20px_rgba(220,38,38,0.35)] hover:shadow-[0_8px_25px_rgba(220,38,38,0.5)] border border-red-500/30 relative overflow-hidden group"
+                className="btn btn-primary flex-1"
               >
-                <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
-                <span className="relative z-10">{t('sec3.contactBtn')}</span>
+                {t('sec3.contactBtn', 'Bog‘lanish')}
+                <FaArrowRight className="w-3.5 h-3.5 btn-arrow" />
               </motion.button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal Oyna */}
+      {/* Modal oyna */}
       <AnimatePresence>
         {modal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4"
+            role="dialog"
+            aria-modal="true"
           >
             <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-white/95 dark:bg-[#0f0d24]/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-md relative text-slate-900 dark:text-white shadow-2xl shadow-purple-950/50"
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.97 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="bg-surface border border-line rounded-[18px] p-6 sm:p-8 w-full max-w-md relative text-ink shadow-[var(--shadow-lift)]"
             >
-              <motion.button
-                whileHover={{ rotate: 90, scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              <button
                 type="button"
                 onClick={() => setModal(false)}
-                className="absolute top-4 right-4 w-8 h-8 bg-slate-100 dark:bg-white/10 rounded-xl flex items-center justify-center text-sm font-bold"
+                aria-label={t('common.close', 'Yopish')}
+                className="absolute top-4 right-4 w-9 h-9 rounded-full border border-line flex items-center justify-center text-muted hover:text-ink hover:border-linestrong transition-colors cursor-pointer"
               >
-                <FaTimes />
-              </motion.button>
-              <h3 className="text-lg sm:text-xl font-bold mb-1 pr-6">{t('sec3.modalTitle')}</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mb-5">
-                {t('sec3.selectedTeacher')}{' '}
-                <span className="text-red-500 font-medium">{selectedMentor}</span>
+                <FaTimes className="w-3.5 h-3.5" />
+              </button>
+              <h3 className="font-display text-[26px] font-semibold text-ink">{t('sec3.modalTitle', 'O‘qituvchi bilan bog‘lanish')}</h3>
+              <p className="text-muted text-[13px] mt-1.5 mb-6">
+                {t('sec3.selectedTeacher', 'Tanlangan o‘qituvchi:')}{' '}
+                <span className="text-accent font-semibold">{selectedMentor}</span>
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">
-                    {t('sec3.nameLabel')}
+                  <label htmlFor="mentor-name" className="block text-[12px] font-semibold text-muted mb-1.5">
+                    {t('sec3.nameLabel', 'Ismingiz')}
                   </label>
                   <input
+                    id="mentor-name"
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder={t('sec3.namePlaceholder')}
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-500 transition"
+                    placeholder={t('sec3.namePlaceholder', 'Ismingizni kiriting')}
+                    className="glass-input w-full px-4 py-3 text-[14px] placeholder:text-muted"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">
-                    {t('sec3.phoneLabel')}
+                  <label htmlFor="mentor-phone" className="block text-[12px] font-semibold text-muted mb-1.5">
+                    {t('sec3.phoneLabel', 'Telefon raqamingiz')}
                   </label>
                   <input
+                    id="mentor-phone"
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+998 90 123 45 67"
-                    className="w-full bg-slate-50 dark:bg-white/5 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-red-500 transition"
+                    className="glass-input w-full px-4 py-3 text-[14px] placeholder:text-muted"
                   />
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.95 }}
+                <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-bold py-3 rounded-xl transition-all duration-300 text-sm shadow-[0_6px_20px_rgba(220,38,38,0.35)] hover:shadow-[0_8px_25px_rgba(220,38,38,0.5)] border border-red-500/30 relative overflow-hidden group disabled:opacity-50"
+                  className="btn btn-primary w-full disabled:opacity-50 disabled:pointer-events-none"
                 >
-                  <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 pointer-events-none" />
-                  <span className="relative z-10 flex items-center justify-center">
-                    {loading ? <FaSpinner className="animate-spin mx-auto" /> : t('sec3.submitBtn')}
-                  </span>
-                </motion.button>
+                  {loading
+                    ? <FaSpinner className="w-4 h-4 animate-spin" />
+                    : t('sec3.submitBtn', 'Yuborish')}
+                </button>
               </form>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Toast Xabarnoma */}
+      {/* Toast xabarnoma */}
       <AnimatePresence>
         {toast && (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="fixed bottom-5 right-5 bg-emerald-600 text-white px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl shadow-2xl z-50 text-xs sm:text-sm font-medium flex items-center gap-3"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed bottom-5 left-1/2 -translate-x-1/2 bg-ink text-bg px-5 py-3.5 rounded-full shadow-[var(--shadow-lift)] z-[200] text-[13px] font-semibold flex items-center gap-3"
           >
-            <FaCheckCircle className="text-xl text-white" />
-            <span>{t('sec3.successToast')}</span>
+            <FaCheckCircle className="w-4 h-4" style={{ color: 'var(--bg)' }} />
+            <span>{t('sec3.successToast', 'So‘rovingiz muvaffaqiyatli yuborildi!')}</span>
           </motion.div>
         )}
       </AnimatePresence>

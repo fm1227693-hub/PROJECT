@@ -1,34 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { inView, animate, AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
-import Stats from "./components/Stats";
-import Products from "./components/Products";
-import AboutUs from "./components/AboutUs";
-import Admin from "./components/Admin";
-import Register from "./components/Register";
-import Mentorstats from "./components/Mentorstats";
-import LevelTest from "./components/LevelTest";
-import ListeningHub from "./components/ListeningHub";
-import ReadingHub from "./components/ReadingHub";
-import Pricing from "./components/Pricing";
-import Gamess from "./components/Gamess";
-import FAQ from "./components/FAQ";
-import ConsultationBooking from "./components/ConsultationBooking";
-import Flashcards from "./components/Flashcard";
-import LeadForm from "./components/LeadForm";
-import PrivacyPolicy from "./components/PrivacyPolicy";
-import TermsOfUse from "./components/TermsOfUse";
-import IeltsWritingAssessor from "./components/IeltsWritingAssessor";
-import BackgroundCanvas from "./components/BackgroundCanvas";
 import ThemeTransitionLoader from "./components/ThemeTransitionLoader";
-import Principle from "./components/Principle";
 import CustomCursor from "./components/CustomCursor";
 import PremiumLoader from "./components/PremiumLoader";
+import useReveal from "./hooks/useReveal";
+
+/* Og'ir sahifalar — kod bo'linishi (code-splitting) orqali faqat kerakda yuklanadi */
+const Stats = lazy(() => import("./components/Stats"));
+const Products = lazy(() => import("./components/Products"));
+const AboutUs = lazy(() => import("./components/AboutUs"));
+const Admin = lazy(() => import("./components/Admin"));
+const Register = lazy(() => import("./components/Register"));
+const Mentorstats = lazy(() => import("./components/Mentorstats"));
+const LevelTest = lazy(() => import("./components/LevelTest"));
+const ListeningHub = lazy(() => import("./components/ListeningHub"));
+const ReadingHub = lazy(() => import("./components/ReadingHub"));
+const Pricing = lazy(() => import("./components/Pricing"));
+const Gamess = lazy(() => import("./components/Gamess"));
+const FAQ = lazy(() => import("./components/FAQ"));
+const LeadForm = lazy(() => import("./components/LeadForm"));
+const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("./components/TermsOfUse"));
+const IeltsWritingAssessor = lazy(() => import("./components/IeltsWritingAssessor"));
+const Principle = lazy(() => import("./components/Principle"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -40,109 +40,74 @@ function ScrollToTop() {
   return null;
 }
 
+const INTRO_DURATION = 1500;
+
 export default function App() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
+  // Birlashgan scroll-reveal tizimi (IntersectionObserver asosida)
+  useReveal([location.pathname, isLoading]);
+
   useEffect(() => {
-    setIsLoading(true);
-    // 3.5 soniya (3500ms) qilib belgilandi, faqat saytga kirganda chiqishi uchun
+    // Hero kirish animatsiyalari loader tugagandan keyin boshlanishi uchun belgi
+    document.documentElement.setAttribute("data-intro", "pending");
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3500);
+      document.documentElement.removeAttribute("data-intro");
+    }, INTRO_DURATION);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      document.documentElement.removeAttribute("data-intro");
+    };
   }, []);
 
-  // Ultra-Smooth Premium Scroll Reveal Observer removed for performance
-  useEffect(() => {
-    // Removed intersection observer animations to prevent site freezing
-  }, [isLoading, location.pathname]);
-
   return (
-    <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-x-hidden font-sans">
-      {/* CustomCursor removed for performance */}
-      
-      {/* Synthetic Theme Transition Loading Screen */}
+    <div className="relative min-h-screen bg-bg text-ink transition-colors duration-500 overflow-x-hidden font-sans grain">
+      {/* Nozik, yengil maxsus kursor — faqat desktop */}
+      <CustomCursor />
+
+      {/* Mavzu almashinuvi loading ekrani */}
       <ThemeTransitionLoader />
 
-      {/* Keyframe animatsiyalar */}
-      <style>{`
-        @keyframes shimmer {
-          to { background-position: 200% center; }
-        }
-        @keyframes loading-bar {
-          0% { transform: translateX(-100%); }
-          50% { transform: translateX(150%); }
-          100% { transform: translateX(-100%); }
-        }
-        body.mobile-menu-open .fab-button-container {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: scale(0.8);
-        }
-      `}</style>
-
-      {/* Premium Loading Ekrani */}
-      {isLoading && (
-        <PremiumLoader 
-          loop={false} 
-          text={t("premiumLoader.text", "KIRISH")}
-          captions={[
-            t("premiumLoader.cap1", "Ma'lumotlar tekshirilmoqda"),
-            t("premiumLoader.cap2", "Kirish tasdiqlanmoqda"),
-            t("premiumLoader.cap3", "Deyarli tayyor"),
-            t("premiumLoader.cap4", "Xush kelibsiz")
-          ]}
-        />
-      )}
-
-      {/* Eski fon animatsiyalari va effektlari (mijoz talabiga binoan olib tashlanmadi, shunchaki ishlatilmaydi) */}
-      {/* 
-      <BackgroundCanvas />
-
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.4] dark:opacity-[0.16]" style={{ backgroundImage: "radial-gradient(circle, rgba(225,29,72,0.35) 1.2px, transparent 1.2px)", backgroundSize: "36px 36px" }} />
-        <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/40 via-rose-500/30 dark:from-red-600/30 dark:via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1 transition-colors duration-500" />
-        <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/40 via-amber-500/30 dark:from-rose-600/25 dark:via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2 transition-colors duration-500" />
-        <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/40 via-rose-500/30 dark:from-red-600/25 dark:via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s] transition-colors duration-500" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-700/30 dark:border-red-500/15 rounded-full blur-sm animate-float-orb transition-colors duration-500" />
-        <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-700/30 dark:border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s] transition-colors duration-500" />
-        <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100/90 dark:from-[#020509] to-transparent pointer-events-none" />
-        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/80 dark:from-[#030712]/90 to-transparent pointer-events-none" />
-      </div> 
-      */}
-
-      {/* Yangi, yengil va sayt dizayniga mos fon */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        {/* Soft subtle mesh background */}
-        <div 
-          className="absolute inset-0 opacity-[0.3] dark:opacity-[0.1]"
-          style={{
-            backgroundImage: "radial-gradient(circle, rgba(225,29,72,0.1) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        
-        {/* Elegant static glows */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-100/40 dark:bg-rose-900/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-slate-200/50 dark:bg-blue-900/10 rounded-full blur-[100px]" />
-      </div>
+      {/* Premium kirish ekrani */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="intro-loader"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <PremiumLoader
+              loop={false}
+              text={t("premiumLoader.text", "KIRISH")}
+              captions={[
+                t("premiumLoader.cap1", "Ma'lumotlar tekshirilmoqda"),
+                t("premiumLoader.cap2", "Kirish tasdiqlanmoqda"),
+                t("premiumLoader.cap3", "Deyarli tayyor"),
+                t("premiumLoader.cap4", "Xush kelibsiz"),
+              ]}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+
       <div className="relative z-10">
         {location.pathname !== '/enter' && <Navbar />}
         <ScrollToTop />
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
+            <Suspense fallback={<div className="min-h-[60vh]" />}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Main />} />
               <Route path="/stats" element={<Stats />} />
@@ -163,30 +128,26 @@ export default function App() {
               <Route path="/ielts-writing" element={<IeltsWritingAssessor />} />
               <Route path="/principle/:id" element={<Principle />} />
             </Routes>
-            {/* <ConsultationBooking/>
-            <Flashcards/> */}
+            </Suspense>
             {location.pathname !== '/enter' && <Footer />}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Bottom Floating Quick Action Badges */}
-
-      {/* Bottom Floating Quick Action Badges */}
-      {!location.pathname.startsWith('/enter') && 
-       !location.pathname.startsWith('/reading-tests') && 
-       !location.pathname.startsWith('/listening-tests') && 
+      {/* Pastki suzuvchi tezkor qo'ng'iroq tugmasi */}
+      {!location.pathname.startsWith('/enter') &&
+       !location.pathname.startsWith('/reading-tests') &&
+       !location.pathname.startsWith('/listening-tests') &&
        !location.pathname.startsWith('/ielts-writing') && (
-        <div className="fab-button-container fixed bottom-6 right-6 z-50 flex items-center gap-3 transition-all duration-300">
+        <div className="fab-button-container fixed bottom-5 right-5 z-50 flex items-center gap-3">
           <a
             href="tel:+998910829979"
-            className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full flex items-center justify-center shadow-2xl shadow-red-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer border-2 border-white/30 dark:border-slate-800 group"
-            title="Qo'ng'iroq qilish">
-            
-            <div className="absolute inset-0 rounded-full border border-red-500 animate-ping opacity-75" />
-
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 relative z-10 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            className="group relative w-12 h-12 bg-accent hover:bg-[var(--accent-hover)] text-white rounded-full flex items-center justify-center shadow-[0_10px_30px_-8px_var(--accent-ring)] transition-all duration-300 hover:-translate-y-1 active:scale-95 cursor-pointer"
+            title="Qo'ng'iroq qilish"
+            aria-label="Qo'ng'iroq qilish"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
           </a>
         </div>

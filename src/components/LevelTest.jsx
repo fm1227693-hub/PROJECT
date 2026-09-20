@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -196,7 +196,7 @@ export default function LevelTest() {
         if (stage === 'test' && !finished) {
             toast.custom(
                 (toastItem) => (
-                    <div className={`${toastItem.visible ? 'animate-enter' : 'animate-leave'} max-w-sm w-full bg-white dark:bg-gray-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl pointer-events-auto flex flex-col gap-4 p-5 sm:p-6 border border-gray-100 dark:border-gray-800 font-['Merriweather',serif]`}>
+                    <div className={`${toastItem.visible ? 'animate-enter' : 'animate-leave'} max-w-sm w-full bg-white dark:bg-gray-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl pointer-events-auto flex flex-col gap-4 p-5 sm:p-6 border border-gray-100 dark:border-gray-800`}>
                         <p className="text-sm sm:text-base font-bold text-gray-800 dark:text-white text-center leading-snug">
                             {t('levelTest.leaveConfirm') || "Testni tark etmoqchimisiz? Natijangiz saqlanmaydi."}
                         </p>
@@ -237,47 +237,47 @@ export default function LevelTest() {
     // INTRO
     if (stage === 'intro') {
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Merriweather',serif]">
-                <div className="absolute top-1/4 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" />
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
+                
                 <Toaster position="top-center" />
 
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
-                    className="max-w-lg w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80 text-center relative z-10 animate-fade-in-up"
+                    className="max-w-lg w-full card !rounded-[20px] p-5 xs:p-7 sm:p-10 shadow-[var(--shadow-lift)] text-center relative z-10"
                 >
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block">
+                    <span className="eyebrow justify-center">
                         {t('levelTest.badge') || 'Darajani aniqlash'}
                     </span>
-                    <h2 className="text-xl xs:text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight">
+                    <h2 className="font-display text-[26px] xs:text-[30px] sm:text-[36px] font-semibold text-ink mt-4 xs:mt-5 leading-tight">
                         {t('levelTest.title') || 'Ingliz tili darajangizni bilib oling'}
                     </h2>
-                    <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400 mt-2.5 xs:mt-3 leading-relaxed">
+                    <p className="text-[13px] text-muted mt-2.5 xs:mt-3 leading-relaxed">
                         {t('levelTest.description') ||
                             '40 ta savoldan iborat test orqali darajangiz aniqlanadi. Qiyinlik darajasi asta-sekin oshib boradi.'}
                     </p>
 
                     <div className="grid grid-cols-2 gap-2.5 xs:gap-3 mt-5 xs:mt-6 text-left">
-                        <div className="bg-gray-50 dark:bg-gray-950 rounded-xl xs:rounded-2xl p-3.5 xs:p-4 border border-gray-100 dark:border-gray-800 hover:border-red-200 dark:hover:border-red-900 transition-colors">
-                            <p className="text-[10px] xs:text-xs font-bold text-gray-400 uppercase tracking-wider">{t('levelTest.questionsLabel') || 'Savollar'}</p>
-                            <p className="text-lg xs:text-xl font-black text-gray-900 dark:text-white mt-1">40 ta</p>
+                        <div className="bg-raised rounded-[14px] p-3.5 xs:p-4 border border-line text-left">
+                            <p className="text-[10px] xs:text-[11px] font-bold text-muted uppercase tracking-[0.1em]">{t('levelTest.questionsLabel') || 'Savollar'}</p>
+                            <p className="font-display text-[22px] font-semibold text-ink mt-1">40 ta</p>
                         </div>
-                        <div className="bg-gray-50 dark:bg-gray-950 rounded-xl xs:rounded-2xl p-3.5 xs:p-4 border border-gray-100 dark:border-gray-800 hover:border-red-200 dark:hover:border-red-900 transition-colors">
-                            <p className="text-[10px] xs:text-xs font-bold text-gray-400 uppercase tracking-wider">{t('levelTest.timeLabel') || 'Vaqt'}</p>
-                            <p className="text-lg xs:text-xl font-black text-gray-900 dark:text-white mt-1">30 min</p>
+                        <div className="bg-raised rounded-[14px] p-3.5 xs:p-4 border border-line text-left">
+                            <p className="text-[10px] xs:text-[11px] font-bold text-muted uppercase tracking-[0.1em]">{t('levelTest.timeLabel') || 'Vaqt'}</p>
+                            <p className="font-display text-[22px] font-semibold text-ink mt-1">30 min</p>
                         </div>
                     </div>
 
                     <button
                         onClick={startTest}
-                        className="w-full mt-6 xs:mt-7 bg-red-600 hover:bg-red-700 text-white font-bold py-3 xs:py-3.5 rounded-xl xs:rounded-2xl transition-all text-sm shadow-lg shadow-red-500/20 cursor-pointer active:scale-95 hover:shadow-xl hover:-translate-y-0.5"
+                        className="btn btn-primary w-full mt-6 xs:mt-7"
                     >
                         {t('levelTest.startBtn') || 'Testni boshlash'}
                     </button>
 
                     <button
                         onClick={() => navigate(-1)}
-                        className="w-full mt-2.5 xs:mt-3 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800/50 text-gray-500 dark:text-gray-400 font-bold py-3 xs:py-3.5 rounded-xl xs:rounded-2xl transition-all text-sm cursor-pointer active:scale-95 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                        className="w-full mt-2.5 bg-transparent hover:bg-surface2 text-muted font-semibold py-3 xs:py-3.5 rounded-full transition-all text-[13px] cursor-pointer border border-transparent hover:border-line"
                     >
                         {t('levelTest.cancelBtn') || 'Bekor qilish'}
                     </button>
@@ -291,16 +291,16 @@ export default function LevelTest() {
     if (stage === 'result' && showResult) {
         const { correct, total, percent, level } = computeScore()
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Merriweather',serif]">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden">
                 <Toaster position="top-center" />
                 <ExitBtn />
 
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
-                    className="max-w-lg w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80 text-center relative z-10 animate-fade-in-up"
+                    className="max-w-lg w-full card !rounded-[20px] p-5 xs:p-7 sm:p-10 shadow-[var(--shadow-lift)] text-center relative z-10"
                 >
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block">
+                    <span className="eyebrow justify-center">
                         {t('levelTest.resultBadge') || 'Natija'}
                     </span>
 
@@ -359,7 +359,7 @@ export default function LevelTest() {
     // FINISHED but result hidden
     if (finished && !showResult) {
         return (
-            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Merriweather',serif]">
+            <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
                 <Toaster position="top-center" />
                 <ExitBtn />
 
@@ -368,7 +368,7 @@ export default function LevelTest() {
                     data-aos-duration="600"
                     className="max-w-md w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80 text-center animate-fade-in-up"
                 >
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block">
+                    <span className="eyebrow justify-center">
                         {t('levelTest.doneBadge') || 'Test yakunlandi'}
                     </span>
                     <h2 className="text-lg xs:text-xl sm:text-2xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight">
@@ -393,7 +393,7 @@ export default function LevelTest() {
 
     // TEST
     return (
-        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Merriweather',serif]">
+        <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200">
             <Toaster position="top-center" />
             <ExitBtn />
             <div

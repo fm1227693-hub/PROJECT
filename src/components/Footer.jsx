@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import {
@@ -12,6 +12,7 @@ import {
     FaFileContract,
     FaTimes,
     FaCheckCircle,
+    FaArrowRight
 } from 'react-icons/fa'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -19,8 +20,6 @@ export default function Footer() {
     const { t } = useTranslation()
     const [activeModal, setActiveModal] = useState(null) // 'privacy' | 'terms' | null
     const location = useLocation()
-
-    
 
     const quickLinks = [
         { label: t('footer.links.home'), to: '/' },
@@ -34,270 +33,200 @@ export default function Footer() {
             icon: <FaTelegramPlane />,
             href: 'https://telegram.me/optimumenglishscape',
             label: 'Telegram',
-            color: 'hover:text-sky-500',
         },
         {
             icon: <FaInstagram />,
             href: 'https://www.instagram.com/optimum_english_9/profilecard/?igsh=MTZmc2JvMmhvNHpjdw==',
             label: 'Instagram',
-            color: 'hover:text-pink-500',
         },
         {
             icon: <FaYoutube />,
             href: 'https://youtube.com/@optimumschoolofenglish?si=3swxgqQR7g884fnu',
             label: 'YouTube',
-            color: 'hover:text-red-600',
         },
     ]
 
-    const FooterSection = ({ title, children, noBorder }) => (
-        <div className={`pb-6 ${noBorder ? '' : 'border-b border-gray-100 dark:border-gray-800'} sm:border-none sm:pb-0`}>
-            <h4 className="text-sm font-extrabold text-gray-950 dark:text-white uppercase tracking-wider mb-4 px-1 sm:px-0">
-                {title}
-            </h4>
-            <div className="flex flex-col gap-3 px-1 sm:px-0">
-                {children}
-            </div>
-        </div>
-    )
-
     return (
-        <footer
-            data-aos="fade-up"
-            style={{ fontFamily: "'Merriweather', serif" }}
-            className={`relative text-gray-600 dark:text-gray-400 pt-14 pb-8 px-5 border-t border-slate-200/60 dark:border-white/10 ${location.pathname === '/enter' ? '' : 'mt-16'} transition-colors duration-300 bg-white/75 dark:bg-[#030712]/80 backdrop-blur-2xl overflow-hidden z-10`}
-        >
-            {/* Ambient Footer Glow */}
-            <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl" />
+        <footer className={`relative bg-raised border-t border-line ${location.pathname === '/enter' ? '' : ''} overflow-hidden z-10`}>
+            <div className="container-site pt-16 pb-8">
+                {/* Yuqori qism */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
 
-            <div className="relative max-w-6xl mx-auto flex flex-col gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-10 text-left">
+                    {/* 1. Brend */}
+                    <div className="lg:col-span-4 flex flex-col items-start gap-5">
+                        <Link to="/" className="flex items-center gap-3 group">
+                            <img
+                                src="/favicon.png"
+                                alt="Optimum logo"
+                                width={38}
+                                height={38}
+                                loading="lazy"
+                                className="w-[38px] h-[38px] rounded-xl object-cover ring-1 ring-line"
+                            />
+                            <span className="flex flex-col leading-none">
+                                <span className="font-display text-[26px] font-semibold text-ink">Optimum</span>
+                                <span className="text-[8.5px] font-bold tracking-[0.3em] uppercase text-muted mt-1">
+                                    School of English
+                                </span>
+                            </span>
+                        </Link>
+                        <p className="text-[13.5px] leading-relaxed max-w-[36ch] text-muted">
+                            {t('footer.description')}
+                        </p>
+                        <div className="flex gap-2.5">
+                            {socials.map((s) => (
+                                <a
+                                    key={s.label}
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={s.label}
+                                    className="w-10 h-10 rounded-full border border-line flex items-center justify-center text-muted hover:text-ink hover:border-linestrong hover:-translate-y-0.5 transition-all duration-300 text-[15px]"
+                                >
+                                    {s.icon}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
 
-                {/* 1. Brend va tavsif */}
-                <div className="flex flex-col items-start gap-3 pb-6 border-b border-gray-100 dark:border-gray-800 sm:border-none sm:pb-0">
-                    <span className="text-3xl font-black text-gray-950 dark:text-white tracking-tighter">
-                        Optimum
-                    </span>
-                    <p className="text-sm leading-relaxed max-w-sm text-gray-600 dark:text-gray-400">
-                        {t('footer.description')}
-                    </p>
-                    <div className="flex gap-5 mt-2 text-gray-400 dark:text-gray-500">
-                        {socials.map((s) => (
+                    {/* 2. Tezkor havolalar */}
+                    <div className="lg:col-span-3">
+                        <h4 className="meta-label mb-5">{t('footer.quickLinks')}</h4>
+                        <div className="flex flex-col gap-3">
+                            {quickLinks.map((link) => (
+                                <Link
+                                    key={link.to}
+                                    to={link.to}
+                                    className="group inline-flex items-center gap-2 text-[13.5px] font-medium text-soft hover:text-accent transition-colors w-fit"
+                                >
+                                    <FaArrowRight className="w-2 h-2 opacity-0 -translate-x-1 group-hover:opacity-70 group-hover:translate-x-0 transition-all" />
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* 3. Aloqa */}
+                    <div className="lg:col-span-3">
+                        <h4 className="meta-label mb-5">{t('footer.contactTitle')}</h4>
+                        <div className="flex flex-col gap-4">
                             <a
-                                key={s.label}
-                                href={s.href}
+                                href="https://www.google.com/maps/search/?api=1&query=Premier+School,+Namozgoh+St,+Bukhara"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label={s.label}
-                                className={`text-2xl transition-colors ${s.color} active:scale-95`}
+                                className="group flex items-start gap-3 hover:text-accent transition-colors"
                             >
-                                {s.icon}
+                                <FaMapMarkerAlt className="mt-0.5 text-accent shrink-0 text-[13px]" />
+                                <span className="text-[13.5px] leading-snug text-soft group-hover:text-accent transition-colors">
+                                    {t('footer.address')}
+                                </span>
                             </a>
-                        ))}
+                            <a
+                                href="tel:+998900829979"
+                                className="flex items-center gap-3 group"
+                            >
+                                <FaPhoneAlt className="text-accent shrink-0 text-[11px]" />
+                                <span className="text-[13.5px] font-semibold tracking-wide text-soft group-hover:text-accent transition-colors">
+                                    +998 90 082 99 79
+                                </span>
+                            </a>
+                            <div className="flex items-center gap-3">
+                                <FaClock className="text-accent shrink-0 text-[12px]" />
+                                <div className="flex flex-col">
+                                    <span className="text-[12.5px] text-muted">{t('footer.everyday')}</span>
+                                    <span className="text-[13.5px] font-semibold text-ink">08:00 – 20:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 4. CTA */}
+                    <div className="lg:col-span-2 flex flex-col gap-5">
+                        <h4 className="meta-label">{t('footer.ctaLabel', 'Boshlash')}</h4>
+                        <p className="font-display text-[19px] leading-snug text-ink max-w-[20ch]">
+                            {t('footer.ctaText', 'Birinchi dars bepul.')}
+                        </p>
+                        <Link to="/form" className="btn btn-primary !px-5 !py-[11px] text-[12.5px] w-fit">
+                            {t('leadForm.formTitle', 'Bepul darsga yozilish')}
+                        </Link>
                     </div>
                 </div>
 
-                {/* 2. Tezkor havolalar (4 ta) */}
-                <FooterSection title={t('footer.quickLinks')}>
-                    {quickLinks.map((link) => (
+                {/* Pastki qism */}
+                <div className="mt-14 pt-6 border-t border-line flex flex-col-reverse sm:flex-row items-start sm:items-center justify-between gap-4 text-[12px] text-muted">
+                    <span>
+                        © {new Date().getFullYear()} Optimum School of English.
+                    </span>
+
+                    <div className="flex flex-wrap gap-x-6 gap-y-2">
                         <Link
-                            key={link.to}
-                            to={link.to}
-                            className="text-sm hover:text-red-600 dark:hover:text-red-400 transition-colors font-medium py-1"
+                            to="/privacy-policy"
+                            className="hover:text-accent transition-colors font-medium"
                         >
-                            {link.label}
+                            {t('footer.privacy')}
                         </Link>
-                    ))}
-                </FooterSection>
-
-                {/* 3. Aloqa maʼlumotlari */}
-                <FooterSection title={t('footer.contactTitle')}>
-                    <a 
-                        href="https://www.google.com/maps/search/?api=1&query=Premier+School,+Namozgoh+St,+Bukhara"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-start gap-3 group hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
-                    >
-                        <FaMapMarkerAlt className="mt-1 text-red-600 dark:text-red-400 shrink-0 text-sm" />
-                        <span className="text-sm leading-snug">
-                            {t('footer.address')}
-                        </span>
-                    </a>
-                    <a
-                        href="tel:+998900829979"
-                        className="flex items-center gap-3 group hover:text-red-600 dark:hover:text-red-400 transition-colors"
-                    >
-                        <FaPhoneAlt className="text-red-600 dark:text-red-400 shrink-0 text-xs" />
-                        <span className="text-sm font-medium tracking-wide">+998 90 082 99 79</span>
-                    </a>
-                </FooterSection>
-
-                {/* 4. Ish vaqti */}
-                <FooterSection title={t('footer.hoursTitle')} noBorder>
-                    <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 px-3 py-1 rounded-2xl sm:rounded-full border border-gray-100 dark:border-gray-800 w-fit">
-                        <FaClock className="text-red-600 dark:text-red-400 shrink-0 text-sm" />
-                        <div className="flex flex-col sm:flex-row sm:gap-3">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {t('footer.everyday')}
-                            </span>
-                            <span className="text-sm font-bold text-gray-950 dark:text-white">
-                                08:00 – 20:00
-                            </span>
-                        </div>
+                        <Link
+                            to="/terms-of-use"
+                            className="hover:text-accent transition-colors font-medium"
+                        >
+                            {t('footer.terms')}
+                        </Link>
                     </div>
-                </FooterSection>
-
-            </div>
-
-            {/* Pastki qism */}
-            <div className="relative max-w-6xl mx-auto mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 flex flex-col-reverse sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-500 dark:text-gray-600 font-medium">
-                <span>
-                    © {new Date().getFullYear()} Optimum School of English.
-                </span>
-
-                <div className="flex flex-wrap gap-x-6 gap-y-2">
-                    <Link
-                        to="/privacy-policy"
-                        className="hover:text-red-600 dark:hover:text-red-400 transition-colors text-xs font-medium"
-                    >
-                        {t('footer.privacy')}
-                    </Link>
-                    <Link
-                        to="/terms-of-use"
-                        className="hover:text-red-600 dark:hover:text-red-400 transition-colors text-xs font-medium"
-                    >
-                        {t('footer.terms')}
-                    </Link>
                 </div>
             </div>
 
             {/* Privacy & Terms Modals */}
             <AnimatePresence>
                 {activeModal && (
-                    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-2xl">
+                    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm">
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            transition={{ duration: 0.3 }}
-                            className="relative w-full max-w-2xl max-h-[85vh] bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-y-auto flex flex-col justify-between gap-6"
+                            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 24, scale: 0.98 }}
+                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            className="relative w-full max-w-2xl max-h-[85vh] bg-surface border border-line rounded-[18px] p-6 sm:p-8 shadow-[var(--shadow-lift)] overflow-y-auto flex flex-col justify-between gap-6"
                         >
-                            {/* Close Button */}
                             <button
                                 onClick={() => setActiveModal(null)}
-                                className="absolute top-5 right-5 w-9 h-9 rounded-2xl bg-gray-100 dark:bg-gray-900 text-gray-500 hover:text-gray-900 dark:hover:text-white flex items-center justify-center text-sm font-bold transition-all hover:scale-105 cursor-pointer"
+                                aria-label={t('common.close', 'Yopish')}
+                                className="absolute top-5 right-5 w-9 h-9 rounded-full border border-line text-muted hover:text-ink hover:border-linestrong flex items-center justify-center transition-colors cursor-pointer"
                             >
-                                <FaTimes />
+                                <FaTimes className="w-3.5 h-3.5" />
                             </button>
 
-                            {/* Header */}
-                            <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-5">
-                                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-xl shadow-lg shadow-red-600/30 shrink-0">
+                            <div className="flex items-center gap-4 border-b border-line pb-5">
+                                <div className="w-11 h-11 rounded-[14px] bg-accent text-white flex items-center justify-center text-[17px] shrink-0">
                                     {activeModal === 'privacy' ? <FaShieldAlt /> : <FaFileContract />}
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-gray-950 dark:text-white tracking-tight">
+                                    <h3 className="font-display text-[24px] font-semibold text-ink">
                                         {activeModal === 'privacy' ? t('footer.privacyModal.title') : t('footer.termsModal.title')}
                                     </h3>
-                                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">
+                                    <p className="text-[12px] text-muted mt-1">
                                         {activeModal === 'privacy' ? t('footer.privacyModal.subtitle') : t('footer.termsModal.subtitle')}
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Body Content */}
-                            <div className="space-y-5 text-left text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                {activeModal === 'privacy' ? (
-                                    <>
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.privacyModal.sec1Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.privacyModal.sec1Desc')}
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.privacyModal.sec2Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.privacyModal.sec2Desc')}
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.privacyModal.sec3Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.privacyModal.sec3Desc')}
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.privacyModal.sec4Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.privacyModal.sec4Desc')}
-                                            </p>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.termsModal.sec1Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.termsModal.sec1Desc')}
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.termsModal.sec2Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.termsModal.sec2Desc')}
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.termsModal.sec3Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.termsModal.sec3Desc')}
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-gray-50 dark:bg-gray-900/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-800/80">
-                                            <h4 className="font-extrabold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
-                                                <FaCheckCircle className="text-red-500 text-xs shrink-0" />
-                                                {t('footer.termsModal.sec4Title')}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {t('footer.termsModal.sec4Desc')}
-                                            </p>
-                                        </div>
-                                    </>
-                                )}
+                            <div className="space-y-4 text-left text-[13.5px] leading-relaxed text-soft">
+                                {(activeModal === 'privacy'
+                                    ? [1, 2, 3, 4].map((n) => ({ title: t(`footer.privacyModal.sec${n}Title`), desc: t(`footer.privacyModal.sec${n}Desc`) }))
+                                    : [1, 2, 3, 4].map((n) => ({ title: t(`footer.termsModal.sec${n}Title`), desc: t(`footer.termsModal.sec${n}Desc`) }))
+                                ).map((sec, i) => (
+                                    <div key={i} className="bg-raised p-4 rounded-[14px] border border-line">
+                                        <h4 className="font-bold text-ink mb-1 flex items-center gap-2 text-[13.5px]">
+                                            <FaCheckCircle className="text-accent text-[11px] shrink-0" />
+                                            {sec.title}
+                                        </h4>
+                                        <p className="text-[12.5px] text-muted">{sec.desc}</p>
+                                    </div>
+                                ))}
                             </div>
 
-                            {/* Footer Action */}
-                            <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+                            <div className="pt-4 border-t border-line flex justify-end">
                                 <button
                                     onClick={() => setActiveModal(null)}
-                                    className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-extrabold text-xs shadow-lg shadow-red-600/30 hover:scale-105 transition cursor-pointer"
+                                    className="btn btn-primary !px-6 !py-3 text-[12.5px]"
                                 >
                                     {activeModal === 'privacy' ? t('footer.privacyModal.closeBtn') : t('footer.termsModal.closeBtn')}
                                 </button>

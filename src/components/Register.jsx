@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaUser, FaPhoneAlt, FaBookOpen, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { HiArrowLeft } from 'react-icons/hi';
@@ -109,7 +109,7 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 pt-24 pb-16 bg-transparent font-['Merriweather',serif] relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4 pt-24 pb-16 bg-transparent relative overflow-hidden">
 
             {/* Toast Xabarnoma */}
             <AnimatePresence>
@@ -118,7 +118,7 @@ export default function Register() {
                         initial={{ opacity: 0, y: -50, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-xl shadow-2xl border border-gray-200/80 dark:border-white/10 text-gray-900 dark:text-white"
+                        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl bg-surface shadow-[var(--shadow-lift)] border border-line text-ink"
                     >
                         {toast.type === 'success' ? (
                             <FaCheckCircle className="text-emerald-500 text-xl shrink-0" />
@@ -133,7 +133,7 @@ export default function Register() {
             <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
+                className="absolute top-[96px] sm:top-[110px] left-4 sm:left-8 group flex items-center justify-center w-11 h-11 bg-raised hover:bg-ink hover:text-bg rounded-full border border-line transition-all duration-300 cursor-pointer z-50"
             >
                 <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
             </button>
@@ -142,40 +142,40 @@ export default function Register() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="w-full max-w-lg glass-card rounded-3xl p-8 sm:p-10 shadow-2xl border border-slate-200/80 dark:border-white/10 relative overflow-hidden"
+                className="w-full max-w-lg card !rounded-[20px] p-8 sm:p-10 shadow-[var(--shadow-lift)] relative overflow-hidden"
             >
 
 
                 <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
                     <div className="text-center space-y-2">
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                        <h2 className="font-display text-[30px] sm:text-[34px] font-semibold text-ink">
                             {t('register.title')}
                         </h2>
-                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                        <p className="text-[13px] text-muted">
                             {t('register.subtitle')}
                         </p>
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.fullNameLabel')}</label>
+                        <label className="text-[11.5px] font-semibold text-muted tracking-[0.06em] ml-1">{t('register.fullNameLabel')}</label>
                         <div className="relative flex items-center">
-                            <FaUser className="absolute left-4 text-gray-400" />
+                            <FaUser className="absolute left-4 text-muted" />
                             <input
                                 type="text"
                                 name="fullName"
                                 placeholder={t('register.fullNamePlaceholder')}
                                 value={formData.fullName}
                                 onChange={handleChange}
-                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
+                                className="glass-input w-full !pl-11 !pr-4 !py-3.5 !text-sm !rounded-[12px] text-ink"
                                 required
                             />
                         </div>
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.phoneLabel')}</label>
+                        <label className="text-[11.5px] font-semibold text-muted tracking-[0.06em] ml-1">{t('register.phoneLabel')}</label>
                         <div className="relative flex items-center">
-                            <FaPhoneAlt className="absolute left-4 text-gray-400 z-10" />
+                            <FaPhoneAlt className="absolute left-4 text-muted z-10" />
                             <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
                                 +998
                             </div>
@@ -185,21 +185,21 @@ export default function Register() {
                                 placeholder="(90) 123-45-67"
                                 value={formData.phone}
                                 onAccept={(value) => handleChange({ target: { name: 'phone', value } })}
-                                className="w-full pl-24 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
+                                className="glass-input w-full !pl-24 !pr-4 !py-3.5 !text-sm !rounded-[12px] text-ink"
                                 required
                             />
                         </div>
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.courseLabel')}</label>
+                        <label className="text-[11.5px] font-semibold text-muted tracking-[0.06em] ml-1">{t('register.courseLabel')}</label>
                         <div className="relative flex items-center">
-                            <FaBookOpen className="absolute left-4 text-gray-400" />
+                            <FaBookOpen className="absolute left-4 text-muted" />
                             <input
                                 type="text"
                                 value={t('register.courseName')}
                                 disabled
-                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-100 dark:bg-white/[0.02] border border-gray-200/80 dark:border-white/10 text-sm text-gray-600 dark:text-gray-400 cursor-not-allowed"
+                                className="glass-input w-full !pl-11 !pr-4 !py-3.5 !text-sm !rounded-[12px] text-muted cursor-not-allowed opacity-70"
                             />
                         </div>
                     </div>
@@ -209,7 +209,7 @@ export default function Register() {
                         whileTap={{ scale: 0.98 }}
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 rounded-2xl bg-[#c41e30] text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-70"
+                        className="btn btn-primary w-full !py-4 disabled:opacity-70 disabled:pointer-events-none"
                     >
                         {loading ? (
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

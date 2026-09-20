@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { BsStars } from 'react-icons/bs'
 
 export default function Stats() {
     const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('1m');
-
-    
 
     const dataConfig = {
         '1m': {
@@ -44,52 +42,40 @@ export default function Stats() {
     const current = dataConfig[activeTab];
 
     return (
-        /* Plus Jakarta Sans shrifti orqali ultra-premium ko'rinishga keltirildi */
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 mb-16 sm:mb-24 select-none font-['Merriweather',serif] transition-colors duration-200">
+        <div className="container-site pt-[130px] pb-20 sm:pb-24 select-none">
 
-            {/* Sarlavha qismi */}
-            <div
-                data-aos="fade-up"
-                className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4"
-            >
+            {/* Sarlavha */}
+            <div data-reveal className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-14 gap-6 pb-10 border-b border-line">
                 <div className="max-w-xl">
-                    <span className="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 ring-1 ring-red-100 dark:ring-red-500/20 px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
-                        {t('statistic.badge')}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mt-3 sm:mt-4 tracking-tight leading-tight">
+                    <span className="eyebrow">{t('statistic.badge')}</span>
+                    <h1 className="display-2 mt-5 text-ink">
                         {t('statistic.title')}
-                    </h2>
+                    </h1>
                 </div>
-                <p className="text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm md:text-base max-w-sm md:text-right">
+                <p className="lede max-w-sm md:text-right !text-[14.5px]">
                     {t('statistic.description')}
                 </p>
             </div>
 
-            {/* Asosiy Grid kontent */}
+            {/* Asosiy grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
 
-                {/* Left Card: Chart & Dynamics */}
-                <div
-                    data-aos="fade-right"
-                    className="relative bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border border-gray-100 dark:border-gray-800 rounded-3xl p-5 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] lg:col-span-7 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(220,38,38,0.12)] dark:hover:shadow-[0_20px_50px_rgba(220,38,38,0.15)] hover:-translate-y-1 transition-all duration-500 group/card overflow-hidden"
-                >
-                    {/* Dekorativ nur */}
-                    <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 bg-red-500/10 dark:bg-red-500/10 rounded-full blur-3xl" />
+                {/* Chap: Grafik */}
+                <div data-reveal className="card !rounded-[20px] p-6 sm:p-8 lg:col-span-7 flex flex-col justify-between">
 
-                    <div className="relative">
-                        <div className="flex flex-col gap-4 mb-6">
+                    <div>
+                        <div className="flex flex-col gap-5 mb-6">
                             <div className="flex flex-col">
-                                <span className="text-[11px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.dynamicsTitle')}</span>
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-black text-gray-950 dark:text-white mt-0.5 sm:mt-1">{t('statistic.analysisTitle')}</h3>
+                                <span className="meta-label">{t('statistic.dynamicsTitle')}</span>
+                                <h2 className="font-display text-[24px] sm:text-[28px] font-semibold text-ink mt-1">{t('statistic.analysisTitle')}</h2>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-gray-900 p-1 rounded-xl border border-gray-100 dark:border-gray-800 w-full">
+                            <div className="grid grid-cols-3 gap-1 bg-surface2 p-1 rounded-full border border-line w-full">
                                 {Object.keys(dataConfig).map((key) => (
                                     <button
                                         key={key}
                                         onClick={() => setActiveTab(key)}
-                                        className={`py-2 px-1 text-[11px] sm:text-xs font-bold rounded-lg transition-all duration-300 cursor-pointer active:scale-95 truncate text-center ${activeTab === key ? 'bg-white dark:bg-gray-800 shadow-sm text-red-600 dark:text-red-400 scale-[1.02]' : 'text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+                                        className={`py-2 px-1 text-[11.5px] font-bold rounded-full transition-all duration-300 cursor-pointer truncate text-center ${activeTab === key ? 'bg-accent text-white shadow-sm' : 'text-muted hover:text-ink'}`}
                                     >
                                         {dataConfig[key].label}
                                     </button>
@@ -97,77 +83,76 @@ export default function Stats() {
                             </div>
                         </div>
 
-                        <div className="w-full h-48 sm:h-56 bg-gradient-to-b from-red-50/40 dark:from-red-500/10 to-transparent rounded-2xl p-3 sm:p-4 flex items-end relative border border-dashed border-gray-100/70 dark:border-gray-800 mb-6 overflow-hidden transition-all duration-500 group-hover/card:border-red-200 dark:group-hover/card:border-red-900/40">
+                        <div className="w-full h-48 sm:h-56 bg-raised rounded-[16px] p-3 sm:p-4 flex items-end relative border border-line mb-6 overflow-hidden">
                             <svg className="w-full h-full transition-all duration-700 ease-in-out" viewBox="0 0 400 150" preserveAspectRatio="none">
                                 <defs>
                                     <linearGradient id="largeChartGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#dc2626" stopOpacity="0.35" />
-                                        <stop offset="100%" stopColor="#dc2626" stopOpacity="0.0" />
+                                        <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.28" />
+                                        <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.0" />
                                     </linearGradient>
                                 </defs>
                                 <path d={current.gradD} fill="url(#largeChartGrad)" className="transition-all duration-700 ease-in-out" />
-                                <path d={current.pathD} stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" fill="none" className="transition-all duration-700 ease-in-out" />
-                                <circle cx={current.circleX} cy={current.circleY} r="6" fill="#dc2626" stroke="#ffffff" strokeWidth="2.5" className="transition-all duration-700 ease-in-out animate-pulse" />
+                                <path d={current.pathD} stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" className="transition-all duration-700 ease-in-out" />
+                                <circle cx={current.circleX} cy={current.circleY} r="5.5" fill="var(--accent)" stroke="var(--surface)" strokeWidth="2.5" className="transition-all duration-700 ease-in-out" />
                             </svg>
 
-                            <div className="absolute top-3 right-3 sm:top-6 sm:right-6 bg-gray-950 dark:bg-white text-white dark:text-gray-950 text-[10px] sm:text-[11px] font-bold px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl shadow-lg transition-all duration-500 transform hover:scale-105 border border-white/10 dark:border-gray-900/10">
+                            <div className="absolute top-3 right-3 sm:top-6 sm:right-6 bg-ink text-bg text-[10.5px] font-bold px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-[10px] shadow-[var(--shadow-soft)]">
                                 {current.trendText}
                             </div>
                         </div>
                     </div>
 
-                    <div className="relative grid grid-cols-3 gap-2 sm:gap-3 border-t border-gray-100 dark:border-gray-800/80 pt-4 sm:pt-5 mt-2 text-center">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 border-t border-line pt-5 text-center">
                         {Object.keys(dataConfig).map((key) => {
                             const item = dataConfig[key];
                             const isActive = activeTab === key;
                             return (
-                                <div
+                                <button
                                     key={key}
                                     onClick={() => setActiveTab(key)}
-                                    className={`p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 cursor-pointer active:scale-95 hover:border-red-400 hover:-translate-y-1 flex flex-col justify-between ${isActive ? 'bg-red-50/60 dark:bg-red-500/10 border-red-300 dark:border-red-900/60 shadow-md scale-[1.02]' : 'bg-gray-50/50 dark:bg-gray-900/50 border-gray-100 dark:border-gray-800'}`}
+                                    className={`p-3 sm:p-4 rounded-[14px] border transition-all duration-300 cursor-pointer text-center flex flex-col gap-1.5 ${isActive ? 'bg-accentsoft border-accent/30' : 'border-line hover:border-linestrong bg-transparent'}`}
                                 >
-                                    <span className="text-[9px] sm:text-xs font-bold text-red-600 dark:text-red-400 block uppercase tracking-wider truncate">{item.label}</span>
-                                    <span className="text-xs sm:text-base font-extrabold text-gray-900 dark:text-white block my-1">{item.speaking}</span>
-                                    <span className="text-[9px] sm:text-[10px] font-semibold text-gray-500 dark:text-gray-400 block truncate">{item.errors}</span>
-                                </div>
+                                    <span className={`text-[9.5px] sm:text-[11px] font-bold block uppercase tracking-[0.1em] truncate ${isActive ? 'text-accent' : 'text-muted'}`}>{item.label}</span>
+                                    <span className="font-display text-[18px] sm:text-[22px] font-semibold text-ink block leading-none">{item.speaking}</span>
+                                    <span className="text-[9px] sm:text-[10px] font-medium text-muted block truncate">{item.errors}</span>
+                                </button>
                             );
                         })}
                     </div>
                 </div>
 
-                {/* Right Card: Course Types & Progress Bars */}
-                <div
-                    data-aos="fade-left"
-                    className="relative bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border border-gray-100 dark:border-gray-800 rounded-3xl p-5 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] lg:col-span-5 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(220,38,38,0.12)] dark:hover:shadow-[0_20px_50px_rgba(220,38,38,0.15)] hover:-translate-y-1 transition-all duration-500 group/card overflow-hidden"
-                >
-                    <div className="pointer-events-none absolute -bottom-20 -left-16 w-56 h-56 bg-gray-400/10 dark:bg-white/5 rounded-full blur-3xl" />
+                {/* O'ng: Kurs turlari */}
+                <div data-reveal="right" data-reveal-delay="120" className="card !rounded-[20px] p-6 sm:p-8 lg:col-span-5 flex flex-col justify-between">
 
-                    <div className="relative">
-                        <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{t('statistic.courseTypeTitle')}</span>
-                        <h3 className="text-xl sm:text-2xl font-black text-gray-950 dark:text-white mt-1 mb-5 sm:mb-6">{t('statistic.coursesTitle')}</h3>
+                    <div>
+                        <span className="meta-label">{t('statistic.courseTypeTitle')}</span>
+                        <h2 className="font-display text-[24px] sm:text-[28px] font-semibold text-ink mt-1 mb-7">{t('statistic.coursesTitle')}</h2>
 
-                        <div className="space-y-4 sm:space-y-6">
+                        <div className="space-y-5">
                             {[
-                                { name: 'General English', progress: '84%', color: 'bg-red-600' },
-                                { name: 'IELTS Preparation', progress: '76%', color: 'bg-gray-950 dark:bg-white' },
-                                { name: 'Speaking Club', progress: '92%', color: 'bg-red-400' },
-                                { name: 'Grammar Intensive', progress: '68%', color: 'bg-gray-300 dark:bg-gray-700' }
+                                { name: 'General English', progress: '84%', color: 'var(--accent)' },
+                                { name: 'IELTS Preparation', progress: '76%', color: 'var(--ink)' },
+                                { name: 'Speaking Club', progress: '92%', color: 'var(--accent)' },
+                                { name: 'Grammar Intensive', progress: '68%', color: 'var(--line-strong)' }
                             ].map((course, index) => (
-                                <div key={index} className="space-y-2 group p-2.5 sm:p-3 rounded-2xl transition-all duration-300 hover:bg-gray-50/80 dark:hover:bg-gray-900/40 border border-transparent hover:border-gray-100 dark:hover:border-gray-800">
-                                    <div className="flex justify-between text-xs font-bold">
-                                        <span className="text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">{course.name}</span>
-                                        <span className="text-gray-900 dark:text-white">{course.progress} {t('statistic.studentsText')}</span>
+                                <div key={index} className="space-y-2 group">
+                                    <div className="flex justify-between text-[12.5px] font-semibold">
+                                        <span className="text-soft group-hover:text-accent transition-colors">{course.name}</span>
+                                        <span className="text-ink tabular-nums">{course.progress} {t('statistic.studentsText')}</span>
                                     </div>
-                                    <div className="w-full h-2.5 bg-gray-100 dark:bg-gray-900 rounded-full overflow-hidden p-0.5">
-                                        <div className={`${course.color} h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-110 shadow-sm`} style={{ width: course.progress }}></div>
+                                    <div className="w-full h-[5px] bg-surface2 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full rounded-full transition-all duration-1000 ease-out"
+                                            style={{ width: course.progress, background: course.color }}
+                                        ></div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="relative w-full mt-6 sm:mt-8 py-3.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 font-bold rounded-xl border border-red-100 dark:border-red-900/30 text-xs flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300 transform hover:-translate-y-0.5 shadow-sm">
-                        <BsStars className="text-yellow-500 text-base" />
+                    <div className="w-full mt-8 py-3.5 bg-accentsoft text-accent font-semibold rounded-[14px] border border-accent/20 text-[12.5px] flex items-center justify-center gap-2">
+                        <BsStars className="text-[15px]" />
                         <span>{t('statistic.footerText').replace('✨', '').trim()}</span>
                     </div>
                 </div>

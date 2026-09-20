@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import {useState} from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { FaGamepad, FaArrowLeft, FaPuzzlePiece, FaBrain, FaFont, FaLayerGroup, FaKeyboard, FaShapes, FaBook } from 'react-icons/fa'
+import { FaArrowRight, FaPuzzlePiece, FaBrain, FaFont, FaLayerGroup, FaKeyboard, FaShapes, FaBook } from 'react-icons/fa'
 import { BsStars } from 'react-icons/bs'
 import Games from './Game'
 import Game1 from './Game1'
@@ -84,7 +84,7 @@ export default function Gamess() {
   ]
 
   return (
-    <div className={`px-4 font-['Merriweather',serif] bg-transparent transition-all duration-300 ${activeGame ? 'h-[100dvh] pt-[85px] pb-2 flex flex-col overflow-hidden' : 'min-h-screen pt-24 pb-16'}`}>
+    <div className={`px-4 bg-transparent transition-all duration-300 ${activeGame ? 'h-[100dvh] pt-[85px] pb-2 flex flex-col overflow-hidden' : 'min-h-screen pt-24 pb-16'}`}>
       <div className={`max-w-7xl mx-auto w-full ${activeGame ? 'flex-1 flex flex-col min-h-0' : ''}`}>
         <AnimatePresence mode="wait">
           {!activeGame ? (
@@ -95,14 +95,14 @@ export default function Gamess() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-12"
             >
-              <div className="text-center space-y-4">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-bold text-sm tracking-wide border border-red-500/20 shadow-sm">
-                  <FaGamepad /> {t('gamesPage.badge', "O'yinlar")}
+              <div className="text-center space-y-5">
+                <span className="eyebrow justify-center">
+                  {t('gamesPage.badge', "O'yinlar")}
                 </span>
-                <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white">
+                <h1 className="display-2 text-ink">
                   {t('gamesPage.title', "Ingliz tilini o'ynab o'rganamiz")}
                 </h1>
-                <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
+                <p className="lede max-w-2xl mx-auto">
                   {t('gamesPage.subtitle', "O'zingizga yoqqan o'yinni tanlang va bilimingizni sinab ko'ring")}
                 </p>
               </div>
@@ -111,21 +111,19 @@ export default function Gamess() {
                 {gamesList.map((game) => (
                   <motion.div
                     key={game.id}
-                    whileHover={{ scale: 1.03, y: -5 }}
+                    whileHover={{ scale: 1.02, y: -5 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveGame(game.id)}
-                    className="relative group cursor-pointer overflow-hidden rounded-3xl bg-white/70 dark:bg-[#050505]/60 backdrop-blur-xl border border-white/60 dark:border-red-500/20 shadow-xl shadow-slate-200/50 dark:shadow-none p-6 transition-all duration-300"
+                    className="group card !rounded-[18px] cursor-pointer p-6 hover:shadow-[var(--shadow-lift)] hover:border-linestrong"
                   >
-                    <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${game.color} opacity-10 rounded-bl-[100px] transition-transform duration-500 group-hover:scale-110`} />
-                    
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${game.color} text-white flex items-center justify-center text-2xl mb-6 shadow-lg`}>
+                    <div className="w-12 h-12 rounded-[12px] bg-accentsoft border border-accent/20 text-accent flex items-center justify-center text-[19px] mb-6 group-hover:bg-accent group-hover:text-white transition-colors duration-400">
                       {game.icon}
                     </div>
-                    
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">
+
+                    <h3 className="font-display text-[21px] font-semibold text-ink mb-2">
                       {game.title}
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 font-medium relative z-10">
+                    <p className="text-[13.5px] text-muted font-medium leading-relaxed">
                       {game.description}
                     </p>
                   </motion.div>
@@ -143,13 +141,13 @@ export default function Gamess() {
               <div className="mb-3 flex justify-start shrink-0">
                 <button
                   onClick={() => setActiveGame(null)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 dark:bg-red-500/10 hover:bg-slate-200 dark:hover:bg-red-500/20 text-slate-700 dark:text-red-400 border border-transparent dark:border-red-500/30 font-bold text-sm transition-colors shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-linestrong text-soft hover:text-ink hover:border-ink font-semibold text-[13px] transition-colors cursor-pointer"
                 >
-                  <FaArrowLeft /> {t('gamesPage.backBtn', "Ortga qaytish")}
+                  <FaArrowRight className="w-3 h-3 rotate-180" /> {t('gamesPage.backBtn', "Ortga qaytish")}
                 </button>
               </div>
               
-              <div className="flex-1 bg-white/50 dark:bg-[#050505]/60 backdrop-blur-md rounded-3xl shadow-2xl border border-white/60 dark:border-red-500/20 p-2 sm:p-4 overflow-y-auto relative custom-scrollbar flex flex-col justify-center">
+              <div className="flex-1 card !rounded-[18px] p-2 sm:p-4 overflow-y-auto relative custom-scrollbar flex flex-col justify-center">
                 {gamesList.find(g => g.id === activeGame)?.component}
               </div>
             </motion.div>

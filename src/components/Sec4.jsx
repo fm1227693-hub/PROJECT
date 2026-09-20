@@ -1,96 +1,83 @@
-import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaBullseye, FaChalkboardTeacher } from 'react-icons/fa'
+import { FaArrowRight } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import useParallax from '../hooks/useParallax'
 
 export default function Sec4() {
     const { t } = useTranslation()
-
-    
+    const imageParallax = useParallax({ strength: 30 })
 
     return (
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 mt-[96px] mb-24 select-none font-['Merriweather',serif] transition-colors duration-200 overflow-hidden">
+        <section className="section-pad !pt-0 select-none">
+            <div className="container-site">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-            {/* Dekorativ fon nuri */}
-            <div className="pointer-events-none absolute top-0 right-0 w-96 h-96 bg-red-500/5 dark:bg-red-500/10 rounded-full blur-3xl" />
-
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-                {/* Chap tomon: Matnlar va ma'lumotlar */}
-                <div
-                    data-aos="fade-right"
-                    data-aos-duration="800"
-                    className="flex flex-col space-y-6 max-w-xl"
-                >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold w-fit ring-1 ring-red-100 dark:ring-red-500/20">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
-                        {t('about.badge')}
-                    </div>
-
-                    <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
-                        {t('about.titleStart')}
-                        <span className="text-red-600 dark:text-red-400">{t('about.titleHighlight')}</span>
-                        {t('about.titleEnd')}
-                    </h2>
-
-                    <p className="text-base text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                        {t('about.description')}
-                    </p>
-
-                    <div className="space-y-4 pt-2">
-                        {/* 1-blok */}
-                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-900/40 hover:shadow-lg group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
-                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
-                                <FaBullseye className="text-lg" />
-                            </div>
-                            <div>
-                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
-                                    {t('about.goalTitle')}
-                                </h4>
-                                <p className="text-gray-600 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
-                                    {t('about.goalDesc')}
-                                </p>
-                            </div>
+                    {/* Chap — matn */}
+                    <div className="lg:col-span-6 flex flex-col gap-7">
+                        <div data-reveal>
+                            <span className="eyebrow">{t('about.badge', 'Biz haqimizda')}</span>
+                            <h2 className="display-2 mt-5 text-ink">
+                                {t('about.titleStart', 'Ingliz tilini zamonaviy va ')}
+                                <span className="serif-accent">{t('about.titleHighlight', 'oson usullarda')}</span>
+                                {t('about.titleEnd', ' o‘rgatamiz.')}
+                            </h2>
                         </div>
 
-                        {/* 2-blok */}
-                        <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/80 dark:hover:bg-gray-900/40 hover:shadow-lg group border border-transparent hover:border-gray-100 dark:hover:border-gray-800/80">
-                            <div className="w-10 h-10 shrink-0 bg-red-600 text-white flex items-center justify-center rounded-xl font-bold text-sm shadow-sm group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
-                                <FaChalkboardTeacher className="text-lg" />
+                        <p className="lede max-w-[54ch]" data-reveal data-reveal-delay="100">
+                            {t('about.description')}
+                        </p>
+
+                        <div className="flex flex-col divide-y divide-[var(--line)] border-y border-line" data-reveal data-reveal-delay="180">
+                            {[
+                                { title: t('about.goalTitle'), desc: t('about.goalDesc') },
+                                { title: t('about.teacherTitle'), desc: t('about.teacherDesc') },
+                            ].map((item, i) => (
+                                <div key={i} className="group flex gap-5 py-5 transition-colors duration-300">
+                                    <span className="font-display text-[15px] font-semibold text-accent pt-0.5 shrink-0">
+                                        0{i + 1}
+                                    </span>
+                                    <div>
+                                        <h4 className="font-display text-[21px] font-semibold text-ink">
+                                            {item.title}
+                                        </h4>
+                                        <p className="text-[13.5px] leading-relaxed text-muted mt-1.5 max-w-[52ch]">
+                                            {item.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div data-reveal data-reveal-delay="240">
+                            <Link to="/about" className="link-line text-[14px]">
+                                {t('navbar.aboutUs', 'Biz haqimizda')}
+                                <FaArrowRight className="w-3 h-3 btn-arrow" />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* O'ng — rasm */}
+                    <div className="lg:col-span-6" data-reveal="right" data-reveal-delay="120">
+                        <div className="img-frame mask-reveal relative aspect-[4/3] lg:aspect-[5/5.2] w-full shadow-[var(--shadow-soft)]">
+                            <div ref={imageParallax} className="absolute inset-0 will-change-transform">
+                                <img
+                                    src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=70&w=1400&auto=format&fit=crop"
+                                    alt={t('aboutStudents.description', 'O‘quvchilar bilan ishlash jarayoni')}
+                                    loading="lazy"
+                                />
                             </div>
-                            <div>
-                                <h4 className="text-base font-bold text-gray-950 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-300">
-                                    {t('about.teacherTitle')}
-                                </h4>
-                                <p className="text-gray-600 dark:text-gray-400 text-xs font-semibold mt-0.5 leading-relaxed">
-                                    {t('about.teacherDesc')}
-                                </p>
+
+                            {/* Tajriba chipi */}
+                            <div className="absolute bottom-4 left-4 bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] backdrop-blur-md border border-line rounded-[14px] px-5 py-3.5 flex items-center gap-4">
+                                <span className="font-display text-[32px] font-semibold text-accent leading-none">5+</span>
+                                <span className="text-[11px] font-bold uppercase tracking-[0.12em] leading-[1.5] text-muted whitespace-pre-line">
+                                    {t('about.experienceText1', 'Yil') + '\n' + t('about.experienceText2', 'Tajriba')}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/* O'ng tomon: Rasm va tajriba bloki */}
-                <div
-                    data-aos="fade-left"
-                    data-aos-duration="800"
-                    className="w-full h-[400px] rounded-3xl overflow-hidden shadow-2xl border border-gray-100/50 dark:border-gray-800 relative group"
-                >
-                    <img
-                        src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=60&w=400&auto=format&fit=crop"
-                        alt="Students studying English"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent"></div>
-
-                    <div className="absolute bottom-6 left-6 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-white/20 dark:border-gray-800 flex items-center gap-3 transition-transform duration-300 group-hover:-translate-y-1">
-                        <span className="text-2xl font-black text-red-600 dark:text-red-400">5+</span>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 leading-tight block whitespace-pre-line">
-                            {t('about.experienceText1') + '\n' + t('about.experienceText2')}
-                        </span>
-                    </div>
-                </div>
-
             </div>
-        </div>
+        </section>
     )
 }
