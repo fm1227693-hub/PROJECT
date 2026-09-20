@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { 
-    HiLightningBolt, 
-    HiCheckCircle, 
-    HiSparkles, 
-    HiLocationMarker, 
+import {
+    HiLightningBolt,
+    HiCheckCircle,
+    HiSparkles,
+    HiLocationMarker,
     HiPhone,
-    HiExternalLink
+    HiExternalLink,
+    HiArrowRight
 } from 'react-icons/hi'
 
 // Rasmda ko'rsatilgan Premier School manzili uchun doimiy (constant) ma'lumotlar
@@ -17,219 +17,146 @@ const FIXED_LOCATION = {
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Premier+School,+Namozgoh+St,+Bukhara"
 }
 
+const PRINCIPLES = [
+    { to: '/principle/1', icon: HiLightningBolt, titleKey: 'aboutUs.card1Title', descKey: 'aboutUs.card1Desc', tagKey: 'aboutUs.card1Tag' },
+    { to: '/principle/2', icon: HiCheckCircle, titleKey: 'aboutUs.card2Title', descKey: 'aboutUs.card2Desc', tagKey: 'aboutUs.card2Tag' },
+    { to: '/principle/3', icon: HiSparkles, titleKey: 'aboutUs.card3Title', descKey: 'aboutUs.card3Desc', tagKey: 'aboutUs.card3Tag' },
+]
+
 export default function AboutUs() {
     const { t } = useTranslation()
 
-    
-
     return (
-        <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-sans text-slate-900 dark:text-white transition-colors duration-200">
+        <div className="container-site pt-[130px] pb-20 sm:pb-24 select-none">
 
-            {/* 1-Bo'lim: Sarlavha va matnlar */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="800"
-                className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-red-500/20 p-6 sm:p-12 rounded-[2.8rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
-            >
-                <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
-
-                <div className="relative lg:col-span-5">
-                    <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-900/30">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-                        {t('aboutUs.badge')}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 dark:text-white mt-3 sm:mt-4 tracking-tight leading-tight">
+            {/* 1-Bo'lim: Sarlavha */}
+            <div data-reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-end mb-16 sm:mb-20 pb-12 border-b border-line">
+                <div className="lg:col-span-6">
+                    <span className="eyebrow">{t('aboutUs.badge')}</span>
+                    <h1 className="display-2 mt-5 text-ink">
                         {t('aboutUs.title')}
-                    </h2>
-                    <div className="mt-5 sm:mt-6 w-14 h-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-400" />
+                    </h1>
                 </div>
-                <div className="relative lg:col-span-7 flex flex-col space-y-3 sm:space-y-4">
-                    <p className="text-slate-700 dark:text-gray-200 font-medium text-sm sm:text-base md:text-lg leading-relaxed">
+                <div className="lg:col-span-6 flex flex-col gap-4">
+                    <p className="text-soft text-[15px] sm:text-[17px] leading-relaxed">
                         {t('aboutUs.description1')}
                     </p>
-                    <p className="text-slate-600 dark:text-gray-300 font-semibold text-xs sm:text-sm leading-relaxed">
+                    <p className="text-muted text-[13.5px] sm:text-[14.5px] leading-relaxed">
                         {t('aboutUs.description2')}
                     </p>
                 </div>
             </div>
 
-            {/* 2-Bo'lim: 3 ta kartochka */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
-
-                {/* 1-kartochka */}
-                <Link
-                    to="/principle/1"
-                    data-aos="fade-up"
-                    data-aos-duration="800"
-                    data-aos-delay="100"
-                    className="bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
-                >
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
-                    <div className="relative">
-                        <div className="w-12 h-12 bg-white/60 dark:bg-black/50 backdrop-blur-md text-slate-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-red-500/30 group-hover:scale-110 group-hover:border-red-500 transition-all duration-300">
-                            <HiLightningBolt className="w-6 h-6 text-red-400" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card1Title')}</h3>
-                        <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                            {t('aboutUs.card1Desc')}
-                        </p>
-                    </div>
-                    <span className="relative text-[11px] sm:text-xs font-bold text-red-400 mt-6 flex items-center gap-1.5 uppercase tracking-wider">
-                        {t('aboutUs.card1Tag')}
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </span>
-                </Link>
-
-                {/* 2-kartochka */}
-                <Link
-                    to="/principle/2"
-                    data-aos="fade-up"
-                    data-aos-duration="800"
-                    data-aos-delay="200"
-                    className="bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
-                >
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
-                    <div className="relative">
-                        <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 text-slate-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-md shadow-red-500/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-red-400/50">
-                            <HiCheckCircle className="w-6 h-6 text-slate-900 dark:text-white" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">{t('aboutUs.card2Title')}</h3>
-                        <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                            {t('aboutUs.card2Desc')}
-                        </p>
-                    </div>
-                    <span className="relative text-[11px] sm:text-xs font-bold text-red-400 mt-6 flex items-center gap-1.5 uppercase tracking-wider">
-                        {t('aboutUs.card2Tag')}
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </span>
-                </Link>
-
-                {/* 3-kartochka */}
-                <Link
-                    to="/principle/3"
-                    data-aos="fade-up"
-                    data-aos-duration="800"
-                    data-aos-delay="300"
-                    className="bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
-                >
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
-                    <div className="relative">
-                        <div className="w-12 h-12 bg-white/60 dark:bg-black/50 backdrop-blur-md text-slate-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-red-500/30 group-hover:scale-110 group-hover:border-red-500 transition-all duration-300">
-                            <HiSparkles className="w-6 h-6 text-red-400" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card3Title')}</h3>
-                        <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                            {t('aboutUs.card3Desc')}
-                        </p>
-                    </div>
-                    <span className="relative text-[11px] sm:text-xs font-bold text-red-400 mt-6 flex items-center gap-1.5 uppercase tracking-wider">
-                        {t('aboutUs.card3Tag')}
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </span>
-                </Link>
-
+            {/* 2-Bo'lim: 3 tamoyil kartochkasi */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mb-16 sm:mb-20">
+                {PRINCIPLES.map((p, i) => {
+                    const Icon = p.icon
+                    return (
+                        <Link
+                            key={p.to}
+                            to={p.to}
+                            data-reveal
+                            data-reveal-delay={String(i * 110)}
+                            className="group card !rounded-[18px] p-7 sm:p-8 flex flex-col justify-between gap-8 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)] hover:border-linestrong transition-all duration-500"
+                        >
+                            <div>
+                                <div className="w-11 h-11 rounded-[12px] bg-accentsoft border border-accent/20 text-accent flex items-center justify-center mb-6 group-hover:bg-accent group-hover:text-white transition-colors duration-400">
+                                    <Icon className="w-5 h-5" />
+                                </div>
+                                <h3 className="font-display text-[23px] font-semibold text-ink leading-snug">{t(p.titleKey)}</h3>
+                                <p className="text-muted text-[13.5px] leading-relaxed mt-3">
+                                    {t(p.descKey)}
+                                </p>
+                            </div>
+                            <span className="text-[11px] font-bold text-muted mt-6 flex items-center gap-2 uppercase tracking-[0.12em] group-hover:text-accent transition-colors duration-300">
+                                {t(p.tagKey)}
+                                <HiArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
+                            </span>
+                        </Link>
+                    )
+                })}
             </div>
 
-            {/* 3-Bo'lim: Manzil va Premier School Xaritasi */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="900"
-                className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-red-500/20 p-6 sm:p-8 rounded-2xl sm:rounded-[2.8rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
-            >
-                <div className="pointer-events-none absolute -bottom-20 -left-20 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
-
-                <div className="relative space-y-4 sm:space-y-6">
-                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-900/30 inline-block">
-                        {t('aboutUs.locationBadge')}
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            {/* 3-Bo'lim: Manzil va xarita */}
+            <div data-reveal className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center mb-16 sm:mb-20">
+                <div className="space-y-5">
+                    <span className="eyebrow">{t('aboutUs.locationBadge')}</span>
+                    <h2 className="display-2 text-ink">
                         {t('aboutUs.locationTitle')}
-                    </h3>
-                    <p className="text-slate-700 dark:text-gray-200 font-medium text-sm sm:text-base leading-relaxed">
+                    </h2>
+                    <p className="lede max-w-[52ch]">
                         {t('aboutUs.locationDesc')}
                     </p>
-                    <div className="space-y-3 pt-2">
-                        <div className="flex items-center gap-3 sm:gap-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border border-red-500/30 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300">
-                            <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
-                                <HiLocationMarker className="w-5 h-5" />
+                    <div className="space-y-3 pt-3">
+                        <div className="flex items-center gap-4 border border-line rounded-[14px] px-4 py-3.5 bg-surface">
+                            <div className="w-9 h-9 bg-accentsoft text-accent rounded-full flex items-center justify-center shrink-0">
+                                <HiLocationMarker className="w-4 h-4" />
                             </div>
-                            <span className="text-slate-700 dark:text-gray-200 font-semibold text-xs sm:text-sm">
+                            <span className="text-soft font-semibold text-[13.5px]">
                                 {t('aboutUs.address')}
                             </span>
                         </div>
                         <a
                             href="tel:+998900829979"
-                            className="flex items-center gap-3 sm:gap-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border border-red-500/30 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300"
+                            className="flex items-center gap-4 border border-line rounded-[14px] px-4 py-3.5 bg-surface hover:border-linestrong transition-colors"
                         >
-                            <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
-                                <HiPhone className="w-5 h-5" />
+                            <div className="w-9 h-9 bg-accentsoft text-accent rounded-full flex items-center justify-center shrink-0">
+                                <HiPhone className="w-4 h-4" />
                             </div>
-                            <span className="text-slate-700 dark:text-gray-200 font-semibold text-xs sm:text-sm">
+                            <span className="text-soft font-semibold text-[13.5px]">
                                 +998 90 082 99 79
                             </span>
                         </a>
                     </div>
                 </div>
 
-                {/* Premier School xaritasi (Dark mode filtr bilan) */}
-                <div className="relative w-full h-64 sm:h-72 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-200 dark:border-gray-800 group">
+                {/* Premier School xaritasi */}
+                <div className="img-frame relative h-64 sm:h-72 md:h-80 w-full shadow-[var(--shadow-soft)] group">
                     <img
                         src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn2hAnbM-pwUXbUAFCMNmHj7g7mnAZQ-wcb2pEp5HyI7IMWSX9uaNjrTTEpgqg8F5mEjc-or2G-ZhyC98A1jfIFT4SYN3zsCJBr5gHi-jsL6tHCMpS9p-kbw5Om3h-kJtwmWlEJIzwQoiim=w408-h544-k-no"
-                        alt="Location Map"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-in-out opacity-90 group-hover:opacity-100"
+                        alt={t('aboutUs.locationTitle')}
+                        loading="lazy"
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-gray-950/10 to-transparent pointer-events-none"></div>
-                    <a 
+                    <a
                         href={FIXED_LOCATION.mapUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="absolute top-4 left-4 sm:top-5 sm:left-5 bg-gray-900/80 hover:bg-gray-900 backdrop-blur-md px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-lg border border-gray-700/50 flex items-center gap-2 transition-all duration-300 hover:scale-105 z-10"
+                        className="absolute top-4 left-4 bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] backdrop-blur-md hover:bg-ink hover:text-bg px-3.5 py-2 rounded-[10px] border border-line shadow-[var(--shadow-soft)] flex items-center gap-2 transition-all duration-300 z-10"
                     >
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-gray-200 flex items-center gap-2">
-                            {t('aboutUs.openInMaps')} <HiExternalLink className="text-gray-400 text-sm" />
+                        <span className="text-[11.5px] font-semibold flex items-center gap-2">
+                            {t('aboutUs.openInMaps')} <HiExternalLink className="opacity-60 text-[13px]" />
                         </span>
                     </a>
 
-                    <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 bg-gray-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-lg border border-gray-800 flex items-center gap-2.5 transition-transform duration-300 group-hover:-translate-y-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300 leading-tight">
+                    <div className="absolute bottom-4 left-4 bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] backdrop-blur-md px-4 py-2.5 rounded-[10px] border border-line shadow-[var(--shadow-soft)]">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-soft">
                             {FIXED_LOCATION.addressText}
                         </span>
                     </div>
                 </div>
             </div>
 
-            {/* 4-Bo'lim: Footer statistika */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="900"
-                className="relative bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white rounded-2xl sm:rounded-[2.8rem] p-6 sm:p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden border border-red-500/20"
-            >
-                <div className="pointer-events-none absolute -top-16 right-1/4 w-56 h-56 bg-red-500/10 rounded-full blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-16 left-0 w-56 h-56 bg-red-600/10 rounded-full blur-3xl" />
-
-                <div className="relative space-y-2 max-w-xl text-center md:text-left">
-                    <h4 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">{t('aboutUs.footerTitle')}</h4>
-                    <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
+            {/* 4-Bo'lim: Yakuniy statistika */}
+            <div data-reveal className="card !rounded-[20px] p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="space-y-3 max-w-xl text-center md:text-left">
+                    <h2 className="font-display text-[26px] sm:text-[32px] font-semibold text-ink">{t('aboutUs.footerTitle')}</h2>
+                    <p className="text-muted text-[13.5px] leading-relaxed">
                         {t('aboutUs.footerDesc')}
                     </p>
                 </div>
-                <div className="relative flex flex-wrap items-center justify-center gap-6 sm:gap-8 shrink-0">
+                <div className="flex flex-wrap items-center justify-center gap-10 shrink-0">
                     <div className="text-center">
-                        <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white">100%</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300">{t('aboutUs.stat1Label')}</span>
+                        <span className="block font-display text-[40px] sm:text-[52px] font-semibold text-ink leading-none">100%</span>
+                        <span className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-muted mt-2 block">{t('aboutUs.stat1Label')}</span>
                     </div>
-                    <div className="w-px h-10 bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
+                    <div className="w-px h-12 bg-line hidden sm:block"></div>
                     <div className="text-center">
-                        <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-red-400">7/24</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300">{t('aboutUs.stat2Label')}</span>
+                        <span className="block font-display text-[40px] sm:text-[52px] font-semibold text-accent leading-none">7/24</span>
+                        <span className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-muted mt-2 block">{t('aboutUs.stat2Label')}</span>
                     </div>
                 </div>
             </div>
-
         </div>
     )
-}   
+}

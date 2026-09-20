@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { FaTelegramPlane, FaPhoneAlt, FaCheck } from 'react-icons/fa'
 
-const TELEGRAM_USERNAME = 'optimum_school'
 const PHONE_NUMBER = '+998 90 082 99 79'
 
 const PLANS = [
@@ -18,13 +17,10 @@ function getPlanForLevel(levelKey) {
 export default function Pricing() {
     const { t } = useTranslation()
     const location = useLocation()
-    const navigate = useNavigate()
 
     const levelKey = location.state?.levelKey || null
     const levelLabel = location.state?.levelLabel || null
     const matchedPlan = levelKey ? getPlanForLevel(levelKey) : null
-
-    
 
     const contactTelegram = (planId) => {
         const text = encodeURIComponent(
@@ -38,33 +34,27 @@ export default function Pricing() {
     }
 
     return (
-        <div className="min-h-screen bg-transparent px-3 xs:px-4 pt-24 xs:pt-28 pb-16 xs:pb-20 transition-colors duration-300 relative font-['Merriweather',serif]">
-            <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="min-h-screen pt-[120px] pb-20 sm:pb-24 transition-colors duration-300 relative">
+            <div className="container-site">
 
-            <div className="max-w-6xl mx-auto relative z-10">
-
-
-
-                <div data-aos="fade-up" data-aos-duration="700" className="text-center max-w-2xl mx-auto mb-10 xs:mb-14">
-                    <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1 rounded-full inline-block border border-red-500/20 shadow-sm">
+                {/* Sarlavha */}
+                <div data-reveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+                    <span className="eyebrow justify-center">
                         {t('pricing.badge') || 'Natijaga erishish'}
                     </span>
-                    <h2 className="text-2xl xs:text-3xl md:text-4xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight">
+                    <h1 className="display-2 mt-5 text-ink">
                         {t('pricing.title') || "O'zingizga mos kursni tanlang"}
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-300 mt-2.5 xs:mt-3 font-medium text-xs xs:text-sm md:text-base px-2">
+                    </h1>
+                    <p className="lede mt-4">
                         {levelLabel
                             ? (t('pricing.descriptionWithLevel') || 'Sizning darajangiz: {{level}}. Quyidagi tarif sizga mos keladi.').replace('{{level}}', levelLabel)
-                            : t('pricing.description') || 'Darajangizga mos tarifni tanlab, biz bilan bog\'laning.'}
+                            : (t('pricing.description') || "Darajangizga mos tarifni tanlab, biz bilan bog'laning.")}
                     </p>
 
                     {matchedPlan && (
-                        <div
-                            data-aos="fade-up"
-                            data-aos-delay="100"
-                            className="mt-4 xs:mt-5 inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2.5 rounded-2xl animate-pulse-slow"
-                        >
-                            <span className="text-xs xs:text-sm font-bold text-red-600 dark:text-red-400">
+                        <div className="mt-6 inline-flex items-center gap-2.5 bg-accentsoft border border-accent/25 px-4 py-2.5 rounded-full">
+                            <FaCheck className="w-3 h-3 text-accent" />
+                            <span className="text-[13px] font-semibold text-accent">
                                 {(t('pricing.recommendationText') || "Sizga {{price}} so'mlik kurs tavsiya etiladi")
                                     .replace('{{price}}', matchedPlan.price)}
                             </span>
@@ -72,48 +62,47 @@ export default function Pricing() {
                     )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-6">
+                {/* Tariflar */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
                     {PLANS.map((plan, idx) => {
                         const isMatched = matchedPlan?.id === plan.id
                         return (
                             <div
                                 key={plan.id}
-                                data-aos="fade-up"
-                                data-aos-delay={idx * 100}
-                                data-aos-duration="700"
-                                className={`relative rounded-2xl xs:rounded-3xl p-6 xs:p-8 transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl ${isMatched
-                                    ? 'bg-gradient-to-b from-red-50 to-white dark:from-red-950/90 dark:to-slate-900/90 border-2 border-red-500/60 shadow-2xl shadow-red-600/20 scale-[1.02] xs:scale-[1.03]'
-                                    : 'glass-card border border-slate-200/80 dark:border-white/10 hover:border-red-500/40 shadow-lg'
-                                    }`}
+                                data-reveal
+                                data-reveal-delay={String(idx * 110)}
+                                className={`relative card !rounded-[18px] p-7 sm:p-8 flex flex-col transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)] ${
+                                    isMatched ? '!border-accent/50 shadow-[var(--shadow-lift)]' : ''
+                                }`}
                             >
                                 {isMatched && (
                                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
-                                        <span className="inline-block text-[10px] xs:text-[11px] font-bold uppercase tracking-widest bg-red-600 text-white px-2.5 xs:px-3 py-1 rounded-full shadow-lg shadow-red-500/30 animate-bounce-subtle">
+                                        <span className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] bg-accent text-white px-3 py-1.5 rounded-full">
                                             {t('pricing.recommendedBadge') || 'Tavsiya etiladi'}
                                         </span>
                                     </div>
                                 )}
 
-                                <p className={`text-[10px] xs:text-xs font-bold uppercase tracking-widest mb-2.5 xs:mb-3 ${isMatched ? 'text-red-600 dark:text-red-500' : 'text-red-600 dark:text-red-400'}`}>
+                                <p className="meta-label !text-accent">
                                     {plan.levelsLabel}
                                 </p>
 
-                                <div className="flex items-baseline gap-1.5 mb-4 xs:mb-6">
-                                    <span className={`text-2xl xs:text-3xl font-black tracking-tight text-gray-900 dark:text-white`}>
+                                <div className="flex items-baseline gap-2 mt-4 mb-5 pb-5 border-b border-line">
+                                    <span className="font-display text-[38px] font-semibold tracking-tight text-ink leading-none">
                                         {plan.price}
                                     </span>
-                                    <span className={`text-xs xs:text-sm font-bold text-gray-400 dark:text-gray-500`}>
+                                    <span className="text-[13px] font-semibold text-muted">
                                         {t('pricing.currency') || "so'm"}
                                     </span>
                                 </div>
 
                                 {isMatched && (
-                                    <p className="text-[11px] xs:text-xs font-bold text-red-500 dark:text-red-400 mb-3 xs:mb-4 -mt-2 xs:-mt-4">
+                                    <p className="text-[12px] font-semibold text-accent mb-3 -mt-1">
                                         {t('pricing.recommendedInline') || "Sizning darajangiz uchun tavsiya etiladi"}
                                     </p>
                                 )}
 
-                                <p className={`text-xs xs:text-sm font-medium leading-relaxed mb-6 xs:mb-8 text-gray-500 dark:text-gray-400`}>
+                                <p className="text-[13.5px] leading-relaxed text-muted mb-7 flex-1">
                                     {t(`pricing.${plan.id}Desc`) ||
                                         (plan.id === 'basic'
                                             ? "Boshlang'ich bosqichdagilar uchun mustahkam fundament kursi."
@@ -124,48 +113,34 @@ export default function Pricing() {
 
                                 <button
                                     onClick={() => contactTelegram(plan.levelsLabel)}
-                                    className={`w-full py-3 xs:py-3.5 rounded-xl xs:rounded-2xl font-bold text-xs xs:text-sm transition-all cursor-pointer active:scale-95 ${isMatched
-                                        ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/30 hover:shadow-xl'
-                                        : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:opacity-90'
-                                        }`}
+                                    className={`btn w-full !py-3.5 text-[13px] ${isMatched ? 'btn-primary' : 'btn-outline'}`}
                                 >
-                                    {t('pricing.contactBtn') || 'Bog\'lanish'}
+                                    <FaTelegramPlane className="w-3.5 h-3.5" />
+                                    {t('pricing.contactBtn') || "Bog'lanish"}
                                 </button>
                             </div>
                         )
                     })}
                 </div>
 
+                {/* Telefon */}
                 <div
-                    data-aos="fade-up"
-                    data-aos-duration="700"
-                    className="mt-8 xs:mt-12 max-w-lg mx-auto text-center bg-white dark:bg-gray-900 rounded-2xl xs:rounded-3xl p-5 xs:p-6 border border-gray-100 dark:border-gray-800/80 shadow-sm"
+                    data-reveal
+                    className="mt-12 max-w-lg mx-auto text-center border-t border-line pt-8"
                 >
-                    <p className="text-xs xs:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 xs:mb-4">
-                        {t('pricing.otherContact') || 'Yoki bevosita qo\'ng\'iroq qiling:'}
+                    <p className="text-[13px] font-medium text-muted mb-3">
+                        {t('pricing.otherContact') || "Yoki bevosita qo'ng'iroq qiling:"}
                     </p>
                     <button
                         onClick={contactPhone}
-                        className="text-red-600 dark:text-red-400 font-black text-base xs:text-lg tracking-tight cursor-pointer hover:underline transition-transform hover:scale-105 inline-block"
+                        className="link-line font-display text-[26px] font-semibold text-ink !py-0"
                     >
+                        <FaPhoneAlt className="w-4 h-4 text-accent" />
                         {PHONE_NUMBER}
                     </button>
                 </div>
 
             </div>
-
-            <style>{`
-                @keyframes pulse-soft {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.7; }
-                }
-                .animate-pulse-soft { animation: pulse-soft 2.5s ease-in-out infinite; }
-                @keyframes bounce-subtle {
-                    0%, 100% { transform: translateX(-50%) translateY(0); }
-                    50% { transform: translateX(-50%) translateY(-2px); }
-                }
-                .animate-bounce-subtle { animation: bounce-subtle 2s ease-in-out infinite; }
-            `}</style>
         </div>
     )
 }

@@ -12,7 +12,7 @@ export default function ThemeTransitionLoader() {
       setIsLoading(true);
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 3500);
+      }, 1800);
       return () => clearTimeout(timer);
     };
 

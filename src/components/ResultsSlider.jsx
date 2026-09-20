@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import CommentsORG from "./TikTokComments";
@@ -139,14 +139,20 @@ const cefrData = [
     },
 ];
 
+const MODULE_KEYS = ["listening", "reading", "writing", "speaking"];
+
 export default function ResultsSlider() {
     const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('ielts');
     const [currentIndex, setCurrentIndex] = useState(0);
     const activeData = activeTab === 'ielts' ? ieltsData : cefrData;
+    const scoreMax = activeTab === 'ielts' ? 9 : 70;
 
     const indexRef = useRef(currentIndex);
-    indexRef.current = currentIndex;
+
+    useEffect(() => {
+        indexRef.current = currentIndex;
+    }, [currentIndex]);
 
     const triggerAnimation = (newIndex) => {
         if (newIndex === indexRef.current) return;
@@ -166,169 +172,167 @@ export default function ResultsSlider() {
     const activeStudent = activeData[currentIndex];
 
     return (
-        <div className="w-full mb-10 px-2 sm:px-4 font-['Merriweather',serif] min-h-screen flex flex-col items-center justify-center pt-[70px] lg:pt-[80px] relative overflow-visible">
-            {/* Ambient Background Glows - Crimson Red Theme */}
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-red-600/25 via-rose-500/20 to-amber-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow"></div>
-            <div className="absolute bottom-10 right-10 w-[420px] h-[420px] bg-gradient-to-br from-rose-600/20 via-red-700/15 to-transparent rounded-full blur-[120px] pointer-events-none"></div>
-
-            <div id="results-section" className=" relative w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-6 glass-card backdrop-blur-xl border border-red-500/20 dark:border-red-500/20 rounded-2xl sm:rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] text-slate-900 dark:text-white my-2 sm:my-4 transition-colors duration-300 overflow-hidden">
-
-                {/* Sarlavha */}
-                <motion.h2
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 sm:mb-8 px-2"
-                >
-                    {t("resultsSlider.title", "Ba'zi o'quvchilarimizning natijalari")}
-                </motion.h2>
-
-                {/* Sarlavha o'rniga Switcher (IELTS / CEFR) */}
-                <div className="flex justify-center mb-6 sm:mb-8">
-                    <div className="bg-slate-200 dark:bg-slate-800/80 p-1 rounded-[2rem] flex gap-2 shadow-inner relative z-10 border border-slate-300 dark:border-slate-700">
-                        <button
-                            onClick={() => {
-                                setActiveTab('ielts');
-                                setCurrentIndex(0);
-                            }}
-                            className={`px-6 sm:px-10 py-2.5 sm:py-3 rounded-[1.5rem] font-bold text-sm sm:text-lg transition-all duration-300 ${activeTab === 'ielts' ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
-                        >
-                            IELTS
-                        </button>
-                        <button
-                            onClick={() => {
-                                setActiveTab('cefr');
-                                setCurrentIndex(0);
-                            }}
-                            className={`px-6 sm:px-10 py-2.5 sm:py-3 rounded-[1.5rem] font-bold text-sm sm:text-lg transition-all duration-300 ${activeTab === 'cefr' ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
-                        >
-                            CEFR
-                        </button>
+        <div id="results-section" className="section-pad !pt-0 w-full">
+            <div className="container-site">
+                {/* Sarlavha + tablar */}
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                    <div data-reveal>
+                        <span className="eyebrow">{t('resultsSlider.badge', 'Natijalar')}</span>
+                        <h2 className="display-2 mt-5 text-ink max-w-[24ch]">
+                            {t("resultsSlider.title", "Ba'zi o'quvchilarimizning natijalari")}
+                        </h2>
                     </div>
-                </div>
 
-                {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}
-                <div className="relative flex flex-col items-center gap-2 mb-3 sm:mb-4 w-full">
-                    <div className="w-full flex justify-center">
-                        <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-1 max-w-full px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                            {activeData.map((student, index) => {
-                            const isActive = index === currentIndex;
-                            return (
-                                <motion.button
-                                    key={student.id}
-                                    onClick={() => triggerAnimation(index)}
-                                    whileHover={{ scale: 1.08 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${isActive
-                                        ? "p-0.5 sm:p-1 bg-red-600 shadow-md sm:shadow-lg shadow-red-500/50 scale-105"
-                                        : "opacity-80 hover:opacity-100 bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10"
-                                        }`}
+                    {/* IELTS / CEFR tablari */}
+                    <div data-reveal data-reveal-delay="120" className="shrink-0">
+                        <div className="inline-flex p-1 rounded-full border border-line bg-surface">
+                            {['ielts', 'cefr'].map((tab) => (
+                                <button
+                                    key={tab}
+                                    onClick={() => {
+                                        setActiveTab(tab);
+                                        setCurrentIndex(0);
+                                    }}
+                                    className={`relative px-6 sm:px-8 py-2.5 rounded-full text-[13px] font-bold tracking-wide transition-colors duration-300 cursor-pointer ${
+                                        activeTab === tab ? 'text-white' : 'text-muted hover:text-ink'
+                                    }`}
                                 >
-                                    <img
-                                        src={student.image}
-                                        alt={student.name}
-                                        className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full object-cover object-[center_30%] border-2 border-white dark:border-slate-900"
-                                    />
-                                </motion.button>
-                            );
-                        })}
+                                    {activeTab === tab && (
+                                        <motion.span
+                                            layoutId="results-tab"
+                                            className="absolute inset-0 bg-accent rounded-full"
+                                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                        />
+                                    )}
+                                    <span className="relative z-10">{tab.toUpperCase()}</span>
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                    </div>
-
-                    {/* Tanlangan o'quvchining ismi va bahosi */}
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activeStudent.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.25 }}
-                            className="flex flex-col items-center gap-1.5 text-center px-2"
-                        >
-                            <h3 className="text-base sm:text-lg md:text-xl font-semibold text-red-600 dark:text-red-500">
-                                {activeStudent.name}
-                            </h3>
-                            <span className="text-xs sm:text-sm font-bold px-3 py-1 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-full border border-red-200 dark:border-red-500/30">
-                                Overall: {activeStudent.scores.overall}
-                            </span>
-                        </motion.div>
-                    </AnimatePresence>
                 </div>
 
-                {/* Progress chiziqchasi */}
-                <div className="relative w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full mb-3 sm:mb-5 overflow-hidden">
-                    <motion.div
-                        className="bg-red-600 h-full"
-                        animate={{
-                            width: `${((currentIndex + 1) / activeData.length) * 100}%`,
-                        }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                    />
+                {/* Avatarlar */}
+                <div data-reveal data-reveal-delay="150" className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 mb-8 scrollbar-none max-w-full">
+                    {activeData.map((student, index) => {
+                        const isActive = index === currentIndex;
+                        return (
+                            <button
+                                key={student.id}
+                                onClick={() => triggerAnimation(index)}
+                                aria-label={student.name}
+                                aria-pressed={isActive}
+                                className={`relative rounded-full shrink-0 cursor-pointer transition-all duration-400 ${
+                                    isActive
+                                        ? "p-[3px] bg-accent shadow-[0_8px_24px_-8px_var(--accent-ring)]"
+                                        : "p-[3px] border border-line hover:border-linestrong opacity-75 hover:opacity-100"
+                                }`}
+                            >
+                                <img
+                                    src={student.image}
+                                    alt={student.name}
+                                    loading="lazy"
+                                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover object-[center_30%] block ${isActive ? '' : 'grayscale-[0.4]'}`}
+                                />
+                            </button>
+                        );
+                    })}
                 </div>
 
-                {/* Pastki qism: Ballar va Sertifikat rasmi */}
-                <div className="relative grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-center bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white p-3 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl shadow-inner">
-
-                    {/* Ballar qismi (Chap tomon) */}
-                    <div className="md:col-span-5 flex flex-col gap-1.5 sm:gap-2">
+                {/* Asosiy grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+                    {/* Ballar paneli */}
+                    <div className="lg:col-span-5 flex flex-col order-2 lg:order-1">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeStudent.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 20 }}
-                                transition={{ duration: 0.3 }}
-                                className="flex flex-col gap-1.5 sm:gap-2 w-full"
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -12 }}
+                                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                className="flex flex-col flex-1"
                             >
-                                <div className="bg-emerald-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.listening")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.listening}</span>
+                                <p className="font-display text-[26px] sm:text-[30px] font-semibold text-ink leading-tight">
+                                    {activeStudent.name}
+                                </p>
+
+                                {/* Modul qatorlari */}
+                                <div className="mt-6 flex flex-col">
+                                    {MODULE_KEYS.map((key, i) => {
+                                        const value = parseFloat(activeStudent.scores[key]) || 0;
+                                        const pct = Math.max(0.06, Math.min(1, value / scoreMax));
+                                        return (
+                                            <div key={key} className={`flex items-center gap-4 py-3.5 ${i > 0 ? 'border-t border-line' : ''}`}>
+                                                <span className="w-[92px] shrink-0 text-[12.5px] font-semibold text-muted">
+                                                    {t(`resultsSlider.${key}`)}
+                                                </span>
+                                                <div className="flex-1 h-[3px] rounded-full bg-surface2 overflow-hidden">
+                                                    <motion.div
+                                                        className="h-full rounded-full bg-accent origin-left"
+                                                        initial={{ scaleX: 0 }}
+                                                        animate={{ scaleX: pct }}
+                                                        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 + i * 0.07 }}
+                                                    />
+                                                </div>
+                                                <span className="font-display text-[21px] font-semibold text-ink w-[42px] text-right leading-none">
+                                                    {activeStudent.scores[key]}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
 
-                                <div className="bg-purple-700 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.reading")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.reading}</span>
-                                </div>
-
-                                <div className="bg-amber-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.writing")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.writing}</span>
-                                </div>
-
-                                <div className="bg-blue-600 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl flex justify-between items-center shadow-sm sm:shadow-md text-sm sm:text-base">
-                                    <span>{t("resultsSlider.speaking")}</span>
-                                    <span className="text-base sm:text-lg">{activeStudent.scores.speaking}</span>
+                                {/* Overall */}
+                                <div className="mt-auto pt-6 flex items-end justify-between border-t border-linestrong">
+                                    <span className="meta-label mb-1.5">{t('resultsSlider.overall', 'Overall')}</span>
+                                    <span className="font-display text-[52px] sm:text-[64px] font-semibold text-accent leading-[0.9]">
+                                        {activeStudent.scores.overall}
+                                    </span>
                                 </div>
                             </motion.div>
                         </AnimatePresence>
                     </div>
 
-                    {/* Sertifikat rasmi (O'ng tomon) - Kichik telefonlar uchun o'lchami moslashtirildi */}
-                    <div className="md:col-span-7 flex justify-center overflow-hidden">
+                    {/* Sertifikat */}
+                    <div className="lg:col-span-7 order-1 lg:order-2">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeStudent.id + '-cert'}
-                                initial={{ opacity: 0, scale: 0.9, y: 15 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9, y: -15 }}
-                                transition={{ duration: 0.4, ease: "easeOut" }}
-                                className="relative w-full h-[250px] sm:h-[300px] md:h-[380px] flex items-center justify-center group"
+                                initial={{ opacity: 0, scale: 0.985 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.985 }}
+                                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                                className="img-frame relative aspect-[4/3] sm:aspect-[16/10] w-full shadow-[var(--shadow-soft)] bg-surface2"
                             >
-                                <motion.img
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.3 }}
+                                <img
                                     src={activeStudent.certImage}
-                                    alt={activeTab === 'ielts' ? "IELTS Certificate" : "CEFR Certificate"}
-                                    className="max-w-full h-full object-contain rounded-xl shadow-md sm:shadow-lg border border-slate-300 dark:border-slate-700"
+                                    alt={activeTab === 'ielts' ? `${activeStudent.name} — IELTS certificate` : `${activeStudent.name} — CEFR certificate`}
+                                    loading="lazy"
+                                    className="!object-cover"
                                 />
+                                <span className="absolute top-4 left-4 chip !bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] backdrop-blur-md !text-[10px] !font-bold tracking-[0.1em] uppercase">
+                                    {activeTab === 'ielts' ? 'IELTS Result' : 'CEFR Result'}
+                                </span>
                             </motion.div>
                         </AnimatePresence>
                     </div>
-
                 </div>
 
-                {/* TikTok-Style CommentsORG Section under IELTS Results */}
-                <div className="mt-8">
+                {/* Progress indikator */}
+                <div className="mt-10 flex items-center gap-4">
+                    <span className="text-[11px] font-bold text-muted tabular-nums">
+                        {String(currentIndex + 1).padStart(2, '0')} / {String(activeData.length).padStart(2, '0')}
+                    </span>
+                    <div className="relative flex-1 h-px bg-line overflow-hidden rounded-full">
+                        <motion.div
+                            className="absolute inset-y-0 left-0 w-full bg-accent origin-left"
+                            animate={{ scaleX: (currentIndex + 1) / activeData.length }}
+                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        />
+                    </div>
+                </div>
+
+                {/* Izohlar bo'limi */}
+                <div className="mt-16">
                     <CommentsORG isAdmin={false} />
                 </div>
             </div>

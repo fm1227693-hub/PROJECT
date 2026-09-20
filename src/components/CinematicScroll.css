@@ -9,7 +9,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     min-height: 900vh;
-    font-family: 'Merriweather', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     color: #ffffff;
     overflow-x: hidden;
     cursor: none !important;
@@ -174,7 +174,7 @@
 .cinematic-layout #slide-4 { left: calc(25% + 40px); max-width: 600px; }
 
 .cinematic-layout .slide-title {
-    font-family: 'Merriweather', serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: 116px;
     line-height: 1.0;
     font-weight: 400;

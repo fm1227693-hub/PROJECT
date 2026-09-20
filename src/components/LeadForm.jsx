@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import {useState} from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaUser, FaPhoneAlt, FaPaperPlane, FaCheckCircle, FaSpinner, FaArrowRight, FaTimes, FaArrowLeft } from 'react-icons/fa'
+import { FaCheckCircle, FaSpinner, FaArrowRight, FaTimes } from 'react-icons/fa'
 import { HiArrowLeft } from 'react-icons/hi'
 import axios from 'axios'
 import { IMaskInput } from 'react-imask';
@@ -15,7 +15,7 @@ export default function LeadForm() {
     const [error, setError] = useState('')
 
     const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_2
-    
+
     // Ikkita admin chat ID lari massiv ko'rinishida
     const CHAT_IDS = ["334572168", "6383523156"]
 
@@ -91,7 +91,7 @@ export default function LeadForm() {
             } else {
                 setError(t('leadForm.errorGeneric', "Xatolik yuz berdi. Qaytadan urinib ko'ring."))
             }
-        } catch (err) {
+        } catch {
             setError(t('leadForm.errorNetwork', "Internet aloqasini tekshiring."))
         } finally {
             setLoading(false)
@@ -103,105 +103,92 @@ export default function LeadForm() {
     }
 
     return (
-        <>
+        <section className="min-h-screen flex items-center select-none pt-[110px] pb-16">
+            <div className="container-site relative">
 
-
-            {/* Asosiy Forma qismi */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6 select-none pt-24 sm:pt-28 lg:pt-32">
                 {/* Orqaga qaytish tugmasi */}
-                <button 
+                <button
                     onClick={handleGoBack}
-                    className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
+                    aria-label={t('common.back', 'Orqaga')}
+                    className="absolute -top-6 left-0 sm:-left-2 group flex items-center justify-center w-11 h-11 hover:w-auto hover:px-5 overflow-hidden bg-raised hover:bg-ink hover:text-bg rounded-full border border-line transition-all duration-400 cursor-pointer z-50"
                 >
-                    <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
+                    <HiArrowLeft className="w-4.5 h-4.5 shrink-0 mx-auto group-hover:mx-0 group-hover:mr-2.5 transition-all" />
+                    <span className="text-[13px] font-semibold whitespace-nowrap max-w-0 group-hover:max-w-[80px] transition-all duration-400 overflow-hidden">
+                        {t('common.back', 'Orqaga')}
+                    </span>
                 </button>
 
-                <div className="relative glass-card p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] shadow-2xl border border-slate-200/80 dark:border-white/10 overflow-hidden transition-all duration-300">
-                    
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center pt-10">
 
-                    {/* Orqa fon nur effekti */}
-                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-red-600/20 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
-                    <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+                    {/* Chap — matn */}
+                    <div className="lg:col-span-6" data-reveal>
+                        <span className="eyebrow">{t('leadForm.badge', 'Bepul maslahat')}</span>
+                        <h1 className="display-1 !text-[clamp(2.4rem,5.2vw,4.2rem)] mt-5 text-ink">
+                            {t('leadForm.titlePrefix', "Ingliz tilini o'rganishni")}{' '}
+                            <span className="serif-accent">{t('leadForm.titleHighlight', 'bugun boshlang!')}</span>
+                        </h1>
+                        <p className="lede mt-5 max-w-[48ch]">
+                            {t('leadForm.description', "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.")}
+                        </p>
 
-                    <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
-                        
-                        {/* Chap matn va tugma qismi */}
-                        <div className="lg:w-1/2 text-left space-y-4">
-                            <div className="inline-block mb-3">
-                                <span className="px-3.5 py-1.5 bg-red-600/10 dark:bg-red-600/20 text-red-600 dark:text-red-500 rounded-xl text-xs font-black tracking-wide border border-red-500/20 dark:border-red-500/30 uppercase">
-                                    {t('leadForm.badge', 'Bepul maslahat')}
-                                </span>
+                        {!isOpen && (
+                            <div className="pt-6">
+                                <button
+                                    onClick={() => setIsOpen(true)}
+                                    className="btn btn-primary"
+                                >
+                                    <span>{t('leadForm.applyNowBtn', 'Hozirdan yozilish')}</span>
+                                    <FaArrowRight className="w-3.5 h-3.5 btn-arrow" />
+                                </button>
                             </div>
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-                                {t('leadForm.titlePrefix', "Ingliz tilini o'rganishni")}{' '}
-                                <span className="text-red-600 dark:text-red-500">
-                                    {t('leadForm.titleHighlight', 'bugun boshlang!')}
-                                </span>
-                            </h2>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base font-medium leading-relaxed">
-                                {t('leadForm.description', "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.")}
-                            </p>
+                        )}
+                    </div>
 
-                            {!isOpen && (
-                                <div className="pt-2">
-                                    <button
-                                        onClick={() => setIsOpen(true)}
-                                        className="px-8 py-4 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black rounded-2xl shadow-lg shadow-red-600/35 transition-all duration-300 flex items-center gap-3 text-sm cursor-pointer hover:scale-105"
-                                    >
-                                        <span>{t('leadForm.applyNowBtn', 'Hozirdan yozilish')}</span>
-                                        <FaArrowRight className="text-xs" />
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* O'ng Forma qismi */}
-                        <div className={`lg:w-1/2 w-full max-w-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-500 ${isOpen ? 'opacity-100 scale-100 block' : 'hidden'}`}>
+                    {/* O'ng — forma */}
+                    <div className="lg:col-span-5 lg:col-start-8" data-reveal="right" data-reveal-delay="120">
+                        <div className={`card !rounded-[20px] p-6 sm:p-8 transition-all duration-500 ${isOpen ? 'opacity-100 block' : 'hidden'}`}>
                             {success ? (
-                                <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
-                                    <FaCheckCircle className="text-emerald-500 text-5xl animate-bounce" />
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('leadForm.successTitle', 'Murojaatingiz qabul qilindi!')}</h3>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm">{t('leadForm.successDesc', 'Tez orada operatorlarimiz siz bilan bog\'lanishadi.')}</p>
+                                <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
+                                    <FaCheckCircle className="text-accent text-5xl" />
+                                    <h3 className="font-display text-[24px] font-semibold text-ink">{t('leadForm.successTitle', 'Murojaatingiz qabul qilindi!')}</h3>
+                                    <p className="text-muted text-[14px]">{t('leadForm.successDesc', 'Tez orada operatorlarimiz siz bilan bog\'lanishadi.')}</p>
                                 </div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <h3 className="text-xl font-black text-gray-900 dark:text-white">{t('leadForm.formTitle', 'Bepul darsga yozilish')}</h3>
-                                        <button 
-                                            type="button" 
+                                <form onSubmit={handleSubmit} className="space-y-5">
+                                    <div className="flex items-center justify-between mb-1">
+                                        <h3 className="font-display text-[24px] font-semibold text-ink">{t('leadForm.formTitle', 'Bepul darsga yozilish')}</h3>
+                                        <button
+                                            type="button"
                                             onClick={() => setIsOpen(false)}
-                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 cursor-pointer"
+                                            aria-label={t('common.close', 'Yopish')}
+                                            className="w-8 h-8 rounded-full border border-line flex items-center justify-center text-muted hover:text-ink hover:border-linestrong transition-colors cursor-pointer"
                                         >
-                                            <FaTimes />
+                                            <FaTimes className="w-3 h-3" />
                                         </button>
                                     </div>
 
                                     {error && (
-                                        <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs rounded-xl font-medium">
+                                        <div className="p-3 bg-accentsoft border border-accent/25 text-accent text-[12.5px] rounded-xl font-medium">
                                             {error}
                                         </div>
                                     )}
 
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">{t('leadForm.nameLabel', 'Ismingiz')}</label>
-                                        <div className="relative">
-                                            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 dark:text-gray-500">
-                                                <FaUser className="text-sm" />
-                                            </span>
-                                            <input
-                                                type="text"
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                placeholder={t('leadForm.namePlaceholder', 'Masalan: Aziz')}
-                                                className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm focus:outline-none focus:border-red-600 transition-colors"
-                                            />
-                                        </div>
+                                        <label htmlFor="lead-name" className="block text-[12px] font-semibold text-muted mb-1.5">{t('leadForm.nameLabel', 'Ismingiz')}</label>
+                                        <input
+                                            id="lead-name"
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder={t('leadForm.namePlaceholder', 'Masalan: Aziz')}
+                                            className="glass-input w-full px-4 py-3 text-[14px] placeholder:text-muted"
+                                        />
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5">{t('leadForm.phoneLabel', 'Telefon raqamingiz')}</label>
-                                        <div className="relative flex items-center bg-gray-50 dark:bg-gray-950/60 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden focus-within:border-red-600 transition-colors">
-                                            <span className="pl-4 pr-2 text-gray-600 dark:text-gray-400 text-sm font-bold select-none border-r border-gray-200 dark:border-gray-800/80 py-3 bg-gray-100 dark:bg-gray-900/40">
+                                        <label htmlFor="lead-phone" className="block text-[12px] font-semibold text-muted mb-1.5">{t('leadForm.phoneLabel', 'Telefon raqamingiz')}</label>
+                                        <div id="lead-phone" className="glass-input flex items-center rounded-[12px] overflow-hidden focus-within:border-accent">
+                                            <span className="pl-4 pr-3 text-soft text-[14px] font-semibold select-none border-r border-line py-3">
                                                 +998
                                             </span>
                                             <IMaskInput
@@ -209,7 +196,7 @@ export default function LeadForm() {
                                                 value={phone}
                                                 onAccept={(value) => setPhone(value)}
                                                 placeholder="(90) 123-45-67"
-                                                className="w-full px-4 py-3 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none"
+                                                className="w-full px-4 py-3 bg-transparent text-ink placeholder:text-muted text-[14px] focus:outline-none"
                                             />
                                         </div>
                                     </div>
@@ -217,17 +204,17 @@ export default function LeadForm() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full mt-2 px-5 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-300 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer disabled:opacity-50 text-center"
+                                        className="btn btn-primary w-full !py-3.5 disabled:opacity-50 disabled:pointer-events-none"
                                     >
                                         {loading ? (
                                             <>
-                                                <FaSpinner className="animate-spin text-base" />
+                                                <FaSpinner className="w-4 h-4 animate-spin" />
                                                 <span>{t('leadForm.submitting', 'Yuborilmoqda...')}</span>
                                             </>
                                         ) : (
                                             <>
                                                 <span>{t('leadForm.submitBtn', 'Joy band qilish')}</span>
-                                                <FaPaperPlane className="text-xs" />
+                                                <FaArrowRight className="w-3 h-3 btn-arrow" />
                                             </>
                                         )}
                                     </button>
@@ -235,9 +222,17 @@ export default function LeadForm() {
                             )}
                         </div>
 
+                        {!isOpen && (
+                            <div className="card !rounded-[20px] p-6 sm:p-8 flex items-center gap-5">
+                                <span className="font-display text-[44px] font-semibold text-accent leading-none">5+</span>
+                                <p className="text-[13px] leading-relaxed text-muted">
+                                    {t('about.goalDesc')}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
-            </section>
-        </>
+            </div>
+        </section>
     )
 }

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 
 // O'quvchilar ma'lumotlari bazasi
 const ieltsData = [
@@ -8,65 +9,35 @@ const ieltsData = [
         name: "Javohir Munirov",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg",
-        scores: {
-            listening: "9.0",
-            reading: "7.5",
-            writing: "6.5",
-            speaking: "6.5",
-            overall: "7.5",
-        },
+        scores: { listening: "9.0", reading: "7.5", writing: "6.5", speaking: "6.5", overall: "7.5" },
     },
     {
         id: 2,
         name: "Jahongir Zayniddinov",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg",
-        scores: {
-            listening: "8.5",
-            reading: "6.5",
-            writing: "6.0",
-            speaking: "6.0",
-            overall: "7.0",
-        },
+        scores: { listening: "8.5", reading: "6.5", writing: "6.0", speaking: "6.0", overall: "7.0" },
     },
     {
         id: 3,
         name: "Mehrangiz Umedova",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-06.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-06.jpg",
-        scores: {
-            listening: "7.0",
-            reading: "7.0",
-            writing: "6.5",
-            speaking: "7.0",
-            overall: "7.0",
-        },
+        scores: { listening: "7.0", reading: "7.0", writing: "6.5", speaking: "7.0", overall: "7.0" },
     },
     {
         id: 4,
         name: "Nozigul G'aybilloyeva",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-09.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-09.jpg",
-        scores: {
-            listening: "7.5",
-            reading: "7.5",
-            writing: "6.5",
-            speaking: "6.5",
-            overall: "7.0",
-        },
+        scores: { listening: "7.5", reading: "7.5", writing: "6.5", speaking: "6.5", overall: "7.0" },
     },
     {
         id: 5,
         name: "Laziza Djamolova",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-11.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-11.jpg",
-        scores: {
-            listening: "6.5",
-            reading: "6.5",
-            writing: "6.0",
-            speaking: "6.0",
-            overall: "6.5",
-        },
+        scores: { listening: "6.5", reading: "6.5", writing: "6.0", speaking: "6.0", overall: "6.5" },
     },
 ];
 
@@ -76,226 +47,217 @@ const cefrData = [
         name: "In'omjon Izomov",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-19.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-19.jpg",
-        scores: {
-            listening: "60",
-            reading: "61",
-            writing: "42",
-            speaking: "50",
-            overall: "B2 (53)",
-        },
+        scores: { listening: "60", reading: "61", writing: "42", speaking: "50", overall: "B2 (53)" },
     },
     {
         id: 2,
         name: "Sohibjon Sa'dullayev",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-21.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-21.jpg",
-        scores: {
-            listening: "55",
-            reading: "65",
-            writing: "55",
-            speaking: "49",
-            overall: "B2 (56)",
-        },
+        scores: { listening: "55", reading: "65", writing: "55", speaking: "49", overall: "B2 (56)" },
     },
     {
         id: 3,
         name: "Gulnoza Mirxonova",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-25.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-25.jpg",
-        scores: {
-            listening: "47",
-            reading: "46",
-            writing: "43",
-            speaking: "38",
-            overall: "B1 (44)",
-        },
+        scores: { listening: "47", reading: "46", writing: "43", speaking: "38", overall: "B1 (44)" },
     },
     {
         id: 4,
         name: "Zarnigor Muxiddinova",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-23.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-23.jpg",
-        scores: {
-            listening: "61",
-            reading: "58",
-            writing: "48",
-            speaking: "42",
-            overall: "B2 (52)",
-        },
+        scores: { listening: "61", reading: "58", writing: "48", speaking: "42", overall: "B2 (52)" },
     },
     {
         id: 5,
         name: "Rayxon Ashurova",
         image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/CEFR68.jpg",
         certImage: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/CEFR68.jpg",
-        scores: {
-            listening: "66",
-            reading: "61",
-            writing: "51",
-            speaking: "54",
-            overall: "B2 (58)",
-        },
+        scores: { listening: "66", reading: "61", writing: "51", speaking: "54", overall: "B2 (58)" },
     },
 ];
+
+const MODULE_KEYS = ["listening", "reading", "writing", "speaking"];
 
 export default function Products() {
     const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('ielts');
     const [currentIndex, setCurrentIndex] = useState(0);
     const activeData = activeTab === 'ielts' ? ieltsData : cefrData;
-    const [isAnimating, setIsAnimating] = useState(false);
+    const scoreMax = activeTab === 'ielts' ? 9 : 70;
 
-    // Index qiymatini xatosiz saqlab turish uchun ref
     const indexRef = useRef(currentIndex);
-    indexRef.current = currentIndex;
+
+    useEffect(() => {
+        indexRef.current = currentIndex;
+    }, [currentIndex]);
 
     const triggerAnimation = (newIndex) => {
         if (newIndex === indexRef.current) return;
-        setIsAnimating(true);
         setCurrentIndex(newIndex);
-        setTimeout(() => {
-            setIsAnimating(false);
-        }, 300);
     };
 
     // Har 3 sekundda avtomatik o'tish logikasi
     useEffect(() => {
         const interval = setInterval(() => {
             const nextIndex = indexRef.current === activeData.length - 1 ? 0 : indexRef.current + 1;
-
-            setIsAnimating(true);
             setCurrentIndex(nextIndex);
-            setTimeout(() => {
-                setIsAnimating(false);
-            }, 300);
-
         }, 3000);
-
         return () => clearInterval(interval);
     }, [activeData.length]);
 
     const activeStudent = activeData[currentIndex];
 
     return (
-        <div className="pt-28 pb-12 font-['Merriweather',serif] px-4">
-            <div className="w-full max-w-5xl mx-auto p-6 sm:p-10 glass-card rounded-[2.5rem] shadow-2xl border border-slate-200/80 dark:border-white/10 mt-0 mb-10 transition-all duration-300 relative overflow-hidden">
-                {/* Sarlavha */}
-                <h2 className="text-2xl md:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6 sm:mb-8">
-                    {t('resultsSlider.title', "Ba'zi o'quvchilarimizning natijalari")}
-                </h2>
-
-                {/* Sarlavha o'rniga Switcher (IELTS / CEFR) */}
-                <div className="flex justify-center mb-6 sm:mb-8">
-                    <div className="bg-slate-200 dark:bg-slate-800/80 p-1 rounded-[2rem] flex gap-2 shadow-inner relative z-10 border border-slate-300 dark:border-slate-700">
-                        <button
-                            onClick={() => {
-                                setActiveTab('ielts');
-                                setCurrentIndex(0);
-                            }}
-                            className={`px-6 sm:px-10 py-2.5 sm:py-3 rounded-[1.5rem] font-bold text-sm sm:text-lg transition-all duration-300 ${activeTab === 'ielts' ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
-                        >
-                            IELTS
-                        </button>
-                        <button
-                            onClick={() => {
-                                setActiveTab('cefr');
-                                setCurrentIndex(0);
-                            }}
-                            className={`px-6 sm:px-10 py-2.5 sm:py-3 rounded-[1.5rem] font-bold text-sm sm:text-lg transition-all duration-300 ${activeTab === 'cefr' ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
-                        >
-                            CEFR
-                        </button>
-                    </div>
+        <div className="container-site pt-[130px] pb-20 sm:pb-24">
+            {/* Sarlavha + tablar */}
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div data-reveal>
+                    <span className="eyebrow">{t('resultsSlider.badge', 'Natijalar')}</span>
+                    <h1 className="display-2 mt-5 text-ink max-w-[24ch]">
+                        {t('resultsSlider.title', "Ba'zi o'quvchilarimizning natijalari")}
+                    </h1>
                 </div>
 
-                {/* Yuqoridagi dumaloq o'quvchilar tanlovi (Avatarlar) va Ism */}
-                <div className="flex flex-col items-center gap-3 mb-6 w-full">
-                    <div className="w-full flex justify-center">
-                        <div className="flex items-center gap-4 overflow-x-auto pb-2 max-w-full px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                            {activeData.map((student, index) => {
-                            const isActive = index === currentIndex;
-                            return (
-                                <button
-                                    key={student.id}
-                                    onClick={() => triggerAnimation(index)}
-                                    className={`relative rounded-full transition-all duration-300 flex-shrink-0 cursor-pointer ${isActive
-                                            ? "p-1 bg-red-600 scale-110 shadow-lg shadow-red-500/50"
-                                            : "opacity-60 hover:opacity-100"
-                                        }`}
-                                >
-                                    <img
-                                        src={student.image}
-                                        alt={student.name}
-                                        className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover object-top border-2 border-slate-900"
+                <div data-reveal data-reveal-delay="120" className="shrink-0">
+                    <div className="inline-flex p-1 rounded-full border border-line bg-surface">
+                        {['ielts', 'cefr'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => { setActiveTab(tab); setCurrentIndex(0); }}
+                                className={`relative px-6 sm:px-8 py-2.5 rounded-full text-[13px] font-bold tracking-wide transition-colors duration-300 cursor-pointer ${
+                                    activeTab === tab ? 'text-white' : 'text-muted hover:text-ink'
+                                }`}
+                            >
+                                {activeTab === tab && (
+                                    <motion.span
+                                        layoutId="products-tab"
+                                        className="absolute inset-0 bg-accent rounded-full"
+                                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                                     />
-                                </button>
-                            );
-                        })}
-                    </div>
-                    </div>
-                    {/* Tanlangan o'quvchining ismi va bahosi */}
-                    <div className="flex flex-col items-center gap-1.5 transition-all duration-300">
-                        <h3 className="text-xl font-semibold text-red-500">
-                            {activeStudent.name}
-                        </h3>
-                        <span className="text-sm font-bold px-3 py-1 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-full border border-red-200 dark:border-red-500/30">
-                            Overall: {activeStudent.scores.overall}
-                        </span>
+                                )}
+                                <span className="relative z-10">{tab.toUpperCase()}</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
+            </div>
 
-                {/* Progress chiziqchasi */}
-                <div className="w-full bg-slate-800 h-1.5 rounded-full mb-8 overflow-hidden">
-                    <div
-                        className="bg-red-600 h-full transition-all duration-500"
-                        style={{
-                            width: `${((currentIndex + 1) / activeData.length) * 100}%`,
-                        }}
-                    ></div>
+            {/* Avatarlar */}
+            <div data-reveal data-reveal-delay="150" className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 mb-8 scrollbar-none max-w-full">
+                {activeData.map((student, index) => {
+                    const isActive = index === currentIndex;
+                    return (
+                        <button
+                            key={student.id}
+                            onClick={() => triggerAnimation(index)}
+                            aria-label={student.name}
+                            aria-pressed={isActive}
+                            className={`relative rounded-full shrink-0 cursor-pointer transition-all duration-400 ${
+                                isActive
+                                    ? "p-[3px] bg-accent shadow-[0_8px_24px_-8px_var(--accent-ring)]"
+                                    : "p-[3px] border border-line hover:border-linestrong opacity-75 hover:opacity-100"
+                            }`}
+                        >
+                            <img
+                                src={student.image}
+                                alt={student.name}
+                                loading="lazy"
+                                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover object-[center_30%] block ${isActive ? '' : 'grayscale-[0.4]'}`}
+                            />
+                        </button>
+                    );
+                })}
+            </div>
+
+            {/* Asosiy grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+                <div className="lg:col-span-5 flex flex-col order-2 lg:order-1">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeStudent.id}
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -12 }}
+                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            className="flex flex-col flex-1"
+                        >
+                            <p className="font-display text-[26px] sm:text-[30px] font-semibold text-ink leading-tight">
+                                {activeStudent.name}
+                            </p>
+
+                            <div className="mt-6 flex flex-col">
+                                {MODULE_KEYS.map((key, i) => {
+                                    const value = parseFloat(activeStudent.scores[key]) || 0;
+                                    const pct = Math.max(0.06, Math.min(1, value / scoreMax));
+                                    return (
+                                        <div key={key} className={`flex items-center gap-4 py-3.5 ${i > 0 ? 'border-t border-line' : ''}`}>
+                                            <span className="w-[92px] shrink-0 text-[12.5px] font-semibold text-muted">
+                                                {t(`resultsSlider.${key}`)}
+                                            </span>
+                                            <div className="flex-1 h-[3px] rounded-full bg-surface2 overflow-hidden">
+                                                <motion.div
+                                                    className="h-full rounded-full bg-accent origin-left"
+                                                    initial={{ scaleX: 0 }}
+                                                    animate={{ scaleX: pct }}
+                                                    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 + i * 0.07 }}
+                                                />
+                                            </div>
+                                            <span className="font-display text-[21px] font-semibold text-ink w-[42px] text-right leading-none">
+                                                {activeStudent.scores[key]}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="mt-auto pt-6 flex items-end justify-between border-t border-linestrong">
+                                <span className="meta-label mb-1.5">{t('resultsSlider.overall', 'Overall')}</span>
+                                <span className="font-display text-[52px] sm:text-[64px] font-semibold text-accent leading-[0.9]">
+                                    {activeStudent.scores.overall}
+                                </span>
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
 
-                {/* Pastki qism: Ballar va Sertifikat rasmi animatsiya bilan */}
-                <div
-                    className={`grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white p-6 md:p-8 rounded-2xl shadow-inner transition-all duration-300 transform ${isAnimating
-                            ? "opacity-0 -translate-y-4"
-                            : "opacity-100 translate-y-0"
-                        }`}
-                >
-                    {/* Ballar qismi (Chap tomon) */}
-                    <div className="md:col-span-5 flex flex-col gap-3">
-                        <div className="bg-emerald-600 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>Listening</span>
-                            <span className="text-lg">{activeStudent.scores.listening}</span>
-                        </div>
-
-                        <div className="bg-purple-700 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>Reading</span>
-                            <span className="text-lg">{activeStudent.scores.reading}</span>
-                        </div>
-
-                        <div className="bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>Writing</span>
-                            <span className="text-lg">{activeStudent.scores.writing}</span>
-                        </div>
-
-                        <div className="bg-blue-600 text-white font-bold py-2.5 px-5 rounded-xl flex justify-between items-center shadow-md text-base">
-                            <span>Speaking</span>
-                            <span className="text-lg">{activeStudent.scores.speaking}</span>
-                        </div>
-
-                    </div>
-
-                    {/* Sertifikat rasmi (O'ng tomon) */}
-                    <div className="md:col-span-7 flex justify-center">
-                        <div className="relative w-full max-h-[400px] flex items-center justify-center">
+                <div className="lg:col-span-7 order-1 lg:order-2">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeStudent.id + '-cert'}
+                            initial={{ opacity: 0, scale: 0.985 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.985 }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            className="img-frame relative aspect-[4/3] sm:aspect-[16/10] w-full shadow-[var(--shadow-soft)] bg-surface2"
+                        >
                             <img
                                 src={activeStudent.certImage}
-                                alt={activeTab === 'ielts' ? "IELTS Certificate" : "CEFR Certificate"}
-                                className="max-w-full h-full max-h-[400px] object-contain rounded-xl shadow-lg border-2 border-slate-200 dark:border-slate-700 transition-all duration-500 hover:scale-105"
+                                alt={activeTab === 'ielts' ? `${activeStudent.name} — IELTS certificate` : `${activeStudent.name} — CEFR certificate`}
+                                loading="lazy"
+                                className="!object-cover"
                             />
-                        </div>
-                    </div>
+                            <span className="absolute top-4 left-4 chip !bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] backdrop-blur-md !text-[10px] !font-bold tracking-[0.1em] uppercase">
+                                {activeTab === 'ielts' ? 'IELTS Result' : 'CEFR Result'}
+                            </span>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            </div>
 
+            {/* Progress indikator */}
+            <div className="mt-10 flex items-center gap-4">
+                <span className="text-[11px] font-bold text-muted tabular-nums">
+                    {String(currentIndex + 1).padStart(2, '0')} / {String(activeData.length).padStart(2, '0')}
+                </span>
+                <div className="relative flex-1 h-px bg-line overflow-hidden rounded-full">
+                    <motion.div
+                        className="absolute inset-y-0 left-0 w-full bg-accent origin-left"
+                        animate={{ scaleX: (currentIndex + 1) / activeData.length }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    />
                 </div>
             </div>
         </div>
