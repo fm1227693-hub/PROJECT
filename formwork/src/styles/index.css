@@ -1,0 +1,518 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/* ------------------------------------------------------------------ */
+@theme {
+  --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+
+  /* fixed palette */
+  --color-paper: #f4f3ef;
+  --color-bone: #e9e7e1;
+  --color-ink: #0f0f10;
+  --color-ash: #8a8984;
+  --color-cobalt: #1d2cf3;
+  --color-white: #ffffff;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --breakpoint-xs: 26rem;
+  --breakpoint-3xl: 112rem;
+}
+
+/* Runtime theme colours. `inline` makes utilities reference the variable itself
+   (color: var(--fg)), so a section or card can re-scope --fg/--muted/--line locally. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section themes — the body eases between them, so section changes    */
+/*  read as colour transitions rather than hard cuts.                   */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #f4f3ef;
+  --fg: #0f0f10;
+  --muted: rgba(15, 15, 16, 0.52);
+  --line: rgba(15, 15, 16, 0.14);
+  --accent: #1d2cf3;
+
+  --margin: clamp(1.25rem, 4.2vw, 4.5rem);
+  --gutter: clamp(0.75rem, 2vw, 2rem);
+  --nav-h: 4.5rem;
+
+  color-scheme: light;
+}
+
+html[data-theme='bone'] {
+  --bg: #e9e7e1;
+}
+
+html[data-theme='dark'] {
+  --bg: #0f0f10;
+  --fg: #f4f3ef;
+  --muted: rgba(244, 243, 239, 0.5);
+  --line: rgba(244, 243, 239, 0.16);
+  --accent: #5a66ff;
+  color-scheme: dark;
+}
+
+html[data-theme='cobalt'] {
+  --bg: #1d2cf3;
+  --fg: #f4f3ef;
+  --muted: rgba(244, 243, 239, 0.62);
+  --line: rgba(244, 243, 239, 0.24);
+  --accent: #f4f3ef;
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv01', 'kern';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition:
+      background-color 0.8s var(--ease-out-quart),
+      color 0.8s var(--ease-out-quart);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--fg) 30%, transparent) transparent;
+    /* transformed elements extend the scrollable area; never let that become a horizontal scroll */
+    overflow-x: clip;
+  }
+
+  body {
+    margin: 0;
+    background: transparent;
+    color: inherit;
+    overflow-x: clip;
+    font-size: 1rem;
+    line-height: 1.5;
+    min-height: 100svh;
+  }
+
+  ::selection {
+    background: var(--color-cobalt);
+    color: #f4f3ef;
+  }
+  html[data-theme='cobalt'] ::selection {
+    background: #0f0f10;
+  }
+
+  img,
+  svg,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus {
+    outline: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  /* Native cursor hidden only when our cursor is running (desktop, fine pointer). */
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button,
+  html.has-cursor [data-cursor] {
+    cursor: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      transition: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Editorial utilities                                                 */
+/* ------------------------------------------------------------------ */
+@utility container-x {
+  padding-inline: var(--margin);
+}
+
+@utility grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+@utility label {
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility display {
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+@utility statement {
+  font-weight: 450;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+
+@utility serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+@utility hairline {
+  border-color: var(--line);
+}
+
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--fg);
+  paint-order: stroke fill;
+}
+
+@utility mask-lines {
+  overflow: clip;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Components (kept in CSS so they stay GPU-friendly & declarative)    */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Underline link: transform-based, no width animation. */
+  .link-line {
+    position: relative;
+    display: inline-block;
+  }
+  .link-line::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.15em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.55s var(--ease-out-expo);
+  }
+  .link-line:hover::after,
+  .link-line:focus-visible::after,
+  .group:hover .link-line::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* Text that slides up to reveal a duplicate on hover (buttons, nav). */
+  .flip-text {
+    display: inline-grid;
+    overflow: hidden;
+    line-height: 1.1;
+  }
+  .flip-text > span {
+    grid-area: 1 / 1;
+    transition: transform 0.6s var(--ease-out-expo);
+    will-change: transform;
+  }
+  .flip-text > span:last-child {
+    transform: translateY(110%);
+  }
+  .flip-parent:hover .flip-text > span:first-child,
+  .flip-parent:focus-visible .flip-text > span:first-child {
+    transform: translateY(-110%);
+  }
+  .flip-parent:hover .flip-text > span:last-child,
+  .flip-parent:focus-visible .flip-text > span:last-child {
+    transform: translateY(0);
+  }
+
+  /* Pill button */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 3rem;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      background-color 0.4s var(--ease-out-quart),
+      color 0.4s var(--ease-out-quart),
+      border-color 0.4s var(--ease-out-quart);
+  }
+  .pill-solid {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .pill-ghost {
+    border: 1px solid var(--line);
+    color: var(--fg);
+  }
+  .pill-ghost:hover {
+    border-color: var(--fg);
+  }
+
+  /* Navbar shell */
+  .nav-shell {
+    transition:
+      background-color 0.6s var(--ease-out-quart),
+      border-color 0.6s var(--ease-out-quart),
+      padding 0.6s var(--ease-out-quart),
+      transform 0.6s var(--ease-out-quart);
+  }
+  .nav-shell[data-scrolled='true'] {
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    border-color: var(--line);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  /* Project rows: dim siblings while one is hovered (on the inner link, so GSAP owns the row) */
+  .work-list:hover .work-link {
+    opacity: 0.32;
+  }
+  .work-list:hover .work-row:hover .work-link {
+    opacity: 1;
+  }
+  .work-link {
+    transition: opacity 0.5s var(--ease-out-quart);
+  }
+  .work-row .work-title {
+    transition: transform 0.7s var(--ease-out-expo);
+  }
+  .work-row:hover .work-title {
+    transform: translateX(0.35em);
+  }
+  .work-row .work-arrow {
+    opacity: 0;
+    transform: translate(-0.4em, 0.4em);
+    transition:
+      opacity 0.5s var(--ease-out-quart),
+      transform 0.7s var(--ease-out-expo);
+  }
+  .work-row:hover .work-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  /* Capability card visuals */
+  .cap-visual .ring {
+    transform-origin: center;
+    transition: transform 1.2s var(--ease-out-expo);
+  }
+  .cap-card:hover .cap-visual .ring:nth-child(1) {
+    transform: scale(1.06);
+  }
+  .cap-card:hover .cap-visual .ring:nth-child(2) {
+    transform: scale(1.12);
+  }
+  .cap-card:hover .cap-visual .ring:nth-child(3) {
+    transform: scale(1.2);
+  }
+  .cap-card:hover .cap-visual .ring:nth-child(4) {
+    transform: scale(1.3);
+  }
+  .cap-visual .bar {
+    transform-origin: left center;
+    transition: transform 1s var(--ease-out-expo);
+  }
+  .cap-card:hover .cap-visual .bar:nth-child(odd) {
+    transform: scaleX(0.7);
+  }
+  .cap-card:hover .cap-visual .bar:nth-child(even) {
+    transform: scaleX(1.15);
+  }
+  .cap-visual .dot {
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .cap-card:hover .cap-visual .dot {
+    transform: translate(var(--dx, 0), var(--dy, 0));
+  }
+  .cap-visual .sheet {
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .cap-card:hover .cap-visual .sheet:nth-child(1) {
+    transform: translate(-6%, 6%);
+  }
+  .cap-card:hover .cap-visual .sheet:nth-child(3) {
+    transform: translate(6%, -6%);
+  }
+  .cap-visual .path-dot {
+    offset-path: path('M 0 80 C 60 0, 140 160, 200 80');
+    offset-distance: 0%;
+    transition: offset-distance 1.4s var(--ease-in-out-quart);
+  }
+  .cap-card:hover .cap-visual .path-dot {
+    offset-distance: 100%;
+  }
+
+  /* Scroll cue */
+  .scroll-cue-line {
+    transform-origin: top center;
+    animation: cue 2.4s var(--ease-in-out-quart) infinite;
+  }
+  @keyframes cue {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top center;
+    }
+    45% {
+      transform: scaleY(1);
+      transform-origin: top center;
+    }
+    55% {
+      transform: scaleY(1);
+      transform-origin: bottom center;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom center;
+    }
+  }
+
+  /* Custom cursor */
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1000;
+    will-change: transform;
+  }
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    background: var(--fg);
+    transition: background-color 0.4s;
+  }
+  .cursor-ring {
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--fg) 55%, transparent);
+    display: grid;
+    place-items: center;
+    transition:
+      border-color 0.4s,
+      background-color 0.4s;
+  }
+  .cursor-ring .cursor-label {
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--bg);
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 0.3s,
+      transform 0.4s var(--ease-out-expo);
+  }
+  .cursor-ring[data-state='label'] {
+    background: var(--fg);
+    border-color: var(--fg);
+  }
+  .cursor-ring[data-state='label'] .cursor-label {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .cursor-ring[data-state='link'] {
+    border-color: var(--fg);
+  }
+  .cursor-ring[data-state='hidden'],
+  .cursor-dot[data-state='hidden'] {
+    opacity: 0;
+  }
+
+  /* Mobile menu links */
+  .menu-link {
+    display: block;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-size: clamp(2.75rem, 13vw, 5.5rem);
+  }
+
+  /* Reduced motion: kill decorative loops, keep everything readable. */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue-line {
+      animation: none;
+      transform: none;
+    }
+    .flip-text > span,
+    .link-line::after,
+    .work-link,
+    .work-title,
+    .work-arrow {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ScrollSmoother needs the content to be the thing that moves. */
+#smooth-wrapper {
+  position: relative;
+}
+
+/* Words highlighted by scroll (Intro statement) start dimmed. */
+.hl-word {
+  opacity: 0.16;
+  will-change: opacity;
+}
+html.reduced-motion .hl-word {
+  opacity: 1;
+}
+
+/* 3D fallback: soft chrome-ish disc shown until the WebGL object is ready */
+.orb-fallback {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 70% 75%, rgba(29, 44, 243, 0.35), rgba(29, 44, 243, 0) 45%),
+    radial-gradient(circle at 50% 50%, #d9d8d3, #a7a6a2 70%, #7f7e7b 100%);
+  border-radius: 50%;
+  transition: opacity 0.9s var(--ease-out-quart);
+}
