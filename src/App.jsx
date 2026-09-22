@@ -47,16 +47,16 @@ export default function App() {
       <LiquidCursor />
       <Navbar />
 
-      {/* GLOBAL BLUE RIBBON — butun sayt bo'ylab ko'k lenta, faqat 1 ta qismda emas */}
+      {/* GLOBAL BLUE RIBBON — butun sayt bo'ylab, no gray overlay, faqat ko'k lenta */}
       <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
         <Canvas
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           dpr={[1, 2]}
           camera={{ fov: 38, position: [0, 0, 10], near: 0.1, far: 100 }}
           style={{ background: 'transparent', width: '100%', height: '100%' }}
-          onCreated={({ gl }) => gl.setClearColor('#f6f6f8', 1)}
+          onCreated={({ gl }) => gl.setClearColor('#f6f6f8', 0)}
         >
-          <ambientLight intensity={0.9} color="#ffffff" />
+          <ambientLight intensity={0.95} color="#ffffff" />
           <directionalLight position={[5, 8, 6]} intensity={1.1} color="#ffffff" />
           <directionalLight position={[-4, -2, 4]} intensity={0.5} color="#dbeafe" />
           <Suspense fallback={null}>
@@ -84,7 +84,7 @@ export default function App() {
         <HeroContent isHoveringRibbon={isHoveringRibbon} />
         <PortfolioGrid />
 
-        <footer className="relative z-10 bg-transparent border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
+        <footer className="relative z-10 bg-[#f6f6f8] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
           <div>©2026 LUSION® — BUTUN SAYT BO'YLAB KO'K LENTA • #2563eb • SCROLL PASTGA/TEPAGA</div>
           <div className="flex gap-6">
             <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black">
