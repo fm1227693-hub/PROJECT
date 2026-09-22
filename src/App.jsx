@@ -1,196 +1,220 @@
-import { useState, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import { inView, animate, AnimatePresence, motion } from "framer-motion";
-import { Toaster } from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
-import Footer from "./components/Footer";
-import Main from "./components/Main";
-import Navbar from "./components/Navbar";
-import Stats from "./components/Stats";
-import Products from "./components/Products";
-import AboutUs from "./components/AboutUs";
-import Admin from "./components/Admin";
-import Register from "./components/Register";
-import Mentorstats from "./components/Mentorstats";
-import LevelTest from "./components/LevelTest";
-import ListeningHub from "./components/ListeningHub";
-import ReadingHub from "./components/ReadingHub";
-import Pricing from "./components/Pricing";
-import Gamess from "./components/Gamess";
-import FAQ from "./components/FAQ";
-import ConsultationBooking from "./components/ConsultationBooking";
-import Flashcards from "./components/Flashcard";
-import LeadForm from "./components/LeadForm";
-import PrivacyPolicy from "./components/PrivacyPolicy";
-import TermsOfUse from "./components/TermsOfUse";
-import IeltsWritingAssessor from "./components/IeltsWritingAssessor";
-import BackgroundCanvas from "./components/BackgroundCanvas";
-import ThemeTransitionLoader from "./components/ThemeTransitionLoader";
-import Principle from "./components/Principle";
-import CustomCursor from "./components/CustomCursor";
-import PremiumLoader from "./components/PremiumLoader";
+import { useEffect, useState, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
+import LusionCanvas from './components/canvas/LusionCanvas'
+import Navigation from './components/dom/Navigation'
+import HeroTypography from './components/dom/HeroTypography'
+import ProjectCardShowcase from './components/dom/ProjectCardShowcase'
+import InteractiveCursor from './components/dom/InteractiveCursor'
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+import useLenisScroll from './hooks/useLenisScroll'
+import usePointerPhysics from './hooks/usePointerPhysics'
 
-  return null;
-}
+gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
-  const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const mainRef = useRef()
+  const footerRingRef = useRef()
 
+  const { scrollProgress: lenisProgress } = useLenisScroll()
+  const pointer = usePointerPhysics()
+
+  // Sync scroll progress from Lenis + window event
   useEffect(() => {
-    setIsLoading(true);
-    // 3.5 soniya (3500ms) qilib belgilandi, faqat saytga kirganda chiqishi uchun
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3500);
+    const onScroll = (e) => {
+      if (e.detail && typeof e.detail.progress === 'number') {
+        setScrollProgress(e.detail.progress)
+      }
+    }
+    window.addEventListener('lusion-scroll', onScroll)
+    return () => window.removeEventListener('lusion-scroll', onScroll)
+  }, [])
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Ultra-Smooth Premium Scroll Reveal Observer removed for performance
+  // Fallback: also use lenisProgress if available
   useEffect(() => {
-    // Removed intersection observer animations to prevent site freezing
-  }, [isLoading, location.pathname]);
+    if (lenisProgress > 0) setScrollProgress(lenisProgress)
+  }, [lenisProgress])
+
+  // ScrollTrigger for overall progress (backup)
+  useEffect(() => {
+    const trigger = ScrollTrigger.create({
+      trigger: document.body,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.1,
+      onUpdate: (self) => {
+        // Only update if lenis not driving
+        if (lenisProgress === 0) setScrollProgress(self.progress)
+      }
+    })
+    return () => trigger.kill()
+  }, [lenisProgress])
+
+  // Footer ring animation Phase 4
+  useEffect(() => {
+    if (!footerRingRef.current) return
+    const ctx = gsap.context(() => {
+      gsap.fromTo(footerRingRef.current,
+        { scale: 0.6, opacity: 0, y: 80 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: footerRingRef.current,
+            start: 'top 85%',
+            end: 'top 45%',
+            scrub: 0.8,
+          }
+        }
+      )
+    })
+    return () => ctx.revert()
+  }, [])
 
   return (
-    <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-500 overflow-x-hidden font-sans">
-      {/* CustomCursor removed for performance */}
-      
-      {/* Synthetic Theme Transition Loading Screen */}
-      <ThemeTransitionLoader />
+    <div ref={mainRef} className="relative bg-[#050508] text-white selection:bg-[#7928ca] selection:text-white overflow-x-hidden">
+      <InteractiveCursor />
+      <Navigation />
+      <LusionCanvas scrollProgress={scrollProgress} />
 
-      {/* Keyframe animatsiyalar */}
-      <style>{`
-        @keyframes shimmer {
-          to { background-position: 200% center; }
-        }
-        @keyframes loading-bar {
-          0% { transform: translateX(-100%); }
-          50% { transform: translateX(150%); }
-          100% { transform: translateX(-100%); }
-        }
-        body.mobile-menu-open .fab-button-container {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: scale(0.8);
-        }
-      `}</style>
-
-      {/* Premium Loading Ekrani */}
-      {isLoading && (
-        <PremiumLoader 
-          loop={false} 
-          text={t("premiumLoader.text", "KIRISH")}
-          captions={[
-            t("premiumLoader.cap1", "Ma'lumotlar tekshirilmoqda"),
-            t("premiumLoader.cap2", "Kirish tasdiqlanmoqda"),
-            t("premiumLoader.cap3", "Deyarli tayyor"),
-            t("premiumLoader.cap4", "Xush kelibsiz")
-          ]}
-        />
-      )}
-
-      {/* Eski fon animatsiyalari va effektlari (mijoz talabiga binoan olib tashlanmadi, shunchaki ishlatilmaydi) */}
-      {/* 
-      <BackgroundCanvas />
-
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.4] dark:opacity-[0.16]" style={{ backgroundImage: "radial-gradient(circle, rgba(225,29,72,0.35) 1.2px, transparent 1.2px)", backgroundSize: "36px 36px" }} />
-        <div className="absolute top-[-20%] left-[-15%] w-[800px] h-[800px] bg-gradient-to-br from-red-600/40 via-rose-500/30 dark:from-red-600/30 dark:via-rose-500/20 to-transparent rounded-full blur-[170px] animate-aurora-1 transition-colors duration-500" />
-        <div className="absolute top-[20%] right-[-20%] w-[750px] h-[750px] bg-gradient-to-bl from-rose-600/40 via-amber-500/30 dark:from-rose-600/25 dark:via-amber-500/15 to-transparent rounded-full blur-[180px] animate-aurora-2 transition-colors duration-500" />
-        <div className="absolute bottom-[-20%] left-[10%] w-[850px] h-[850px] bg-gradient-to-tr from-red-600/40 via-rose-500/30 dark:from-red-600/25 dark:via-rose-500/15 to-transparent rounded-full blur-[180px] animate-aurora-1 [animation-delay:5s] transition-colors duration-500" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] border border-red-700/30 dark:border-red-500/15 rounded-full blur-sm animate-float-orb transition-colors duration-500" />
-        <div className="absolute top-2/3 left-1/3 w-[500px] h-[250px] border border-rose-700/30 dark:border-rose-500/15 rounded-full blur-sm animate-float-orb [animation-delay:3s] transition-colors duration-500" />
-        <div className="absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-slate-100/90 dark:from-[#020509] to-transparent pointer-events-none" />
-        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/80 dark:from-[#030712]/90 to-transparent pointer-events-none" />
-      </div> 
-      */}
-
-      {/* Yangi, yengil va sayt dizayniga mos fon */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        {/* Soft subtle mesh background */}
-        <div 
-          className="absolute inset-0 opacity-[0.3] dark:opacity-[0.1]"
-          style={{
-            backgroundImage: "radial-gradient(circle, rgba(225,29,72,0.1) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        
-        {/* Elegant static glows */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-100/40 dark:bg-rose-900/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-slate-200/50 dark:bg-blue-900/10 rounded-full blur-[100px]" />
-      </div>
-
-      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+      {/* Scroll container - 400vh for 4 phases */}
       <div className="relative z-10">
-        {location.pathname !== '/enter' && <Navbar />}
-        <ScrollToTop />
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Main />} />
-              <Route path="/stats" element={<Stats />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/enter" element={<Admin />} />
-              <Route path="/mentor-stats" element={<Mentorstats />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/level-test" element={<LevelTest />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/games" element={<Gamess />} />
-              <Route path="/reading-tests" element={<ReadingHub />} />
-              <Route path="/listening-tests" element={<ListeningHub />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/form" element={<LeadForm />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-use" element={<TermsOfUse />} />
-              <Route path="/ielts-writing" element={<IeltsWritingAssessor />} />
-              <Route path="/principle/:id" element={<Principle />} />
-            </Routes>
-            {/* <ConsultationBooking/>
-            <Flashcards/> */}
-            {location.pathname !== '/enter' && <Footer />}
-          </motion.div>
-        </AnimatePresence>
+        {/* Phase 1 (0-25%): Organic fluid core breathes in center */}
+        <HeroTypography scrollProgress={scrollProgress} />
+
+        {/* Phase 2 (25-50%): Fluid core elongates and shears, morphs into floating glass prism, camera glides 45deg */}
+        <section className="relative min-h-[110vh] flex items-center px-6 md:px-10 lg:px-14">
+          <div className="max-w-[1600px] mx-auto w-full grid lg:grid-cols-[1.1fr_0.9fr] gap-12 md:gap-20 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="text-[10px] font-mono tracking-[0.2em] text-white/30 mb-8">001 / PHASE 02 — PRISM MORPH • 25%–50%</div>
+              <h2 className="text-[11vw] md:text-[7vw] lg:text-[5.5vw] font-black leading-[0.85] tracking-[-0.05em]">
+                ELONGATES<br />
+                <span className="text-white/20">&</span> SHEARS<br />
+                <span className="bg-gradient-to-r from-[#7928ca] to-[#00f0ff] bg-clip-text text-transparent">ALONG</span><br />
+                VECTOR
+              </h2>
+              <div className="mt-10 grid grid-cols-2 gap-8 max-w-[480px] border-t border-white/10 pt-8">
+                <div>
+                  <div className="text-[10px] tracking-widest font-mono text-white/30 mb-2">MATERIAL</div>
+                  <div className="text-[13px] leading-[1.5] text-white/60">
+                    transmission: 0.98<br />
+                    ior: 1.52<br />
+                    thickness: 2.4<br />
+                    chromatic: 0.08
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] tracking-widest font-mono text-white/30 mb-2">DEFORMATION</div>
+                  <div className="text-[13px] leading-[1.5] text-white/60">
+                    Icosahedron(2.2,64)<br />
+                    snoise*0.45<br />
+                    impulse 0.6<br />
+                    shear 45°
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2 lg:pl-12">
+              <div className="relative rounded-[28px] border border-white/10 bg-white/[0.02] backdrop-blur-2xl p-8 md:p-10 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#7928ca]/20 via-transparent to-[#00f0ff]/15 pointer-events-none" />
+                <div className="relative">
+                  <div className="text-[10px] font-mono tracking-[0.2em] text-white/40 mb-6">GLSL / VERTEX DISPLACEMENT</div>
+                  <pre className="text-[11px] leading-[1.7] font-mono text-white/70 overflow-x-auto">
+{`vec3 newPos = pos + normal * (
+  snoise(vec4(pos*1.5,
+  uTime*0.8)) * 0.45
+);
+
+float dist = length(
+  vWorldPos.xy - uMousePos.xy
+);
+float impulse = smoothstep(
+  2.5, 0.0, dist
+) * uMouseVel;
+
+newPos += normal * impulse * 0.6;`}
+                  </pre>
+                  <div className="mt-8 flex gap-3">
+                    <div className="h-[1px] flex-1 bg-gradient-to-r from-[#7928ca] to-transparent self-center" />
+                    <span className="text-[10px] font-mono text-white/30 tracking-widest">LUSION SIGNATURE</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Phase 3 (50-75%): Ribbon particles explode outwards */}
+        <ProjectCardShowcase scrollProgress={scrollProgress} />
+
+        {/* Phase 4 (75-100%): Mesh condenses into glowing ring that anchors at bottom near footer */}
+        <section className="relative min-h-[110vh] flex flex-col justify-end px-6 md:px-10 lg:px-14 pb-24 overflow-hidden">
+          <div className="max-w-[1600px] mx-auto w-full">
+            <div className="flex flex-col lg:flex-row justify-between gap-12 items-end">
+              <div>
+                <div className="text-[10px] font-mono tracking-[0.2em] text-white/30 mb-6">004 / PHASE 04 — CONDENSE • 75%–100%</div>
+                <h2 className="text-[13vw] md:text-[9vw] lg:text-[7vw] font-black leading-[0.82] tracking-[-0.06em]">
+                  GLOWING<br />
+                  RING<br />
+                  <span className="text-white/15">ANCHOR</span>
+                </h2>
+              </div>
+              <div className="lg:max-w-[420px] pb-4">
+                <p className="text-[15px] leading-[1.6] text-white/60">
+                  The mesh condenses into a luminous torus, anchoring at the footer. Bloom intensity 1.2, luminance threshold 0.85. Micro film grain 0.04 eliminates 8-bit banding on dark gradients.
+                </p>
+                <div className="mt-8 flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-bold">↓</div>
+                  <div className="text-[11px] font-mono tracking-[0.15em] text-white/40">SCROLL END / FOOTER RING</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Glowing ring visual */}
+            <div ref={footerRingRef} className="mt-24 md:mt-32 relative flex justify-center">
+              <div className="relative w-[280px] h-[280px] md:w-[420px] md:h-[420px]">
+                <div className="absolute inset-0 rounded-full border border-white/10" />
+                <div className="absolute inset-[12%] rounded-full border border-[#7928ca]/30 blur-[0.5px]" />
+                <div className="absolute inset-[22%] rounded-full border border-[#00f0ff]/20" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#7928ca]/20 via-transparent to-[#00f0ff]/20 blur-[30px]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-[2px] bg-white rounded-full shadow-[0_0_20px_4px_white]" />
+                <div className="absolute inset-0 rounded-full animate-[spin_12s_linear_infinite]" style={{
+                  background: `conic-gradient(from 0deg, transparent, #7928ca, #00f0ff, transparent)`,
+                  mask: 'radial-gradient(circle, transparent 68%, black 70%)',
+                  WebkitMask: 'radial-gradient(circle, transparent 68%, black 70%)',
+                }} />
+              </div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+                <div className="text-[10px] font-mono tracking-[0.3em] text-white/20">LUSION</div>
+                <div className="text-[22px] font-black tracking-[-0.03em] text-white mt-1">©2026</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <footer className="mt-32 md:mt-40 border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-white/30">
+            <div className="flex flex-wrap gap-6">
+              <span>PRINCIPAL CREATIVE TECHNOLOGIST</span>
+              <span className="hidden md:block">•</span>
+              <span>WEBGL • GLSL • R3F • GSAP • LENIS</span>
+            </div>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white transition-colors">GITHUB ZIP ↓</a>
+              <a href="#" className="hover:text-white transition-colors">LUSION.CO →</a>
+            </div>
+          </footer>
+        </section>
       </div>
 
-      {/* Bottom Floating Quick Action Badges */}
-
-      {/* Bottom Floating Quick Action Badges */}
-      {!location.pathname.startsWith('/enter') && 
-       !location.pathname.startsWith('/reading-tests') && 
-       !location.pathname.startsWith('/listening-tests') && 
-       !location.pathname.startsWith('/ielts-writing') && (
-        <div className="fab-button-container fixed bottom-6 right-6 z-50 flex items-center gap-3 transition-all duration-300">
-          <a
-            href="tel:+998910829979"
-            className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full flex items-center justify-center shadow-2xl shadow-red-600/40 transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer border-2 border-white/30 dark:border-slate-800 group"
-            title="Qo'ng'iroq qilish">
-            
-            <div className="absolute inset-0 rounded-full border border-red-500 animate-ping opacity-75" />
-
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 relative z-10 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-          </a>
-        </div>
-      )}
+      {/* Background grain + vignette */}
+      <div className="pointer-events-none fixed inset-0 z-[1] opacity-[0.025] mix-blend-soft-light" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+      }} />
     </div>
-  );
+  )
 }

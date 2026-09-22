@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@layer base {
+  html { background: #050508; scroll-behavior: auto; overscroll-behavior: none; }
+  body { background: #050508; color: #fff; overscroll-behavior: none; -webkit-font-smoothing: antialiased; }
+  ::selection { background: #7928ca; color: white; }
+}
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; -ms-overflow-style: none; }
