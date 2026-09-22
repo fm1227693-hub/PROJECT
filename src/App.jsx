@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from 'react'
 
 import Navbar from './components/dom/Navbar'
 import BroughtToLifeSection from './components/dom/BroughtToLifeSection'
-import PortfolioGrid from './components/dom/PortfolioGrid'
+import ParallaxProjectGrid from './components/portfolio/ParallaxProjectGrid'
 import Preloader from './components/preloader/Preloader'
 import LiquidCursor from './components/ui/LiquidCursor'
 import BlueRibbon2D from './components/dom/BlueRibbon2D'
@@ -110,7 +110,7 @@ export default function App() {
 
       <div className="relative z-10">
         <BroughtToLifeSection dockProgress={dockProgress} />
-        <PortfolioGrid />
+        <ParallaxProjectGrid />
 
         <footer className="relative z-10 bg-transparent border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
           <div>©2026 LUSION® — 2D YENGIL • NO LAG • BLUE RIBBON #2563eb</div>
