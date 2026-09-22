@@ -1,8 +1,7 @@
 /**
  * CLEAN LUSION — ElasticShowreel
- * Hero showreel only — no internal blue ribbon (global ribbon handles whole site)
- * PlaneGeometry(16,7,80,40), vertex warp, dynamic canvas texture
- * Scroll-only orderly: no time-based idle sin movement, only scroll/drag/mouse
+ * No PLAY REEL text, hover animations on kulrang narsa (showreel plane)
+ * When hovering over showreel, wave, scale, and texture animate
  */
 
 import { useRef, useMemo, useEffect } from 'react'
@@ -31,6 +30,7 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
   const scrollVelocity = useRef(0)
   const lastScroll = useRef(0)
   const isHoveringRef = useRef(false)
+  const hoverProgress = useRef(0)
   const isScrollingRef = useRef(false)
   const scrollTimeoutRef = useRef<number | null>(null)
 
@@ -45,11 +45,11 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
     canvas.height = 720
     const ctx = canvas.getContext('2d')!
 
-    const draw = (time: number) => {
+    const draw = (time: number, hover = 0) => {
       ctx.fillStyle = '#f6f6f8'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       const t = time * 0.0002
-      const cycle = Math.floor((time * 0.00018) % 5)
+      const cycle = Math.floor((time * 0.00018 + hover * 0.8) % 5)
       const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
       if (cycle === 0) {
         grad.addColorStop(0, '#ffffff')
@@ -75,21 +75,33 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
       ctx.fillStyle = grad
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      ctx.globalAlpha = 0.07
+      // Hover increases blob size and movement
+      const blobBoost = 1 + hover * 1.8
+      ctx.globalAlpha = 0.07 + hover * 0.12
       for (let i = 0; i < 8; i++) {
-        const x = (Math.sin(t * 0.5 + i) * 0.5 + 0.5) * canvas.width
-        const y = (Math.cos(t * 0.35 + i * 1.1) * 0.5 + 0.5) * canvas.height
-        const r = 40 + Math.sin(t + i * 0.6) * 20
+        const x = (Math.sin(t * (0.5 + hover * 0.6) + i) * 0.5 + 0.5) * canvas.width
+        const y = (Math.cos(t * (0.35 + hover * 0.4) + i * 1.1) * 0.5 + 0.5) * canvas.height
+        const r = (40 + Math.sin(t + i * 0.6) * 20) * blobBoost
         ctx.fillStyle = i % 2 === 0 ? '#2563eb' : '#0b0b0d'
         ctx.beginPath()
         ctx.arc(x, y, r, 0, Math.PI * 2)
         ctx.fill()
       }
       ctx.globalAlpha = 1
+
+      // Hover adds subtle vignette
+      if (hover > 0.01) {
+        const vg = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width * 0.7)
+        vg.addColorStop(0, `rgba(37,99,235,${0.06 * hover})`)
+        vg.addColorStop(1, 'rgba(37,99,235,0)')
+        ctx.fillStyle = vg
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
+
       ctx.fillStyle = 'rgba(0,0,0,0.018)'
       for (let y = 0; y < canvas.height; y += 4) ctx.fillRect(0, y, canvas.width, 1)
     }
-    draw(0)
+    draw(0, 0)
     const canvasTex = new THREE.CanvasTexture(canvas)
     canvasTex.wrapS = THREE.ClampToEdgeWrapping
     canvasTex.wrapT = THREE.ClampToEdgeWrapping
@@ -115,6 +127,7 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
         uDragOffset: { value: 0 },
         uFoldProgress: { value: 0 },
         uWaveIntensity: { value: 0.18 },
+        uHoverProgress: { value: 0 },
         uResolution: { value: new THREE.Vector2(1920, 1080) },
         uTexture: { value: videoTexture },
         uTextureEnabled: { value: videoTexture ? 1 : 0 },
@@ -169,7 +182,7 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
       if (hovering !== isHoveringRef.current) {
         isHoveringRef.current = hovering
         onHoverChange?.(hovering)
-        document.body.style.cursor = hovering ? 'grab' : ''
+        document.body.style.cursor = hovering ? 'pointer' : ''
       }
     }
     window.addEventListener('mousemove', onPointerMove, { passive: true })
@@ -221,28 +234,33 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
     lastPointer.current.x = pointer.x
     lastPointer.current.y = pointer.y
 
+    // Hover progress lerp
+    const targetHover = isHoveringRef.current ? 1 : 0
+    hoverProgress.current = THREE.MathUtils.lerp(hoverProgress.current, targetHover, 0.08)
+
     material.uniforms.uTime.value = time
     material.uniforms.uMouseTarget.value.copy(mouseTarget.current)
-    material.uniforms.uMouseDeform.value = mouseDeform.current
-    material.uniforms.uMouseVelocity.value = mouseVelocity.current
+    material.uniforms.uMouseDeform.value = mouseDeform.current + hoverProgress.current * 0.6
+    material.uniforms.uMouseVelocity.value = mouseVelocity.current + hoverProgress.current * 0.8
     material.uniforms.uScrollVelocity.value = scrollVelocity.current
     material.uniforms.uScrollProgress.value = scrollProgress
     material.uniforms.uDragOffset.value = dragOffset.current
+    material.uniforms.uHoverProgress.value = hoverProgress.current
     material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight)
 
-    // Scroll-only wave: no idle sin, only scroll + mouse + drag
+    // Hover boosts wave intensity + scale
     const baseWave = 0.12
     const scrollWave = isScrollingRef.current ? scrollVelocity.current * 0.6 : 0
-    const targetWave = baseWave + scrollWave + mouseVelocity.current * 0.05 + Math.abs(dragOffset.current) * 0.02
+    const hoverWave = hoverProgress.current * 0.55
+    const targetWave = baseWave + scrollWave + hoverWave + mouseVelocity.current * 0.05 + Math.abs(dragOffset.current) * 0.02
     material.uniforms.uWaveIntensity.value = THREE.MathUtils.lerp(material.uniforms.uWaveIntensity.value, targetWave, 0.07)
 
     const foldProgress = THREE.MathUtils.smoothstep(scrollProgress, 0.12, 0.58)
     material.uniforms.uFoldProgress.value = THREE.MathUtils.lerp(material.uniforms.uFoldProgress.value, foldProgress, 0.05)
 
     if (videoTexture && (videoTexture as any).draw) {
-      // Only update texture when scrolling or mouse moving for performance + orderly feel
-      if (isScrollingRef.current || mouseVelocity.current > 0.01) {
-        ;(videoTexture as any).draw(performance.now())
+      if (isScrollingRef.current || mouseVelocity.current > 0.01 || hoverProgress.current > 0.01) {
+        ;(videoTexture as any).draw(performance.now(), hoverProgress.current)
         videoTexture.needsUpdate = true
       }
     }
@@ -253,14 +271,19 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
     }
 
     if (meshRef.current) {
-      // No time-based sine — only fold progress + drag
-      meshRef.current.position.y = THREE.MathUtils.lerp(meshRef.current.position.y, -foldProgress * 0.65, 0.045)
-      meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, foldProgress * -0.18, 0.045)
+      const hoverScale = 1 + hoverProgress.current * 0.035
+      const targetScale = hoverScale
+      meshRef.current.scale.x = THREE.MathUtils.lerp(meshRef.current.scale.x, targetScale, 0.08)
+      meshRef.current.scale.y = THREE.MathUtils.lerp(meshRef.current.scale.y, targetScale, 0.08)
+
+      meshRef.current.position.y = THREE.MathUtils.lerp(meshRef.current.position.y, -foldProgress * 0.65 + hoverProgress.current * 0.08, 0.045)
+      meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, foldProgress * -0.18 + hoverProgress.current * -0.06, 0.045)
       meshRef.current.rotation.y = THREE.MathUtils.lerp(
         meshRef.current.rotation.y,
-        smoothMouse.current.x * 0.025 + dragOffset.current * 0.014,
+        smoothMouse.current.x * (0.025 + hoverProgress.current * 0.02) + dragOffset.current * 0.014,
         0.05
       )
+      meshRef.current.rotation.z = THREE.MathUtils.lerp(meshRef.current.rotation.z, hoverProgress.current * 0.02 * Math.sin(time * 0.6), 0.05)
     }
   })
 
@@ -275,16 +298,22 @@ export default function ElasticShowreel({ scrollProgress = 0, onHoverChange }: E
   return (
     <group>
       <ambientLight intensity={0.95} color="#ffffff" />
-      <directionalLight position={[5, 5, 5]} intensity={1} color="#ffffff" />
+      <directionalLight position={[5, 5, 5]} intensity={1 + hoverProgress.current * 0.3} color="#ffffff" />
       <directionalLight position={[-3, 2, 3]} intensity={0.45} color="#f6f6f8" />
-      <pointLight position={[0, 3, 4]} intensity={0.6} color="#ffffff" distance={14} />
+      <pointLight position={[0, 3, 4]} intensity={0.6 + hoverProgress.current * 0.5} color="#ffffff" distance={14} />
 
       <mesh ref={meshRef} geometry={geometry} position={[0, 0, 0]}>
         <primitive object={material} attach="material" />
       </mesh>
 
-      <mesh position={[0, -0.1, -0.06]}>
+      {/* Hover glow shadow */}
+      <mesh position={[0, -0.1 - hoverProgress.current * 0.05, -0.06]} scale={[1 + hoverProgress.current * 0.04, 1 + hoverProgress.current * 0.04, 1]}>
         <planeGeometry args={[16.6, 7.1, 1, 1]} />
+        <meshBasicMaterial color="#2563eb" transparent opacity={0.025 + hoverProgress.current * 0.04} />
+      </mesh>
+
+      <mesh position={[0, -0.12, -0.08]}>
+        <planeGeometry args={[16.8, 7.2, 1, 1]} />
         <meshBasicMaterial color="#000000" transparent opacity={0.025} />
       </mesh>
     </group>

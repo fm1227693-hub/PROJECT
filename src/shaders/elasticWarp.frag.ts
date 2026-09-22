@@ -15,6 +15,7 @@ uniform float uTextureEnabled;
 uniform float uFoldProgress;
 uniform float uScrollVelocity;
 uniform float uRoundedRadius;
+uniform float uHoverProgress;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -22,6 +23,7 @@ varying vec3 vWorldPosition;
 varying float vWave;
 varying float vMouseInfluence;
 varying float vFold;
+varying float vHover;
 
 // Rounded rectangle SDF for showcase frame 16:7
 float roundedBoxSDF(vec2 centerPos, vec2 size, float radius){
@@ -92,7 +94,7 @@ void main(){
 
   vec3 texColor;
   if(uTextureEnabled > 0.5){
-    texColor = chromaticAberration(uTexture, uv, 0.65 + vMouseInfluence * 0.9 + uScrollVelocity * 0.3, vWave);
+    texColor = chromaticAberration(uTexture, uv, 0.65 + vMouseInfluence * 0.9 + uScrollVelocity * 0.3 + vHover * 0.5, vWave + vHover * 0.2);
   } else {
     texColor = showreelTexture(uv, uTime);
   }
@@ -101,12 +103,18 @@ void main(){
   vec3 N = normalize(vNormal);
   vec3 V = normalize(cameraPosition - vWorldPosition);
   float NdotV = max(dot(N, V), 0.0);
-  float fresnel = pow(1.0 - NdotV, 2.0) * 0.1;
+  float fresnel = pow(1.0 - NdotV, 2.0) * (0.1 + vHover * 0.15);
 
-  // Wave shading
+  // Wave shading + hover glow
   texColor += vWave * 0.22;
   texColor += vMouseInfluence * 0.12;
+  texColor += vHover * 0.18 * vec3(0.22, 0.35, 0.95); // blue glow on hover
   texColor -= vFold * 0.05 * (1.0 - uv.y);
+
+  // Hover brightens center
+  float hoverCenter = 1.0 - length((uv - 0.5) * 2.0) * 0.5;
+  hoverCenter = clamp(hoverCenter, 0.0, 1.0);
+  texColor += vHover * hoverCenter * 0.12;
 
   vec3 color = texColor + fresnel * vec3(1.0);
 
