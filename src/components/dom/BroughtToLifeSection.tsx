@@ -122,7 +122,7 @@ export default function BroughtToLifeSection({ dockProgress = 0 }: BroughtToLife
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 bg-[#f6f6f8] px-6 md:px-8 lg:px-10 py-20 md:py-28 lg:py-32 min-h-[92vh] flex flex-col justify-center"
+      className="relative z-10 bg-transparent px-6 md:px-8 lg:px-10 py-20 md:py-28 lg:py-32 min-h-[92vh] flex flex-col justify-center"
     >
       <div className="max-w-[1600px] mx-auto w-full">
         {/* Top grid: Left heading, Right paragraph + pill */}

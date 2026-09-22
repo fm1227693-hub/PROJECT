@@ -173,7 +173,7 @@ export default function PortfolioGrid() {
   }
 
   return (
-    <section ref={sectionRef} className="relative z-10 bg-[#f6f6f8] px-6 md:px-8 lg:px-10 py-20 md:py-28">
+    <section ref={sectionRef} className="relative z-10 bg-transparent px-6 md:px-8 lg:px-10 py-20 md:py-28">
       <div className="max-w-[1600px] mx-auto">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 md:gap-16 items-end mb-16 md:mb-24">
           <div ref={titleRef}>

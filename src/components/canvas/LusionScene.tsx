@@ -26,23 +26,27 @@ function BlueSplineTube({ scrollProgress = 0, scrollVelocity = 0 }: { scrollProg
   const targetPos = useRef({ x: 0, y: 0 })
   const currentPos = useRef({ x: 0, y: 0 })
 
-  // 8 control points — winds seamlessly through 3D space, wrapping around DOM and behind showreel
+  // 12 control points — butun sayt bo'ylab hamma yerda ko'rinadi, 48 height vertical span
   const { curve, tubeGeo } = useMemo(() => {
     const points: THREE.Vector3[] = []
-    // Hero centered, dips behind showreel, loops over viewport edge, descends to project section
+    // Hero centered, dips behind showreel, loops over viewport edge, descends through whole site to footer
     const controls = [
+      { x: -14, y: 18, z: -2.5 },
+      { x: -9, y: 12, z: 1.8 },
       { x: -12, y: 6.5, z: -2.0 },
       { x: -6.5, y: 3.2, z: 1.5 },
       { x: -1.2, y: 1.0, z: -1.2 }, // behind showreel card
       { x: 3.5, y: -0.5, z: 2.2 }, // in front
       { x: 7.8, y: -1.8, z: -0.8 },
       { x: 10.5, y: -4.5, z: 1.0 }, // over viewport edge
-      { x: 4.2, y: -8.5, z: -1.5 }, // descending toward project section
-      { x: -3.5, y: -12.0, z: 0.5 },
+      { x: 4.2, y: -10, z: -1.5 }, // descending toward project section
+      { x: -3.5, y: -18, z: 0.5 },
+      { x: -8, y: -26, z: -1.2 },
+      { x: 2, y: -34, z: 1.0 }, // footer area
     ]
     controls.forEach((c) => points.push(new THREE.Vector3(c.x, c.y, c.z)))
-    const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.58)
-    const tubeGeo = new THREE.TubeGeometry(curve, 220, 0.32, 20, false)
+    const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.6)
+    const tubeGeo = new THREE.TubeGeometry(curve, 320, 0.34, 20, false)
     return { curve, tubeGeo }
   }, [])
 
@@ -58,11 +62,11 @@ function BlueSplineTube({ scrollProgress = 0, scrollVelocity = 0 }: { scrollProg
     const onScroll = (e: CustomEvent) => {
       const current = e.detail.scroll || 0
       const delta = current - lastScroll.current
-      velocityRef.current = delta
+      velocityRef.current = delta * 0.18
       lastScroll.current = current
-      // Scroll down -> tube shifts down slightly
-      targetPos.current.y = -scrollProgress * 3.5 + delta * 0.8
-      targetPos.current.x = delta * 0.12
+      // Scroll down -> pastga, up -> tepaga, butun sayt bo'ylab
+      targetPos.current.y = -scrollProgress * 18 + delta * 1.2
+      targetPos.current.x = delta * 0.18
     }
     window.addEventListener('mousemove', onMouseMove, { passive: true })
     window.addEventListener('lusion-scroll' as any, onScroll as any)
@@ -84,18 +88,19 @@ function BlueSplineTube({ scrollProgress = 0, scrollVelocity = 0 }: { scrollProg
     const points = curveRef.current.points
     for (let i = 0; i < points.length; i++) {
       const t = i / (points.length - 1)
-      // Base positions from initial controls with organic undulation
-      const baseX = THREE.MathUtils.lerp(-12 + t * 15.5, Math.sin(t * Math.PI * 2.2) * 2, 0.15) + (i < 2 ? -12 + t * 5.5 : i > 5 ? 4.2 + (t - 0.7) * -22 : -1.2 + (t - 0.25) * 12)
-      // Reconstruct base more accurately from original controls with lerp
       const orig = [
+        { x: -14, y: 18, z: -2.5 },
+        { x: -9, y: 12, z: 1.8 },
         { x: -12, y: 6.5, z: -2.0 },
         { x: -6.5, y: 3.2, z: 1.5 },
         { x: -1.2, y: 1.0, z: -1.2 },
         { x: 3.5, y: -0.5, z: 2.2 },
         { x: 7.8, y: -1.8, z: -0.8 },
         { x: 10.5, y: -4.5, z: 1.0 },
-        { x: 4.2, y: -8.5, z: -1.5 },
-        { x: -3.5, y: -12.0, z: 0.5 },
+        { x: 4.2, y: -10, z: -1.5 },
+        { x: -3.5, y: -18, z: 0.5 },
+        { x: -8, y: -26, z: -1.2 },
+        { x: 2, y: -34, z: 1.0 },
       ]
       const o = orig[i] || orig[0]
 
@@ -112,8 +117,8 @@ function BlueSplineTube({ scrollProgress = 0, scrollVelocity = 0 }: { scrollProg
       points[i].z = o.z + mouseInfluenceZ + Math.sin(time * 0.42 + t * 2.5) * 0.25 + velocityRef.current * 0.15 * Math.sin(t * Math.PI * 2)
     }
 
-    const radius = 0.32 + Math.abs(velocityRef.current) * 0.06 + Math.abs(smoothMouse.current.x) * 0.04
-    const newTube = new THREE.TubeGeometry(curveRef.current, 220, radius, 20, false)
+    const radius = 0.34 + Math.abs(velocityRef.current) * 0.08 + Math.abs(smoothMouse.current.x) * 0.05
+    const newTube = new THREE.TubeGeometry(curveRef.current, 320, radius, 20, false)
     tubeRef.current.geometry.dispose()
     tubeRef.current.geometry = newTube
 
