@@ -21,27 +21,74 @@ function BlueOrganicRibbon({ scrollProgress = 0 }: { scrollProgress?: number }) 
   const tubeRef = useRef<THREE.Mesh>(null)
   const curveRef = useRef<THREE.CatmullRomCurve3 | null>(null)
 
+  // Scroll-linked movement: pastga qilinsa pastga, tepaga qilinsa tepaga
+  const scrollVelocitySigned = useRef(0)
+  const scrollDirection = useRef(1)
+  const lastScroll = useRef(0)
+  const targetY = useRef(0)
+  const currentY = useRef(0)
+  const targetX = useRef(0)
+  const currentX = useRef(0)
+
   const { curve, tubeGeo } = useMemo(() => {
     const points: THREE.Vector3[] = []
-    // Thick smooth continuous 3D organic extruded spline that curves and winds smoothly behind and around showcase window
     for (let i = 0; i < 80; i++) {
       const t = i / 79
-      // Graceful arch in 3D depth, dipping in and out behind showreel card
       const x = (t - 0.5) * 26
       const y = Math.sin(t * Math.PI * 2.2) * 1.6 + Math.cos(t * Math.PI * 1.3) * 0.9 + Math.sin(t * Math.PI * 0.7) * 0.4
       const z = Math.cos(t * Math.PI * 1.6) * 2.2 - 1.2 + Math.sin(t * Math.PI * 2.8) * 0.6 + Math.cos(t * Math.PI * 0.9) * 0.3
       points.push(new THREE.Vector3(x, y, z))
     }
     const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.55)
-    const tubeGeo = new THREE.TubeGeometry(curve, 160, 0.22, 16, false) // thick tube
+    const tubeGeo = new THREE.TubeGeometry(curve, 160, 0.24, 16, false)
     return { curve, tubeGeo }
   }, [])
 
   curveRef.current = curve
 
+  // Listen to scroll for direction-aware movement
+  useEffect(() => {
+    const onScroll = (e: CustomEvent) => {
+      const current = e.detail.scroll || 0
+      const velocity = e.detail.velocity || 0
+      const direction = e.detail.direction || 1
+      const delta = current - lastScroll.current
+
+      // Signed velocity: + = pastga (down), - = tepaga (up)
+      scrollVelocitySigned.current = THREE.MathUtils.lerp(scrollVelocitySigned.current, delta * 0.12, 0.18)
+      scrollDirection.current = direction
+      lastScroll.current = current
+
+      // Target Y: scroll down → move down (more negative), scroll up → move up (more positive)
+      // Base on scrollProgress + velocity kick
+      const baseY = -scrollProgress * 2.2
+      const velocityKick = scrollVelocitySigned.current * 2.8 // pastga + = pastga, tepaga - = tepaga
+      targetY.current = baseY + velocityKick
+
+      // Also subtle X shift based on velocity for organic feel
+      targetX.current = velocity * 0.015 * direction
+    }
+
+    window.addEventListener('lusion-scroll' as any, onScroll as any)
+    return () => window.removeEventListener('lusion-scroll' as any, onScroll as any)
+  }, [scrollProgress])
+
   useFrame((state) => {
     const time = state.clock.elapsedTime
     if (!tubeRef.current || !curveRef.current) return
+
+    // Smooth lerp for scroll-linked movement — viscous
+    currentY.current = THREE.MathUtils.lerp(currentY.current, targetY.current, 0.045)
+    currentX.current = THREE.MathUtils.lerp(currentX.current, targetX.current, 0.05)
+
+    // Decay signed velocity
+    scrollVelocitySigned.current *= 0.92
+    if (Math.abs(scrollVelocitySigned.current) < 0.001) scrollVelocitySigned.current = 0
+    // Return target to base when idle
+    if (Math.abs(scrollVelocitySigned.current) < 0.01) {
+      targetY.current = THREE.MathUtils.lerp(targetY.current, -scrollProgress * 2.2, 0.03)
+      targetX.current = THREE.MathUtils.lerp(targetX.current, 0, 0.04)
+    }
 
     const points = curveRef.current.points
     for (let i = 0; i < points.length; i++) {
@@ -51,18 +98,24 @@ function BlueOrganicRibbon({ scrollProgress = 0 }: { scrollProgress?: number }) 
       const baseZ = Math.cos(t * Math.PI * 1.6 + time * 0.28) * 2.2 - 1.2 + Math.sin(t * Math.PI * 2.8 + time * 0.42) * 0.6
 
       const scrollInfluence = scrollProgress * 0.9
-      points[i].x = baseX + Math.sin(time * 0.18 + t * 1.8) * 0.2 * scrollInfluence
-      points[i].y = baseY + Math.cos(time * 0.25 + t) * 0.25 * (1 + scrollInfluence * 0.5)
-      points[i].z = baseZ + Math.sin(time * 0.22 + t * 1.4) * 0.18
+      // Add scroll velocity to curve winding — pastga/tepage yurishi
+      const velocityOffsetY = scrollVelocitySigned.current * Math.sin(t * Math.PI) * 1.2
+      const velocityOffsetX = scrollVelocitySigned.current * 0.3 * Math.cos(t * Math.PI * 0.8)
+
+      points[i].x = baseX + Math.sin(time * 0.18 + t * 1.8) * 0.2 * scrollInfluence + velocityOffsetX
+      points[i].y = baseY + Math.cos(time * 0.25 + t) * 0.25 * (1 + scrollInfluence * 0.5) + velocityOffsetY
+      points[i].z = baseZ + Math.sin(time * 0.22 + t * 1.4) * 0.18 + scrollVelocitySigned.current * 0.15 * Math.sin(t * Math.PI * 2)
     }
 
-    const newTube = new THREE.TubeGeometry(curveRef.current, 160, 0.22 + Math.sin(time * 0.7) * 0.03, 16, false)
+    const newTube = new THREE.TubeGeometry(curveRef.current, 160, 0.24 + Math.sin(time * 0.7) * 0.03 + Math.abs(scrollVelocitySigned.current) * 0.04, 16, false)
     tubeRef.current.geometry.dispose()
     tubeRef.current.geometry = newTube
 
-    tubeRef.current.rotation.y = time * 0.04 + scrollProgress * 0.25
-    tubeRef.current.position.y = Math.sin(time * 0.18) * 0.12 - scrollProgress * 0.35
-    tubeRef.current.position.z = -0.9 + Math.sin(time * 0.15) * 0.08
+    // Main mesh movement — pastga qilinsa pastga, tepaga qilinsa tepaga
+    tubeRef.current.rotation.y = time * 0.04 + scrollProgress * 0.25 + currentX.current * 0.3
+    tubeRef.current.position.y = Math.sin(time * 0.18) * 0.12 + currentY.current
+    tubeRef.current.position.x = currentX.current * 0.8
+    tubeRef.current.position.z = -0.9 + Math.sin(time * 0.15) * 0.08 + scrollVelocitySigned.current * 0.1
   })
 
   useEffect(() => {
@@ -73,15 +126,14 @@ function BlueOrganicRibbon({ scrollProgress = 0 }: { scrollProgress?: number }) 
 
   return (
     <mesh ref={tubeRef} geometry={tubeGeo} position={[0, 0, -0.9]}>
-      {/* Glossy royal-blue tube #2563eb with subtle specular highlights per spec */}
       <meshPhysicalMaterial
         color="#2563eb"
         emissive="#1e40af"
-        emissiveIntensity={0.15}
-        roughness={0.22}
-        metalness={0.12}
-        clearcoat={0.8}
-        clearcoatRoughness={0.18}
+        emissiveIntensity={0.18}
+        roughness={0.2}
+        metalness={0.14}
+        clearcoat={0.9}
+        clearcoatRoughness={0.16}
         transmission={0.08}
         ior={1.4}
         transparent={false}
