@@ -1,31 +1,21 @@
-/**
- * LUSION CORE — Pointer Dynamics
- * Computes coordinates, raw velocity vector, acceleration, spring interpolation
- * For hydrodynamic surface tension + particle stream repulsion
- * Production-grade with inertia decay and RAF throttling
- */
-
 import { useEffect, useRef, useState, useCallback } from 'react'
 
 export interface PointerDynamics {
-  x: number // -1..1
-  y: number // -1..1
-  sx: number // 0..1 screen
-  sy: number // 0..1 screen
+  x: number
+  y: number
+  sx: number
+  sy: number
   clientX: number
   clientY: number
   vx: number
   vy: number
-  velocity: number // magnitude
-  speed: number // clamped 0..5 for shader
-  acceleration: number
+  velocity: number
+  speed: number
   isMoving: boolean
   isPressing: boolean
-  deltaX: number
-  deltaY: number
 }
 
-const initialState: PointerDynamics = {
+const initial: PointerDynamics = {
   x: 0,
   y: 0,
   sx: 0.5,
@@ -36,22 +26,19 @@ const initialState: PointerDynamics = {
   vy: 0,
   velocity: 0,
   speed: 0,
-  acceleration: 0,
   isMoving: false,
   isPressing: false,
-  deltaX: 0,
-  deltaY: 0,
 }
 
 export default function usePointerDynamics() {
-  const stateRef = useRef<PointerDynamics>(initialState)
-  const [pointer, setPointer] = useState<PointerDynamics>(initialState)
+  const stateRef = useRef<PointerDynamics>(initial)
+  const [pointer, setPointer] = useState<PointerDynamics>(initial)
   const lastRef = useRef({ x: 0, y: 0, vx: 0, vy: 0, time: performance.now() })
   const rafRef = useRef<number | null>(null)
   const lastMoveRef = useRef(performance.now())
   const pressingRef = useRef(false)
 
-  const updateState = useCallback(() => {
+  const update = useCallback(() => {
     if (rafRef.current) return
     rafRef.current = requestAnimationFrame(() => {
       rafRef.current = null
@@ -74,22 +61,15 @@ export default function usePointerDynamics() {
 
       const now = performance.now()
       const dt = Math.max((now - lastRef.current.time) / 1000, 0.001)
-
       const x = (clientX / window.innerWidth) * 2 - 1
       const y = -(clientY / window.innerHeight) * 2 + 1
       const sx = clientX / window.innerWidth
       const sy = clientY / window.innerHeight
-
       const dx = x - lastRef.current.x
       const dy = y - lastRef.current.y
-
       const vx = dx / dt
       const vy = dy / dt
       const velocity = Math.sqrt(vx * vx + vy * vy)
-
-      const ax = (vx - lastRef.current.vx) / dt
-      const ay = (vy - lastRef.current.vy) / dt
-      const acceleration = Math.sqrt(ax * ax + ay * ay)
 
       stateRef.current = {
         x,
@@ -102,58 +82,39 @@ export default function usePointerDynamics() {
         vy,
         velocity,
         speed: Math.min(velocity * 0.08, 5),
-        acceleration,
         isMoving: true,
         isPressing: pressingRef.current,
-        deltaX: dx,
-        deltaY: dy,
       }
 
       lastRef.current = { x, y, vx, vy, time: now }
       lastMoveRef.current = now
-
-      updateState()
+      update()
     }
 
     const onDown = () => {
       pressingRef.current = true
       stateRef.current.isPressing = true
-      updateState()
-      window.dispatchEvent(new CustomEvent('lusion-pointer-down', { detail: stateRef.current }))
+      update()
     }
-
     const onUp = () => {
       pressingRef.current = false
       stateRef.current.isPressing = false
-      updateState()
-      window.dispatchEvent(new CustomEvent('lusion-pointer-up', { detail: stateRef.current }))
+      update()
     }
 
-    const onLeave = () => {
-      stateRef.current.isMoving = false
-      updateState()
-    }
-
-    // Inertia decay when stopped — damped harmonic spring back
-    const inertiaInterval = setInterval(() => {
+    const inertia = setInterval(() => {
       const now = performance.now()
-      const idle = now - lastMoveRef.current
-      if (idle > 80) {
-        // Spring interpolation values: lerp velocity to zero
+      if (now - lastMoveRef.current > 80) {
         stateRef.current.vx *= 0.88
         stateRef.current.vy *= 0.88
         stateRef.current.velocity *= 0.88
         stateRef.current.speed *= 0.88
-        stateRef.current.acceleration *= 0.9
-
         if (stateRef.current.velocity < 0.005) {
+          stateRef.current.isMoving = false
           stateRef.current.velocity = 0
           stateRef.current.speed = 0
-          stateRef.current.vx = 0
-          stateRef.current.vy = 0
-          stateRef.current.isMoving = false
         }
-        updateState()
+        update()
       }
     }, 24)
 
@@ -163,7 +124,6 @@ export default function usePointerDynamics() {
     window.addEventListener('touchstart', onDown as any, { passive: true })
     window.addEventListener('mouseup', onUp)
     window.addEventListener('touchend', onUp as any)
-    window.addEventListener('mouseleave', onLeave)
 
     return () => {
       window.removeEventListener('mousemove', onMove)
@@ -172,11 +132,10 @@ export default function usePointerDynamics() {
       window.removeEventListener('touchstart', onDown as any)
       window.removeEventListener('mouseup', onUp)
       window.removeEventListener('touchend', onUp as any)
-      window.removeEventListener('mouseleave', onLeave)
-      clearInterval(inertiaInterval)
+      clearInterval(inertia)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [updateState])
+  }, [update])
 
   return pointer
 }
