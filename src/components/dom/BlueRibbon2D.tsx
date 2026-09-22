@@ -138,15 +138,15 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-0 w-full h-full pointer-events-none will-change-transform"
+      className="fixed inset-0 z-0 w-full h-[92vh] pointer-events-none will-change-transform"
       style={{ transform: 'translate3d(0,0,0)' }}
     >
       <svg
         width="100%"
-        height="200%"
-        viewBox="0 0 1440 2800"
+        height="100%"
+        viewBox="0 0 1440 900"
         preserveAspectRatio="none"
-        className="absolute inset-0 w-full h-[200%] -top-[20%]"
+        className="absolute inset-0 w-full h-full"
         style={{ overflow: 'visible' }}
       >
         <defs>
@@ -156,8 +156,8 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
             <stop offset="100%" stopColor="#3b82f6" />
           </linearGradient>
           <filter id="glowVisible" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="12" stdDeviation="16" floodColor="#2563eb" floodOpacity="0.38" />
-            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#1d4ed8" floodOpacity="0.45" />
+            <feDropShadow dx="0" dy="12" stdDeviation="16" floodColor="#2563eb" floodOpacity="0.32" />
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#1d4ed8" floodOpacity="0.38" />
           </filter>
         </defs>
 
@@ -168,10 +168,6 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
             C 200,280  500,120  700,320
               900,520  1100,280  1350,450
               1200,700  900,650  700,900
-              500,1150  800,1300  1100,1450
-              1300,1700  1000,1850  750,2100
-              500,2350  200,2200  -50,2500
-              100,2750  400,2600  700,2800
           "
           fill="none"
           stroke="url(#blueGrad)"
@@ -179,7 +175,7 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
           strokeLinecap="round"
           strokeLinejoin="round"
           filter="url(#glowVisible)"
-          opacity="0.45"
+          opacity="0.9"
           style={{ strokeDasharray: '1000', strokeDashoffset: '920' }}
         />
 
@@ -189,17 +185,14 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
             M -80,180
             C 250,350  550,200  750,380
               950,560  1050,350  1280,520
-              1150,760  880,710  680,960
-              480,1210  760,1360  1050,1510
-              1240,1750  960,1900  710,2150
-              460,2400  180,2260  -30,2560
+              1150,760  880,710  680,760
           "
           fill="none"
           stroke="#3b82f6"
           strokeWidth="12"
           strokeLinecap="round"
           strokeLinejoin="round"
-          opacity="0.2"
+          opacity="0.35"
           style={{ strokeDasharray: '1000', strokeDashoffset: '1000' }}
         />
 
@@ -209,14 +202,12 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
             M -100,105
             C 200,285  500,125  700,325
               900,525  1100,285  1350,455
-              1200,705  900,655  700,905
-              500,1160  800,1310  1100,1460
           "
           fill="none"
           stroke="white"
           strokeWidth="3"
           strokeLinecap="round"
-          opacity="0"
+          opacity="0.18"
           style={{ strokeDasharray: '500', strokeDashoffset: '500' }}
         />
       </svg>
@@ -225,14 +216,11 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
         <div
           className="w-full bg-[#2563eb]"
           style={{
-            height: `${scrollProgress * 100}%`,
+            height: `${Math.min(scrollProgress * 180, 100)}%`,
             boxShadow: '0 0 16px rgba(37,99,235,0.7)',
             transition: 'height 0.12s ease-out',
           }}
         />
-      </div>
-      <div className="absolute bottom-8 left-6 md:left-10 bg-white/90 backdrop-blur-[12px] border border-black/10 rounded-full px-4 py-2 text-[11px] font-mono tracking-[0.12em] text-black/60 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
-        BLUE: {Math.round((0.08 + scrollProgress * 0.88) * 100)}% • KO'RINIB TURIBDI • SEKIN CHO'ZILADI
       </div>
     </div>
   )
