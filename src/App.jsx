@@ -13,6 +13,8 @@ import LiquidCursor from './components/ui/LiquidCursor'
 import BlueRibbon2D from './components/dom/BlueRibbon2D'
 import Showreel2D from './components/dom/Showreel2D'
 
+import AstronautPortalExperience from './components/experiential/AstronautPortalExperience'
+
 import useLenisScroller from './hooks/useLenisScroller'
 import usePointerDynamics from './hooks/usePointerDynamics'
 
@@ -112,7 +114,12 @@ export default function App() {
         <BroughtToLifeSection dockProgress={dockProgress} />
         <ParallaxProjectGrid />
 
-        <footer className="relative z-10 bg-transparent border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
+        <AstronautPortalExperience
+          totalFrames={180}
+          videoSrc="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        />
+
+        <footer className="relative z-10 bg-[#f7f7f9] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
           <div>©2026 LUSION® — 2D YENGIL • NO LAG • BLUE RIBBON #2563eb</div>
           <div className="flex gap-6">
             <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black">
