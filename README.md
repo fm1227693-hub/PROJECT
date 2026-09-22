@@ -1,95 +1,79 @@
-# LUSION — Exact Homepage Recreation | Light Theme Elastic Showreel Ribbon
+# LUSION — Exact Homepage 1:1 | Light Theme Elastic Video Ribbon + Blue Organic Spline
 
-> **Role:** Principal Creative Technologist & Lead WebGL/Frontend Architect (Awwwards SOTY benchmark)
-> **CRITICAL:** No dark background with purple sphere. No technical params printed on screen. Exact real-world Lusion.co homepage — light theme, elastic showreel ribbon, editorial portfolio.
-
----
-
-## 1. Core Visuals & Layout (Exact Lusion Match)
-
-- **Background:** Clean studio white/light gray `#f9f9fb` to `#ffffff`
-- **Typography:** High-contrast black `#0b0b0d`, bold grotesque editorial, refined grid
-- **Header (Navbar):**
-  - Left: Bold sans-serif `LUSION` wordmark
-  - Right: Pill dark `LET'S TALK ●` + outline `MENU =`
-- **Centerpiece — Hero 3D Elastic Ribbon / Reel:**
-  - Full-width horizontal interactive 3D curved plane/ribbon center
-  - Surface acts as interactive canvas playing dynamic showreel texture feeds
-  - Elastic Mesh Distortion: vertices warp, stretch, bend like rubber/cloth based on mouse drag, velocity, scroll inertia
-  - Center Play Button: Magnetic floating pill `PLAY REEL ▶` snaps and floats on 3D surface
-  - Crosshair markers `+ + + +` under ribbon with proximity reaction
-- **Downstream:**
-  - `Featured Work` + huge statement `Bold Ideas, Brought to Life.`
-  - 2-column editorial project grid rounded corners smooth scale on hover
+> **Role:** Principal Creative Technologist & Lead WebGL Architect (Awwwards SOTY benchmark)
+> **Objective:** 1:1 reproduction of real Lusion.co homepage — light theme, interactive elastic video ribbon, smooth inertial scroll
+> **DO NOT:** dark background with purple sphere, debug text, low-end flat primitives — exact Lusion only
 
 ---
 
-## 2. Technical Specifications & Shaders (Elastic Ribbon)
+## 1. Sequence & Visual Architecture
 
-### Elastic Mesh Physics (Three.js / R3F)
-- Geometry: `PlaneGeometry(16, 6, 64, 32)` horizontal
-- Vertex Shader `ribbon.vert.glsl`:
+### 1.1 Cinematic Minimalist Preloader
+- Fullscreen black `#000000`
+- Bottom-left: Giant tabular numeric counter `000` → `100` mono spacing
+- Center: Minimalist progress bar filling smoothly
+- Exit: Forms iconic white `L` glyph before curtains-up wipe reveal to pristine off-white `#f7f7f9`
+
+### 1.2 Hero Section & Elastic 3D Canvas
+- Header: Left bold wordmark `LUSION`. Right `OUR APPROACH`, `LET'S TALK ●`, `MENU =`
+- Interactive Showreel Ribbon:
+  - Full-width horizontal curved plane/mesh organic viewport
+  - Continuously shifts showreel media textures inside
+  - Elastic Mesh Warping: Plane displaced Z/Y via GLSL sine-wave influenced by scroll velocity and cursor drag:
 ```glsl
-vec3 pos = position;
-float wave = sin(pos.x * 0.5 + uTime * 1.5) * cos(pos.y * 0.8 + uTime) * uWaveIntensity;
-float mouseDist = length(pos.xy - uMouseTarget);
-float mouseDeform = smoothstep(3.5, 0.0, mouseDist) * uMouseVelocity;
-pos.z += wave + (mouseDeform * sin(uTime * 4.0));
-gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+pos.z += sin(pos.x * 0.4 + uTime * 2.0) * uScrollVelocity * 0.35;
+pos.y += cos(pos.x * 0.3) * uMouseDeform;
 ```
-### Surface Material
-- Dynamic canvas texture showreel mapping + subtle chromatic aberration on warped edges
+  - Floating Center Button: High-contrast pill `PLAY REEL ▶` magnetically tethered to center
+  - Blue Organic 3D Ribbon: Dynamic spline/tube curling gracefully behind and through showreel ribbon
+  - Subtle alignment grid markers `+ + + +` underneath canvas
 
-### Smooth Motion
-- Lenis Scroll `lerp: 0.08` synced with GSAP ScrollTrigger to fold/unfold ribbon into curved arc on scroll
+### 1.3 Editorial Content & Portfolio Grid
+- Typography: Huge display `Bold Ideas, / Brought to Life` masked stagger reveal
+- Subtext: "We combine design, motion, 3D, and development..."
+- Case Studies Grid: 2-column rounded cards (Devin AI laptop, Tree canopy, Spaaace NFT, DDD 2024, Soda Experience, Elastic Lab) with hover-depth parallax
 
 ---
 
-## 3. Interactive DOM Overlay & Cursor
+## 2. Core Component Stack (Next.js + R3F + GSAP + Lenis)
 
-- Magnetic floating cursor morphs into fluid dot and expands on ribbon / project cards
-- Typography reveals via GSAP stagger with `overflow-hidden` masks
+**Delivered fully written — zero placeholders:**
 
----
-
-## 4. Output Files — Production-Ready TypeScript + Tailwind
-
-```
-src/components/canvas/HeroRibbon.tsx — Three.js canvas elastic plane, shader uniforms, raycasting, studio lighting
-src/shaders/ribbonShader.ts — Inlined GLSL vertex + fragment shaders wave & cursor drag distortion
-src/components/dom/Navbar.tsx & HeroSection.tsx — Accurate navbar, PLAY REEL floating pill, crosshair grids
-src/components/dom/ProjectGrid.tsx — 2-column featured case studies layout
-src/app/page.tsx — Root orchestrator Lenis smooth scroll + 3D ribbon canvas + DOM layers
-```
+1. `src/components/preloader/Preloader.tsx` — Full-screen counter, progress bar, L glyph transition timeline
+2. `src/components/canvas/ElasticShowreel.tsx` — Subdivided curved plane `PlaneGeometry(16,6,64,32)`, dynamic texture cycling, vertex warp shaders, looping blue spline `CatmullRomCurve3 + TubeGeometry`
+3. `src/shaders/elasticWarp.vert.ts` — GLSL vertex displacement handling scroll inertia and mouse hydrodynamic drag per spec formulas
+4. `src/components/dom/Navbar.tsx` & `src/components/dom/HeroContent.tsx` — Accurate headers, pill buttons, crosshair grid, editorial typography
+5. `src/components/dom/PortfolioGrid.tsx` — 2-column interactive work showcase cards with parallax
+6. `src/app/page.tsx` — Root coordinator connecting Lenis scroll physics, GSAP ScrollTrigger updates, Canvas uniforms
 
 Plus:
-- `src/hooks/useLenisScroller.ts` (lerp 0.08)
-- `src/hooks/usePointerDynamics.ts`
-- `src/components/ui/LiquidCursor.tsx`
-- `src/App.jsx`, `src/main.jsx`, `vite.config.js`, `index.html`
+- `src/hooks/useLenisScroller.ts` — Lenis `lerp:0.08` + GSAP sync
+- `src/hooks/usePointerDynamics.ts` — velocity, spring interpolation
+- `src/components/ui/LiquidCursor.tsx` — fluid dot expands on hover
+- `src/App.jsx`, `src/main.jsx`, `vite.config.js`, `index.html` — Vite production build
 
 ---
 
-## 5. Run
+## 3. Run
 
 ```bash
 npm install
-npm run dev     # http://localhost:5173
+npm run dev      # http://localhost:5173 — light #f7f7f9
 npm run build
-npm run preview # http://localhost:4173
+npm run preview  # http://localhost:4173
 ```
 
 ---
 
-## 6. GitHub ZIP Auto-Download
+## 4. GitHub ZIP Auto-Download
 
-Branch: `arena/01a0c8ff-project` — **completely new light theme project**
+Branch: `arena/01a0c8ff-project` — **exact Lusion.co light theme**
 
-**Auto-download ZIP:**
+**Auto-download ZIP (click → download):**
 ```
 https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip
 ```
-Direct:
+Direct codeload:
 ```
 https://codeload.github.com/fm1227693-hub/PROJECT/zip/refs/heads/arena/01a0c8ff-project
 ```
@@ -100,9 +84,9 @@ https://github.com/fm1227693-hub/PROJECT/tree/arena/01a0c8ff-project
 
 ---
 
-## 7. Quality
+## 5. Quality
 
-- No dark purple sphere, no code specs printed on screen — exact Lusion.co light editorial
-- Strict TypeScript, Tailwind, R3F, GSAP, Lenis
-- Bug-free, no placeholders, proper cleanup `geometry.dispose()`, `material.dispose()`, `ScrollTrigger.kill()`
-- Buttery 60/120 FPS, Plane(16,6,64,32) = 2048 vertices + 8000 particle fallback removed for light theme purity
+- Strict TypeScript, complete inline shaders, zero placeholders
+- Cleanup: `geometry.dispose()`, `material.dispose()`, `ScrollTrigger.kill()`, `lenis.destroy()`
+- 60/120 FPS, Plane 16x6 64x32 = 2048 verts + Tube 128 segs, dynamic canvas texture cycling
+- Exact real-world Lusion.co light theme, elastic video ribbon, blue organic spline, smooth inertial scroll

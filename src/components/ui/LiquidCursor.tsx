@@ -1,9 +1,3 @@
-/**
- * LUSION HOMEPAGE — LiquidCursor
- * Magnetic floating cursor morphs into fluid dot and expands on ribbon / project cards
- * Light theme compatible with mix-blend-mode difference + dark fallback
- */
-
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 
@@ -29,7 +23,6 @@ export default function LiquidCursor() {
     }
     const onDown = () => setIsClicking(true)
     const onUp = () => setIsClicking(false)
-
     const onOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       if (
@@ -98,13 +91,8 @@ export default function LiquidCursor() {
       className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:flex items-center justify-center mix-blend-difference"
       style={{ willChange: 'transform' }}
     >
-      {/* Fluid dot that expands into ring */}
-      <div
-        ref={ringRef}
-        className="absolute w-[36px] h-[36px] rounded-full border border-white flex items-center justify-center"
-        style={{ willChange: 'transform, opacity' }}
-      />
-      <div ref={dotRef} className="w-[5px] h-[5px] rounded-full bg-white" style={{ willChange: 'transform' }} />
+      <div ref={ringRef} className="absolute w-[36px] h-[36px] rounded-full border border-white flex items-center justify-center" />
+      <div ref={dotRef} className="w-[5px] h-[5px] rounded-full bg-white" />
     </div>
   )
 }

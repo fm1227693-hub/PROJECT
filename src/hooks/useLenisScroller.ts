@@ -1,8 +1,3 @@
-/**
- * LUSION HOMEPAGE — Lenis Scroll
- * lerp 0.08 synced with GSAP ScrollTrigger to fold/unfold ribbon into curved arc
- */
-
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Lenis from 'lenis'
 import gsap from 'gsap'

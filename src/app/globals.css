@@ -2,16 +2,15 @@
 
 @layer base {
   html {
-    background: #f9f9fb;
+    background: #f7f7f9;
     scroll-behavior: auto;
     overscroll-behavior: none;
   }
   body {
-    background: #f9f9fb;
+    background: #f7f7f9;
     color: #0b0b0d;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
   ::selection {
     background: #0b0b0d;
