@@ -43,8 +43,8 @@ export default function Page() {
       <LiquidCursor />
       <Navbar />
 
-      {/* GLOBAL BLUE RIBBON — butun sayt bo'ylab, no gray overlay */}
-      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
+      {/* BLUE RIBBON — faqat hero qismida */}
+      <div className="fixed inset-0 z-0 w-full h-[92vh] pointer-events-none">
         <Canvas
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           dpr={[1, 2]}
@@ -80,7 +80,7 @@ export default function Page() {
         <PortfolioGrid />
 
         <footer className="relative z-10 bg-[#f6f6f8] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
-          <div>©2026 LUSION® — BUTUN SAYT BO'YLAB KO'K LENTA</div>
+          <div>©2026 LUSION® — KO'K LENTA FAQAT HERO'DA</div>
           <div className="flex gap-6">
             <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black">
               GITHUB ZIP ↓

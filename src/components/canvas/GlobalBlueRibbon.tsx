@@ -26,13 +26,13 @@ export default function GlobalBlueRibbon({ scrollProgress = 0 }: GlobalBlueRibbo
   const isScrolling = useRef(false)
   const scrollTimeout = useRef<number | null>(null)
 
-  // Single ribbon — butun sayt bo'ylab, no second grayish layer
+  // Single ribbon — faqat hero qismida, qolgan joylarda ko'rinmasin
   const { curve, tubeGeo } = useMemo(() => {
     const points: THREE.Vector3[] = []
     for (let i = 0; i < 120; i++) {
       const t = i / 119
       const x = Math.sin(t * Math.PI * 3.2) * 7.5 + Math.cos(t * Math.PI * 1.6) * 3.5 + (t - 0.5) * 5
-      const y = (t - 0.5) * 48
+      const y = (t - 0.5) * 12 // hero only - smaller vertical span
       const z = Math.cos(t * Math.PI * 2) * 3.2 + Math.sin(t * Math.PI * 3.5) * 1 - 2.8
       points.push(new THREE.Vector3(x, y, z))
     }
@@ -53,10 +53,10 @@ export default function GlobalBlueRibbon({ scrollProgress = 0 }: GlobalBlueRibbo
       lastScroll.current = current
       isScrolling.current = true
 
-      const baseY = -scrollProgress * 16
-      const velocityKick = scrollVelocitySigned.current * 3.5
+      const baseY = -scrollProgress * 2.5 // hero only - subtle
+      const velocityKick = scrollVelocitySigned.current * 2.2
       targetY.current = baseY + velocityKick
-      targetX.current = velocity * 0.018
+      targetX.current = velocity * 0.012
 
       if (scrollTimeout.current) window.clearTimeout(scrollTimeout.current)
       scrollTimeout.current = window.setTimeout(() => {
@@ -79,7 +79,7 @@ export default function GlobalBlueRibbon({ scrollProgress = 0 }: GlobalBlueRibbo
       currentY.current = THREE.MathUtils.lerp(currentY.current, targetY.current, 0.08)
       currentX.current = THREE.MathUtils.lerp(currentX.current, targetX.current, 0.08)
     } else {
-      currentY.current = THREE.MathUtils.lerp(currentY.current, -scrollProgress * 16, 0.02)
+      currentY.current = THREE.MathUtils.lerp(currentY.current, -scrollProgress * 2.5, 0.02)
       currentX.current = THREE.MathUtils.lerp(currentX.current, 0, 0.03)
       scrollVelocitySigned.current *= 0.88
     }
@@ -88,7 +88,7 @@ export default function GlobalBlueRibbon({ scrollProgress = 0 }: GlobalBlueRibbo
     for (let i = 0; i < points.length; i++) {
       const t = i / (points.length - 1)
       const baseX = Math.sin(t * Math.PI * 3.2) * 7.5 + Math.cos(t * Math.PI * 1.6) * 3.5 + (t - 0.5) * 5
-      const baseY = (t - 0.5) * 48
+      const baseY = (t - 0.5) * 12
       const baseZ = Math.cos(t * Math.PI * 2) * 3.2 + Math.sin(t * Math.PI * 3.5) * 1 - 2.8
 
       const velocityOffsetY = scrollVelocitySigned.current * Math.sin(t * Math.PI * 1.1) * 1.4
