@@ -1,6 +1,6 @@
 /**
- * BLUE RIBBON 2D — 0 dan sekin cho'zilib boradi, cho'zilayotgani ko'rinib turadi
- * Boshidan taxlanmagan, scroll 0 da ko'rinmaydi, scroll qilganda sekin cho'ziladi
+ * BLUE RIBBON 2D — Ko'rinadigan, 0 dan sekin cho'zilib boradi
+ * Boshidan 8% ko'rinadi, keyin scroll bilan 0-95% gacha sekin cho'ziladi
  * Yengil, lag yo'q, butun sayt bo'ylab
  */
 
@@ -31,7 +31,7 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
       const l = pathRef.current.getTotalLength()
       setLength(l)
       pathRef.current.style.strokeDasharray = `${l}`
-      pathRef.current.style.strokeDashoffset = `${l}`
+      pathRef.current.style.strokeDashoffset = `${l * 0.92}` // boshidan 8% ko'rinadi
     }
     if (path2Ref.current) {
       const l2 = path2Ref.current.getTotalLength()
@@ -56,7 +56,7 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
       lastScroll.current = current
       isScrolling.current = true
 
-      const baseY = -scrollProgress * 40
+      const baseY = -scrollProgress * 30
       const kick = velocityRef.current * 1.8
       targetY.current = baseY + kick
       targetX.current = vel * 0.06
@@ -77,17 +77,17 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
 
   useEffect(() => {
     let raf = 0
-    let currentDraw = 0
+    let currentDraw = 0.08
     let currentDraw2 = 0
     let currentDrawH = 0
 
     const animate = () => {
       if (isScrolling.current) {
-        currentY.current += (targetY.current - currentY.current) * 0.05
-        currentX.current += (targetX.current - currentX.current) * 0.05
+        currentY.current += (targetY.current - currentY.current) * 0.06
+        currentX.current += (targetX.current - currentX.current) * 0.06
       } else {
-        currentY.current += (-scrollProgress * 40 - currentY.current) * 0.012
-        currentX.current += (0 - currentX.current) * 0.015
+        currentY.current += (-scrollProgress * 30 - currentY.current) * 0.015
+        currentX.current += (0 - currentX.current) * 0.02
         velocityRef.current *= 0.94
       }
 
@@ -95,43 +95,38 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
         containerRef.current.style.transform = `translate3d(${currentX.current}px, ${currentY.current}px, 0) rotate(${velocityRef.current * 0.015}deg)`
       }
 
-      // JUDA SEKIN cho'zilish — ko'rinib turishi uchun
-      // Oldin: 1.15 tez edi, endi 0.42 juda sekin, butun sahifa bo'ylab cho'ziladi
-      // 0% scroll da 0%, 100% scroll da 42% cho'zilgan — sekin ko'rinadi
-      // Yoki 0-100% scroll da 0-95% cho'zilish uchun 0.95 emas, 0.55 sekin
-      const targetDraw = Math.min(Math.max(scrollProgress * 0.42, 0), 0.92)
-      const targetDraw2 = Math.min(Math.max((scrollProgress - 0.12) * 0.36, 0), 0.78)
-      const targetDrawH = Math.min(Math.max((scrollProgress - 0.18) * 0.32, 0), 0.65)
+      // Ko'rinadigan + sekin — boshidan 8% ko'rinadi, keyin 95% gacha
+      const targetDraw = Math.min(0.08 + scrollProgress * 0.88, 0.96)
+      const targetDraw2 = Math.min(Math.max((scrollProgress - 0.06) * 0.78, 0), 0.88)
+      const targetDrawH = Math.min(Math.max((scrollProgress - 0.1) * 0.68, 0), 0.75)
 
-      // Lerp juda sekin — 0.025, cho'zilayotgani ko'rinib turadi
-      currentDraw += (targetDraw - currentDraw) * 0.025
-      currentDraw2 += (targetDraw2 - currentDraw2) * 0.022
-      currentDrawH += (targetDrawH - currentDrawH) * 0.02
+      currentDraw += (targetDraw - currentDraw) * 0.06
+      currentDraw2 += (targetDraw2 - currentDraw2) * 0.055
+      currentDrawH += (targetDrawH - currentDrawH) * 0.05
 
       if (pathRef.current && length > 0) {
         const offset = length * (1 - currentDraw)
         pathRef.current.style.strokeDashoffset = `${offset}`
 
-        const baseWidth = 22
-        const extra = Math.abs(velocityRef.current) * 0.18 + currentDraw * 0.8
+        const baseWidth = 26
+        const extra = Math.abs(velocityRef.current) * 0.22 + currentDraw * 1.5
         pathRef.current.setAttribute('stroke-width', `${baseWidth + extra}`)
-        pathRef.current.style.opacity = `${0.12 + currentDraw * 0.88}`
+        pathRef.current.style.opacity = `${0.45 + currentDraw * 0.55}`
 
-        // Uchida glow nuqta — cho'zilayotgani ko'rinadi
-        const glowIntensity = isScrolling.current ? 0.35 : 0.22
-        pathRef.current.style.filter = `drop-shadow(0 0 ${8 + currentDraw * 6}px rgba(37,99,235,${glowIntensity})) drop-shadow(0 6px 12px rgba(37,99,235,0.22))`
+        const glowIntensity = isScrolling.current ? 0.45 : 0.32
+        pathRef.current.style.filter = `drop-shadow(0 0 ${12 + currentDraw * 10}px rgba(37,99,235,${glowIntensity})) drop-shadow(0 10px 20px rgba(37,99,235,0.32))`
       }
 
       if (path2Ref.current && length2 > 0) {
         const offset2 = length2 * (1 - currentDraw2)
         path2Ref.current.style.strokeDashoffset = `${offset2}`
-        path2Ref.current.style.opacity = `${currentDraw2 * 0.42}`
+        path2Ref.current.style.opacity = `${0.2 + currentDraw2 * 0.4}`
       }
 
       if (highlightRef.current) {
         const hl = highlightRef.current.getTotalLength()
         highlightRef.current.style.strokeDashoffset = `${hl * (1 - currentDrawH)}`
-        highlightRef.current.style.opacity = `${currentDrawH * 0.18}`
+        highlightRef.current.style.opacity = `${currentDrawH * 0.24}`
       }
 
       raf = requestAnimationFrame(animate)
@@ -160,13 +155,12 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
             <stop offset="50%" stopColor="#2563eb" />
             <stop offset="100%" stopColor="#3b82f6" />
           </linearGradient>
-          <filter id="glowSlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="10" stdDeviation="14" floodColor="#2563eb" floodOpacity="0.32" />
-            <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#1d4ed8" floodOpacity="0.38" />
+          <filter id="glowVisible" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="12" stdDeviation="16" floodColor="#2563eb" floodOpacity="0.38" />
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#1d4ed8" floodOpacity="0.45" />
           </filter>
         </defs>
 
-        {/* Main — sekin 0 dan cho'ziladi, ko'rinib turadi */}
         <path
           ref={pathRef}
           d="
@@ -181,15 +175,14 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
           "
           fill="none"
           stroke="url(#blueGrad)"
-          strokeWidth="22"
+          strokeWidth="26"
           strokeLinecap="round"
           strokeLinejoin="round"
-          filter="url(#glowSlow)"
-          opacity="0.12"
-          style={{ strokeDasharray: '1000', strokeDashoffset: '1000' }}
+          filter="url(#glowVisible)"
+          opacity="0.45"
+          style={{ strokeDasharray: '1000', strokeDashoffset: '920' }}
         />
 
-        {/* Secondary — yanada sekin, kechikib */}
         <path
           ref={path2Ref}
           d="
@@ -203,14 +196,13 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
           "
           fill="none"
           stroke="#3b82f6"
-          strokeWidth="10"
+          strokeWidth="12"
           strokeLinecap="round"
           strokeLinejoin="round"
-          opacity="0"
+          opacity="0.2"
           style={{ strokeDasharray: '1000', strokeDashoffset: '1000' }}
         />
 
-        {/* Highlight — eng sekin */}
         <path
           ref={highlightRef}
           d="
@@ -222,26 +214,25 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
           "
           fill="none"
           stroke="white"
-          strokeWidth="2.5"
+          strokeWidth="3"
           strokeLinecap="round"
           opacity="0"
           style={{ strokeDasharray: '500', strokeDashoffset: '500' }}
         />
       </svg>
 
-      {/* Chapda progress + cho'zilish foizi */}
-      <div className="absolute top-0 left-0 w-[3px] h-full bg-black/[0.05] hidden md:block">
+      <div className="absolute top-0 left-0 w-[4px] h-full bg-black/[0.06] hidden md:block">
         <div
-          className="w-full bg-[#2563eb] ease-out"
+          className="w-full bg-[#2563eb]"
           style={{
             height: `${scrollProgress * 100}%`,
-            boxShadow: '0 0 14px rgba(37,99,235,0.6)',
-            transition: 'height 0.15s ease-out',
+            boxShadow: '0 0 16px rgba(37,99,235,0.7)',
+            transition: 'height 0.12s ease-out',
           }}
         />
       </div>
-      <div className="absolute bottom-8 left-6 md:left-10 hidden md:block bg-white/80 backdrop-blur-[12px] border border-black/10 rounded-full px-3 py-1.5 text-[10px] font-mono tracking-[0.12em] text-black/50">
-        BLUE DRAW: {Math.round(scrollProgress * 42)}% • SEKIN CHO'ZILMOQDA
+      <div className="absolute bottom-8 left-6 md:left-10 bg-white/90 backdrop-blur-[12px] border border-black/10 rounded-full px-4 py-2 text-[11px] font-mono tracking-[0.12em] text-black/60 shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+        BLUE: {Math.round((0.08 + scrollProgress * 0.88) * 100)}% • KO'RINIB TURIBDI • SEKIN CHO'ZILADI
       </div>
     </div>
   )
