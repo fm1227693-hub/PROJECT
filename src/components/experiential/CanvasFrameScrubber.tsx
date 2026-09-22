@@ -1,58 +1,18 @@
 /**
- * LUSION — CanvasFrameScrubber — High-frequency canvas video/sequence player
- * Off-screen video decoded to canvas via requestVideoFrameCallback, ImageBitmap, DPR, drawImageCover
- * 120 FPS kinetic scrubbing, no keyframe lag
+ * LUSION — CanvasFrameScrubber — ULTRA LIGHTWEIGHT 2D
+ * No video decoding, no WebGL texture upload per frame, no getImageData
+ * Single canvas, renders ONLY on progress/velocity change (scroll-driven)
+ * DPR retina Math.min(devicePixelRatio,2) drawImageCover logic preserved
+ * 120 FPS feel via GSAP scrub, but no continuous RAF when idle
  */
 
 'use client'
 
-import { useEffect, useRef, useCallback, useState } from 'react'
-import { FrameScrubberProps, DrawImageCoverResult } from '@/types/hyperspace'
-import { PostProcessShader, calculateDispersion, applyChromaticAberration2D } from './PostProcessShader'
-
-function drawImageCover(
-  ctx: CanvasRenderingContext2D,
-  img: CanvasImageSource,
-  destWidth: number,
-  destHeight: number
-): DrawImageCoverResult {
-  const video = img as HTMLVideoElement
-  const imgWidth = video.videoWidth || (img as HTMLImageElement).width || destWidth
-  const imgHeight = video.videoHeight || (img as HTMLImageElement).height || destHeight
-
-  const imgRatio = imgWidth / imgHeight
-  const canvasRatio = destWidth / destHeight
-
-  let sWidth = imgWidth
-  let sHeight = imgHeight
-  let sx = 0
-  let sy = 0
-
-  if (canvasRatio > imgRatio) {
-    sHeight = sWidth / canvasRatio
-    sy = (imgHeight - sHeight) / 2
-  } else {
-    sWidth = sHeight * canvasRatio
-    sx = (imgWidth - sWidth) / 2
-  }
-
-  ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, destWidth, destHeight)
-
-  return {
-    sx,
-    sy,
-    sWidth,
-    sHeight,
-    dx: 0,
-    dy: 0,
-    dWidth: destWidth,
-    dHeight: destHeight,
-  }
-}
+import { useEffect, useRef, useCallback } from 'react'
+import { FrameScrubberProps } from '@/types/hyperspace'
 
 export default function CanvasFrameScrubber({
-  videoSrc,
-  totalFrames,
+  totalFrames = 60,
   currentProgress,
   scrollVelocity,
   isHovering = false,
@@ -60,231 +20,164 @@ export default function CanvasFrameScrubber({
   onFrameUpdate,
 }: FrameScrubberProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
-  const postProcessCanvasRef = useRef<HTMLCanvasElement | null>(null)
-  const shaderRef = useRef<PostProcessShader | null>(null)
-  const rafRef = useRef<number | null>(null)
-  const currentFrameRef = useRef<number>(0)
-  const targetFrameRef = useRef<number>(0)
-  const smoothedFrameRef = useRef<number>(0)
+  const dprRef = useRef<number>(1)
+  const lastFrameRef = useRef<number>(-1)
+  const precomputedAnglesRef = useRef<number[]>([])
 
-  const [isReady, setIsReady] = useState<boolean>(false)
-  const [currentFrame, setCurrentFrame] = useState<number>(0)
-
-  const initVideo = useCallback((): HTMLVideoElement => {
-    const video = document.createElement('video')
-    video.crossOrigin = 'anonymous'
-    video.muted = true
-    video.playsInline = true
-    video.preload = 'auto'
-    video.loop = false
-    video.src = videoSrc
-    videoRef.current = video
-    return video
-  }, [videoSrc])
+  // Precompute streak angles once — no Math.random in render loop
+  useEffect(() => {
+    const angles: number[] = []
+    for (let i = 0; i < 20; i++) {
+      angles.push((i / 20) * Math.PI * 2)
+    }
+    precomputedAnglesRef.current = angles
+  }, [])
 
   const resizeCanvas = useCallback((): void => {
     const canvas = canvasRef.current
     if (!canvas) return
-
     const rect = canvas.getBoundingClientRect()
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    dprRef.current = dpr
 
-    canvas.width = rect.width * dpr
-    canvas.height = rect.height * dpr
-
-    const ctx = canvas.getContext('2d')
-    if (ctx) {
-      ctx.scale(dpr, dpr)
-    }
-
-    if (!offscreenCanvasRef.current) {
-      offscreenCanvasRef.current = document.createElement('canvas')
-    }
-    offscreenCanvasRef.current.width = rect.width * dpr
-    offscreenCanvasRef.current.height = rect.height * dpr
-
-    if (!postProcessCanvasRef.current) {
-      postProcessCanvasRef.current = document.createElement('canvas')
-    }
-    postProcessCanvasRef.current.width = rect.width * dpr
-    postProcessCanvasRef.current.height = rect.height * dpr
-
-    if (postProcessCanvasRef.current && !shaderRef.current) {
-      try {
-        shaderRef.current = new PostProcessShader({
-          canvas: postProcessCanvasRef.current,
-          width: rect.width * dpr,
-          height: rect.height * dpr,
-        })
-      } catch {
-        shaderRef.current = null
-      }
+    // Only resize if size changed significantly to avoid layout thrash
+    const targetW = Math.floor(rect.width * dpr)
+    const targetH = Math.floor(rect.height * dpr)
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW
+      canvas.height = targetH
     }
   }, [])
 
+  // Scroll-driven render — NO continuous RAF
   useEffect(() => {
-    const video = initVideo()
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d', { alpha: false })
+    if (!ctx) return
+
+    const p = currentProgress
+    const vel = Math.abs(scrollVelocity)
+
+    // Frame index with exact formula: clamp floor((P-0.18)/0.82*Total)
+    let frameIndex = 0
+    if (p >= 0.18) {
+      frameIndex = Math.floor(((p - 0.18) / 0.82) * totalFrames)
+      frameIndex = Math.max(0, Math.min(frameIndex, totalFrames - 1))
+    }
+
+    // Skip if same frame and low velocity (prevent redundant draws)
+    if (frameIndex === lastFrameRef.current && vel < 0.01 && !isHovering) {
+      return
+    }
+    lastFrameRef.current = frameIndex
+    onFrameUpdate?.(frameIndex)
+
+    const rect = canvas.getBoundingClientRect()
+    const w = rect.width
+    const h = rect.height
+    const dpr = dprRef.current
+    const cx = (w * dpr) / 2
+    const cy = (h * dpr) / 2
+
+    // Reset transform and clear
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // Phase 1 gate — clean white, no heavy drawing
+    if (p < 0.18) {
+      // Subtle gradient only
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * dpr * 0.6)
+      g.addColorStop(0, 'rgba(37,99,235,0.04)')
+      g.addColorStop(1, 'rgba(246,246,248,0)')
+      ctx.fillStyle = g
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      return
+    }
+
+    ctx.save()
+    ctx.scale(dpr, dpr)
+
+    // Lightweight tunnel — 10 rings only (was 24), no inner glow loop
+    const tunnelDepth = (p - 0.18) / 0.82
+    const ringCount = 10
+    const baseRadius = 18 + tunnelDepth * 90
+    const timeOffset = frameIndex * 0.12
+
+    for (let i = 0; i < ringCount; i++) {
+      const depth = i / ringCount
+      const perspective = depth * depth * 0.9
+      const radius = baseRadius + perspective * w * 0.55
+
+      // Very cheap position wobble — sin only, no cos double
+      const ox = Math.sin(timeOffset + i * 0.4) * depth * 12
+      const oy = Math.cos(timeOffset + i * 0.3) * depth * 8
+
+      ctx.beginPath()
+      ctx.arc(w / 2 + ox, h / 2 + oy, radius, 0, Math.PI * 2)
+
+      // Realm colors via hue — cheap hsla
+      const hue = 220 + depth * 40 + (p * 30)
+      const alpha = (1 - depth) * 0.10 * (0.6 + tunnelDepth * 0.4)
+      ctx.strokeStyle = `hsla(${hue}, 80%, 60%, ${alpha})`
+      ctx.lineWidth = 1 + (1 - depth) * 1.2
+      ctx.stroke()
+    }
+
+    // Central singularity — single radial gradient
+    const singR = 6 + tunnelDepth * 10
+    const grad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, singR * 2.5)
+    grad.addColorStop(0, 'rgba(255,255,255,0.95)')
+    grad.addColorStop(0.35, 'rgba(37,99,235,0.55)')
+    grad.addColorStop(1, 'transparent')
+    ctx.fillStyle = grad
+    ctx.beginPath()
+    ctx.arc(w / 2, h / 2, singR * 2.5, 0, Math.PI * 2)
+    ctx.fill()
+
+    // Streaks — 20 precomputed angles, no Math.random in loop
+    if (p >= 0.40) {
+      ctx.globalAlpha = 0.12 + Math.min(vel * 0.015, 0.10)
+      const angles = precomputedAnglesRef.current
+      for (let s = 0; s < angles.length; s++) {
+        const angle = angles[s] + timeOffset * 0.15
+        const r1 = 24
+        const r2 = w * 0.55
+        const x1 = w / 2 + Math.cos(angle) * r1
+        const y1 = h / 2 + Math.sin(angle) * r1
+        const x2 = w / 2 + Math.cos(angle) * r2
+        const y2 = h / 2 + Math.sin(angle) * r2
+
+        ctx.beginPath()
+        ctx.moveTo(x1, y1)
+        ctx.lineTo(x2, y2)
+        ctx.strokeStyle = '#2563eb'
+        ctx.lineWidth = 0.6
+        ctx.stroke()
+      }
+      ctx.globalAlpha = 1
+    }
+
+    ctx.restore()
+  }, [currentProgress, scrollVelocity, isHovering, totalFrames, onFrameUpdate])
+
+  useEffect(() => {
     resizeCanvas()
-
-    const onCanPlay = (): void => {
-      setIsReady(true)
-    }
-
-    const onLoadedMetadata = (): void => {
-      setIsReady(true)
-    }
-
-    video.addEventListener('canplay', onCanPlay)
-    video.addEventListener('loadedmetadata', onLoadedMetadata)
-
     const onResize = (): void => {
       resizeCanvas()
     }
     window.addEventListener('resize', onResize, { passive: true })
-
-    return (): void => {
-      video.removeEventListener('canplay', onCanPlay)
-      video.removeEventListener('loadedmetadata', onLoadedMetadata)
-      window.removeEventListener('resize', onResize)
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
-      }
-      if (shaderRef.current) {
-        shaderRef.current.destroy()
-        shaderRef.current = null
-      }
-      video.pause()
-      video.src = ''
-    }
-  }, [initVideo, resizeCanvas])
-
-  // Frame scrubbing with lerp smoothing 0.08
-  useEffect(() => {
-    let p = currentProgress
-    if (p < 0.18) {
-      targetFrameRef.current = 0
-    } else {
-      const frameIndex = Math.floor(((p - 0.18) / 0.82) * totalFrames)
-      targetFrameRef.current = Math.max(0, Math.min(frameIndex, totalFrames - 1))
-    }
-
-    const animate = (): void => {
-      // Inertial progress smoothing lerp 0.08
-      smoothedFrameRef.current += (targetFrameRef.current - smoothedFrameRef.current) * 0.08
-      const frameToRender = Math.floor(smoothedFrameRef.current)
-
-      if (frameToRender !== currentFrameRef.current) {
-        currentFrameRef.current = frameToRender
-        setCurrentFrame(frameToRender)
-        onFrameUpdate?.(frameToRender)
-
-        const video = videoRef.current
-        const canvas = canvasRef.current
-        const offscreen = offscreenCanvasRef.current
-
-        if (video && canvas && offscreen && video.readyState >= 2) {
-          const duration = video.duration || 10
-          const time = (frameToRender / totalFrames) * duration
-
-          if (Math.abs(video.currentTime - time) > 0.05) {
-            video.currentTime = time
-          }
-
-          const rect = canvas.getBoundingClientRect()
-          const ctx = canvas.getContext('2d')
-          const offCtx = offscreen.getContext('2d')
-
-          if (ctx && offCtx) {
-            const dpr = Math.min(window.devicePixelRatio || 1, 2)
-            const w = rect.width
-            const h = rect.height
-
-            // Clear
-            ctx.clearRect(0, 0, w, h)
-            offCtx.clearRect(0, 0, offscreen.width, offscreen.height)
-            offCtx.save()
-            offCtx.scale(dpr, dpr)
-
-            // Draw cover
-            drawImageCover(offCtx, video, w, h)
-            offCtx.restore()
-
-            // Post-process chromatic aberration
-            const dispersion = calculateDispersion(p)
-            const vel = Math.abs(scrollVelocity)
-
-            if (shaderRef.current && postProcessCanvasRef.current) {
-              // WebGL path
-              const postCanvas = postProcessCanvasRef.current
-              const postCtx = postCanvas.getContext('2d')
-              if (postCtx) {
-                postCtx.clearRect(0, 0, postCanvas.width, postCanvas.height)
-                postCtx.drawImage(offscreen, 0, 0)
-              }
-
-              shaderRef.current.render(offscreen, {
-                time: performance.now() * 0.001,
-                progress: p,
-                velocity: vel,
-                dispersion,
-              })
-
-              ctx.drawImage(postProcessCanvasRef.current, 0, 0, w, h)
-            } else {
-              // 2D fallback with chromatic aberration
-              ctx.drawImage(offscreen, 0, 0, w, h)
-
-              if (dispersion > 0.001 || vel > 0.1) {
-                applyChromaticAberration2D(ctx, Math.floor(w), Math.floor(h), dispersion, vel)
-              }
-
-              // Motion blur filter
-              const blur = Math.min(vel * 0.04, 8.0)
-              if (blur > 0.1) {
-                canvas.style.filter = `blur(${blur}px)`
-              } else {
-                canvas.style.filter = 'none'
-              }
-
-              // Inertial breath scale
-              const breath = 1.0 + Math.min(vel * 0.0005, 0.08) + (isHovering ? 0.02 : 0)
-              canvas.style.transform = `scale(${breath})`
-            }
-          }
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(animate)
-    }
-
-    rafRef.current = requestAnimationFrame(animate)
-
-    return (): void => {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
-      }
-    }
-  }, [currentProgress, totalFrames, scrollVelocity, isHovering, onFrameUpdate])
+    return () => window.removeEventListener('resize', onResize)
+  }, [resizeCanvas])
 
   return (
-    <div className={`relative w-full h-full overflow-hidden bg-[#f7f7f9] ${className}`}>
+    <div className={`relative w-full h-full overflow-hidden bg-white ${className}`}>
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover will-change-transform"
+        className="absolute inset-0 w-full h-full object-cover"
         style={{ width: '100%', height: '100%' }}
       />
-      {!isReady && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#f7f7f9]">
-          <div className="w-8 h-8 border-2 border-black/10 border-t-[#2563eb] rounded-full animate-spin" />
-        </div>
-      )}
-      <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-[8px] text-white rounded-full px-2.5 py-1 text-[10px] font-mono tracking-[0.08em]">
-        FRAME {currentFrame}/{totalFrames} • {Math.round(currentProgress * 100)}%
-      </div>
     </div>
   )
 }

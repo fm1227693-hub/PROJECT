@@ -1,10 +1,9 @@
 /**
- * BLUE RIBBON 2D — Ko'rinadigan, 0 dan sekin cho'zilib boradi
- * Boshidan 8% ko'rinadi, keyin scroll bilan 0-95% gacha sekin cho'ziladi
- * Yengil, lag yo'q, butun sayt bo'ylab
+ * BLUE RIBBON 2D — ULTRA LIGHTWEIGHT NO LAG
+ * No continuous RAF, scroll-driven only, GPU transforms
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 
 interface BlueRibbon2DProps {
   scrollProgress?: number
@@ -12,215 +11,66 @@ interface BlueRibbon2DProps {
 
 export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) {
   const pathRef = useRef<SVGPathElement>(null)
-  const path2Ref = useRef<SVGPathElement>(null)
-  const highlightRef = useRef<SVGPathElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const velocityRef = useRef(0)
-  const lastScroll = useRef(0)
-  const targetY = useRef(0)
-  const currentY = useRef(0)
-  const targetX = useRef(0)
-  const currentX = useRef(0)
-  const isScrolling = useRef(false)
-  const timeoutRef = useRef<number | null>(null)
-  const [length, setLength] = useState(0)
-  const [length2, setLength2] = useState(0)
+  const [length, setLength] = useState<number>(1000)
 
   useEffect(() => {
     if (pathRef.current) {
       const l = pathRef.current.getTotalLength()
       setLength(l)
-      pathRef.current.style.strokeDasharray = `${l}`
-      pathRef.current.style.strokeDashoffset = `${l * 0.92}` // boshidan 8% ko'rinadi
-    }
-    if (path2Ref.current) {
-      const l2 = path2Ref.current.getTotalLength()
-      setLength2(l2)
-      path2Ref.current.style.strokeDasharray = `${l2}`
-      path2Ref.current.style.strokeDashoffset = `${l2}`
-    }
-    if (highlightRef.current) {
-      const lh = highlightRef.current.getTotalLength()
-      highlightRef.current.style.strokeDasharray = `${lh}`
-      highlightRef.current.style.strokeDashoffset = `${lh}`
     }
   }, [])
 
-  useEffect(() => {
-    const onScroll = (e: CustomEvent) => {
-      const current = e.detail.scroll || 0
-      const vel = e.detail.velocity || 0
-      const delta = current - lastScroll.current
+  const style = useMemo(() => {
+    const p = scrollProgress
+    // 0-100% draw
+    const draw = Math.min(0.08 + p * 0.92, 1)
+    const offset = length * (1 - draw)
+    const opacity = 0.5 + draw * 0.5
+    const y = -p * 24
+    const scale = 1 + p * 0.02
 
-      velocityRef.current = delta * 0.12
-      lastScroll.current = current
-      isScrolling.current = true
-
-      const baseY = -scrollProgress * 30
-      const kick = velocityRef.current * 1.8
-      targetY.current = baseY + kick
-      targetX.current = vel * 0.06
-
-      if (timeoutRef.current) window.clearTimeout(timeoutRef.current)
-      timeoutRef.current = window.setTimeout(() => {
-        isScrolling.current = false
-        velocityRef.current *= 0.88
-      }, 150) as any
+    return {
+      dashOffset: offset,
+      opacity,
+      transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
     }
-
-    window.addEventListener('lusion-scroll' as any, onScroll as any)
-    return () => {
-      window.removeEventListener('lusion-scroll' as any, onScroll as any)
-      if (timeoutRef.current) window.clearTimeout(timeoutRef.current)
-    }
-  }, [scrollProgress])
-
-  useEffect(() => {
-    let raf = 0
-    let currentDraw = 0.08
-    let currentDraw2 = 0
-    let currentDrawH = 0
-
-    const animate = () => {
-      if (isScrolling.current) {
-        currentY.current += (targetY.current - currentY.current) * 0.22
-        currentX.current += (targetX.current - currentX.current) * 0.22
-      } else {
-        currentY.current += (-scrollProgress * 30 - currentY.current) * 0.08
-        currentX.current += (0 - currentX.current) * 0.08
-        velocityRef.current *= 0.86
-      }
-
-      if (containerRef.current) {
-        containerRef.current.style.transform = `translate3d(${currentX.current}px, ${currentY.current}px, 0) rotate(${velocityRef.current * 0.02}deg)`
-      }
-
-      // Yana tezlashtirildi — deyarli sinxron
-      const targetDraw = Math.min(0.08 + scrollProgress * 0.96, 0.99)
-      const targetDraw2 = Math.min(Math.max((scrollProgress - 0.04) * 0.88, 0), 0.92)
-      const targetDrawH = Math.min(Math.max((scrollProgress - 0.06) * 0.78, 0), 0.82)
-
-      currentDraw += (targetDraw - currentDraw) * 0.22
-      currentDraw2 += (targetDraw2 - currentDraw2) * 0.2
-      currentDrawH += (targetDrawH - currentDrawH) * 0.18
-
-      if (pathRef.current && length > 0) {
-        const offset = length * (1 - currentDraw)
-        pathRef.current.style.strokeDashoffset = `${offset}`
-
-        const baseWidth = 26
-        const extra = Math.abs(velocityRef.current) * 0.18 + currentDraw * 1.2
-        pathRef.current.setAttribute('stroke-width', `${baseWidth + extra}`)
-        pathRef.current.style.opacity = `${0.45 + currentDraw * 0.55}`
-
-        const glowIntensity = isScrolling.current ? 0.48 : 0.34
-        pathRef.current.style.filter = `drop-shadow(0 0 ${12 + currentDraw * 8}px rgba(37,99,235,${glowIntensity})) drop-shadow(0 10px 20px rgba(37,99,235,0.34))`
-      }
-
-      if (path2Ref.current && length2 > 0) {
-        const offset2 = length2 * (1 - currentDraw2)
-        path2Ref.current.style.strokeDashoffset = `${offset2}`
-        path2Ref.current.style.opacity = `${0.2 + currentDraw2 * 0.4}`
-      }
-
-      if (highlightRef.current) {
-        const hl = highlightRef.current.getTotalLength()
-        highlightRef.current.style.strokeDashoffset = `${hl * (1 - currentDrawH)}`
-        highlightRef.current.style.opacity = `${currentDrawH * 0.24}`
-      }
-
-      raf = requestAnimationFrame(animate)
-    }
-    animate()
-    return () => cancelAnimationFrame(raf)
-  }, [scrollProgress, length, length2])
+  }, [scrollProgress, length])
 
   return (
     <div
       ref={containerRef}
       className="fixed inset-0 z-0 w-full h-[92vh] pointer-events-none will-change-transform"
-      style={{ transform: 'translate3d(0,0,0)' }}
+      style={{ transform: style.transform }}
     >
-      <svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 1440 900"
-        preserveAspectRatio="none"
-        className="absolute inset-0 w-full h-full"
-        style={{ overflow: 'visible' }}
-      >
+      <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" style={{ overflow: 'visible' }}>
         <defs>
-          <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="blueGradLight" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#1d4ed8" />
             <stop offset="50%" stopColor="#2563eb" />
             <stop offset="100%" stopColor="#3b82f6" />
           </linearGradient>
-          <filter id="glowVisible" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="12" stdDeviation="16" floodColor="#2563eb" floodOpacity="0.32" />
-            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#1d4ed8" floodOpacity="0.38" />
-          </filter>
         </defs>
 
         <path
           ref={pathRef}
-          d="
-            M -100,100
-            C 200,280  500,120  700,320
-              900,520  1100,280  1350,450
-              1200,700  900,650  700,900
-          "
+          d="M -100,100 C 200,280 500,120 700,320 900,520 1100,280 1350,450 1200,700 900,650 700,900"
           fill="none"
-          stroke="url(#blueGrad)"
-          strokeWidth="26"
+          stroke="url(#blueGradLight)"
+          strokeWidth="22"
           strokeLinecap="round"
           strokeLinejoin="round"
-          filter="url(#glowVisible)"
-          opacity="0.9"
-          style={{ strokeDasharray: '1000', strokeDashoffset: '920' }}
-        />
-
-        <path
-          ref={path2Ref}
-          d="
-            M -80,180
-            C 250,350  550,200  750,380
-              950,560  1050,350  1280,520
-              1150,760  880,710  680,760
-          "
-          fill="none"
-          stroke="#3b82f6"
-          strokeWidth="12"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.35"
-          style={{ strokeDasharray: '1000', strokeDashoffset: '1000' }}
-        />
-
-        <path
-          ref={highlightRef}
-          d="
-            M -100,105
-            C 200,285  500,125  700,325
-              900,525  1100,285  1350,455
-          "
-          fill="none"
-          stroke="white"
-          strokeWidth="3"
-          strokeLinecap="round"
-          opacity="0.18"
-          style={{ strokeDasharray: '500', strokeDashoffset: '500' }}
+          opacity={style.opacity}
+          style={{
+            strokeDasharray: length,
+            strokeDashoffset: style.dashOffset,
+            willChange: 'stroke-dashoffset',
+          }}
         />
       </svg>
 
-      <div className="absolute top-0 left-0 w-[4px] h-full bg-black/[0.06] hidden md:block">
-        <div
-          className="w-full bg-[#2563eb]"
-          style={{
-            height: `${Math.min(scrollProgress * 180, 100)}%`,
-            boxShadow: '0 0 16px rgba(37,99,235,0.7)',
-            transition: 'height 0.12s ease-out',
-          }}
-        />
+      <div className="absolute top-0 left-0 w-[3px] h-full bg-black/[0.04] hidden md:block">
+        <div className="w-full bg-[#2563eb] origin-top will-change-transform" style={{ transform: `scaleY(${Math.min(scrollProgress * 1.5, 1)})`, height: '100%' }} />
       </div>
     </div>
   )
