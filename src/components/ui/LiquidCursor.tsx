@@ -13,9 +13,7 @@ export default function LiquidCursor() {
 
   useEffect(() => {
     const cursor = cursorRef.current
-    const ring = ringRef.current
-    const dot = dotRef.current
-    if (!cursor || !ring || !dot) return
+    if (!cursor) return
 
     const onMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX

@@ -1,6 +1,7 @@
 /**
- * LUSION HOMEPAGE — Completely New Light Theme + Preloader + Blue Ribbon
- * Exact real-world Lusion.co: #f7f7f9, elastic showreel ribbon, blue organic spline
+ * CLEAN LUSION — Exact Homepage 1:1
+ * Light #f6f6f8, elastic showreel ribbon 16:7, blue organic spline #2563eb glossy, PLAY REEL magnetic
+ * No debug typography, no purple sphere
  */
 
 import { useEffect, useState } from 'react'
@@ -39,7 +40,7 @@ export default function App() {
   }, [lenisProgress])
 
   return (
-    <div className="relative bg-[#f7f7f9] text-[#0b0b0d] selection:bg-[#0b0b0d] selection:text-white overflow-x-hidden">
+    <div className="relative bg-[#f6f6f8] text-[#0b0b0d] selection:bg-[#0b0b0d] selection:text-white overflow-x-hidden">
       {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
 
       <LiquidCursor />
@@ -51,7 +52,7 @@ export default function App() {
           dpr={[1, 2]}
           camera={{ fov: 32, position: [0, 0, 7], near: 0.1, far: 100 }}
           style={{ background: 'transparent', width: '100%', height: '100%' }}
-          onCreated={({ gl }) => gl.setClearColor('#f7f7f9', 1)}
+          onCreated={({ gl }) => gl.setClearColor('#f6f6f8', 1)}
         >
           <Suspense fallback={null}>
             <ElasticShowreel scrollProgress={scrollProgress} onHoverChange={setIsHoveringRibbon} />
@@ -63,17 +64,13 @@ export default function App() {
         <HeroContent isHoveringRibbon={isHoveringRibbon} />
         <PortfolioGrid />
 
-        <footer className="bg-[#f7f7f9] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
-          <div className="flex flex-wrap gap-6">
-            <span>©2026 LUSION® — LIGHT THEME • ELASTIC SHOWREEL • BLUE ORGANIC RIBBON</span>
-            <span className="hidden md:block">•</span>
-            <span>LENIS 0.08 • GSAP • R3F • PRELOADER L GLYPH • #f7f7f9</span>
-          </div>
+        <footer className="bg-[#f6f6f8] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
+          <div>©2026 LUSION® — CLEAN LIGHT • ELASTIC SHOWREEL • BLUE SPLINE #2563eb</div>
           <div className="flex gap-6">
-            <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black transition-colors">
+            <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black">
               GITHUB ZIP ↓
             </a>
-            <a href="https://lusion.co" target="_blank" className="hover:text-black transition-colors">
+            <a href="https://lusion.co" target="_blank" className="hover:text-black">
               LUSION.CO →
             </a>
           </div>

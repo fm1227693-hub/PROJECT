@@ -1,10 +1,12 @@
 /**
- * LUSION HOMEPAGE — HeroContent
- * Accurate headers, pill buttons, crosshair grid + + + +, editorial typography
- * Floating center button PLAY REEL ▶ magnetically tethered
+ * CLEAN LUSION — HeroContent
+ * Rounded horizontal showcase frame 16:7, high-energy looping videos / 3D renders
+ * Over center: Large clean bold white typography PLAY left, REEL right, magnetic white circular play icon ▶ middle
+ * Elastic inertia: scroll/drag warps organically cloth/mesh wave physics
+ * No debug labels, clean #f6f6f8
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -16,37 +18,36 @@ interface HeroContentProps {
 
 export default function HeroContent({ isHoveringRibbon = false }: HeroContentProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const playButtonRef = useRef<HTMLButtonElement>(null)
+  const playButtonRef = useRef<HTMLDivElement>(null)
   const crosshairsRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const button = playButtonRef.current
-    if (!button) return
+    const el = playButtonRef.current
+    if (!el) return
 
     const onMouseMove = (e: MouseEvent) => {
-      const rect = button.getBoundingClientRect()
+      const rect = el.getBoundingClientRect()
       const centerX = rect.left + rect.width / 2
       const centerY = rect.top + rect.height / 2
       const dx = e.clientX - centerX
       const dy = e.clientY - centerY
       const dist = Math.sqrt(dx * dx + dy * dy)
-      const maxDist = 300
+      const maxDist = 320
 
       if (dist < maxDist) {
         const force = (maxDist - dist) / maxDist
-        gsap.to(button, {
-          x: dx * force * 0.5,
-          y: dy * force * 0.5,
-          scale: 1 + force * 0.08,
+        gsap.to(el, {
+          x: dx * force * 0.48,
+          y: dy * force * 0.48,
+          scale: 1 + force * 0.06,
           duration: 0.6,
           ease: 'power3.out',
         })
       } else {
-        gsap.to(button, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'elastic.out(1,0.4)' })
+        gsap.to(el, { x: 0, y: 0, scale: 1, duration: 0.9, ease: 'elastic.out(1,0.4)' })
       }
 
-      // Crosshair markers underneath canvas per spec
+      // Crosshair markers underneath canvas
       if (crosshairsRef.current) {
         const markers = crosshairsRef.current.querySelectorAll('.crosshair')
         markers.forEach((marker) => {
@@ -57,19 +58,19 @@ export default function HeroContent({ isHoveringRibbon = false }: HeroContentPro
           const mdx = e.clientX - mx
           const mdy = e.clientY - my
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy)
-          const mMax = 170
+          const mMax = 160
           if (mDist < mMax) {
             const mForce = (mMax - mDist) / mMax
             gsap.to(m, {
-              x: mdx * mForce * 0.28,
-              y: mdy * mForce * 0.28,
-              scale: 1 + mForce * 0.55,
-              opacity: 0.85,
+              x: mdx * mForce * 0.26,
+              y: mdy * mForce * 0.26,
+              scale: 1 + mForce * 0.5,
+              opacity: 0.8,
               duration: 0.5,
               ease: 'power2.out',
             })
           } else {
-            gsap.to(m, { x: 0, y: 0, scale: 1, opacity: 0.45, duration: 0.7, ease: 'power2.out' })
+            gsap.to(m, { x: 0, y: 0, scale: 1, opacity: 0.4, duration: 0.7, ease: 'power2.out' })
           }
         })
       }
@@ -81,106 +82,64 @@ export default function HeroContent({ isHoveringRibbon = false }: HeroContentPro
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (titleRef.current) {
-        const lines = titleRef.current.querySelectorAll('.line')
-        gsap.fromTo(
-          lines,
-          { yPercent: 115, opacity: 0 },
-          { yPercent: 0, opacity: 1, duration: 1.2, stagger: 0.13, ease: 'power4.out', delay: 0.9 }
-        )
-      }
       if (crosshairsRef.current) {
         gsap.fromTo(
           crosshairsRef.current.querySelectorAll('.crosshair'),
           { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 0.45, duration: 0.8, stagger: 0.08, ease: 'back.out(1.7)', delay: 1.2 }
+          { scale: 1, opacity: 0.4, duration: 0.8, stagger: 0.08, ease: 'back.out(1.7)', delay: 1.2 }
         )
       }
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: 'top top',
-        end: '+=60%',
-        scrub: 0.8,
-        onUpdate: (self) => {
-          const p = self.progress
-          if (titleRef.current) {
-            gsap.to(titleRef.current, { y: p * -50, opacity: 1 - p * 0.6, duration: 0.3, overwrite: 'auto' })
-          }
-        },
-      })
     }, containerRef)
     return () => ctx.revert()
   }, [])
 
   return (
     <section ref={containerRef} className="relative z-10 min-h-[92vh] flex flex-col justify-between px-6 md:px-8 lg:px-10 pt-[88px] pb-8 pointer-events-none">
-      <div className="hidden md:flex justify-between items-start text-[11px] font-mono tracking-[0.18em] text-black/40 pt-4">
-        <div className="flex gap-8">
-          <span>EST. 2018</span>
-          <span className="hidden lg:block">— ELASTIC SHOWREEL • BLUE SPLINE • SCROLL VELOCITY</span>
-        </div>
-        <div className="flex gap-6">
-          <span>SCROLL TO EXPLORE ↓</span>
-        </div>
-      </div>
+      {/* Top spacer — no noisy text */}
+      <div className="h-[24px]" />
 
+      {/* Center — rounded horizontal showcase frame 16:7 embedded in clean white page */}
+      {/* The actual 3D mesh is in ElasticShowreel canvas behind, this is overlay PLAY REEL */}
       <div className="flex-1 flex items-center justify-center relative">
-        {/* Floating center button high-contrast pill PLAY REEL ▶ tethered magnetically to center per spec */}
-        <button
-          ref={playButtonRef}
-          className="pointer-events-auto group relative flex items-center gap-3 pl-7 pr-2 py-2 rounded-full bg-[#0b0b0d] text-white text-[13px] font-medium tracking-[0.02em] shadow-[0_12px_32px_rgba(0,0,0,0.18)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.22)] transition-shadow cursor-pointer will-change-transform"
-        >
-          <span>PLAY REEL</span>
-          <span className="w-[36px] h-[36px] rounded-full bg-white text-black flex items-center justify-center text-[14px] group-hover:scale-110 transition-transform duration-300">
-            ▶
-          </span>
-          <span
-            className={`absolute inset-0 rounded-full border border-black/10 transition-all duration-500 ${isHoveringRibbon ? 'scale-[1.15] opacity-100' : 'opacity-0 scale-100'}`}
-          />
-        </button>
-
+        {/* Large clean bold white typography PLAY left, REEL right, magnetic white circular play icon ▶ middle per spec */}
         <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-20 text-[10px] font-mono tracking-[0.2em] text-black/30 transition-opacity duration-300 pointer-events-none ${isHoveringRibbon ? 'opacity-100' : 'opacity-0'}`}
+          ref={playButtonRef}
+          className="pointer-events-auto flex items-center gap-6 md:gap-10 will-change-transform"
+          style={{ transform: 'translate3d(0,0,0)' }}
         >
-          DRAG TO DEFORM • BLUE RIBBON CURLS BEHIND
+          {/* PLAY */}
+          <span className="text-white font-black tracking-[-0.04em] leading-none text-[13vw] md:text-[9vw] lg:text-[7.5vw] drop-shadow-[0_2px_20px_rgba(0,0,0,0.15)] select-none">PLAY</span>
+
+          {/* Magnetic white circular play icon ▶ resting precisely in middle */}
+          <button
+            className={`group relative w-[64px] h-[64px] md:w-[84px] md:h-[84px] rounded-full bg-white text-black flex items-center justify-center text-[22px] md:text-[26px] shadow-[0_12px_32px_rgba(0,0,0,0.18)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.24)] transition-all duration-300 cursor-pointer ${isHoveringRibbon ? 'scale-[1.08]' : 'scale-100'}`}
+          >
+            <span className="translate-x-[2px]">▶</span>
+            <span className="absolute inset-0 rounded-full border border-white/20 scale-100 group-hover:scale-[1.18] transition-transform duration-500" />
+          </button>
+
+          {/* REEL */}
+          <span className="text-white font-black tracking-[-0.04em] leading-none text-[13vw] md:text-[9vw] lg:text-[7.5vw] drop-shadow-[0_2px_20px_rgba(0,0,0,0.15)] select-none">REEL</span>
         </div>
       </div>
 
-      {/* Subtle alignment grid markers + + + + underneath canvas per spec */}
+      {/* Subtle alignment grid markers + + + + underneath canvas per spec — no debug text */}
       <div ref={crosshairsRef} className="relative h-[44px] flex justify-between items-center px-2 md:px-8 pointer-events-none">
-        <div className="flex gap-6 md:gap-10">
+        <div className="flex gap-8 md:gap-12">
           {[0, 1].map((i) => (
-            <div key={`l-${i}`} className="crosshair w-[14px] h-[14px] relative flex items-center justify-center opacity-45 will-change-transform">
+            <div key={`l-${i}`} className="crosshair w-[14px] h-[14px] relative flex items-center justify-center opacity-40 will-change-transform">
               <span className="absolute w-[14px] h-[1px] bg-black/40" />
               <span className="absolute w-[1px] h-[14px] bg-black/40" />
             </div>
           ))}
         </div>
-        <div className="hidden md:flex items-center gap-3 text-[10px] font-mono tracking-[0.18em] text-black/30">
-          <span className="w-1 h-1 rounded-full bg-black/40" />
-          <span>INTERACTIVE ELASTIC SHOWREEL — BLUE ORGANIC RIBBON BEHIND</span>
-          <span className="w-1 h-1 rounded-full bg-black/40" />
-        </div>
-        <div className="flex gap-6 md:gap-10">
+        <div className="flex gap-8 md:gap-12">
           {[0, 1].map((i) => (
-            <div key={`r-${i}`} className="crosshair w-[14px] h-[14px] relative flex items-center justify-center opacity-45 will-change-transform">
+            <div key={`r-${i}`} className="crosshair w-[14px] h-[14px] relative flex items-center justify-center opacity-40 will-change-transform">
               <span className="absolute w-[14px] h-[1px] bg-black/40" />
               <span className="absolute w-[1px] h-[14px] bg-black/40" />
             </div>
           ))}
-        </div>
-      </div>
-
-      <div ref={titleRef} className="mt-6 md:mt-8 pointer-events-auto">
-        <div className="flex flex-col md:flex-row justify-between gap-4">
-          <div className="overflow-hidden">
-            <div className="line text-[11px] font-mono tracking-[0.2em] text-black/40">001 / INTRODUCTION — SHOWREEL RIBBON</div>
-          </div>
-          <div className="hidden md:block overflow-hidden">
-            <div className="line text-[11px] font-mono tracking-[0.18em] text-black/30 max-w-[340px] text-right">
-              Full-width horizontal curved plane organic viewport with blue spline curling behind.
-            </div>
-          </div>
         </div>
       </div>
     </section>

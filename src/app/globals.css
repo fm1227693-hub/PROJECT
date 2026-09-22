@@ -2,12 +2,12 @@
 
 @layer base {
   html {
-    background: #f7f7f9;
+    background: #f6f6f8;
     scroll-behavior: auto;
     overscroll-behavior: none;
   }
   body {
-    background: #f7f7f9;
+    background: #f6f6f8;
     color: #0b0b0d;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
