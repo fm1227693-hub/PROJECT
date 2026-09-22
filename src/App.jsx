@@ -1,19 +1,17 @@
 /**
- * LUSION — Exact Homepage 1:1 Benchmark
- * LusionScene: docking elastic showreel + blue TubeGeometry spline + liquid glass refraction
- * Light #f7f7f9, #f6f6f8, black #0b0b0d, blue #2563eb #1d4ed8
+ * LUSION — 2D Yengil versiya, lag yo'q, qotib qolmaydi
+ * Blue ribbon butun sayt bo'ylab 2D SVG, showreel 2D docking
  */
 
 import { useEffect, useState, useRef } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
 
 import Navbar from './components/dom/Navbar'
 import BroughtToLifeSection from './components/dom/BroughtToLifeSection'
 import PortfolioGrid from './components/dom/PortfolioGrid'
 import Preloader from './components/preloader/Preloader'
 import LiquidCursor from './components/ui/LiquidCursor'
-import LusionScene from './components/canvas/LusionScene'
+import BlueRibbon2D from './components/dom/BlueRibbon2D'
+import Showreel2D from './components/dom/Showreel2D'
 
 import useLenisScroller from './hooks/useLenisScroller'
 import usePointerDynamics from './hooks/usePointerDynamics'
@@ -56,22 +54,13 @@ export default function App() {
       <LiquidCursor />
       <Navbar />
 
-      {/* LUSION SCENE — Blue spline butun sayt bo'ylab hamma yerda */}
-      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none lg:pointer-events-auto">
-        <Canvas
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-          dpr={[1, 2]}
-          camera={{ fov: 34, position: [0, 0, 8], near: 0.1, far: 100 }}
-          style={{ background: 'transparent', width: '100%', height: '100%' }}
-          onCreated={({ gl }) => gl.setClearColor('#f7f7f9', 0)}
-        >
-          <Suspense fallback={null}>
-            <LusionScene scrollProgress={scrollProgress} scrollVelocity={scrollVelocity} onHoverChange={setIsHovering} />
-          </Suspense>
-        </Canvas>
-      </div>
+      {/* BLUE RIBBON 2D — butun sayt bo'ylab */}
+      <BlueRibbon2D scrollProgress={scrollProgress} />
 
-      {/* HERO with PLAY REEL branding */}
+      {/* SHOWREEL 2D — yengil */}
+      <Showreel2D scrollProgress={scrollProgress} onHoverChange={setIsHovering} />
+
+      {/* HERO */}
       <div className="relative z-10 min-h-[92vh] flex flex-col justify-between px-6 md:px-8 lg:px-10 pt-[88px] pb-8 pointer-events-none">
         <div className="h-[24px]" />
         <div className="flex-1 flex items-center justify-center">
@@ -124,7 +113,7 @@ export default function App() {
         <PortfolioGrid />
 
         <footer className="relative z-10 bg-transparent border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
-          <div>©2026 LUSION® — SCROLL-DRIVEN DOCKING • BLUE SPLINE #2563eb • LIQUID GLASS</div>
+          <div>©2026 LUSION® — 2D YENGIL • NO LAG • BLUE RIBBON #2563eb</div>
           <div className="flex gap-6">
             <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black">
               GITHUB ZIP ↓
@@ -145,7 +134,7 @@ export default function App() {
       >
         <div className="flex items-center gap-3 bg-white/80 backdrop-blur-[16px] border border-black/10 rounded-full pl-3 pr-5 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
           <div className="w-2 h-2 rounded-full bg-[#2563eb] animate-pulse" />
-          <span className="text-[11px] font-mono tracking-[0.12em] text-black/60">SHOWREEL DOCKED • HOVER FOR LIQUID WARP</span>
+          <span className="text-[11px] font-mono tracking-[0.12em] text-black/60">SHOWREEL DOCKED • 2D YENGIL • NO LAG</span>
         </div>
       </div>
     </div>

@@ -1,15 +1,14 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
 
 import Navbar from '@/components/dom/Navbar'
 import BroughtToLifeSection from '@/components/dom/BroughtToLifeSection'
 import PortfolioGrid from '@/components/dom/PortfolioGrid'
 import Preloader from '@/components/preloader/Preloader'
 import LiquidCursor from '@/components/ui/LiquidCursor'
-import LusionScene from '@/components/canvas/LusionScene'
+import BlueRibbon2D from '@/components/dom/BlueRibbon2D'
+import Showreel2D from '@/components/dom/Showreel2D'
 
 import useLenisScroller from '@/hooks/useLenisScroller'
 import usePointerDynamics from '@/hooks/usePointerDynamics'
@@ -23,7 +22,6 @@ export default function Page() {
   const lastScroll = useRef(0)
   usePointerDynamics()
 
-  // Bind Lenis velocity directly to 3D card scale/position interpolation and spline animation
   useEffect(() => {
     const onScroll = (e: CustomEvent) => {
       if (e.detail) {
@@ -33,17 +31,8 @@ export default function Page() {
         const delta = scroll - lastScroll.current
 
         setScrollProgress(progress)
-        // Signed velocity for pastga/tepaga + absolute for inertia
         setScrollVelocity(velocity * 0.12 + delta * 0.08)
-
         lastScroll.current = scroll
-
-        // Dispatch enhanced event for LusionScene
-        window.dispatchEvent(
-          new CustomEvent('lusion-velocity', {
-            detail: { velocity, delta, progress, scroll },
-          })
-        )
       }
     }
 
@@ -55,7 +44,6 @@ export default function Page() {
     if (lenisProgress > 0) setScrollProgress(lenisProgress)
   }, [lenisProgress])
 
-  // Dock progress for BroughtToLifeSection
   const dockProgress = Math.min(Math.max((scrollProgress - 0.12) / 0.5, 0), 1)
 
   return (
@@ -65,30 +53,16 @@ export default function Page() {
       <LiquidCursor />
       <Navbar />
 
-      {/* LUSION SCENE — Blue spline butun sayt bo'ylab, hamma yerda ko'rinadi */}
-      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none lg:pointer-events-auto">
-        <Canvas
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-          dpr={[1, 2]}
-          camera={{ fov: 34, position: [0, 0, 8], near: 0.1, far: 100 }}
-          style={{ background: 'transparent', width: '100%', height: '100%' }}
-          onCreated={({ gl }) => gl.setClearColor('#f7f7f9', 0)}
-        >
-          <Suspense fallback={null}>
-            <LusionScene
-              scrollProgress={scrollProgress}
-              scrollVelocity={scrollVelocity}
-              onHoverChange={setIsHovering}
-            />
-          </Suspense>
-        </Canvas>
-      </div>
+      {/* BLUE RIBBON 2D — Yengil, lag yo'q, butun sayt bo'ylab hamma yerda */}
+      <BlueRibbon2D scrollProgress={scrollProgress} />
 
-      {/* HERO — Initial centered state with PLAY REEL branding */}
+      {/* SHOWREEL 2D — Yengil, docking, hover animatsiyalar */}
+      <Showreel2D scrollProgress={scrollProgress} onHoverChange={setIsHovering} />
+
+      {/* HERO — PLAY REEL branding */}
       <div className="relative z-10 min-h-[92vh] flex flex-col justify-between px-6 md:px-8 lg:px-10 pt-[88px] pb-8 pointer-events-none">
         <div className="h-[24px]" />
         <div className="flex-1 flex items-center justify-center">
-          {/* PLAY REEL branding — initial state, fades as it docks */}
           <div
             className="flex items-center gap-6 md:gap-10 transition-all duration-700 will-change-transform"
             style={{
@@ -133,15 +107,13 @@ export default function Page() {
         </div>
       </div>
 
-      {/* BROUGHT TO LIFE SECTION — scroll-driven docking target */}
+      {/* BROUGHT TO LIFE SECTION */}
       <div className="relative z-10">
         <BroughtToLifeSection dockProgress={dockProgress} />
-
-        {/* Project grid */}
         <PortfolioGrid />
 
         <footer className="relative z-10 bg-transparent border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
-          <div>©2026 LUSION® — SCROLL-DRIVEN DOCKING • BLUE SPLINE #2563eb • LIQUID GLASS</div>
+          <div>©2026 LUSION® — 2D YENGIL • NO LAG • BLUE RIBBON #2563eb BUTUN SAYT BO'YLAB</div>
           <div className="flex gap-6">
             <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black transition-colors">
               GITHUB ZIP ↓
@@ -153,7 +125,7 @@ export default function Page() {
         </footer>
       </div>
 
-      {/* Docked showreel label — appears when docked */}
+      {/* Docked label */}
       <div
         className="fixed bottom-6 left-6 md:bottom-8 md:left-8 z-[5] pointer-events-none transition-all duration-700"
         style={{
@@ -163,7 +135,7 @@ export default function Page() {
       >
         <div className="flex items-center gap-3 bg-white/80 backdrop-blur-[16px] border border-black/10 rounded-full pl-3 pr-5 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
           <div className="w-2 h-2 rounded-full bg-[#2563eb] animate-pulse" />
-          <span className="text-[11px] font-mono tracking-[0.12em] text-black/60">SHOWREEL DOCKED • HOVER FOR LIQUID WARP</span>
+          <span className="text-[11px] font-mono tracking-[0.12em] text-black/60">SHOWREEL DOCKED • 2D YENGIL • NO LAG</span>
         </div>
       </div>
     </main>
