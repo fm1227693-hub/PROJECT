@@ -1,7 +1,6 @@
 /**
  * CLEAN LUSION — PortfolioGrid
- * Clear transition into Headline Bold Ideas, Brought to Life + right column paragraph
- * Clean 2-column project grid with zero debug labels
+ * Background stays #f6f6f8 per spec, only blue ribbon is 3D global
  */
 
 import { useEffect, useRef } from 'react'
@@ -174,13 +173,8 @@ export default function PortfolioGrid() {
   }
 
   return (
-    <section ref={sectionRef} className="relative z-10 bg-[#f6f6f8]/75 backdrop-blur-[8px] px-6 md:px-8 lg:px-10 py-20 md:py-28">
-      {/* Subtle hint that blue ribbon is behind throughout */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `radial-gradient(circle at 20% 30%, #2563eb 0%, transparent 50%), radial-gradient(circle at 80% 70%, #2563eb 0%, transparent 50%)`
-      }} />
+    <section ref={sectionRef} className="relative z-10 bg-transparent px-6 md:px-8 lg:px-10 py-20 md:py-28">
       <div className="max-w-[1600px] mx-auto">
-        {/* Headline Bold Ideas, Brought to Life + right column paragraph */}
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 md:gap-16 items-end mb-16 md:mb-24">
           <div ref={titleRef}>
             <h2 className="font-black tracking-[-0.055em] leading-[0.82] text-[#0b0b0d]">
@@ -197,7 +191,6 @@ export default function PortfolioGrid() {
           </div>
         </div>
 
-        {/* Clean 2-column project grid with zero debug labels */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 perspective-[2000px]">
           {projects.map((p, i) => (
             <div
