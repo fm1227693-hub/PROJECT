@@ -1,12 +1,57 @@
 @import "tailwindcss";
 
 @layer base {
-  html { background: #050508; scroll-behavior: auto; overscroll-behavior: none; }
-  body { background: #050508; color: #fff; overscroll-behavior: none; -webkit-font-smoothing: antialiased; }
-  ::selection { background: #7928ca; color: white; }
+  html {
+    background: #050508;
+    scroll-behavior: auto;
+    overscroll-behavior: none;
+  }
+  body {
+    background: #050508;
+    color: #fff;
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01" "ss02" "cv01" "cv02";
+  }
+  ::selection {
+    background: #7a2bff;
+    color: white;
+  }
 }
 
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; -ms-overflow-style: none; }
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.perspective-\[2000px\] {
+  perspective: 2000px;
+}
+.writing-vertical {
+  writing-mode: vertical-rl;
+}
+.text-balance {
+  text-wrap: balance;
+}
+.lusion-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 32px 32px;
+}

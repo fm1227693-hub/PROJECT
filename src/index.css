@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 @layer base {
   html {
-    font-family: 'Inter', 'Geist', system-ui, -apple-system, sans-serif;
+    font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+    background: #050508;
     scroll-behavior: auto;
     overscroll-behavior: none;
-    background: #050508;
   }
   body {
     background: #050508;
@@ -16,15 +14,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01" "ss02" "cv01" "cv02";
+    margin: 0;
   }
   ::selection {
-    background: #7928ca;
+    background: #7a2bff;
     color: white;
   }
 }
 
-/* Lenis */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 .lenis.lenis-smooth {
@@ -36,19 +35,28 @@ html.lenis, html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
+::-webkit-scrollbar {
+  display: none;
 }
-
-/* Scrollbar hide */
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; -ms-overflow-style: none; }
-
-/* Utility */
-.perspective-\[2000px\] { perspective: 2000px; }
-.writing-vertical { writing-mode: vertical-rl; }
-
-/* Grain */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.perspective-\[2000px\] {
+  perspective: 2000px;
+}
+.writing-vertical {
+  writing-mode: vertical-rl;
+}
+.text-balance {
+  text-wrap: balance;
+}
+.lusion-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
 .grain::after {
   content: "";
   position: absolute;
@@ -58,30 +66,36 @@ html.lenis, html.lenis body {
   pointer-events: none;
   animation: grainShift 8s steps(10) infinite;
 }
-
 @keyframes grainShift {
-  0%, 100% { transform: translate(0,0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 15%); }
-  90% { transform: translate(-10%, 10%); }
-}
-
-/* Magnetic */
-[data-magnetic] { will-change: transform; }
-
-/* Text balance */
-.text-balance { text-wrap: balance; }
-
-/* Lusion specific */
-.lusion-grid {
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 32px 32px;
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 15%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
+  }
 }
