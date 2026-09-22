@@ -83,38 +83,38 @@ export default function BlueRibbon2D({ scrollProgress = 0 }: BlueRibbon2DProps) 
 
     const animate = () => {
       if (isScrolling.current) {
-        currentY.current += (targetY.current - currentY.current) * 0.06
-        currentX.current += (targetX.current - currentX.current) * 0.06
+        currentY.current += (targetY.current - currentY.current) * 0.12
+        currentX.current += (targetX.current - currentX.current) * 0.12
       } else {
-        currentY.current += (-scrollProgress * 30 - currentY.current) * 0.015
-        currentX.current += (0 - currentX.current) * 0.02
-        velocityRef.current *= 0.94
+        currentY.current += (-scrollProgress * 30 - currentY.current) * 0.04
+        currentX.current += (0 - currentX.current) * 0.05
+        velocityRef.current *= 0.9
       }
 
       if (containerRef.current) {
-        containerRef.current.style.transform = `translate3d(${currentX.current}px, ${currentY.current}px, 0) rotate(${velocityRef.current * 0.015}deg)`
+        containerRef.current.style.transform = `translate3d(${currentX.current}px, ${currentY.current}px, 0) rotate(${velocityRef.current * 0.02}deg)`
       }
 
-      // Ko'rinadigan + sekin — boshidan 8% ko'rinadi, keyin 95% gacha
-      const targetDraw = Math.min(0.08 + scrollProgress * 0.88, 0.96)
-      const targetDraw2 = Math.min(Math.max((scrollProgress - 0.06) * 0.78, 0), 0.88)
-      const targetDrawH = Math.min(Math.max((scrollProgress - 0.1) * 0.68, 0), 0.75)
+      // Tezlashtirildi — ozgina orqada qolmasligi uchun
+      const targetDraw = Math.min(0.08 + scrollProgress * 0.92, 0.98)
+      const targetDraw2 = Math.min(Math.max((scrollProgress - 0.05) * 0.82, 0), 0.9)
+      const targetDrawH = Math.min(Math.max((scrollProgress - 0.08) * 0.72, 0), 0.78)
 
-      currentDraw += (targetDraw - currentDraw) * 0.06
-      currentDraw2 += (targetDraw2 - currentDraw2) * 0.055
-      currentDrawH += (targetDrawH - currentDrawH) * 0.05
+      currentDraw += (targetDraw - currentDraw) * 0.12
+      currentDraw2 += (targetDraw2 - currentDraw2) * 0.11
+      currentDrawH += (targetDrawH - currentDrawH) * 0.1
 
       if (pathRef.current && length > 0) {
         const offset = length * (1 - currentDraw)
         pathRef.current.style.strokeDashoffset = `${offset}`
 
         const baseWidth = 26
-        const extra = Math.abs(velocityRef.current) * 0.22 + currentDraw * 1.5
+        const extra = Math.abs(velocityRef.current) * 0.2 + currentDraw * 1.2
         pathRef.current.setAttribute('stroke-width', `${baseWidth + extra}`)
         pathRef.current.style.opacity = `${0.45 + currentDraw * 0.55}`
 
         const glowIntensity = isScrolling.current ? 0.45 : 0.32
-        pathRef.current.style.filter = `drop-shadow(0 0 ${12 + currentDraw * 10}px rgba(37,99,235,${glowIntensity})) drop-shadow(0 10px 20px rgba(37,99,235,0.32))`
+        pathRef.current.style.filter = `drop-shadow(0 0 ${12 + currentDraw * 8}px rgba(37,99,235,${glowIntensity})) drop-shadow(0 10px 20px rgba(37,99,235,0.32))`
       }
 
       if (path2Ref.current && length2 > 0) {
