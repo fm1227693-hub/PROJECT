@@ -1,7 +1,7 @@
 /**
- * CLEAN LUSION — Exact Homepage 1:1
+ * CLEAN LUSION — Exact Homepage 1:1 + GLOBAL BLUE RIBBON throughout whole site
  * Light #f6f6f8, elastic showreel ribbon 16:7, blue organic spline #2563eb glossy, PLAY REEL magnetic
- * No debug typography, no purple sphere
+ * No debug typography, blue ribbon butun sayt bo'ylab
  */
 
 import { useEffect, useState } from 'react'
@@ -14,6 +14,7 @@ import PortfolioGrid from './components/dom/PortfolioGrid'
 import Preloader from './components/preloader/Preloader'
 import LiquidCursor from './components/ui/LiquidCursor'
 import ElasticShowreel from './components/canvas/ElasticShowreel'
+import GlobalBlueRibbon from './components/canvas/GlobalBlueRibbon'
 
 import useLenisScroller from './hooks/useLenisScroller'
 import usePointerDynamics from './hooks/usePointerDynamics'
@@ -46,13 +47,32 @@ export default function App() {
       <LiquidCursor />
       <Navbar />
 
-      <div className="fixed inset-0 z-0 h-[92vh] pointer-events-none">
+      {/* GLOBAL BLUE RIBBON — butun sayt bo'ylab ko'k lenta, faqat 1 ta qismda emas */}
+      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none">
+        <Canvas
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+          dpr={[1, 2]}
+          camera={{ fov: 38, position: [0, 0, 10], near: 0.1, far: 100 }}
+          style={{ background: 'transparent', width: '100%', height: '100%' }}
+          onCreated={({ gl }) => gl.setClearColor('#f6f6f8', 1)}
+        >
+          <ambientLight intensity={0.9} color="#ffffff" />
+          <directionalLight position={[5, 8, 6]} intensity={1.1} color="#ffffff" />
+          <directionalLight position={[-4, -2, 4]} intensity={0.5} color="#dbeafe" />
+          <Suspense fallback={null}>
+            <GlobalBlueRibbon scrollProgress={scrollProgress} />
+          </Suspense>
+        </Canvas>
+      </div>
+
+      {/* HERO SHOWREEL — rounded frame 16:7 */}
+      <div className="fixed inset-0 z-[1] h-[92vh] pointer-events-none">
         <Canvas
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           dpr={[1, 2]}
           camera={{ fov: 32, position: [0, 0, 7], near: 0.1, far: 100 }}
           style={{ background: 'transparent', width: '100%', height: '100%' }}
-          onCreated={({ gl }) => gl.setClearColor('#f6f6f8', 1)}
+          onCreated={({ gl }) => gl.setClearColor('#f6f6f8', 0)}
         >
           <Suspense fallback={null}>
             <ElasticShowreel scrollProgress={scrollProgress} onHoverChange={setIsHoveringRibbon} />
@@ -64,8 +84,8 @@ export default function App() {
         <HeroContent isHoveringRibbon={isHoveringRibbon} />
         <PortfolioGrid />
 
-        <footer className="bg-[#f6f6f8] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
-          <div>©2026 LUSION® — CLEAN LIGHT • ELASTIC SHOWREEL • BLUE SPLINE #2563eb</div>
+        <footer className="bg-[#f6f6f8]/80 backdrop-blur-[12px] border-t border-black/10 px-6 md:px-8 lg:px-10 py-10 flex flex-col md:flex-row justify-between gap-6 text-[11px] font-mono tracking-[0.15em] text-black/30">
+          <div>©2026 LUSION® — BUTUN SAYT BO'YLAB KO'K LENTA • #2563eb • SCROLL PASTGA/TEPAGA</div>
           <div className="flex gap-6">
             <a href="https://github.com/fm1227693-hub/PROJECT/archive/refs/heads/arena/01a0c8ff-project.zip" className="hover:text-black">
               GITHUB ZIP ↓

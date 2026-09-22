@@ -174,7 +174,11 @@ export default function PortfolioGrid() {
   }
 
   return (
-    <section ref={sectionRef} className="relative z-10 bg-[#f6f6f8] px-6 md:px-8 lg:px-10 py-20 md:py-28">
+    <section ref={sectionRef} className="relative z-10 bg-[#f6f6f8]/75 backdrop-blur-[8px] px-6 md:px-8 lg:px-10 py-20 md:py-28">
+      {/* Subtle hint that blue ribbon is behind throughout */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle at 20% 30%, #2563eb 0%, transparent 50%), radial-gradient(circle at 80% 70%, #2563eb 0%, transparent 50%)`
+      }} />
       <div className="max-w-[1600px] mx-auto">
         {/* Headline Bold Ideas, Brought to Life + right column paragraph */}
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 md:gap-16 items-end mb-16 md:mb-24">
