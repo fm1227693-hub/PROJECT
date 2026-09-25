@@ -15,6 +15,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/Pass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 
   <style>
     /* =====================================================================
@@ -373,6 +380,19 @@
     .services .progress i { display: block; height: 100%; width: 0; background: #fff; }
 
     /* =====================================================================
+       9b. 3D CAROUSEL
+       ===================================================================== */
+    .carousel3d { height: 100vh; position: relative; overflow: hidden; }
+    .carousel3d canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .carousel3d .cap { position: absolute; left: var(--gutter); top: 14vh; z-index: 2; pointer-events: none; }
+    .carousel3d .hint { position: absolute; right: var(--gutter); bottom: 6vh; z-index: 2; color: var(--ink-3); display: flex; align-items: center; gap: 12px; }
+    .carousel3d .hint i { width: 40px; height: 1px; background: var(--ink-3); }
+    .carousel3d .idx { position: absolute; left: var(--gutter); bottom: 6vh; z-index: 2; font-size: 4rem; font-weight: 500; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+    .carousel3d .idx small { font-size: 1rem; color: var(--ink-3); margin-left: 8px; letter-spacing: 0; }
+    .reel-card { transform-style: preserve-3d; }
+    .reel-sec { perspective: 1400px; }
+
+    /* =====================================================================
        10. MARQUEE
        ===================================================================== */
     .marquee { overflow: hidden; padding: 6vh 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
@@ -671,6 +691,13 @@
         </div>
       </section>
 
+      <section class="carousel3d" id="carousel3d">
+        <canvas id="carCanvas"></canvas>
+        <div class="cap"><div class="eyebrow">In motion</div><h2 class="h-xl" style="margin-top: 20px;">Drag. Scroll.<br>Explore.</h2></div>
+        <div class="idx"><span id="carIdx">01</span><small>/ 12</small></div>
+        <div class="hint mono"><i></i>Drag to rotate</div>
+      </section>
+
       <section class="marquee">
         <div class="inner" id="marquee"></div>
       </section>
@@ -924,6 +951,14 @@
         if (lab) cursorLabel.textContent = lab.dataset.cursor;
       });
     }
+    function bindTilt() {
+      if (isTouch) return;
+      document.querySelectorAll('.work-tile .thumb, .member, .lab-tile, .stat, .svc-card').forEach(el => {
+        if (el._tilt) return; el._tilt = true; el.style.transformStyle = 'preserve-3d';
+        el.addEventListener('mousemove', e => { const r = el.getBoundingClientRect(); gsap.to(el, { rotateY: ((e.clientX - r.left) / r.width - 0.5) * 12, rotateX: -((e.clientY - r.top) / r.height - 0.5) * 12, transformPerspective: 900, duration: 0.6, ease: 'power3' }); });
+        el.addEventListener('mouseleave', () => gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.9, ease: 'power3' }));
+      });
+    }
     function bindMagnetic() {
       if (isTouch) return;
       document.querySelectorAll('[data-magnetic]').forEach(el => {
@@ -1092,7 +1127,60 @@
     const dot = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), new THREE.MeshBasicMaterial({ color: 0x0b0b0c }));
     blob.add(dot);
 
+    // --- procedural studio environment (for glass / chrome reflections) ---
+    const envScene = new THREE.Scene();
+    const envMat = new THREE.ShaderMaterial({ side: THREE.BackSide, uniforms: { uTime: { value: 0 } },
+      vertexShader: 'varying vec3 vP; void main(){ vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `varying vec3 vP; uniform float uTime;
+        void main(){ vec3 d = normalize(vP); float up = d.y * 0.5 + 0.5;
+          vec3 col = mix(vec3(0.05, 0.05, 0.07), vec3(0.98, 0.96, 0.92), smoothstep(0.35, 0.95, up));
+          float stripe = smoothstep(0.02, 0.0, abs(d.y - 0.25)) + smoothstep(0.05, 0.0, abs(d.y + 0.1)) * 0.6;
+          col += stripe * vec3(1.2);
+          float a = atan(d.z, d.x);
+          col += smoothstep(0.9, 1.0, sin(a * 3.0 + uTime * 0.2)) * vec3(1.0, 0.35, 0.15) * (1.0 - up) * 0.8;
+          col += smoothstep(0.85, 1.0, sin(a * 2.0 - 1.5)) * vec3(0.3, 0.3, 1.0) * up * 0.5;
+          gl_FragColor = vec4(col, 1.0); }` });
+    envScene.add(new THREE.Mesh(new THREE.SphereGeometry(50, 32, 32), envMat));
+    const envRT = new THREE.WebGLCubeRenderTarget(256, { generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
+    const cubeCam = new THREE.CubeCamera(0.1, 100, envRT);
+    envScene.add(cubeCam); cubeCam.update(renderer, envScene);
+    scene.environment = envRT.texture;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.4); keyLight.position.set(4, 6, 5); scene.add(keyLight);
+    const rimLight = new THREE.PointLight(0xff4d1f, 3, 20); rimLight.position.set(-5, -2, 3); scene.add(rimLight);
+    const coolLight = new THREE.PointLight(0x4f46e5, 2.5, 20); coolLight.position.set(5, 3, -3); scene.add(coolLight);
+
+    // --- glass torus knot + chrome satellites (PBR) ---
+    const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.04, transmission: 1, thickness: 1.6, ior: 1.45, envMapIntensity: 1.4, clearcoat: 1, clearcoatRoughness: 0.05, attenuationColor: new THREE.Color(0xffd9c9), attenuationDistance: 2.5 });
+    const chromeMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.06, envMapIntensity: 1.6 });
+    const orangeMat = new THREE.MeshPhysicalMaterial({ color: 0xff4d1f, metalness: 0.1, roughness: 0.2, clearcoat: 1, clearcoatRoughness: 0.1, envMapIntensity: 1 });
+    const glassKnot = new THREE.Mesh(new THREE.TorusKnotGeometry(1.05, 0.34, 220, 32, 2, 3), glassMat);
+    const orbGroup = new THREE.Group();
+    const sats = [];
+    [[0.42, chromeMat, 2.4, 0.9], [0.26, orangeMat, 3.1, 1.4], [0.18, chromeMat, 2.0, 2.2], [0.3, glassMat, 3.5, 0.6]].forEach(([r, m, rad, sp], i) => {
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 48, 48), m); mesh.userData = { rad, sp, off: i * 1.7, tilt: i * 0.6 }; orbGroup.add(mesh); sats.push(mesh);
+    });
+    const hero3d = new THREE.Group(); hero3d.add(glassKnot, orbGroup); hero3d.position.set(-2.4, -0.3, 0); scene.add(hero3d);
+    const heroState = { scale: 1, rotSpeed: 1 };
+
+    // --- post-processing: bloom + chromatic aberration + vignette ---
+    const composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+    const bloom = new THREE.UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.28, 0.6, 0.86); composer.addPass(bloom);
+    const finalPass = new THREE.ShaderPass({
+      uniforms: { tDiffuse: { value: null }, uAber: { value: 0.0015 }, uTime: { value: 0 }, uDark: { value: 0 } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `uniform sampler2D tDiffuse; uniform float uAber, uTime, uDark; varying vec2 vUv;
+        void main(){ vec2 c = vUv - 0.5; float d = dot(c, c); vec2 off = c * d * uAber * 40.0;
+          float r = texture2D(tDiffuse, vUv + off).r; float g = texture2D(tDiffuse, vUv).g; float b = texture2D(tDiffuse, vUv - off).b;
+          vec3 col = vec3(r, g, b);
+          col *= 1.0 - smoothstep(0.2, 0.9, d) * mix(0.25, 0.6, uDark);
+          gl_FragColor = vec4(col, 1.0); }` });
+    composer.addPass(finalPass);
+
     const clock = new THREE.Clock();
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
     const glState = { scroll: 0, dark: 0, blobVisible: 1 };
     let frames = 0, lastFps = performance.now();
     const fpsBadge = document.getElementById('fpsBadge');
@@ -1117,7 +1205,25 @@
       dot.position.set(Math.cos(t * 0.6) * 2.9, 0, Math.sin(t * 0.6) * 2.9).applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI * 0.42);
       blob.visible = glState.blobVisible > 0.01;
       blob.scale.setScalar(Math.max(0.001, glState.blobVisible));
-      renderer.render(scene, camera);
+
+      // hero 3D group
+      glassKnot.rotation.x = t * 0.25 * heroState.rotSpeed; glassKnot.rotation.y = t * 0.35 * heroState.rotSpeed;
+      sats.forEach(m => { const u = m.userData; const a = t * u.sp * 0.5 + u.off; m.position.set(Math.cos(a) * u.rad, Math.sin(a * 1.3 + u.tilt) * 0.9, Math.sin(a) * u.rad); });
+      orbGroup.rotation.z = Math.sin(t * 0.15) * 0.3;
+      hero3d.scale.setScalar(Math.max(0.001, heroState.scale));
+      hero3d.visible = heroState.scale > 0.01;
+      envMat.uniforms.uTime.value = t; if (Math.floor(t * 10) % 20 === 0) cubeCam.update(renderer, envScene);
+      rimLight.position.set(Math.cos(t * 0.4) * 5, Math.sin(t * 0.3) * 3, 3);
+
+      // camera parallax (mouse) with damping
+      const px = (mouse.tx / innerWidth - 0.5), py = (mouse.ty / innerHeight - 0.5);
+      camera.position.x += ((px * 0.9) - camera.position.x) * 0.04; camera.position.y += ((-py * 0.6) - camera.position.y) * 0.04;
+      camera.lookAt(0, 0, 0);
+
+      finalPass.uniforms.uTime.value = t; finalPass.uniforms.uDark.value = glState.dark;
+      finalPass.uniforms.uAber.value = 0.0012 + Math.min(0.006, Math.abs(lenisVel) * 0.00004);
+      bloom.strength = 0.28 + glState.dark * 0.35;
+      composer.render();
 
       frames++; const now = performance.now();
       if (now - lastFps >= 600) { fpsBadge.textContent = Math.round(frames * 1000 / (now - lastFps)) + ' FPS'; frames = 0; lastFps = now; }
@@ -1126,8 +1232,9 @@
     renderGL();
     window.addEventListener('resize', () => {
       camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth, innerHeight); bgMat.uniforms.uRes.value.set(innerWidth, innerHeight);
+      renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); bgMat.uniforms.uRes.value.set(innerWidth, innerHeight);
     });
+    let lenisVel = 0; lenis.on('scroll', e => { lenisVel = e.velocity || 0; });
 
     /* =====================================================================
        GENERATIVE 2D CANVASES (reel, previews, tiles, lab)
@@ -1282,10 +1389,6 @@
       el.innerHTML = `<canvas></canvas><div class="glow" style="background:${s.col}"></div><div><span class="num">${s.n} / 05</span></div><div><h3>${s.t}</h3><p>${s.d}</p><ul>${s.tags.map(t => `<li>${t}</li>`).join('')}</ul></div>`;
       svcTrack.appendChild(el);
       makeAnim(el.querySelector('canvas'), ['flow', 'wave', 'meta', 'plasma', 'cloth'][i], [s.col, '#ffffff', '#0b0b0c'], { host: el });
-      if (!isTouch) {
-        el.addEventListener('mousemove', e => { const r = el.getBoundingClientRect(); gsap.to(el, { rotateY: ((e.clientX - r.left) / r.width - 0.5) * 10, rotateX: -((e.clientY - r.top) / r.height - 0.5) * 10, duration: 0.6, ease: 'power3', transformPerspective: 900 }); });
-        el.addEventListener('mouseleave', () => gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.8, ease: 'power3' }));
-      }
     });
 
     // Marquee
@@ -1333,6 +1436,57 @@
     });
 
     // Reel canvases
+    /* =====================================================================
+       3D CAROUSEL (ring of generative cards)
+       ===================================================================== */
+    const carCanvas = document.getElementById('carCanvas');
+    const carRenderer = new THREE.WebGLRenderer({ canvas: carCanvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    carRenderer.setPixelRatio(Math.min(devicePixelRatio, 1.75)); carRenderer.setClearColor(0x000000, 0);
+    const carScene = new THREE.Scene(); const carCam = new THREE.PerspectiveCamera(38, 1, 0.1, 100); carCam.position.set(0, 1.2, 11.5);
+    carScene.environment = envRT.texture;
+    carScene.add(new THREE.AmbientLight(0xffffff, 0.8)); const cl = new THREE.DirectionalLight(0xffffff, 1.2); cl.position.set(3, 6, 6); carScene.add(cl);
+    const carRing = new THREE.Group(); carScene.add(carRing);
+    const CAR_N = WORKS.length, CAR_R = 5.6; const carCards = [];
+    WORKS.forEach((w, i) => {
+      const tc = document.createElement('canvas'); tc.width = 512; tc.height = 320; const tex = new THREE.CanvasTexture(tc); tex.anisotropy = 4;
+      const st = {}; const kind = ['blobs', 'wave', 'plasma', 'meta', 'flow', 'fluid'][i % 6]; const ctx = tc.getContext('2d');
+      const mat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.25, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.15, envMapIntensity: 0.8 });
+      const geo = new THREE.BoxGeometry(2.6, 1.625, 0.06, 1, 1, 1); geo.translate(0, 0, 0);
+      const mesh = new THREE.Mesh(geo, [chromeMat, chromeMat, chromeMat, chromeMat, mat, chromeMat]);
+      const a = (i / CAR_N) * Math.PI * 2; mesh.position.set(Math.sin(a) * CAR_R, 0, Math.cos(a) * CAR_R); mesh.rotation.y = a;
+      carRing.add(mesh); carCards.push({ mesh, tc, ctx, tex, st, kind, pal: w.pal, a, t0: Math.random() * 50 });
+    });
+    // floor reflection disc + chrome ring
+    const floor = new THREE.Mesh(new THREE.CircleGeometry(8, 64), new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.9, roughness: 0.35, envMapIntensity: 0.7, transparent: true, opacity: 0.55 }));
+    floor.rotation.x = -Math.PI / 2; floor.position.y = -1.3; carScene.add(floor);
+    const carTorus = new THREE.Mesh(new THREE.TorusGeometry(CAR_R, 0.02, 8, 200), chromeMat); carTorus.rotation.x = Math.PI / 2; carTorus.position.y = -1.25; carScene.add(carTorus);
+    const carState = { rot: 0, target: 0, vel: 0, drag: false, lastX: 0, scrollRot: 0, visible: false };
+    const carHost = document.getElementById('carousel3d');
+    if (carHost) {
+      const down = x => { carState.drag = true; carState.lastX = x; carState.vel = 0; };
+      const move = x => { if (!carState.drag) return; const dx = x - carState.lastX; carState.lastX = x; carState.target += dx * 0.006; carState.vel = dx * 0.006; };
+      const up = () => { carState.drag = false; };
+      carHost.addEventListener('mousedown', e => down(e.clientX)); window.addEventListener('mousemove', e => move(e.clientX)); window.addEventListener('mouseup', up);
+      carHost.addEventListener('touchstart', e => down(e.touches[0].clientX), { passive: true }); carHost.addEventListener('touchmove', e => move(e.touches[0].clientX), { passive: true }); carHost.addEventListener('touchend', up);
+      carHost.dataset.cursor = 'Drag';
+    }
+    const carIdxEl = document.getElementById('carIdx');
+    function renderCarousel(t) {
+      if (!carState.visible) return;
+      const r = carCanvas.getBoundingClientRect(); if (carCanvas.width !== Math.round(r.width * carRenderer.getPixelRatio())) { carRenderer.setSize(r.width, r.height, false); carCam.aspect = r.width / r.height; carCam.updateProjectionMatrix(); }
+      if (!carState.drag) { carState.target += carState.vel; carState.vel *= 0.94; }
+      carState.rot += (carState.target + carState.scrollRot - carState.rot) * 0.08;
+      carRing.rotation.y = carState.rot;
+      carRing.position.y = Math.sin(t * 0.6) * 0.08;
+      carCam.position.x += ((mouse.tx / innerWidth - 0.5) * 1.4 - carCam.position.x) * 0.05; carCam.lookAt(0, 0, 0);
+      // front-facing card index + texture updates (only near-front cards animate)
+      let best = 0, bestZ = -Infinity; const v = new THREE.Vector3();
+      carCards.forEach((c, i) => { c.mesh.getWorldPosition(v); if (v.z > bestZ) { bestZ = v.z; best = i; } const near = v.z > 1.5; if (near || Math.floor(t * 6) % 4 === i % 4) { painters[c.kind](c.ctx, 512, 320, t + c.t0, c.pal, null, c.st); c.tex.needsUpdate = true; } c.mesh.scale.setScalar(THREE.MathUtils.lerp(c.mesh.scale.x, near ? 1.08 : 1, 0.1)); });
+      if (carIdxEl) carIdxEl.textContent = String(best + 1).padStart(2, '0');
+      carRenderer.render(carScene, carCam);
+    }
+    gsap.ticker.add(() => renderCarousel(clock.getElapsedTime()));
+
     const reelCanvas = document.getElementById('reelCanvas'); const reelModalCanvas = document.getElementById('reelModalCanvas');
     const reelAnim = makeAnim(reelCanvas, 'plasma', ['#4f46e5', '#ff4d1f', '#0b0b0c'], { interactive: true });
     const reelModalAnim = makeAnim(reelModalCanvas, 'fluid', ['#ff4d1f', '#4f46e5', '#050505'], { interactive: true }); reelModalAnim.active = false;
@@ -1404,6 +1558,7 @@
 
     function initHome(pageEl) {
       animateIn(pageEl);
+      heroState.scale = 1; hero3d.position.set(-2.4, -0.3, 0); hero3d.rotation.y = 0; glState.blobVisible = 1; blob.position.set(2.6, 0.2, 0);
       // reel expansion (scrubbed, pinned)
       const reelTween = gsap.to('#reelCard', { rotate: 0, scale: 1, width: '94vw', maxWidth: '94vw', borderRadius: '14px', ease: 'power2.inOut', paused: true });
       const reelCta = gsap.to('.reel-cta', { letterSpacing: '0.02em', scale: 1.06, ease: 'power2.inOut', paused: true });
@@ -1445,8 +1600,9 @@
 
     function initSubpage(pageEl, route) {
       animateIn(pageEl);
-      glState.blobVisible = route === '/lab' ? 0 : 1; glState.dark = 0;
+      glState.blobVisible = route === '/lab' ? 0 : 1; glState.dark = 0; carState.visible = false;
       blob.position.set(route === '/contact' ? -2.8 : 2.8, 0.3, 0.5); blobUniforms.uDisp.value = 0.4;
+      heroState.scale = route === '/lab' ? 1.1 : 0.7; hero3d.position.set(route === '/contact' ? 2.6 : (route === '/lab' ? 0 : -2.6), -0.2, route === '/lab' ? -1 : 0.3); hero3d.rotation.y = 0;
       track(ScrollTrigger.create({ trigger: pageEl, start: 'top top', end: 'bottom bottom', scrub: 1.2, onUpdate: s => { glState.scroll = s.progress; blob.position.y = 0.3 + s.progress * 2; blobUniforms.uDisp.value = 0.4 + s.progress * 0.5; } }));
       // tile parallax for grids
       pageEl.querySelectorAll('.work-tile:nth-child(odd) .thumb, .lab-tile:nth-child(3n+1)').forEach(el => track(ScrollTrigger.create({ trigger: el, start: 'top bottom', end: 'bottom top', scrub: 1, onUpdate: s => gsap.set(el, { y: (s.progress - 0.5) * -60 }) })));
@@ -1476,7 +1632,7 @@
       const pageEl = pages.find(p => p.dataset.page === route);
       lenis.scrollTo(0, { immediate: true, force: true }); window.scrollTo(0, 0);
       route === '/' ? initHome(pageEl) : initSubpage(pageEl, route);
-      bindMagnetic(); setNav(route); ScrollTrigger.refresh(); current = route;
+      bindMagnetic(); bindTilt(); setNav(route); ScrollTrigger.refresh(); current = route;
       document.title = (route === '/' ? 'LUSION — Real-time Creative Production Studio' : `${titles[route]} — LUSION`);
     }
     function navigate(route, instant) {
