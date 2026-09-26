@@ -964,7 +964,7 @@
       camera.position.z = camera.aspect < 1 ? 12.6 : 8.8;
       camera.updateProjectionMatrix();
       const halfW = Math.tan((40 * Math.PI / 180) / 2) * camera.position.z * camera.aspect;
-      blobAmpX = Math.max(0.35, Math.min(2.2, halfW - 2.55));
+      blobAmpX = Math.max(0.35, Math.min(2.6, halfW - 2.45));
     }
     fitCamera();
 
@@ -1043,6 +1043,7 @@
     // Butun sahifa bo'ylab uzluksiz harakat drayveri
     const blobDrive = { p: 0, target: 0 };
     let lastScrollY = window.pageYOffset || 0;
+    let scrollKick = 0;
     function scrollProgress() {
       const doc = document.documentElement;
       const max = Math.max(1, doc.scrollHeight - window.innerHeight);
@@ -1058,22 +1059,27 @@
 
       // SCROLL KINEMATIKASI: aylana butun sahifa bo'ylab sayohat qiladi
       const sy = window.pageYOffset || 0;
-      const vel = Math.min(1, Math.abs(sy - lastScrollY) / 45);
+      const dy = Math.max(-80, Math.min(80, sy - lastScrollY));
       lastScrollY = sy;
+      const vel = Math.min(1, Math.abs(dy) / 45);
+      // scroll impulsini: har qanday scroll harakatiga darhol javob
+      scrollKick += dy * 0.010;
+      scrollKick *= 0.90;
       blobDrive.target = scrollProgress();
       blobDrive.p += (blobDrive.target - blobDrive.p) * 0.07;
       const p = blobDrive.p;
       glState.scroll = p;
 
-      blob.position.x = Math.sin(p * Math.PI * 1.7 + 0.4) * blobAmpX;
-      blob.position.y = -0.35 + Math.sin(p * Math.PI * 3.1 + 1.2) * 0.95;
-      blob.position.z = 0.5 + Math.cos(p * Math.PI * 2.3) * 1.0;
-      blobUniforms.uDisp.value = 0.38 + (0.5 + 0.5 * Math.sin(p * Math.PI * 2.7)) * 0.42 + vel * 0.28;
+      // ASOSIY SAYOHAT: o'ngdan chapga (butun sahifa bo'ylab)
+      blob.position.x = (0.5 - p) * 2 * blobAmpX + Math.sin(p * Math.PI * 2.0) * 0.55;
+      blob.position.y = -0.3 + Math.sin(p * Math.PI * 3.0 + 1.2) * 0.95 - Math.abs(scrollKick) * 0.35;
+      blob.position.z = 0.4 + Math.cos(p * Math.PI * 2.0) * 1.0 + vel * 0.5;
+      blobUniforms.uDisp.value = 0.36 + (0.5 + 0.5 * Math.sin(p * Math.PI * 2.6)) * 0.4 + vel * 0.3;
 
-      // sokin, tabiiy aylanish
-      blob.rotation.y += 0.003;
-      blob.rotation.x = p * Math.PI * 1.4;
-      blob.rotation.z = Math.sin(t * 0.2) * 0.12;
+      // aylanish: doimiy + scroll tezligiga bog'liq
+      blob.rotation.y += 0.0035 + p * 0.022 + scrollKick * 0.02;
+      blob.rotation.x = p * Math.PI * 1.4 - scrollKick * 0.05;
+      blob.rotation.z = Math.sin(t * 0.2) * 0.12 + scrollKick * 0.03;
       dust.rotation.y = t * 0.02;
 
       // sichqoncha yo'nalishiga mayin qiyalik
