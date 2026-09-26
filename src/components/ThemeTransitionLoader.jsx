@@ -12,7 +12,7 @@ export default function ThemeTransitionLoader() {
       setIsLoading(true);
       const timer = setTimeout(() => {
         setIsLoading(false);
-      }, 3500);
+      }, 900);
       return () => clearTimeout(timer);
     };
 
@@ -30,7 +30,7 @@ export default function ThemeTransitionLoader() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22, ease: "easeInOut" }}
-          className="fixed inset-0 z-[999999]"
+          className="fixed inset-0 z-[9500]"
         >
           <PremiumLoader 
             loop={false} 

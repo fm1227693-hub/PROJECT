@@ -1,12 +1,87 @@
 <!doctype html>
-<html lang="uz" class="dark scroll-smooth">
+<html lang="uz" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta name="description" content="Optimum School of English - Ingliz tilini noldan mukammallikkacha o'rganing. Professional o'qituvchilar va intensiv kurslar." />
-    <meta name="theme-color" content="#030712" />
+    <meta name="theme-color" content="#08090B" />
     <title>Optimum School of English — Premium Language Learning</title>
+
+    <!-- Design tokens (inline to prevent flash of unstyled content).
+         Keep in sync with the :root / html.dark blocks in src/styles/premium.css. -->
+    <style>
+      :root {
+        --font-display: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+        --bg: #F4F1EB;
+        --bg-elev: #FFFFFF;
+        --bg-elev-2: #EBE7DF;
+        --bg-deep: #0B0C0E;
+
+        --text: #0B0C0E;
+        --text-2: #565A60;
+        --text-3: #8A8E94;
+
+        --line: rgba(11, 12, 14, 0.13);
+        --line-2: rgba(11, 12, 14, 0.24);
+
+        --accent: #D6401F;
+        --accent-2: #B3331A;
+        --accent-soft: rgba(214, 64, 31, 0.10);
+        --accent-line: rgba(214, 64, 31, 0.42);
+        --accent-rgb: 214, 64, 31;
+
+        --shadow-sm: 0 2px 10px -4px rgba(11, 12, 14, 0.18);
+        --shadow-md: 0 24px 60px -34px rgba(11, 12, 14, 0.32);
+        --shadow-lg: 0 40px 120px -60px rgba(11, 12, 14, 0.55);
+
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
+        --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+
+        --gutter: clamp(20px, 4.4vw, 72px);
+        --header-h: 76px;
+        --measure: 1440px;
+
+        --grain-opacity: 0.05;
+
+        color-scheme: light;
+      }
+      html.dark {
+        --bg: #08090B;
+        --bg-elev: #0E1013;
+        --bg-elev-2: #15181D;
+        --bg-deep: #08090B;
+
+        --text: #F2EFE9;
+        --text-2: #A3A6AB;
+        --text-3: #6C6F75;
+
+        --line: rgba(242, 239, 233, 0.11);
+        --line-2: rgba(242, 239, 233, 0.22);
+
+        --accent: #FF5A38;
+        --accent-2: #FF7A5C;
+        --accent-soft: rgba(255, 90, 56, 0.14);
+        --accent-line: rgba(255, 90, 56, 0.45);
+        --accent-rgb: 255, 90, 56;
+
+        --shadow-sm: 0 2px 10px -4px rgba(0, 0, 0, 0.6);
+        --shadow-md: 0 24px 60px -34px rgba(0, 0, 0, 0.8);
+        --shadow-lg: 0 50px 140px -60px rgba(0, 0, 0, 0.92);
+
+        --grain-opacity: 0.07;
+
+        color-scheme: dark;
+      }
+      html, body { background: var(--bg); }
+      body { font-family: var(--font-display); -webkit-font-smoothing: antialiased; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto !important; }
+      }
+    </style>
     
     <!-- Dark mode FOUC oldini olish: React yuklanishidan oldin tema qo'llanadi -->
     <script>
@@ -24,9 +99,11 @@
     <!-- Google Fonts Preconnect & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-white dark:bg-[#030712] text-slate-900 dark:text-slate-100 font-['Merriweather',serif] antialiased selection:bg-red-600 selection:text-white">
+</head>
+<body class="bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[var(--accent)] selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
