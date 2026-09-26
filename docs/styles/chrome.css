@@ -1,0 +1,235 @@
+/* =====================================================================
+   CHROME — preloader, cursor, header, nav, mobile menu, curtain, footer
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1. PRELOADER
+   --------------------------------------------------------------------- */
+.preloader {
+  position: fixed; inset: 0; z-index: var(--z-preloader); background: var(--ink); color: var(--paper);
+  display: flex; flex-direction: column; justify-content: space-between; padding: var(--gutter);
+}
+.preloader .pl-top { display: flex; justify-content: space-between; gap: 20px; }
+.preloader .pl-mid { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; }
+.preloader .pl-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; }
+
+.pl-words {
+  overflow: hidden; height: 1.35em; font-size: clamp(1rem, 1.6vw, 1.3rem); font-weight: 400;
+  text-align: center; color: rgba(239, 237, 232, 0.85);
+}
+.pl-words span { display: block; }
+
+.pl-log { display: flex; flex-direction: column; gap: 5px; align-items: center; min-height: 62px; opacity: 0.5; font-size: 0.6rem; }
+.pl-log li { display: flex; gap: 10px; align-items: center; opacity: 0; transform: translateY(6px); }
+.pl-log li.on { opacity: 1; transform: none; transition: opacity 0.4s, transform 0.5s var(--ease-out); }
+.pl-log li i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
+.pl-log li.done i { background: #34d399; }
+
+.pl-count {
+  font-size: clamp(5rem, 16vw, 15rem); font-weight: 500; letter-spacing: -0.06em; line-height: 0.82;
+  font-variant-numeric: tabular-nums; display: flex; align-items: flex-start;
+}
+.pl-count sup { font-size: 0.16em; font-weight: 400; opacity: 0.5; margin-top: 0.9em; letter-spacing: 0; }
+.pl-bar { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: rgba(255, 255, 255, 0.1); }
+.pl-bar i { display: block; height: 100%; width: 0%; background: var(--paper); }
+.pl-bar i::after { content: ""; position: absolute; right: 0; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* ---------------------------------------------------------------------
+   2. CURSOR
+   --------------------------------------------------------------------- */
+.cursor {
+  position: fixed; top: 0; left: 0; z-index: var(--z-cursor); pointer-events: none;
+  width: 10px; height: 10px; border-radius: 50%; background: #fff;
+  mix-blend-mode: difference; will-change: transform;
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: calc(var(--z-cursor) - 1); pointer-events: none;
+  width: 42px; height: 42px; mix-blend-mode: difference; will-change: transform;
+  display: flex; align-items: center; justify-content: center;
+  transition: width 0.45s var(--ease-out), height 0.45s var(--ease-out), opacity 0.3s;
+}
+/* the visible ring lives on ::before so GSAP can own the element transform
+   (position) while JS drives stretch/rotation through custom properties */
+.cursor-ring::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.9); background: transparent;
+  transform: rotate(var(--crot, 0deg)) scale(var(--csx, 1), var(--csy, 1));
+  transition: background 0.45s var(--ease-out), border-color 0.35s;
+}
+.cursor-ring span {
+  position: relative; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #fff; opacity: 0; transform: scale(0.6);
+  transition: opacity 0.3s, transform 0.45s var(--ease-out);
+}
+body.cursor-hover .cursor-ring { width: 68px; height: 68px; }
+body.cursor-hover .cursor-ring::before { background: rgba(255, 255, 255, 0.1); }
+body.cursor-label .cursor-ring { width: 96px; height: 96px; }
+body.cursor-label .cursor-ring::before { background: #fff; border-color: #fff; }
+body.cursor-label .cursor-ring span { opacity: 1; transform: scale(1); color: #000; }
+body.cursor-label .cursor { opacity: 0; }
+body.cursor-drag .cursor-ring { width: 112px; height: 112px; }
+body.cursor-drag .cursor-ring::before { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.6); }
+body.cursor-hidden .cursor, body.cursor-hidden .cursor-ring { opacity: 0; }
+/* hidden until the cursor controller is alive (and gone on touch) */
+.cursor { opacity: 0; transition: opacity 0.3s; }
+.cursor-ring { opacity: 0; }
+body.has-cursor .cursor, body.has-cursor .cursor-ring { opacity: 1; }
+body.cursor-hidden .cursor, body.cursor-hidden .cursor-ring { opacity: 0; }
+@media (hover: none), (pointer: coarse) { .cursor, .cursor-ring { display: none !important; } }
+
+/* ---------------------------------------------------------------------
+   3. HEADER / NAV / MENU
+   --------------------------------------------------------------------- */
+header.site-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-h); z-index: var(--z-header);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--gutter); pointer-events: none;
+  transition: transform 0.6s var(--ease-out);
+}
+header.site-header.hidden { transform: translateY(-115%); }
+header.site-header > * { pointer-events: auto; }
+
+.logo { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1.05rem; letter-spacing: -0.02em; }
+.logo-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--ink); position: relative; overflow: hidden; }
+.logo-mark::after {
+  content: ""; position: absolute; inset: 7px; border-radius: 50%; background: var(--paper);
+  transform-origin: center; animation: logoPulse 4.5s var(--ease-in-out) infinite;
+}
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1) translate(0, 0); border-radius: 50%; }
+  50% { transform: scale(0.78) translate(16%, -16%); border-radius: 30%; }
+}
+
+.nav-pill {
+  display: flex; align-items: center; gap: 2px; padding: 5px; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--line);
+  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  position: relative;
+}
+.nav-pill a {
+  position: relative; z-index: 1; padding: 9px 18px; border-radius: 999px;
+  font-size: 0.85rem; font-weight: 500; color: var(--ink-2); transition: color 0.35s;
+}
+.nav-pill a.active { color: var(--paper); }
+.nav-pill .nav-glider {
+  position: absolute; top: 5px; left: 5px; height: calc(100% - 10px); width: 0; border-radius: 999px;
+  background: var(--ink); z-index: 0;
+  transition: transform 0.65s var(--ease-out), width 0.65s var(--ease-out);
+}
+.header-right { display: flex; align-items: center; gap: 10px; }
+.btn-pill.fps { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; padding: 11px 15px; font-variant-numeric: tabular-nums; }
+.btn-pill.fps.warn { border-color: var(--accent); color: var(--accent); }
+
+.menu-btn { display: none; width: 46px; height: 46px; border-radius: 50%; background: var(--ink); position: relative; }
+.menu-btn i { position: absolute; left: 14px; width: 18px; height: 1.5px; background: var(--paper); transition: transform 0.5s var(--ease-out), top 0.5s var(--ease-out); }
+.menu-btn i:nth-child(1) { top: 19px; }
+.menu-btn i:nth-child(2) { top: 26px; }
+body.menu-open .menu-btn i:nth-child(1) { top: 22px; transform: rotate(45deg); }
+body.menu-open .menu-btn i:nth-child(2) { top: 22px; transform: rotate(-45deg); }
+
+.menu-overlay {
+  position: fixed; inset: 0; z-index: var(--z-menu); background: var(--ink); color: var(--paper);
+  clip-path: inset(0 0 100% 0); transition: clip-path 0.9s var(--ease-in-out);
+  display: flex; flex-direction: column; justify-content: center; padding: 0 var(--gutter);
+}
+body.menu-open .menu-overlay { clip-path: inset(0 0 0 0); }
+.menu-overlay li a {
+  display: flex; align-items: baseline; gap: 20px; font-size: clamp(3rem, 11vw, 7rem);
+  font-weight: 500; letter-spacing: -0.05em; line-height: 1; padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: padding-left 0.5s var(--ease-out), color 0.4s;
+}
+.menu-overlay li a:hover { padding-left: 18px; color: var(--accent); }
+.menu-overlay li a small { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; opacity: 0.5; }
+.menu-foot { display: flex; justify-content: space-between; margin-top: 6vh; opacity: 0.5; font-size: 0.64rem; }
+
+/* ---------------------------------------------------------------------
+   4. CURTAIN (route transition)
+   --------------------------------------------------------------------- */
+.curtain { position: fixed; inset: 0; z-index: var(--z-curtain); pointer-events: none; }
+.curtain .c { position: absolute; left: 0; width: 100%; height: 100%; top: 0; background: var(--ink); transform: scaleY(0); transform-origin: bottom; }
+.curtain .c2 { background: var(--accent); }
+.curtain .label {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  color: var(--paper); font-size: clamp(2rem, 6vw, 5rem); font-weight: 500; letter-spacing: -0.05em; opacity: 0;
+}
+.curtain .idx { position: absolute; left: 50%; top: calc(50% + clamp(2.4rem, 6vw, 5rem)); transform: translateX(-50%); color: rgba(239, 237, 232, 0.5); opacity: 0; letter-spacing: 0.3em; }
+
+/* ---------------------------------------------------------------------
+   5. FOOTER
+   --------------------------------------------------------------------- */
+footer {
+  background: var(--ink); color: var(--paper); padding: 10vh 0 32px;
+  position: relative; z-index: var(--z-main); overflow: hidden;
+}
+footer .cols { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 8vh; border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+footer h5 { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.5; margin-bottom: 20px; }
+footer li { margin-bottom: 10px; }
+footer li a { position: relative; display: inline-block; }
+footer li a::after {
+  content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-out);
+}
+footer li a:hover::after { transform: scaleX(1); transform-origin: left; }
+footer .news { display: flex; border-bottom: 1px solid rgba(255, 255, 255, 0.3); max-width: 360px; margin-top: 20px; }
+footer .news input { flex: 1; background: none; border: 0; color: #fff; padding: 12px 0; font: inherit; outline: none; }
+footer .news button { color: #fff; padding: 0 6px; transition: transform 0.4s var(--ease-out); }
+footer .news button:hover { transform: translateX(4px); }
+footer .giant {
+  font-size: clamp(4rem, 19vw, 21rem); font-weight: 600; letter-spacing: -0.07em; line-height: 0.8;
+  margin: 8vh 0 6vh; opacity: 0.95; perspective: 800px; display: flex; flex-wrap: wrap;
+}
+footer .giant span { display: inline-block; will-change: transform; transform-origin: 50% 100%; }
+footer .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; opacity: 0.55; }
+footer .bottom .mono { font-size: 0.66rem; }
+
+/* ---------------------------------------------------------------------
+   6. REEL MODAL
+   --------------------------------------------------------------------- */
+.reel-modal { position: fixed; inset: 0; z-index: var(--z-modal); background: #000; display: none; align-items: center; justify-content: center; }
+.reel-modal.open { display: flex; }
+.reel-modal canvas { width: 100%; height: 100%; object-fit: cover; }
+.reel-modal .close { position: absolute; top: 24px; right: 24px; color: #fff; background: rgba(255, 255, 255, 0.1); padding: 12px 20px; border-radius: 999px; backdrop-filter: blur(8px); transition: background 0.3s; }
+.reel-modal .close:hover { background: rgba(255, 255, 255, 0.22); }
+.reel-modal-meta { position: absolute; top: 30px; left: 28px; color: rgba(255, 255, 255, 0.6); display: flex; gap: 22px; }
+.reel-modal .progress { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: rgba(255, 255, 255, 0.15); }
+.reel-modal .progress i { display: block; height: 100%; width: 0; background: #fff; }
+
+/* ---------------------------------------------------------------------
+   7. WORK HOVER PREVIEW — layered, physical panel
+   --------------------------------------------------------------------- */
+.work-preview {
+  position: fixed; top: 0; left: 0; width: 360px; aspect-ratio: 4 / 3;
+  pointer-events: none; z-index: var(--z-preview); opacity: 0;
+  transform-style: preserve-3d; perspective: 900px; will-change: transform, opacity;
+}
+/* GSAP owns .work-preview (position) and .pv-stack (scale + velocity tilt) */
+.work-preview .pv-stack {
+  position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform;
+  transform: scale(0.72);
+}
+.work-preview .pv-depth {
+  position: absolute; inset: -8%; border-radius: 22px; filter: blur(22px) saturate(1.3); opacity: 0.75;
+  transform: translateZ(-60px) scale(1.04); will-change: transform;
+}
+.work-preview .pv {
+  position: absolute; inset: 0; border-radius: 14px; overflow: hidden; opacity: 0;
+  transform: scale(0.94); transition: opacity 0.45s var(--ease-out), transform 0.7s var(--ease-out);
+  box-shadow: 0 40px 90px -34px rgba(0, 0, 0, 0.75); background: #0b0b0c;
+}
+.work-preview .pv.on { opacity: 1; transform: scale(1); }
+.work-preview .pv canvas { width: 100%; height: 100%; display: block; }
+.work-preview .pv::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.22) 46%, transparent 58%),
+    radial-gradient(120% 90% at 50% 0%, transparent 40%, rgba(0, 0, 0, 0.42));
+  mix-blend-mode: screen; opacity: 0.6;
+}
+.work-preview .pv-grain {
+  position: absolute; inset: 0; opacity: 0.16; mix-blend-mode: overlay; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+}
+.work-preview .pv-cap {
+  position: absolute; left: 14px; bottom: 12px; z-index: 2; color: #fff; font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85;
+}

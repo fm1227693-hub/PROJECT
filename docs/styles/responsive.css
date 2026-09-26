@@ -1,0 +1,123 @@
+/* =====================================================================
+   RESPONSIVE — desktop is the flagship, mobile is its own design
+   ===================================================================== */
+
+/* ---------- large desktops: give the world more air ---------- */
+@media (min-width: 1600px) {
+  :root { --gutter: 84px; }
+  .hero-h { font-size: clamp(4rem, 10.4vw, 15rem); }
+  .work-preview { width: 420px; }
+}
+
+/* ---------- laptop / small desktop ---------- */
+@media (max-width: 1280px) {
+  .work-row { grid-template-columns: 50px 1fr 0.9fr 90px; gap: 18px; }
+  .value-row { grid-template-columns: 60px 1fr 1fr; }
+  .value-row .v-vis { display: none; }
+}
+
+/* ---------- tablet ---------- */
+@media (max-width: 1024px) {
+  :root { --header-h: 76px; }
+  .stats .grid { grid-template-columns: repeat(2, 1fr); }
+  .team .grid { grid-template-columns: repeat(2, 1fr); }
+  .lab-grid { grid-template-columns: repeat(2, 1fr); }
+  footer .cols { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .phi-grid { grid-template-columns: 1fr; }
+  .phi-sticky { position: static; }
+  .manifesto .grid { grid-template-columns: 1fr; gap: 34px; }
+  .hero-top { grid-template-columns: 1fr; gap: 30px; }
+  .tl-row { grid-template-columns: 100px 1fr; }
+  .tl-row .t-vis { display: none; }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .work-preview { width: 300px; }
+  .sec-indicator { display: none; }
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 820px) {
+  :root { --header-h: 70px; --sec-pad: 9vh; }
+
+  .nav-pill { display: none; }
+  .menu-btn { display: block; }
+  .header-right .btn-pill:not(.menu-btn) { display: none; }
+
+  .hero-h { font-size: clamp(2.9rem, 14.5vw, 5.6rem); }
+  .hero-top { margin-bottom: 5vh; }
+  .hero-foot { flex-direction: column; align-items: flex-start; gap: 20px; }
+
+  .reel-card { width: 90vw; border-radius: 18px; }
+  .reel-side { display: none; }
+  .reel-meta, .reel-tc { font-size: 0.56rem; left: 18px; right: 18px; bottom: 18px; }
+  .reel-tc { left: auto; }
+
+  .manifesto { padding: 14vh 0; }
+  .manifesto p.words { font-size: clamp(1.5rem, 6.4vw, 2.4rem); }
+
+  .work-row { grid-template-columns: 36px 1fr; padding: 24px 0; }
+  .work-row .w-tags, .work-row .w-year { display: none; }
+  .work-row:hover .w-title { transform: translateX(10px); }
+  .work-preview { display: none; }
+
+  .svc-card { flex: 0 0 82vw; aspect-ratio: 4 / 5.2; padding: 24px; border-radius: 18px; }
+  .services .track { gap: 16px; margin-top: 4vh; }
+  .svc-head { flex-direction: column; align-items: flex-start; }
+
+  .carousel-pin { padding-top: calc(var(--header-h) + 2vh); }
+  .car-meta { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .car-dots { bottom: 6vh; }
+
+  .marquee .item { font-size: clamp(2.4rem, 12vw, 4rem); }
+
+  .stats .grid { grid-template-columns: 1fr; }
+  .stat { padding: 28px 22px; }
+
+  .award-row { grid-template-columns: 1fr auto; gap: 8px 16px; }
+  .award-row .a-org { grid-column: 1 / -1; }
+  .award-row .a-year { display: none; }
+  .award-row .a-count { font-size: 1.4rem; }
+
+  .cta { border-radius: 26px 26px 0 0; padding: 12vh 0 8vh; }
+  .cta .big { font-size: clamp(2.8rem, 13.5vw, 5rem); }
+  .cta .row { margin-top: 5vh; }
+  .btn-huge { padding: 18px 28px; font-size: 1rem; width: 100%; justify-content: space-between; }
+
+  .page-hero { min-height: 84svh; }
+  .page-hero .meta { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .h-display { font-size: clamp(2.6rem, 12vw, 4.4rem); }
+
+  .work-grid { grid-template-columns: 1fr; gap: 40px; }
+  .work-tile:nth-child(n) { margin-top: 0; }
+
+  .lab-grid { grid-template-columns: 1fr; }
+  .lab-tile:nth-child(n) { transform: none !important; aspect-ratio: 4 / 3; }
+
+  .value-row { grid-template-columns: 40px 1fr; padding: 28px 0; }
+  .value-row p { grid-column: 2; }
+  .team .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .phi-strip { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .phi-strip figure:nth-child(2) { transform: none; }
+
+  footer .cols { grid-template-columns: 1fr; gap: 32px; }
+  footer .giant { font-size: clamp(3.4rem, 20vw, 8rem); margin: 5vh 0 4vh; }
+
+  .sec-head { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .menu-overlay li a { font-size: clamp(2.4rem, 12vw, 4rem); }
+}
+
+/* ---------- very small ---------- */
+@media (max-width: 420px) {
+  .hero-tags { gap: 14px; font-size: 0.6rem; }
+  .stat .n { font-size: 2.8rem; }
+  .team .grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- reduced motion: keep the story, drop the theatrics ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; opacity: 0.03; }
+  .logo-mark::after, .eyebrow::before, .scroll-cue .pill::after { animation: none; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* ---------- print / no-js safety ---------- */
+html.no-js .preloader { display: none; }
