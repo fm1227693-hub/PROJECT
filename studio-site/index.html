@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUSION — Real-time Creative Production Studio</title>
+  <meta name="description" content="Lusion is an independent creative production studio crafting real-time 3D, WebGL and interactive experiences for the world's most ambitious brands.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Existing engine stack (kept): GSAP + ScrollTrigger + Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+  <!-- Three.js r185 as ES modules (core + addons). Same-origin fallbacks are procedural. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/chrome.css">
+  <link rel="stylesheet" href="styles/home.css">
+  <link rel="stylesheet" href="styles/pages.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+
+  <script>
+    /* Boot flags — run before anything paints so the preloader is honest and instant. */
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('booting');
+      window.__LUSION_BOOT__ = {
+        t0: performance.now(),
+        touch: window.matchMedia('(hover: none), (pointer: coarse)').matches,
+        reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        webgl: (function () {
+          try {
+            var c = document.createElement('canvas');
+            return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
+          } catch (e) { return false; }
+        })(),
+        cores: navigator.hardwareConcurrency || 4,
+        mem: navigator.deviceMemory || 4
+      };
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- =====================================================================
+       PRELOADER — real, weighted asset/task progress (never faked)
+       ===================================================================== -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="pl-top">
+      <span class="mono">Lusion — Creative Production</span>
+      <span class="mono" id="plStage">Booting engine</span>
+    </div>
+
+    <div class="pl-mid">
+      <div class="pl-words" id="plWords">
+        <span>Real-time 3D</span><span>Interactive design</span><span>Motion craft</span><span>Sensory web</span>
+      </div>
+      <ul class="pl-log mono" id="plLog"></ul>
+    </div>
+
+    <div class="pl-bottom">
+      <span class="mono">Bristol · London · Remote</span>
+      <div class="pl-count"><span id="plCount">0</span><sup>%</sup></div>
+    </div>
+    <div class="pl-bar"><i id="plBar"></i></div>
+  </div>
+
+  <!-- ROUTE TRANSITION CURTAIN -->
+  <div class="curtain" id="curtain" aria-hidden="true">
+    <div class="c c2"></div>
+    <div class="c c1"></div>
+    <div class="label" id="curtainLabel">Work</div>
+    <div class="idx mono" id="curtainIndex">02</div>
+  </div>
+
+  <!-- WEBGL WORLD -->
+  <canvas id="gl"></canvas>
+  <div class="grain" id="grain"></div>
+  <div class="scanline" id="scanline" aria-hidden="true"></div>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"><span id="cursorLabel">View</span></div>
+
+  <!-- SCROLL PROGRESS + SECTION INDICATOR -->
+  <div class="scroll-progress" id="scrollProgress"><i></i></div>
+  <div class="sec-indicator mono" id="secIndicator" aria-hidden="true">
+    <span id="secIndex">01</span><em>/</em><span id="secTotal">10</span><b id="secName">Hero</b>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header" id="header">
+    <a href="#/" class="logo" data-route="/">
+      <span class="logo-mark"></span>
+      <span>Lusion</span>
+    </a>
+    <nav class="nav-pill" id="navPill">
+      <span class="nav-glider" id="navGlider"></span>
+      <a href="#/" data-route="/">Home</a>
+      <a href="#/about" data-route="/about">About</a>
+      <a href="#/work" data-route="/work">Work</a>
+      <a href="#/lab" data-route="/lab">Lab</a>
+      <a href="#/contact" data-route="/contact">Contact</a>
+    </nav>
+    <div class="header-right">
+      <span class="btn-pill ghost fps" id="fpsBadge" title="Measured frame rate">–– FPS</span>
+      <a href="#/contact" class="btn-pill" data-route="/contact" data-magnetic>
+        <span class="dot"></span>
+        <span class="btn-label"><span>Let's talk</span><span>Let's talk</span></span>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><i></i><i></i></button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="menu-overlay" id="menuOverlay">
+    <ul>
+      <li><a href="#/" data-route="/"><small>01</small>Home</a></li>
+      <li><a href="#/about" data-route="/about"><small>02</small>About</a></li>
+      <li><a href="#/work" data-route="/work"><small>03</small>Work</a></li>
+      <li><a href="#/lab" data-route="/lab"><small>04</small>Lab</a></li>
+      <li><a href="#/contact" data-route="/contact"><small>05</small>Contact</a></li>
+    </ul>
+    <div class="menu-foot mono"><span>hello@lusion.co</span><span id="menuClock">00:00:00 GMT</span></div>
+  </div>
+
+  <main id="main">
+
+    <!-- ================================================================
+         PAGE: HOME
+         ================================================================ -->
+    <div class="page" data-page="/">
+
+      <section class="hero wrap" data-section="hero" data-sec-name="Hero">
+        <div class="hero-top">
+          <div class="eyebrow" data-reveal>Independent studio — est. 2018</div>
+          <p class="lead" data-reveal="words">We help brands and agencies craft real-time, sensory digital experiences that people remember — from first frame to final pixel.</p>
+        </div>
+        <h1 class="hero-h" id="heroTitle" data-reveal="lines">
+          <span class="line"><span>Shaping the</span></span>
+          <span class="line"><span><span class="it">future</span> of</span></span>
+          <span class="line"><span>digital <span class="sm">®</span>craft</span></span>
+        </h1>
+        <div class="hero-foot">
+          <div class="mono hero-tags"><span>WebGL</span><span>Real-time 3D</span><span>Motion</span><span>Interaction</span></div>
+          <div class="scroll-cue"><span class="pill"></span><span class="mono">Scroll to enter</span></div>
+        </div>
+      </section>
+
+      <section class="reel-sec" id="reelSec" data-section="reel" data-sec-name="Reel">
+        <div class="reel-card" id="reelCard" data-cursor="Play">
+          <canvas id="reelCanvas"></canvas>
+          <div class="reel-grade"></div>
+          <div class="reel-bars"><i></i><i></i></div>
+          <div class="marks"><i></i><i></i><i></i><i></i></div>
+          <div class="reel-cta"><span>PLAY</span><button class="reel-play" id="reelPlay" aria-label="Play showreel"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><span>REEL</span></div>
+          <div class="reel-meta mono"><span>Showreel '26</span><span>01:48</span><span>4K · 60fps</span></div>
+          <div class="reel-tc mono" id="reelTc">00:00:00:00</div>
+        </div>
+        <div class="reel-side mono"><span>Portal</span><span id="reelPct">0%</span></div>
+      </section>
+
+      <section class="manifesto wrap" data-section="manifesto" data-sec-name="Manifesto">
+        <div class="grid">
+          <div>
+            <div class="eyebrow" data-reveal>Manifesto</div>
+            <div class="manifesto-count mono"><span id="manIdx">00</span>/<span id="manTotal">00</span></div>
+          </div>
+          <p class="words" id="manifesto">We believe the browser is the most powerful creative canvas of our time. <span class="hl">Every pixel</span> we ship is rendered in real time, reacts to the person in front of it, and feels <span class="hl">alive.</span> No pre-rendered tricks. No compromises. Just craft, physics and care — at <span class="hl">frame-perfect speed.</span></p>
+        </div>
+      </section>
+
+      <section class="works wrap" data-section="works" data-sec-name="Work">
+        <div class="sec-head">
+          <div>
+            <div class="eyebrow" data-reveal>Selected work</div>
+            <h2 class="h-xl" data-reveal="mask" style="margin-top: 20px;"><span class="line"><span>Featured projects</span></span></h2>
+          </div>
+          <a href="#/work" data-route="/work" class="btn-pill ghost" data-magnetic><span class="btn-label"><span>All work</span><span>All work</span></span></a>
+        </div>
+        <div class="work-list" id="workList"></div>
+      </section>
+
+      <section class="services" id="services" data-section="services" data-sec-name="Services">
+        <div class="services-pin">
+          <div class="wrap svc-head">
+            <div><div class="eyebrow" data-reveal>What we do</div>
+              <h2 class="h-xl" style="margin-top: 20px; max-width: 900px;">Full-stack creative production, from concept to code.</h2>
+            </div>
+            <div class="svc-index mono"><span id="svcIndex">01</span><em>/</em><span>05</span></div>
+          </div>
+          <div class="track" id="svcTrack"></div>
+          <div class="progress"><i id="svcProgress"></i></div>
+        </div>
+      </section>
+
+      <section class="carousel-sec" id="carouselSec" data-section="carousel" data-sec-name="Carousel">
+        <div class="carousel-pin">
+          <div class="carousel-stage" id="carouselStage" data-cursor="Drag"></div>
+          <div class="carousel-hud wrap">
+            <div class="eyebrow light" data-reveal>Object theatre</div>
+            <div class="car-meta">
+              <div>
+                <b id="carTitle">Aero Dispersion</b>
+                <small class="mono" id="carClient">Nike — 2025</small>
+              </div>
+              <div class="car-count mono"><span id="carIndex">01</span><em>/</em><span id="carTotal">09</span></div>
+            </div>
+            <div class="car-hint mono">Drag · Scroll · Release</div>
+          </div>
+          <div class="car-dots" id="carDots"></div>
+        </div>
+      </section>
+
+      <section class="marquee" data-section="marquee" data-sec-name="Marquee">
+        <div class="inner" id="marquee"></div>
+      </section>
+
+      <section class="stats wrap" data-section="stats" data-sec-name="Numbers">
+        <div class="grid">
+          <div class="stat"><div class="n"><span data-count="120">0</span><sup>+</sup></div><div class="l">Projects delivered for global brands</div></div>
+          <div class="stat"><div class="n"><span data-count="64">0</span></div><div class="l">International awards &amp; honours</div></div>
+          <div class="stat"><div class="n"><span data-count="18">0</span></div><div class="l">Multidisciplinary team members</div></div>
+          <div class="stat"><div class="n"><span data-count="120">0</span><sup>fps</sup></div><div class="l">The frame budget we engineer every build towards</div><div class="live mono">measured now: <b id="statFps">––</b></div></div>
+        </div>
+      </section>
+
+      <section class="awards wrap" data-section="awards" data-sec-name="Recognition">
+        <div class="sec-head">
+          <div class="eyebrow" data-reveal>Recognition</div>
+          <div class="mono" style="color: var(--ink-3);">2019 — 2026</div>
+        </div>
+        <div id="awardList"></div>
+      </section>
+
+      <section class="cta wrap" data-section="cta" data-sec-name="Contact">
+        <h2 class="big" data-reveal="chars"><span class="line"><span>Have an idea?</span></span><span class="line"><span>Let's <em>make</em> it real.</span></span></h2>
+        <div class="row">
+          <p data-reveal="words">We partner with brands, agencies and startups who want to push what's possible on the web. Tell us about your project.</p>
+          <a href="#/contact" data-route="/contact" class="btn-huge" data-magnetic>Start a project <span class="arrow">↗</span></a>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================================================================
+         PAGE: ABOUT
+         ================================================================ -->
+    <div class="page" data-page="/about">
+      <section class="page-hero wrap about-hero" data-section="about-hero" data-sec-name="Studio">
+        <div class="eyebrow" data-reveal>About the studio</div>
+        <h1 class="h-display about-title" id="aboutTitle" data-reveal="chars">
+          <span class="line"><span>Curious minds,</span></span>
+          <span class="line"><span>obsessive <i>makers</i></span></span>
+        </h1>
+        <div class="meta">
+          <p class="lead" data-reveal="words">Lusion is an independent creative production studio. We blend design, technology and storytelling into immersive real-time experiences — built by a small team of designers, engineers and 3D artists.</p>
+          <div class="mono meta-locs"><span>Bristol</span><span>London</span><span>Worldwide</span></div>
+        </div>
+      </section>
+
+      <section class="philosophy wrap" data-section="philosophy" data-sec-name="Philosophy">
+        <div class="phi-grid">
+          <div class="phi-sticky">
+            <div class="eyebrow" data-reveal>Philosophy</div>
+            <h2 class="h-lg" data-reveal="lines" style="margin-top: 20px;"><span class="line"><span>The screen is</span></span><span class="line"><span>a room you walk</span></span><span class="line"><span>into.</span></span></h2>
+          </div>
+          <div class="phi-body">
+            <p class="lead" data-reveal="words">We build experiences that behave like physical spaces. Light has weight. Type has depth. Motion has consequence. Every scroll is an input, not a page turn.</p>
+            <p class="lead muted" data-reveal="words">Our pipeline is deliberately small: a designer, an engineer and a 3D artist on every project from day one. No handoffs, no loss of intent, no compromise between the render and the release.</p>
+            <div class="phi-strip" id="phiStrip"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-values wrap" data-section="values" data-sec-name="Values">
+        <div class="eyebrow" data-reveal style="margin-bottom: 40px;">What drives us</div>
+        <div id="valuesList"></div>
+      </section>
+
+      <section class="team wrap" data-section="team" data-sec-name="Team">
+        <div class="sec-head">
+          <div><div class="eyebrow" data-reveal>The team</div><h2 class="h-xl" data-reveal="mask" style="margin-top: 20px;"><span class="line"><span>Small crew, big canvas.</span></span></h2></div>
+          <div class="mono" style="color: var(--ink-3);">18 people · 9 countries</div>
+        </div>
+        <div class="grid" id="teamGrid"></div>
+      </section>
+
+      <section class="timeline wrap" id="timelineSec" data-section="timeline" data-sec-name="Journey">
+        <div class="tl-head">
+          <div class="eyebrow" data-reveal>Journey</div>
+          <div class="tl-year mono" id="tlYear">2018</div>
+        </div>
+        <div class="tl-track" id="tlTrack">
+          <div class="tl-line"><i id="tlLineFill"></i></div>
+          <div class="tl-rows" id="tlRows"></div>
+        </div>
+      </section>
+
+      <section class="brands wrap" data-section="brands" data-sec-name="Brands">
+        <div class="eyebrow" data-reveal style="margin-bottom: 30px;">Selected partners</div>
+        <div class="brand-marquee"><div class="brand-inner" id="brandInner"></div></div>
+      </section>
+
+      <section class="cta wrap" data-section="about-cta" data-sec-name="Contact">
+        <h2 class="big" data-reveal="chars"><span class="line"><span>Want to work</span></span><span class="line"><span>with <em>us?</em></span></span></h2>
+        <div class="row">
+          <p data-reveal="words">We take on a limited number of projects each year so every one gets the attention it deserves.</p>
+          <a href="#/contact" data-route="/contact" class="btn-huge" data-magnetic>Start a project <span class="arrow">↗</span></a>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================================================================
+         PAGE: WORK
+         ================================================================ -->
+    <div class="page" data-page="/work">
+      <section class="page-hero wrap" data-section="work-hero" data-sec-name="Index">
+        <div class="eyebrow" data-reveal>Selected work</div>
+        <h1 class="h-display" data-reveal="chars" style="margin-top: 24px;"><span class="line"><span>Work that</span></span><span class="line"><span>moves people</span></span></h1>
+        <div class="meta">
+          <p class="lead" data-reveal="words">A selection of launches, campaigns and platforms we've produced with ambitious partners — each one engineered to feel effortless.</p>
+          <span class="mono" style="color: var(--ink-3);" id="workCount">12 projects</span>
+        </div>
+      </section>
+      <section class="wrap" data-section="work-grid" data-sec-name="Projects">
+        <div class="filters" id="filters">
+          <button class="on" data-f="all">All</button>
+          <button data-f="webgl">WebGL</button>
+          <button data-f="3d">3D &amp; Motion</button>
+          <button data-f="product">Product</button>
+          <button data-f="campaign">Campaign</button>
+        </div>
+        <div class="work-grid" id="workGrid"></div>
+      </section>
+      <section class="cta wrap" data-section="work-cta" data-sec-name="Contact">
+        <h2 class="big" data-reveal="chars"><span class="line"><span>Your project</span></span><span class="line"><span>could be <em>next.</em></span></span></h2>
+        <div class="row">
+          <p data-reveal="words">Tell us what you're building. We'll tell you honestly whether we're the right studio for it.</p>
+          <a href="#/contact" data-route="/contact" class="btn-huge" data-magnetic>Start a project <span class="arrow">↗</span></a>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================================================================
+         PAGE: LAB
+         ================================================================ -->
+    <div class="page" data-page="/lab">
+      <section class="page-hero wrap" data-section="lab-hero" data-sec-name="Lab">
+        <div class="eyebrow" data-reveal>Lusion Labs</div>
+        <h1 class="h-display" data-reveal="chars" style="margin-top: 24px;"><span class="line"><span>Experiments</span></span><span class="line"><span>in <i>motion</i></span></span></h1>
+        <div class="meta">
+          <p class="lead" data-reveal="words">Our R&amp;D playground. Prototypes, shaders and physics toys — live, generative and running on your GPU right now. Hover to interact.</p>
+          <span class="mono" style="color: var(--ink-3);">Updated weekly</span>
+        </div>
+      </section>
+      <section class="wrap" data-section="lab-grid" data-sec-name="Experiments">
+        <div class="lab-grid" id="labGrid"></div>
+        <div class="lab-note mono"><span>Every tile is a different algorithm</span><span id="labFps">–– fps</span></div>
+      </section>
+    </div>
+
+    <!-- ================================================================
+         PAGE: CONTACT
+         ================================================================ -->
+    <div class="page" data-page="/contact">
+      <section class="page-hero wrap contact-hero" data-section="contact-hero" data-sec-name="Contact">
+        <div class="eyebrow" data-reveal>Contact</div>
+        <h1 class="h-display" data-reveal="chars" style="margin-top: 24px;"><span class="line"><span>Let's build</span></span><span class="line"><span>something <i>new</i></span></span></h1>
+      </section>
+      <section class="wrap contact-grid" data-section="contact-form" data-sec-name="Brief">
+        <form id="contactForm" novalidate>
+          <div class="field"><input type="text" id="fName" placeholder=" " required autocomplete="name"><label for="fName">Your name</label><span class="bar"></span></div>
+          <div class="field"><input type="email" id="fEmail" placeholder=" " required autocomplete="email"><label for="fEmail">Email address</label><span class="bar"></span></div>
+          <div class="field"><input type="text" id="fCompany" placeholder=" " autocomplete="organization"><label for="fCompany">Company / brand</label><span class="bar"></span></div>
+          <div class="mono budget-label">Budget range</div>
+          <div class="budget" id="budget"><button type="button">€25–50k</button><button type="button" class="on">€50–100k</button><button type="button">€100–250k</button><button type="button">€250k+</button></div>
+          <div class="field"><textarea id="fMsg" rows="3" placeholder=" " required></textarea><label for="fMsg">Tell us about the project</label><span class="bar"></span></div>
+          <button type="submit" class="btn-huge" id="submitBtn" data-magnetic data-cursor="Send">Send message <span class="arrow">↗</span></button>
+        </form>
+        <div class="form-ok" id="formOk"><div class="eyebrow" style="color: rgba(255,255,255,0.6);">Received</div><h3 class="h-lg" style="margin: 16px 0;">Thanks — we'll be in touch within 48 hours.</h3><p style="opacity: 0.6;">Meanwhile, explore the Lab or follow along on social.</p></div>
+        <aside class="contact-side">
+          <div class="block"><span class="mono">New business</span><a href="mailto:hello@lusion.co" data-cursor="Open">hello@lusion.co</a></div>
+          <div class="block"><span class="mono">Careers</span><a href="mailto:jobs@lusion.co" data-cursor="Open">jobs@lusion.co</a></div>
+          <div class="block"><span class="mono">Studio</span><a href="#" data-cursor="Open">Unit 3, Paintworks, Bristol BS4 3EH</a></div>
+          <div class="block"><span class="mono">Local time (GMT)</span><div class="clock" id="clock">00:00:00</div></div>
+        </aside>
+      </section>
+    </div>
+
+  </main>
+
+  <footer id="footer">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <h5>Newsletter</h5>
+          <p style="opacity: 0.7; max-width: 340px; line-height: 1.55;">Occasional notes on real-time graphics, process and new experiments. No spam.</p>
+          <div class="news"><input type="email" placeholder="your@email.com" aria-label="Email for newsletter"><button aria-label="Subscribe">→</button></div>
+        </div>
+        <div><h5>Studio</h5><ul><li><a href="#/about" data-route="/about">About</a></li><li><a href="#/work" data-route="/work">Work</a></li><li><a href="#/lab" data-route="/lab">Lab</a></li><li><a href="#/contact" data-route="/contact">Contact</a></li></ul></div>
+        <div><h5>Social</h5><ul><li><a href="#">Instagram</a></li><li><a href="#">X / Twitter</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Behance</a></li></ul></div>
+        <div><h5>Contact</h5><ul><li><a href="mailto:hello@lusion.co">hello@lusion.co</a></li><li><a href="#">+44 117 000 0000</a></li><li><a href="#">Bristol, UK</a></li></ul></div>
+      </div>
+      <div class="giant" id="giant"><span>L</span><span>U</span><span>S</span><span>I</span><span>O</span><span>N</span></div>
+      <div class="bottom">
+        <span class="mono">© 2026 Lusion Ltd. All rights reserved.</span>
+        <span class="mono" id="footTech">Real-time · WebGL · three r185</span>
+        <span class="mono"><a href="#">Privacy</a> · <a href="#">Cookies</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- REEL MODAL -->
+  <div class="reel-modal" id="reelModal" role="dialog" aria-label="Showreel">
+    <canvas id="reelModalCanvas"></canvas>
+    <button class="close mono" id="reelClose">Close ✕</button>
+    <div class="reel-modal-meta mono"><span>Showreel '26</span><span id="reelModalTc">00:00</span></div>
+    <div class="progress"><i id="reelProg"></i></div>
+  </div>
+
+  <!-- WORK HOVER PREVIEW -->
+  <div class="work-preview" id="workPreview"></div>
+
+  <noscript>
+    <div style="position:fixed;inset:0;z-index:99999;background:#0b0b0c;color:#efede8;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;font-family:sans-serif">
+      This experience needs JavaScript and WebGL enabled.
+    </div>
+  </noscript>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
