@@ -147,7 +147,7 @@ export default function Products() {
 
     // Index qiymatini xatosiz saqlab turish uchun ref
     const indexRef = useRef(currentIndex);
-    indexRef.current = currentIndex;
+    useEffect(() => { indexRef.current = currentIndex; }, [currentIndex]);
 
     const triggerAnimation = (newIndex) => {
         if (newIndex === indexRef.current) return;

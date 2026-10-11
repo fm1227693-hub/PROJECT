@@ -24,7 +24,8 @@ export default function Pricing() {
     const levelLabel = location.state?.levelLabel || null
     const matchedPlan = levelKey ? getPlanForLevel(levelKey) : null
 
-    
+    const [selectedFilter, setSelectedFilter] = React.useState('all');
+    const filteredPlans = selectedFilter === 'all' ? PLANS : PLANS.filter(p => p.id === selectedFilter);
 
     const contactTelegram = (planId) => {
         const text = encodeURIComponent(
@@ -45,11 +46,11 @@ export default function Pricing() {
 
 
 
-                <div data-aos="fade-up" data-aos-duration="700" className="text-center max-w-2xl mx-auto mb-10 xs:mb-14">
+                <div data-aos="fade-up" data-aos-duration="700" className="text-center max-w-2xl mx-auto mb-8 xs:mb-10">
                     <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-500/10 px-3 py-1 rounded-full inline-block border border-red-500/20 shadow-sm">
                         {t('pricing.badge') || 'Natijaga erishish'}
                     </span>
-                    <h2 className="text-2xl xs:text-3xl md:text-4xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight">
+                    <h2 className="text-2xl xs:text-3xl md:text-4xl font-black text-gray-900 dark:text-white mt-3 xs:mt-4 tracking-tight font-heading">
                         {t('pricing.title') || "O'zingizga mos kursni tanlang"}
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300 mt-2.5 xs:mt-3 font-medium text-xs xs:text-sm md:text-base px-2">
@@ -70,11 +71,36 @@ export default function Pricing() {
                             </span>
                         </div>
                     )}
+
+                    {/* Filter buttons */}
+                    <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+                        {['all', 'basic', 'standard', 'advanced'].map((filterId) => (
+                            <button
+                                key={filterId}
+                                onClick={() => setSelectedFilter(filterId)}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                                    selectedFilter === filterId
+                                        ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
+                                        : 'bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:border-red-500/40'
+                                }`}
+                            >
+                                {filterId === 'all'
+                                    ? "Barcha tariflar"
+                                    : filterId === 'basic'
+                                    ? "Boshlang'ich (500k)"
+                                    : filterId === 'standard'
+                                    ? "O'rta bosqich (600k)"
+                                    : "Yuqori daraja (700k)"}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-6">
-                    {PLANS.map((plan, idx) => {
+                    {filteredPlans.map((plan, idx) => {
                         const isMatched = matchedPlan?.id === plan.id
+
                         return (
                             <div
                                 key={plan.id}

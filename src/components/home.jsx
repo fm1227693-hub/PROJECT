@@ -12,16 +12,23 @@ import {
     FaGraduationCap,
     FaLaptopCode,
     FaLayerGroup,
-    FaUsers
+    FaUsers,
+    FaCompass,
+    FaBookOpen
 } from 'react-icons/fa';
+import CourseFinderModal from './CourseFinderModal';
+import DailyPracticeModal from './DailyPracticeModal';
 
 import './home.css';
 
 export default function Home() {
     const { t } = useTranslation()
+    const [isFinderOpen, setIsFinderOpen] = useState(false);
+    const [isPracticeOpen, setIsPracticeOpen] = useState(false);
 
     // 3D Deck Tilt state for interactive mouse hover
     const [transformStyle, setTransformStyle] = useState('rotateX(0deg) rotateY(0deg)')
+
 
     const handleMouseMove = (e) => {
         const card = e.currentTarget
@@ -83,25 +90,40 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 lg:gap-5 pt-4 pb-2 w-full">
                         <Link
                             to="/form"
-                            className="relative group w-full sm:w-auto px-10 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.4)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.6)] transition-all duration-300 flex items-center justify-center gap-2.5 text-[15px] lg:text-[16px] cursor-pointer hover:-translate-y-1 active:scale-95 overflow-hidden border border-red-400/40"
+                            className="relative group w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.4)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.6)] transition-all duration-300 flex items-center justify-center gap-2.5 text-[15px] lg:text-[16px] cursor-pointer hover:-translate-y-0.5 active:scale-95 overflow-hidden border border-red-400/40"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
                             <span className="relative z-10 whitespace-nowrap">{t('home.enrollBtn', 'Bepul sinov darsi')}</span>
                             <FaArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform shrink-0" />
                         </Link>
                         
-                        <Link
-                            to="/about"
-                            className="w-full sm:w-auto px-10 py-3.5 bg-white/80 dark:bg-slate-900/60 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-900 dark:text-white font-bold rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-red-500/30 dark:hover:border-red-500/50 shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-300 text-[15px] lg:text-[16px] text-center cursor-pointer hover:-translate-y-1 active:scale-95 backdrop-blur-md flex items-center justify-center whitespace-nowrap"
+                        <button
+                            type="button"
+                            onClick={() => setIsFinderOpen(true)}
+                            className="w-full sm:w-auto px-7 py-3.5 bg-white/80 dark:bg-slate-900/60 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-900 dark:text-white font-bold rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-red-500/50 shadow-sm transition-all duration-300 text-[15px] lg:text-[16px] text-center cursor-pointer hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
                         >
-                            {t('home.moreInfoBtn', "Batafsil ma'lumot")}
-                        </Link>
+                            <FaCompass className="text-red-500 w-4 h-4" />
+                            <span>{t('home.findCourseBtn', 'Kurs tanlash')}</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setIsPracticeOpen(true)}
+                            className="w-full sm:w-auto px-5 py-3.5 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-bold rounded-2xl border border-red-500/20 hover:border-red-500/40 transition-all duration-300 text-[14px] lg:text-[15px] text-center cursor-pointer hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
+                            title="Kun so'zi va lug'at amaliyoti"
+                        >
+                            <FaBookOpen className="w-4 h-4 text-red-500" />
+                            <span>{t('home.dailyWordBtn', 'Kun so‘zi')}</span>
+                        </button>
                     </div>
 
-
+                    {/* Modals */}
+                    <CourseFinderModal isOpen={isFinderOpen} onClose={() => setIsFinderOpen(false)} />
+                    <DailyPracticeModal isOpen={isPracticeOpen} onClose={() => setIsPracticeOpen(false)} />
                 </div>
 
                 {/* Right — Desktop only */}
+
                 <div
                     data-aos="fade-left"
                     data-aos-duration="900"

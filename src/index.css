@@ -2,18 +2,40 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --brand-red: #C82032;
+  --brand-red-deep: #981B2B;
+  --brand-red-bright: #E33A4B;
+  --brand-red-soft: #FFF0F1;
+}
+
 @layer base {
   html {
-    font-family: 'Merriweather', serif;
+    font-family: var(--font-body);
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, .font-heading {
-    font-family: 'Merriweather', serif;
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 /* Custom Luxury Scrollbar */
+
 
 ::-webkit-scrollbar {
   width: 8px;

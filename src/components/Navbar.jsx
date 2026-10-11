@@ -38,21 +38,16 @@ export default function Navbar() {
     })
 
     const Theme = () => {
-        // Trigger synthetic theme transition loading screen
-        window.dispatchEvent(new CustomEvent('trigger-theme-transition'));
-
-        // Flip theme mode cleanly behind the loading overlay
-        setTimeout(() => {
-            const nextState = !dark;
-            isDark(nextState);
-            localStorage.setItem('theme', nextState);
-            if (nextState) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }, 180);
+        const nextState = !dark;
+        isDark(nextState);
+        localStorage.setItem('theme', nextState);
+        if (nextState) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     }
+
 
     useEffect(() => {
         // useState lazy initializer allaqachon state ni o'rnatdi,
@@ -111,7 +106,7 @@ export default function Navbar() {
 
     const currentLang = LANGS[i18n.language]?.short ? i18n.language : 'en'
 
-    const LanguageSelector = ({ align = 'right', large = false }) => (
+    const renderLanguageSelector = (align = 'right', large = false) => (
         <div className="relative w-full" ref={langRef}>
             <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -330,7 +325,7 @@ export default function Navbar() {
 
                     <div className="flex items-center gap-2.5 shrink-0">
                         <div className="hidden md:block">
-                            <LanguageSelector />
+                            {renderLanguageSelector()}
                         </div>
 
                         {/* Theme Toggle (Hidden on Mobile, visible on Desktop) */}
@@ -523,7 +518,7 @@ export default function Navbar() {
 
                             {/* Bottom Actions */}
                             <div className="px-6 py-6 border-t border-black/[0.05] dark:border-white/[0.08] flex flex-col gap-4 bg-gray-50/50 dark:bg-white/[0.02]">
-                                <LanguageSelector align="left" large />
+                                {renderLanguageSelector('left', true)}
                                 <Link
                                     to="/form"
                                     onClick={() => setMenuOpen(false)}

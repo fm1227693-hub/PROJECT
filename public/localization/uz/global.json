@@ -224,7 +224,9 @@
         "moreInfoBtn": "Batafsil ma'lumot",
         "modernAtmosphere": "Zamonaviy Muhit",
         "interactiveClasses": "Interaktiv Darslar",
-        "speakingClubs": "Suhbat Klublari"
+        "speakingClubs": "Suhbat Klublari",
+        "findCourseBtn": "Kurs tanlash",
+        "dailyWordBtn": "Kun so‘zi"
     },
     "mentors": {
         "sectionTitle": "Bizning tajribali mentorlarimiz",

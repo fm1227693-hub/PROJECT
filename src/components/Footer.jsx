@@ -50,7 +50,7 @@ export default function Footer() {
         },
     ]
 
-    const FooterSection = ({ title, children, noBorder }) => (
+    const renderFooterSection = (title, children, noBorder = false) => (
         <div className={`pb-6 ${noBorder ? '' : 'border-b border-gray-100 dark:border-gray-800'} sm:border-none sm:pb-0`}>
             <h4 className="text-sm font-extrabold text-gray-950 dark:text-white uppercase tracking-wider mb-4 px-1 sm:px-0">
                 {title}
@@ -97,7 +97,7 @@ export default function Footer() {
                 </div>
 
                 {/* 2. Tezkor havolalar (4 ta) */}
-                <FooterSection title={t('footer.quickLinks')}>
+                {renderFooterSection(t('footer.quickLinks'), (<>
                     {quickLinks.map((link) => (
                         <Link
                             key={link.to}
@@ -107,10 +107,10 @@ export default function Footer() {
                             {link.label}
                         </Link>
                     ))}
-                </FooterSection>
+                </>))}
 
                 {/* 3. Aloqa maʼlumotlari */}
-                <FooterSection title={t('footer.contactTitle')}>
+                {renderFooterSection(t('footer.contactTitle'), (<>
                     <a 
                         href="https://www.google.com/maps/search/?api=1&query=Premier+School,+Namozgoh+St,+Bukhara"
                         target="_blank"
@@ -129,10 +129,10 @@ export default function Footer() {
                         <FaPhoneAlt className="text-red-600 dark:text-red-400 shrink-0 text-xs" />
                         <span className="text-sm font-medium tracking-wide">+998 90 082 99 79</span>
                     </a>
-                </FooterSection>
+                </>))}
 
                 {/* 4. Ish vaqti */}
-                <FooterSection title={t('footer.hoursTitle')} noBorder>
+                {renderFooterSection(t('footer.hoursTitle'), (<>
                     <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 px-3 py-1 rounded-2xl sm:rounded-full border border-gray-100 dark:border-gray-800 w-fit">
                         <FaClock className="text-red-600 dark:text-red-400 shrink-0 text-sm" />
                         <div className="flex flex-col sm:flex-row sm:gap-3">
@@ -144,7 +144,7 @@ export default function Footer() {
                             </span>
                         </div>
                     </div>
-                </FooterSection>
+                </>))}
 
             </div>
 

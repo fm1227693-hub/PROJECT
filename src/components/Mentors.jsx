@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaCheckCircle } from 'react-icons/fa';
 import { IMaskInput } from 'react-imask';
 
 const staticMentorsData = [

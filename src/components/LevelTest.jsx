@@ -97,7 +97,16 @@ export default function LevelTest() {
 
     
 
-    useEffect(() => {
+        const handleAutoFinish = useCallback(() => {
+        setFinished(true)
+        toast.error(t('levelTest.timeUp') || "Vaqt tugadi!", {
+            id: 'time-up',
+            position: 'top-center',
+            duration: 3000,
+        })
+    }, [t])
+
+useEffect(() => {
         if (stage !== 'test' || finished) return
         timerRef.current = setInterval(() => {
             setTimeLeft((prev) => {
@@ -131,16 +140,7 @@ export default function LevelTest() {
         }
     }, [stage])
 
-    const handleAutoFinish = useCallback(() => {
-        setFinished(true)
-        toast.error(t('levelTest.timeUp') || "Vaqt tugadi!", {
-            id: 'time-up',
-            position: 'top-center',
-            duration: 3000,
-        })
-    }, [t])
-
-    const startTest = () => {
+        const startTest = () => {
         setStage('test')
         setCurrent(0)
         setAnswers({})
@@ -226,7 +226,7 @@ export default function LevelTest() {
         }
     }
 
-    const ExitBtn = () => (
+    const renderExitBtn = () => (
         <button
             onClick={handleExit}
             className="fixed top-6 right-6 sm:top-8 sm:right-8 z-50 inline-flex items-center justify-center px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-lg shadow-red-500/30 transition-all cursor-pointer hover:shadow-xl active:scale-95 border border-red-500/50"
@@ -293,7 +293,7 @@ export default function LevelTest() {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 relative overflow-hidden font-['Merriweather',serif]">
                 <Toaster position="top-center" />
-                <ExitBtn />
+                {renderExitBtn()}
 
                 <div
                     data-aos="zoom-in"
@@ -361,7 +361,7 @@ export default function LevelTest() {
         return (
             <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Merriweather',serif]">
                 <Toaster position="top-center" />
-                <ExitBtn />
+                {renderExitBtn()}
 
                 <div
                     data-aos="zoom-in"
@@ -395,7 +395,7 @@ export default function LevelTest() {
     return (
         <div className="min-h-screen flex items-center justify-center px-3 xs:px-4 pt-16 xs:pt-20 pb-8 xs:pb-12 transition-colors duration-200 font-['Merriweather',serif]">
             <Toaster position="top-center" />
-            <ExitBtn />
+            {renderExitBtn()}
             <div
                 data-aos="fade-up"
                 data-aos-duration="500"

@@ -7,7 +7,7 @@ export default function BackgroundCanvas() {
     const cameraRef = useRef(null);
     const rendererRef = useRef(null);
     const timeRef = useRef(0);
-    const lastTimeRef = useRef(performance.now());
+    const lastTimeRef = useRef(0);
     const sparkParticlesRef = useRef(null);
     const sparkDataRef = useRef([]);
     const shaderUniformsRef = useRef(null);

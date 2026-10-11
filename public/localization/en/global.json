@@ -130,7 +130,9 @@
         "moreInfoBtn": "Learn more",
         "modernAtmosphere": "Modern Atmosphere",
         "interactiveClasses": "Interactive Classes",
-        "speakingClubs": "Speaking Clubs"
+        "speakingClubs": "Speaking Clubs",
+        "findCourseBtn": "Course Finder",
+        "dailyWordBtn": "Word of Day"
     },
     "mentors": {
         "sectionTitle": "Our Experienced Mentors",

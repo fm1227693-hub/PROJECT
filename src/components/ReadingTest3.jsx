@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import CdiReadingLayout from "./CdiReadingLayout";
 import { readingTest3Answers as answerKey, passageTest3_1 as passage1, passageTest3_2 as passage2, passageTest3_3 as passage3 } from "../data/readingTest3";
 
 export default function ReadingTest3({ onExit }) {

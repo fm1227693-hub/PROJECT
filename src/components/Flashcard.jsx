@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   HiOutlineAcademicCap, 
   HiOutlineBriefcase, 
@@ -127,6 +128,7 @@ const wordCategories = [
 ];
 
 export default function Flashcards() {
+  const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);

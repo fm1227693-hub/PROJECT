@@ -88,7 +88,9 @@
         "moreInfoBtn": "Подробнее",
         "modernAtmosphere": "Современная атмосфера",
         "interactiveClasses": "Интерактивные занятия",
-        "speakingClubs": "Разговорные клубы"
+        "speakingClubs": "Разговорные клубы",
+        "findCourseBtn": "Подбор курса",
+        "dailyWordBtn": "Слово дня"
     },
     "mentors": {
         "sectionTitle": "Наши опытные менторы",

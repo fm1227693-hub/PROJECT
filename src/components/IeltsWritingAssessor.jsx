@@ -404,7 +404,7 @@ Rules:
 
                 let responseText = response.data.candidates[0].content.parts[0].text;
                 if (responseText.startsWith('```json')) {
-                    responseText = responseText.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
+                    responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
                 }
 
                 parsedResult = JSON.parse(responseText);

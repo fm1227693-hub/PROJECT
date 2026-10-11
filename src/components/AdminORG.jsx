@@ -8,7 +8,74 @@ import {
     FaCheckCircle, FaTimesCircle, FaUsers, FaTrash, FaHeadset, 
     FaChevronDown, FaUserShield, FaClipboardList, FaProjectDiagram, 
     FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope, FaUserEdit, FaUserPlus, FaCamera, FaPen, FaUserCircle, FaUser, FaUserGraduate, FaRegMoon, FaRegSun, FaTimes
-} from 'react-icons/fa'
+} from 'react-icons/fa';
+function SidebarItem({ icon, label, isActive, onClick }) {
+    return (
+        <button
+            onClick={onClick}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-bold ${isActive
+                    ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/20'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
+                }`}
+        >
+            <span className="text-lg shrink-0">{icon}</span>
+            <span className="truncate">{label}</span>
+        </button>
+    );
+}
+
+function AdminLanguageDropdown({ isMobile, i18n, setIsMobileMenuOpen }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const langs = {
+        uz: "O'zbekcha",
+        ru: "Русский",
+        en: "English"
+    };
+    const currentLang = i18n.language || 'en';
+
+    return (
+        <div className={`relative ${isMobile ? 'w-full' : 'w-36 hidden sm:block shrink-0'}`} ref={dropdownRef}>
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={`flex items-center justify-between w-full px-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-900 dark:text-white transition-all hover:border-red-500/50 shadow-sm ${isMobile ? 'py-3' : 'py-2.5 h-10'}`}
+            >
+                <span>{langs[currentLang] || langs['uz']}</span>
+                <FaChevronDown className={`text-[10px] opacity-70 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <div 
+                className={`absolute ${isMobile ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 right-0 origin-top'} w-full bg-white dark:bg-[#0a0f1c] border border-gray-100 dark:border-gray-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-50 flex flex-col p-1 gap-0.5 transition-all duration-200 ease-out ${isOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto visible' : 'opacity-0 scale-95 pointer-events-none invisible'} ${isOpen ? '' : isMobile ? 'translate-y-2' : '-translate-y-2'}`}
+            >
+                {Object.entries(langs).map(([code, label]) => (
+                    <button
+                        key={code}
+                        onClick={() => {
+                            i18n.changeLanguage(code);
+                            setIsOpen(false);
+                            if (isMobile) setIsMobileMenuOpen(false);
+                        }}
+                        className={`px-3 py-2.5 rounded-lg text-sm font-bold text-left transition-all ${currentLang === code ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-md shadow-red-600/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
+                    >
+                        {label}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
@@ -92,58 +159,7 @@ export default function AdminORG() {
     const [currentView, setCurrentView] = useState('month')
     const [currentDate, setCurrentDate] = useState(new Date())
 
-    const LanguageDropdown = ({ isMobile }) => {
-        const [isOpen, setIsOpen] = useState(false);
-        const dropdownRef = useRef(null);
-
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                    setIsOpen(false);
-                }
-            };
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, []);
-
-        const langs = {
-            uz: "O'zbekcha",
-            ru: "Русский",
-            en: "English"
-        };
-        const currentLang = i18n.language || 'en';
-
-        return (
-            <div className={`relative ${isMobile ? 'w-full' : 'w-36 hidden sm:block shrink-0'}`} ref={dropdownRef}>
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className={`flex items-center justify-between w-full px-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-bold text-gray-900 dark:text-white transition-all hover:border-red-500/50 shadow-sm ${isMobile ? 'py-3' : 'py-2.5 h-10'}`}
-                >
-                    <span>{langs[currentLang] || langs['uz']}</span>
-                    <FaChevronDown className={`text-[10px] opacity-70 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-                </button>
-                <div 
-                    className={`absolute ${isMobile ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 right-0 origin-top'} w-full bg-white dark:bg-[#0a0f1c] border border-gray-100 dark:border-gray-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-50 flex flex-col p-1 gap-0.5 transition-all duration-200 ease-out ${isOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto visible' : 'opacity-0 scale-95 pointer-events-none invisible'} ${isOpen ? '' : isMobile ? 'translate-y-2' : '-translate-y-2'}`}
-                >
-                    {Object.entries(langs).map(([code, label]) => (
-                        <button
-                            key={code}
-                            onClick={() => {
-                                i18n.changeLanguage(code);
-                                setIsOpen(false);
-                                if (isMobile) setIsMobileMenuOpen(false);
-                            }}
-                            className={`px-3 py-2.5 rounded-lg text-sm font-bold text-left transition-all ${currentLang === code ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white shadow-md shadow-red-600/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'}`}
-                        >
-                            {label}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        )
-    }
-
-    const [groups, setGroups] = useState([])
+        const [groups, setGroups] = useState([])
     const [loadingGroups, setLoadingGroups] = useState(false)
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
     const [editingGroupId, setEditingGroupId] = useState(null)
@@ -317,11 +333,11 @@ const loadSchedules = async () => {
             localStorage.setItem('admin_schedules', '[]')
         } else {
             const stored = JSON.parse(localStorage.getItem('admin_schedules') || '[]')
-            setSchedules(safeParse(stored))
+            setSchedules((Array.isArray(stored) ? stored : []))
         }
     } catch (e) {
         const stored = JSON.parse(localStorage.getItem('admin_schedules') || '[]')
-        setSchedules(safeParse(stored))
+        setSchedules((Array.isArray(stored) ? stored : []))
     } finally {
         setLoadingSchedules(false)
     }
@@ -703,20 +719,8 @@ const getTranslatedType = (type) => {
     return type;
 };
 
-const SidebarItem = ({ icon, label, isActive, onClick }) => (
-    <button
-        onClick={onClick}
-        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-bold ${isActive
-                ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/20'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white'
-            }`}
-    >
-        <span className="text-lg shrink-0">{icon}</span>
-        <span className="truncate">{label}</span>
-    </button>
-)
 
-const StatCard = ({ value, label }) => (
+const renderStatCard = (value, label) => (
     <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 shadow-sm flex flex-col justify-center space-y-2 hover:border-red-500/30 transition-colors">
         <span className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">{value}</span>
         <span className="text-xs md:text-sm font-semibold text-gray-500 dark:text-gray-400">{label}</span>
@@ -763,7 +767,7 @@ return (
                     <SidebarItem icon={<FaUserGraduate />} label={t('adminDashboard.studentsTab')} isActive={activeTab === 'students'} onClick={() => { setActiveTab('students'); setIsMobileMenuOpen(false); }} />
                     <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 space-y-2">
                         <div className="lg:hidden">
-                            <LanguageDropdown isMobile={true} />
+                            <AdminLanguageDropdown isMobile={true} i18n={i18n} setIsMobileMenuOpen={setIsMobileMenuOpen} />
                         </div>
 
                         <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-rose-600 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 transition-colors font-bold text-sm">
@@ -805,7 +809,7 @@ return (
                     </h1>
                 </div>
                 <div className="flex items-center gap-3">
-                    <LanguageDropdown isMobile={false} />
+                    <AdminLanguageDropdown isMobile={false} i18n={i18n} setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
                     <button onClick={Theme} className="hidden lg:flex w-10 h-10 items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors border border-gray-200 dark:border-gray-700 shrink-0">
                         {dark ? <FaRegSun className="text-lg" /> : <FaRegMoon className="text-lg" />}
@@ -824,16 +828,16 @@ return (
                         {/* 4 Stats Cards */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                             <div onClick={() => setStatusFilter('Kutilmoqda')} className={`cursor-pointer transition-all ${statusFilter === 'Kutilmoqda' ? 'ring-2 ring-amber-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
-                                <StatCard value={pendingCount} label={t('adminPanel.pending', "Kutilmoqda")} />
+                                {renderStatCard(pendingCount, t('adminPanel.pending', 'Kutilmoqda'))}
                             </div>
                             <div onClick={() => setStatusFilter('all')} className={`cursor-pointer transition-all ${statusFilter === 'all' ? 'ring-2 ring-red-500 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
-                                <StatCard value={totalCount} label={t('adminPanel.totalLeads', "Jami Murojaatlar")} />
+                                {renderStatCard(totalCount, t('adminPanel.totalLeads', 'Jami Murojaatlar'))}
                             </div>
                             <div onClick={() => setStatusFilter('Qabul qilindi')} className={`cursor-pointer transition-all ${statusFilter === 'Qabul qilindi' ? 'ring-2 ring-emerald-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
-                                <StatCard value={acceptedCount} label={t('adminPanel.accepted', "Qabul Qilindi")} />
+                                {renderStatCard(acceptedCount, t('adminPanel.accepted', 'Qabul Qilindi'))}
                             </div>
                             <div onClick={() => setStatusFilter('Rad etildi')} className={`cursor-pointer transition-all ${statusFilter === 'Rad etildi' ? 'ring-2 ring-rose-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
-                                <StatCard value={rejectedCount} label={t('adminPanel.rejected', "Rad Etildi")} />
+                                {renderStatCard(rejectedCount, t('adminPanel.rejected', 'Rad Etildi'))}
                             </div>
                         </div>
 
