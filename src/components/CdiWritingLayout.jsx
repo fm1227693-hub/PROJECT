@@ -45,14 +45,15 @@ export default function CdiWritingLayout({
   }, [timeLeft, isPaused, analysisResult]);
 
   const toggleDarkMode = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
-    } else {
+    const nextDark = !isDarkMode;
+    if (nextDark) {
       document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
+      localStorage.setItem('theme', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'false');
     }
-    setIsDarkMode(!isDarkMode);
+    setIsDarkMode(nextDark);
   };
 
   const formatTime = (seconds) => {

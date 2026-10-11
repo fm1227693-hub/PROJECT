@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { 
@@ -9,227 +9,183 @@ import {
     HiPhone,
     HiExternalLink
 } from 'react-icons/hi'
+import { FaGraduationCap, FaShieldAlt, FaAward, FaUsers } from 'react-icons/fa'
 
-// Rasmda ko'rsatilgan Premier School manzili uchun doimiy (constant) ma'lumotlar
 const FIXED_LOCATION = {
-    embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3071.0124155!2d64.410986!3d39.7647863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f5007c3f9d243a7%3A0x3c52dea5c997b375!2sPremier%20School!5e0!3m2!1suz!2suz!4v1650000000000!5m2!1suz!2suz",
-    addressText: "Namozgoh St, Bukhara",
+    addressText: "Buxoro sh., Namozgoh ko‘chasi, Premier School binosi",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Premier+School,+Namozgoh+St,+Bukhara"
 }
 
 export default function AboutUs() {
     const { t } = useTranslation()
 
-    
+    const principles = [
+        {
+            id: 1,
+            icon: <HiLightningBolt className="w-6 h-6 text-red-600 dark:text-red-400" />,
+            title: t('aboutUs.card1Title', "Intensiv va Aniq Metodika"),
+            desc: t('aboutUs.card1Desc', "Har bir dars amaliy ko'nikmaga yo'naltirilgan. Ortiqcha nazariyasiz, to'g'ridan-to'g'ri natijaga eltuvchi Cambridge tizimi."),
+            tag: t('aboutUs.card1Tag', "METODIKA")
+        },
+        {
+            id: 2,
+            icon: <HiCheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />,
+            title: t('aboutUs.card2Title', "CDI Mock va Tizimli Nazorat"),
+            desc: t('aboutUs.card2Desc', "Real kompyuter imtihoni muhiti, muntazam diagnostika va o'quvchining har bir xatosini individual tahlil qilish."),
+            tag: t('aboutUs.card2Tag', "CDI TIZIMI")
+        },
+        {
+            id: 3,
+            icon: <HiSparkles className="w-6 h-6 text-amber-500" />,
+            title: t('aboutUs.card3Title', "AI Integratsiyasi va Tahlil"),
+            desc: t('aboutUs.card3Desc', "IELTS Writing insholarini sun'iy intellekt orqali soniyalar ichida tekshirish, lug'at va grammatik tavsiyalar olish."),
+            tag: t('aboutUs.card3Tag', "AI TAHLIL")
+        }
+    ]
 
     return (
-        <div className="pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 mb-16 sm:mb-24 select-none font-sans text-slate-900 dark:text-white transition-colors duration-200">
+        <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 select-none text-slate-900 dark:text-white">
+            <div className="max-w-7xl mx-auto space-y-16">
 
-            {/* 1-Bo'lim: Sarlavha va matnlar */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="800"
-                className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-red-500/20 p-6 sm:p-12 rounded-[2.8rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
-            >
-                <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
+                {/* Section 1: Hero Banner */}
+                <div className="relative rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 p-8 sm:p-12 lg:p-16 shadow-xl overflow-hidden">
+                    <div className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-red-600/10 rounded-full blur-3xl -z-10" />
 
-                <div className="relative lg:col-span-5">
-                    <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-900/30">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-                        {t('aboutUs.badge')}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 dark:text-white mt-3 sm:mt-4 tracking-tight leading-tight">
-                        {t('aboutUs.title')}
-                    </h2>
-                    <div className="mt-5 sm:mt-6 w-14 h-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-400" />
-                </div>
-                <div className="relative lg:col-span-7 flex flex-col space-y-3 sm:space-y-4">
-                    <p className="text-slate-700 dark:text-gray-200 font-medium text-sm sm:text-base md:text-lg leading-relaxed">
-                        {t('aboutUs.description1')}
-                    </p>
-                    <p className="text-slate-600 dark:text-gray-300 font-semibold text-xs sm:text-sm leading-relaxed">
-                        {t('aboutUs.description2')}
-                    </p>
-                </div>
-            </div>
-
-            {/* 2-Bo'lim: 3 ta kartochka */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
-
-                {/* 1-kartochka */}
-                <Link
-                    to="/principle/1"
-                    data-aos="fade-up"
-                    data-aos-duration="800"
-                    data-aos-delay="100"
-                    className="bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
-                >
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
-                    <div className="relative">
-                        <div className="w-12 h-12 bg-white/60 dark:bg-black/50 backdrop-blur-md text-slate-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-red-500/30 group-hover:scale-110 group-hover:border-red-500 transition-all duration-300">
-                            <HiLightningBolt className="w-6 h-6 text-red-400" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card1Title')}</h3>
-                        <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                            {t('aboutUs.card1Desc')}
-                        </p>
-                    </div>
-                    <span className="relative text-[11px] sm:text-xs font-bold text-red-400 mt-6 flex items-center gap-1.5 uppercase tracking-wider">
-                        {t('aboutUs.card1Tag')}
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </span>
-                </Link>
-
-                {/* 2-kartochka */}
-                <Link
-                    to="/principle/2"
-                    data-aos="fade-up"
-                    data-aos-duration="800"
-                    data-aos-delay="200"
-                    className="bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
-                >
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
-                    <div className="relative">
-                        <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 text-slate-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-md shadow-red-500/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 border border-red-400/50">
-                            <HiCheckCircle className="w-6 h-6 text-slate-900 dark:text-white" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">{t('aboutUs.card2Title')}</h3>
-                        <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                            {t('aboutUs.card2Desc')}
-                        </p>
-                    </div>
-                    <span className="relative text-[11px] sm:text-xs font-bold text-red-400 mt-6 flex items-center gap-1.5 uppercase tracking-wider">
-                        {t('aboutUs.card2Tag')}
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </span>
-                </Link>
-
-                {/* 3-kartochka */}
-                <Link
-                    to="/principle/3"
-                    data-aos="fade-up"
-                    data-aos-duration="800"
-                    data-aos-delay="300"
-                    className="bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_48px_rgba(239,68,68,0.2)] hover:border-red-500/50 relative overflow-hidden border border-red-500/20 group hover:-translate-y-1.5 transition-all duration-300 block"
-                >
-                    <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-colors duration-500"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-600/10 to-transparent rounded-bl-[3rem]"></div>
-                    <div className="relative">
-                        <div className="w-12 h-12 bg-white/60 dark:bg-black/50 backdrop-blur-md text-slate-900 dark:text-white flex items-center justify-center rounded-2xl mb-6 shadow-sm border border-red-500/30 group-hover:scale-110 group-hover:border-red-500 transition-all duration-300">
-                            <HiSparkles className="w-6 h-6 text-red-400" />
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2 group-hover:text-red-400 transition-colors duration-300">{t('aboutUs.card3Title')}</h3>
-                        <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                            {t('aboutUs.card3Desc')}
-                        </p>
-                    </div>
-                    <span className="relative text-[11px] sm:text-xs font-bold text-red-400 mt-6 flex items-center gap-1.5 uppercase tracking-wider">
-                        {t('aboutUs.card3Tag')}
-                        <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    </span>
-                </Link>
-
-            </div>
-
-            {/* 3-Bo'lim: Manzil va Premier School Xaritasi */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="900"
-                className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center mb-16 sm:mb-20 bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-red-500/20 p-6 sm:p-8 rounded-2xl sm:rounded-[2.8rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
-            >
-                <div className="pointer-events-none absolute -bottom-20 -left-20 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
-
-                <div className="relative space-y-4 sm:space-y-6">
-                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full border border-red-900/30 inline-block">
-                        {t('aboutUs.locationBadge')}
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-                        {t('aboutUs.locationTitle')}
-                    </h3>
-                    <p className="text-slate-700 dark:text-gray-200 font-medium text-sm sm:text-base leading-relaxed">
-                        {t('aboutUs.locationDesc')}
-                    </p>
-                    <div className="space-y-3 pt-2">
-                        <div className="flex items-center gap-3 sm:gap-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border border-red-500/30 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300">
-                            <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
-                                <HiLocationMarker className="w-5 h-5" />
-                            </div>
-                            <span className="text-slate-700 dark:text-gray-200 font-semibold text-xs sm:text-sm">
-                                {t('aboutUs.address')}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                        <div className="lg:col-span-5 space-y-4">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 px-3 py-1.5 rounded-full border border-red-200 dark:border-red-900/40">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
+                                {t('aboutUs.badge', 'BIZ HAQIMIZDA')}
                             </span>
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight font-heading">
+                                {t('aboutUs.title', 'Optimum School of English')}
+                            </h1>
+                            <div className="w-16 h-1.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600" />
                         </div>
-                        <a
-                            href="tel:+998900829979"
-                            className="flex items-center gap-3 sm:gap-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border border-red-500/30 rounded-2xl px-4 py-3 hover:border-red-900/50 transition-colors duration-300"
+
+                        <div className="lg:col-span-7 space-y-4 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                            <p>
+                                {t('aboutUs.description1', "Bizning markaz ingliz tilini professional darajada o'rgatish, xalqaro IELTS va CEFR imtihonlariga sifatli tayyorlash bo'yicha ko'p yillik tajribaga ega.")}
+                            </p>
+                            <p className="font-medium text-slate-900 dark:text-slate-200">
+                                {t('aboutUs.description2', "Optimum — bu faqat til o'rganish emas, balki xalqaro ta'lim va martaba eshiklarini ochuvchi ishonchli hamkoringizdir.")}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Section 2: Core Principles Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                    {principles.map((card) => (
+                        <Link
+                            key={card.id}
+                            to={`/principle/${card.id}`}
+                            className="group p-8 rounded-3xl bg-white dark:bg-[#090e1a] border border-slate-200 dark:border-white/10 hover:border-red-500/40 dark:hover:border-red-500/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
                         >
-                            <div className="w-10 h-10 bg-red-500/10 border border-red-900/30 text-red-400 rounded-full flex items-center justify-center shadow-sm shrink-0">
-                                <HiPhone className="w-5 h-5" />
+                            <div>
+                                <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                                    {card.icon}
+                                </div>
+                                <span className="text-[10px] font-black uppercase tracking-wider text-red-600 dark:text-red-400 block mb-2">
+                                    {card.tag}
+                                </span>
+                                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-3 font-heading group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                                    {card.title}
+                                </h3>
+                                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                                    {card.desc}
+                                </p>
                             </div>
-                            <span className="text-slate-700 dark:text-gray-200 font-semibold text-xs sm:text-sm">
-                                +998 90 082 99 79
-                            </span>
-                        </a>
-                    </div>
+                            <div className="pt-6 mt-4 border-t border-slate-100 dark:border-white/5 flex items-center gap-1.5 text-xs font-bold text-red-600 dark:text-red-400 group-hover:translate-x-1 transition-transform">
+                                <span>Batafsil ma'lumot</span>
+                                <span>→</span>
+                            </div>
+                        </Link>
+                    ))}
                 </div>
 
-                {/* Premier School xaritasi (Dark mode filtr bilan) */}
-                <div className="relative w-full h-64 sm:h-72 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-200 dark:border-gray-800 group">
-                    <img
-                        src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn2hAnbM-pwUXbUAFCMNmHj7g7mnAZQ-wcb2pEp5HyI7IMWSX9uaNjrTTEpgqg8F5mEjc-or2G-ZhyC98A1jfIFT4SYN3zsCJBr5gHi-jsL6tHCMpS9p-kbw5Om3h-kJtwmWlEJIzwQoiim=w408-h544-k-no"
-                        alt="Location Map"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-in-out opacity-90 group-hover:opacity-100"
-                    />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-gray-950/10 to-transparent pointer-events-none"></div>
-                    <a 
-                        href={FIXED_LOCATION.mapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="absolute top-4 left-4 sm:top-5 sm:left-5 bg-gray-900/80 hover:bg-gray-900 backdrop-blur-md px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-lg border border-gray-700/50 flex items-center gap-2 transition-all duration-300 hover:scale-105 z-10"
-                    >
-                        <span className="text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-gray-200 flex items-center gap-2">
-                            {t('aboutUs.openInMaps')} <HiExternalLink className="text-gray-400 text-sm" />
+                {/* Section 3: Location and Map */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center rounded-3xl bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 p-8 sm:p-12 shadow-xl">
+                    <div className="lg:col-span-6 space-y-6 text-left">
+                        <span className="inline-block text-xs font-black uppercase tracking-wider text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 px-3 py-1.5 rounded-full border border-red-200 dark:border-red-900/40">
+                            {t('aboutUs.locationBadge', 'LOKATSIYA')}
                         </span>
-                    </a>
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white font-heading tracking-tight">
+                            {t('aboutUs.locationTitle', 'Bizning markazga tashrif buyuring')}
+                        </h2>
+                        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            {t('aboutUs.locationDesc', "Buxoro shahrining markazida, qulay transport bog'lamasiga ega shinam va zamonaviy o'quv xonalari.")}
+                        </p>
 
-                    <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 bg-gray-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-lg border border-gray-800 flex items-center gap-2.5 transition-transform duration-300 group-hover:-translate-y-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300 leading-tight">
-                            {FIXED_LOCATION.addressText}
-                        </span>
+                        <div className="space-y-3 pt-2">
+                            <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-white/5">
+                                <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                                    <HiLocationMarker className="w-5 h-5" />
+                                </div>
+                                <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                    {FIXED_LOCATION.addressText}
+                                </span>
+                            </div>
+
+                            <a
+                                href="tel:+998900829979"
+                                className="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-white/5 hover:border-red-500/40 transition-colors"
+                            >
+                                <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                                    <HiPhone className="w-5 h-5" />
+                                </div>
+                                <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                                    +998 90 082 99 79
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div className="lg:col-span-6 relative h-72 sm:h-80 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-lg">
+                        <img
+                            src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=60&w=800&auto=format&fit=crop"
+                            alt="Optimum Campus Location"
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-xs flex items-center justify-center p-6 text-center">
+                            <a
+                                href={FIXED_LOCATION.mapUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-6 py-3.5 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-black text-xs sm:text-sm shadow-xl flex items-center gap-2 hover:scale-105 transition-all"
+                            >
+                                <span>Xaritada ochish (Google Maps)</span>
+                                <HiExternalLink className="text-base" />
+                            </a>
+                        </div>
                     </div>
                 </div>
+
+                {/* Section 4: Highlights Metrics Bar */}
+                <div className="p-8 sm:p-12 rounded-3xl bg-slate-50 dark:bg-[#090e1a] border border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+                    <div className="space-y-1">
+                        <h4 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-heading">
+                            {t('aboutUs.footerTitle', "IELTS 7.5+ ga erishish yo'li shu yerdan boshlanadi")}
+                        </h4>
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                            {t('aboutUs.footerDesc', "Professional instruktorlar va zamonaviy o'quv vositalari sizni kutmoqda.")}
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-8 shrink-0">
+                        <div>
+                            <span className="block text-3xl sm:text-4xl font-black text-red-600 dark:text-red-500 font-heading">100%</span>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Kafolatlangan dastur</span>
+                        </div>
+                        <div className="w-px h-10 bg-slate-200 dark:bg-white/10" />
+                        <div>
+                            <span className="block text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-heading">7/24</span>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Onlayn qo'llab-quvvatlash</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-            {/* 4-Bo'lim: Footer statistika */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="900"
-                className="relative bg-white/40 dark:bg-black/40 backdrop-blur-xl text-slate-900 dark:text-white rounded-2xl sm:rounded-[2.8rem] p-6 sm:p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden border border-red-500/20"
-            >
-                <div className="pointer-events-none absolute -top-16 right-1/4 w-56 h-56 bg-red-500/10 rounded-full blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-16 left-0 w-56 h-56 bg-red-600/10 rounded-full blur-3xl" />
-
-                <div className="relative space-y-2 max-w-xl text-center md:text-left">
-                    <h4 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">{t('aboutUs.footerTitle')}</h4>
-                    <p className="text-slate-600 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed">
-                        {t('aboutUs.footerDesc')}
-                    </p>
-                </div>
-                <div className="relative flex flex-wrap items-center justify-center gap-6 sm:gap-8 shrink-0">
-                    <div className="text-center">
-                        <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white">100%</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300">{t('aboutUs.stat1Label')}</span>
-                    </div>
-                    <div className="w-px h-10 bg-gray-300 dark:bg-gray-700 hidden sm:block"></div>
-                    <div className="text-center">
-                        <span className="block text-2xl sm:text-3xl md:text-4xl font-black text-red-400">7/24</span>
-                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-gray-300">{t('aboutUs.stat2Label')}</span>
-                    </div>
-                </div>
-            </div>
-
         </div>
     )
-}   
+}

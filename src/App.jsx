@@ -46,7 +46,7 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] transition-colors duration-300 overflow-x-hidden font-sans">
+    <div className="relative min-h-screen bg-[#F7F5F0] dark:bg-[#080B12] transition-colors duration-300 overflow-x-hidden font-sans">
       <style>{`
         @keyframes shimmer {
           to { background-position: 200% center; }
@@ -64,21 +64,117 @@ export default function App() {
         }
       `}</style>
 
-      {/* Lightweight, GPU-friendly background for low-end mobile devices */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {/* Full-Page Cinematic Background System with Continuous Fluid Waves (BEHIND ALL CONTENT) */}
+      <div className="site-background pointer-events-none fixed inset-0 z-0 overflow-hidden select-none" aria-hidden="true">
+        {/* Layer 1: Base Layer - Midnight-Black (#070911) / Warm Ivory (#F7F5F0) */}
+        <div className="absolute inset-0 bg-[#F7F5F0] dark:bg-[#070911] transition-colors duration-500" />
+
+        {/* Layer 2: Continuous Flowing Fluid Wave Ribbons (Dark Mode) */}
+        <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-500 overflow-hidden">
+          {/* Base Cinematic Gradient Bed */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(155deg, #0e111d 0%, #070911 50%, #090c16 100%)"
+            }}
+          />
+
+          {/* Primary Wave Ribbon: Flowing Crimson & Burgundy Silk Wave */}
+          <div 
+            className="wave-layer-1 absolute -inset-[30%] opacity-90"
+            style={{
+              background: `
+                radial-gradient(ellipse 65% 35% at 20% 20%, rgba(242, 13, 50, 0.28), transparent 60%),
+                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(160, 20, 52, 0.24), transparent 65%),
+                radial-gradient(ellipse 55% 45% at 50% 45%, rgba(215, 25, 55, 0.20), transparent 60%)
+              `,
+              filter: "blur(55px)",
+            }}
+          />
+
+          {/* Secondary Wave Ribbon: Cool Midnight-Blue & Indigo Counter-Wave */}
+          <div 
+            className="wave-layer-2 absolute -inset-[30%] opacity-85"
+            style={{
+              background: `
+                radial-gradient(ellipse 60% 40% at 85% 20%, rgba(45, 70, 145, 0.28), transparent 60%),
+                radial-gradient(ellipse 65% 35% at 15% 75%, rgba(30, 55, 120, 0.25), transparent 60%),
+                radial-gradient(ellipse 50% 30% at 65% 85%, rgba(55, 35, 100, 0.20), transparent 55%)
+              `,
+              filter: "blur(65px)",
+            }}
+          />
+
+          {/* Tertiary Wave Ribbon: Ethereal Velvet Violet & Rose Highlight Swell */}
+          <div 
+            className="wave-layer-3 absolute -inset-[25%] opacity-75"
+            style={{
+              background: `
+                radial-gradient(ellipse 75% 32% at 45% 15%, rgba(220, 30, 75, 0.22), transparent 65%),
+                radial-gradient(ellipse 60% 40% at 55% 80%, rgba(40, 75, 145, 0.22), transparent 60%)
+              `,
+              filter: "blur(50px)",
+            }}
+          />
+
+          {/* Quaternary Wave Ribbon: Diagonal Silk Stream Across All Sections */}
+          <div 
+            className="wave-layer-4 absolute -inset-[30%] opacity-70"
+            style={{
+              background: `
+                radial-gradient(ellipse 80% 30% at 70% 40%, rgba(190, 18, 48, 0.20), transparent 60%),
+                radial-gradient(ellipse 50% 45% at 30% 60%, rgba(35, 50, 110, 0.22), transparent 60%)
+              `,
+              filter: "blur(60px)",
+            }}
+          />
+        </div>
+
+        {/* Light Mode Fluid Waves */}
+        <div className="absolute inset-0 opacity-100 dark:opacity-0 transition-opacity duration-500 overflow-hidden">
+          <div 
+            className="wave-layer-1 absolute -inset-[20%] opacity-70"
+            style={{
+              background: `
+                radial-gradient(ellipse 65% 35% at 25% 25%, rgba(242, 13, 50, 0.08), transparent 60%),
+                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(70, 90, 150, 0.07), transparent 60%)
+              `,
+              filter: "blur(60px)",
+            }}
+          />
+        </div>
+
+        {/* Layer 3: Delicate Architectural Grid Lines */}
         <div 
-          className="absolute inset-0 opacity-[0.25] dark:opacity-[0.08]"
+          className="absolute inset-0 opacity-[0.25] dark:opacity-[0.14]"
           style={{
-            backgroundImage: "radial-gradient(circle, rgba(200,32,50,0.12) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
+            backgroundImage: `
+              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "48px 48px",
           }}
         />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-500/5 dark:bg-rose-900/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[450px] h-[450px] bg-red-600/5 dark:bg-blue-900/5 rounded-full blur-[100px]" />
+
+        {/* Layer 4: Delicate Grain Texture (Subtle & Tactile) */}
+        <div 
+          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.045] mix-blend-overlay pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+
+        {/* Layer 5: Restrained Edge Vignette */}
+        <div 
+          className="absolute inset-0 opacity-20 dark:opacity-60 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse at center, transparent 50%, rgba(7, 9, 17, 0.5) 100%)"
+          }}
+        />
       </div>
 
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
-      <div className="relative z-10">
+      <div className="site-content relative z-10">
         {location.pathname !== '/enter' && <Navbar />}
         <ScrollToTop />
         <AnimatePresence mode="wait">

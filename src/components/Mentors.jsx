@@ -66,7 +66,7 @@ export default function Mentors() {
 
   return (
     <section
-      className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200 font-['Merriweather',serif]"
+      className="py-16 px-4 md:px-8 text-gray-900 dark:text-white relative transition-colors duration-200 "
     >
       <div className="max-w-6xl mx-auto">
         {/* Sarlavha qismi */}
@@ -81,29 +81,30 @@ export default function Mentors() {
           </p>
         </div>
 
-        {/* Kartochkalar grid qismi */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Editorial Mentors Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {mentorsData.slice(0, 2).map((mentor, index) => (
             <div
               key={mentor.id}
               data-aos="fade-up"
               data-aos-duration="800"
               data-aos-delay={index * 150}
-              className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center hover:border-red-500/50 dark:hover:border-red-500/50 transition-all shadow-md dark:shadow-none group"
+              className="group relative rounded-3xl sm:rounded-[2.2rem] bg-white dark:bg-[#0c1424] border border-black/[0.08] dark:border-white/[0.08] p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start transition-all duration-300 hover:shadow-2xl hover:shadow-red-950/10 dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)] hover:border-red-500/40"
             >
-              {/* Rasm qismi va Telegram link */}
-              <div className="relative group/img">
+              {/* Refined Portrait Composition */}
+              <div className="relative shrink-0 w-36 h-44 sm:w-40 sm:h-48 rounded-2xl overflow-hidden shadow-lg border border-black/10 dark:border-white/10 group-hover:scale-[1.02] transition-transform duration-500">
                 <img
                   src={mentor.image}
                   alt={mentor.name}
-                  className="w-32 h-32 rounded-2xl object-cover border-2 border-red-500/20 group-hover:scale-105 transition-transform duration-500 shadow-sm"
+                  className="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 transition-all duration-500"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
                 
                 <a
                   href={mentor.telegram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute bottom-2 right-2 bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-xl shadow-lg transition-transform hover:scale-110 flex items-center justify-center"
+                  className="absolute bottom-2.5 right-2.5 bg-sky-500 hover:bg-sky-600 text-white p-2.5 rounded-xl shadow-lg transition-transform hover:scale-110 flex items-center justify-center cursor-pointer"
                   title="Telegram chat"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -112,33 +113,35 @@ export default function Mentors() {
                 </a>
               </div>
 
-              {/* Ma'lumotlar qismi */}
-              <div className="flex-1 text-center sm:text-left w-full">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
-                  <h3 className="text-xl font-bold">{mentor.name}</h3>
-                  <span className="text-xs bg-red-500/10 text-red-500 dark:text-red-400 px-3 py-1 rounded-full font-bold w-fit mx-auto sm:mx-0">
-                    {mentor.experience}
-                  </span>
-                </div>
-                <p className="text-red-600 dark:text-red-400 text-sm font-semibold mb-3">{mentor.role}</p>
-                <p className="text-gray-600 dark:text-slate-300 text-sm mb-4 leading-relaxed">{mentor.bio}</p>
-
-                {/* Yo'nalishlar (Skills) */}
-                <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-5">
-                  {mentor.skills && mentor.skills.map((skill, index) => (
-                    <span key={index} className="bg-gray-200/75 dark:bg-slate-800 text-gray-700 dark:text-slate-300 text-xs px-2.5 py-1 rounded-lg font-medium">
-                      {skill}
+              {/* Bio & Credentials Details */}
+              <div className="flex-1 text-center sm:text-left w-full flex flex-col justify-between h-full">
+                <div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
+                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-heading">{mentor.name}</h3>
+                    <span className="text-xs bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-3 py-1 rounded-full font-bold w-fit mx-auto sm:mx-0">
+                      {mentor.experience}
                     </span>
-                  ))}
+                  </div>
+                  <p className="text-red-600 dark:text-red-400 text-xs sm:text-sm font-bold uppercase tracking-wider mb-2.5">{mentor.role}</p>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm mb-4 leading-relaxed line-clamp-3">{mentor.bio}</p>
+
+                  {/* Skills tags */}
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mb-5">
+                    {mentor.skills && mentor.skills.map((skill, sIdx) => (
+                      <span key={sIdx} className="bg-slate-100 dark:bg-white/[0.06] text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-white/5 text-xs px-2.5 py-1 rounded-lg font-semibold">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Tugma */}
+                {/* Direct Action Button */}
                 <button
                   onClick={() => {
                     setSelectedMentor(mentor.name);
                     setModal(true);
                   }}
-                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-colors w-full sm:w-auto text-center cursor-pointer shadow-lg shadow-red-500/20"
+                  className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-xs sm:text-sm font-extrabold px-6 py-3 rounded-xl transition-all w-full sm:w-auto text-center cursor-pointer shadow-lg shadow-red-600/20 hover:scale-[1.02] active:scale-95"
                 >
                   {t('mentors.contactBtn')}
                 </button>

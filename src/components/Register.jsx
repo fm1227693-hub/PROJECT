@@ -19,10 +19,7 @@ export default function Register() {
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState(null);
 
-    // Yangi bot tokeni (@optimum_kurs_bot)
     const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN_1;
-
-    // Ikkita admin chat ID lari massiv ko'rinishida
     const ADMIN_CHAT_IDS = ["6383523156", "334572168"];
 
     const showToast = (message, type = 'success') => {
@@ -43,22 +40,19 @@ export default function Register() {
         const digitsOnly = formData.phone.replace(/\D/g, '');
 
         if (!formData.fullName.trim() || digitsOnly.length < 9) {
-            showToast(t('register.phoneError'), "error");
+            showToast(t('register.phoneError', "Iltimos, telefon raqamingizni to'liq kiriting"), "error");
             return;
         }
 
         setLoading(true);
 
-        const message = `🆕 Yangi o'quvchi ro'yxatdan o'tdi:\n👤 Ism: ${formData.fullName}\n📱 Tel: +998${digitsOnly}\n📖 Kurs: ${t('register.courseName')}`;
+        const message = `🆕 Yangi o'quvchi ro'yxatdan o'tdi (Optimum ELC):\n👤 Ism: ${formData.fullName}\n📱 Tel: +998${digitsOnly}\n📖 Kurs: ${formData.course || t('register.courseName')}`;
 
         try {
-            // Har bir chat ID ga alohida so'rov yaratib, ularni bir vaqtning o'zida yuboramiz
             const promises = ADMIN_CHAT_IDS.map(chatId =>
                 fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: chatId,
                         text: message
@@ -75,57 +69,59 @@ export default function Register() {
                     isLead: true,
                     name: formData.fullName,
                     phone: `+998 ${digitsOnly}`,
-                    type: t('register.courseName'),
+                    type: formData.course || t('register.courseName'),
                     date: new Date().toLocaleString('uz-UZ'),
                     status: 'Kutilmoqda'
-                }
+                };
 
                 try {
-                    const res = await axios.get(import.meta.env.VITE_FIREBASE_DB_URL)
-                    let currentLeads = []
+                    const res = await axios.get(import.meta.env.VITE_FIREBASE_DB_URL);
+                    let currentLeads = [];
                     if (res.data !== null) {
-                        currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data)
+                        currentLeads = Array.isArray(res.data) ? res.data : Object.values(res.data);
                     }
-                    const updatedLeads = [newLead, ...currentLeads]
-                    await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads)
-                    localStorage.setItem('admin_leads', JSON.stringify(updatedLeads))
+                    const updatedLeads = [newLead, ...currentLeads];
+                    await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads);
+                    localStorage.setItem('admin_leads', JSON.stringify(updatedLeads));
                 } catch (err) {
-                    console.error("API error:", err)
-                    const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]')
-                    localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]))
+                    console.error("API error:", err);
+                    const existingLeads = JSON.parse(localStorage.getItem('admin_leads') || '[]');
+                    localStorage.setItem('admin_leads', JSON.stringify([newLead, ...existingLeads]));
                 }
 
-                showToast(t('register.successMsg'), "success");
+                showToast(t('register.successMsg', "Muvaffaqiyatli ro'yxatdan o'tdingiz!"), "success");
                 setFormData({ fullName: '', phone: '', course: t('register.courseName') });
             } else {
-                showToast(t('register.errorMsg'), "error");
+                showToast(t('register.errorGeneric', "Xatolik yuz berdi. Qayta urinib ko'ring."), "error");
             }
-        } catch (error) {
-            console.error("Xatolik:", error);
-            showToast(t('register.netErrorMsg'), "error");
+        } catch (err) {
+            console.error(err);
+            showToast(t('register.errorNetwork', "Internet bilan aloqa uzildi."), "error");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 pt-24 pb-16 bg-transparent font-['Merriweather',serif] relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4 pt-28 pb-20 bg-transparent relative overflow-hidden select-none">
+            {/* Ambient Background Glow */}
+            <div className="pointer-events-none fixed top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl -z-10" />
 
-            {/* Toast Xabarnoma */}
+            {/* Toast */}
             <AnimatePresence>
                 {toast && (
                     <motion.div
                         initial={{ opacity: 0, y: -50, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -20, scale: 0.9 }}
-                        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-xl shadow-2xl border border-gray-200/80 dark:border-white/10 text-gray-900 dark:text-white"
+                        className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white"
                     >
                         {toast.type === 'success' ? (
-                            <FaCheckCircle className="text-emerald-500 text-xl shrink-0" />
+                            <FaCheckCircle className="text-emerald-500 text-lg shrink-0" />
                         ) : (
-                            <FaExclamationCircle className="text-red-500 text-xl shrink-0" />
+                            <FaExclamationCircle className="text-red-500 text-lg shrink-0" />
                         )}
-                        <p className="text-sm font-semibold">{toast.message}</p>
+                        <p className="text-xs sm:text-sm font-bold">{toast.message}</p>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -133,93 +129,99 @@ export default function Register() {
             <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="absolute top-[100px] sm:top-[120px] left-4 sm:left-8 md:left-12 lg:left-16 group flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-white/40 dark:bg-slate-800/40 hover:bg-white/80 dark:hover:bg-slate-700/80 backdrop-blur-md rounded-full border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-white shadow-sm hover:shadow-lg hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 cursor-pointer z-50"
+                className="absolute top-24 left-4 sm:left-8 group flex items-center gap-2 px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors shadow-xs cursor-pointer z-50"
             >
-                <HiArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover:-translate-x-1.5 transition-transform" />
+                <HiArrowLeft className="w-4 h-4" />
+                <span>Orqaga</span>
             </button>
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="w-full max-w-lg glass-card rounded-3xl p-8 sm:p-10 shadow-2xl border border-slate-200/80 dark:border-white/10 relative overflow-hidden"
+                transition={{ duration: 0.4 }}
+                className="w-full max-w-md rounded-3xl p-6 sm:p-10 bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 shadow-2xl relative"
             >
+                {/* Form header */}
+                <div className="text-center space-y-2 mb-8">
+                    <span className="inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/40">
+                        OPTIMUM ELC
+                    </span>
+                    <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight font-heading">
+                        {t('register.title', "Ro'yxatdan o'tish")}
+                    </h1>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        {t('register.subtitle', "Ma'lumotlaringizni to'ldiring va guruhga qo'shiling")}
+                    </p>
+                </div>
 
-
-                <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
-                    <div className="text-center space-y-2">
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
-                            {t('register.title')}
-                        </h2>
-                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                            {t('register.subtitle')}
-                        </p>
-                    </div>
-
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.fullNameLabel')}</label>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
+                            {t('register.fullNameLabel', "To'liq ismingiz")}
+                        </label>
                         <div className="relative flex items-center">
-                            <FaUser className="absolute left-4 text-gray-400" />
+                            <FaUser className="absolute left-4 text-slate-400 text-sm" />
                             <input
                                 type="text"
                                 name="fullName"
-                                placeholder={t('register.fullNamePlaceholder')}
+                                placeholder={t('register.fullNamePlaceholder', 'Familiya Ism')}
                                 value={formData.fullName}
                                 onChange={handleChange}
-                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
+                                className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-[#0c1424] border border-slate-200 dark:border-white/10 rounded-2xl text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-red-600 transition-colors"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.phoneLabel')}</label>
-                        <div className="relative flex items-center">
-                            <FaPhoneAlt className="absolute left-4 text-gray-400 z-10" />
-                            <div className="absolute left-11 flex items-center pointer-events-none text-sm font-semibold text-gray-500 dark:text-gray-400">
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
+                            {t('register.phoneLabel', "Telefon raqamingiz")}
+                        </label>
+                        <div className="relative flex items-center bg-slate-50 dark:bg-[#0c1424] border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden focus-within:border-red-600 transition-colors">
+                            <span className="pl-4 pr-3 text-slate-700 dark:text-slate-300 text-sm font-bold select-none border-r border-slate-200 dark:border-white/10 py-3 bg-slate-100 dark:bg-slate-800/40">
                                 +998
-                            </div>
+                            </span>
                             <IMaskInput
                                 mask="(00) 000-00-00"
                                 name="phone"
                                 placeholder="(90) 123-45-67"
                                 value={formData.phone}
                                 onAccept={(value) => handleChange({ target: { name: 'phone', value } })}
-                                className="w-full pl-24 pr-4 py-3.5 rounded-2xl bg-gray-50/80 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/10 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-[#c41e30]"
+                                className="w-full px-4 py-3 bg-transparent text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none"
                                 required
                             />
                         </div>
                     </div>
 
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ml-1">{t('register.courseLabel')}</label>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
+                            {t('register.courseLabel', "Tanlangan yo'nalish")}
+                        </label>
                         <div className="relative flex items-center">
-                            <FaBookOpen className="absolute left-4 text-gray-400" />
+                            <FaBookOpen className="absolute left-4 text-slate-400 text-sm" />
                             <input
                                 type="text"
-                                value={t('register.courseName')}
+                                value={t('register.courseName', "IELTS / General English")}
                                 disabled
-                                className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-gray-100 dark:bg-white/[0.02] border border-gray-200/80 dark:border-white/10 text-sm text-gray-600 dark:text-gray-400 cursor-not-allowed"
+                                className="w-full pl-11 pr-4 py-3 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-white/10 rounded-2xl text-sm text-slate-600 dark:text-slate-400 cursor-not-allowed font-medium"
                             />
                         </div>
                     </div>
 
-                    <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                    <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 rounded-2xl bg-[#c41e30] text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-70"
+                        className="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-sm shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 transition-all"
                     >
                         {loading ? (
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         ) : (
                             <>
-                                <span>{t('register.submitBtn')}</span>
+                                <span>{t('register.submitBtn', "Ro'yxatdan o'tish")}</span>
                                 <FaPaperPlane className="w-3.5 h-3.5" />
                             </>
                         )}
-                    </motion.button>
+                    </button>
                 </form>
             </motion.div>
         </div>

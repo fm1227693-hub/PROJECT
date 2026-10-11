@@ -465,38 +465,43 @@ Rules:
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
                     {featuredMocks.map((mock, idx) => (
-                        <motion.div
+                        <div
                             key={mock.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="bg-white/80 dark:bg-black/95 glass-card backdrop-blur-2xl rounded-3xl p-6 border border-slate-200 dark:border-red-500/30 shadow-[0_8px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_30px_rgba(220,38,38,0.15)] hover:shadow-xl dark:hover:shadow-[0_12px_40px_rgba(220,38,38,0.3)] hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full"
+                            className="rounded-3xl p-6 sm:p-7 bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 hover:border-red-500/40 dark:hover:border-red-500/40 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group"
                         >
-                            <div className="flex items-start justify-between mb-4">
-                                <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-500/20 text-red-600 flex items-center justify-center text-xl">
-                                    <FaBookOpen />
+                            <div>
+                                <div className="flex items-center justify-between mb-5">
+                                    <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+                                        <FaPenFancy />
+                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center gap-1">
+                                        <FaClock className="text-red-500 text-[10px]" />
+                                        60 daqiqa
+                                    </span>
                                 </div>
-                                <span className="text-xs font-bold px-3 py-1 bg-slate-200/50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 rounded-full">
-                                    60 Min
+                                
+                                <span className="text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-400 block mb-1">
+                                    Task 1 + Task 2
                                 </span>
+                                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2 font-heading group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                                    {mock.title}
+                                </h3>
+                                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-6 font-medium leading-relaxed">
+                                    {mock.subtitle || `${mock.task1.type} & ${mock.task2.type}`}
+                                </p>
                             </div>
-                            
-                            <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
-                                {mock.title}
-                            </h3>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-8 flex-1">
-                                {mock.subtitle || `${mock.task1.type} & ${mock.task2.type}`}
-                            </p>
 
                             <button
+                                type="button"
                                 onClick={(e) => { e.stopPropagation(); openPrompt(mock); }}
-                                className="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors group-hover:shadow-lg group-hover:shadow-red-600/30"
+                                className="w-full py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl flex items-center justify-center gap-2 shadow-md shadow-red-600/30 transition-all cursor-pointer text-xs sm:text-sm active:scale-95"
                             >
-                                Start Test <FaPlay className="text-xs" />
+                                <span>Testni boshlash</span>
+                                <FaPlay className="text-[10px]" />
                             </button>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
                 </div>

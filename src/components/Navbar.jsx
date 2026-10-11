@@ -158,14 +158,14 @@ export default function Navbar() {
 
     return (
         <>
-            <div data-navbar-root className={`fixed top-0 left-0 w-full z-50 font-['Merriweather',serif] select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
+            <div data-navbar-root className={`fixed top-0 left-0 w-full z-50  select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
                 <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 className={`mx-auto transition-all duration-500 pointer-events-auto relative ${scrolled
-                    ? 'max-w-[1216px] rounded-2xl bg-white/95 dark:bg-[#030712]/95 border border-gray-200/70 dark:border-white/[0.09] shadow-lg dark:shadow-xl'
-                    : 'max-w-full rounded-none bg-white dark:bg-[#030712] border-b border-transparent'
+                    ? 'max-w-[1216px] rounded-2xl bg-[#070911]/80 dark:bg-[#070911]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40'
+                    : 'max-w-full rounded-none bg-transparent border-b border-transparent'
                 }`}
             >
                 <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between gap-3">
@@ -379,7 +379,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu Drawer Overlay */}
-            <div className="font-['Merriweather',serif] select-none">
+            <div className=" select-none">
                 <AnimatePresence>
                     {menuOpen && (
                     <>
