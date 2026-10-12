@@ -87,7 +87,7 @@ export default function AboutUs() {
                         <Link
                             key={card.id}
                             to={`/principle/${card.id}`}
-                            className="group p-8 rounded-3xl bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden relative"
+                            className="group p-8 rounded-3xl bg-white/80 dark:bg-[#0a0e19]/90 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden relative"
                         >
                             <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-red-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 

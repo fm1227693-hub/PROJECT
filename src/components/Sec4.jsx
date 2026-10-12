@@ -41,30 +41,30 @@ export default function Sec4() {
                     {/* Value Proposition Liquid Glass Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         {/* Goal Block */}
-                        <div className="p-6 rounded-3xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
-                            <div className="w-11 h-11 bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
+                        <div className="p-6 rounded-3xl bg-[#0c0d10]/90 backdrop-blur-md border border-white/[0.07] hover:border-red-500/50 shadow-xl shadow-black/40 hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 flex flex-col space-y-3">
+                            <div className="w-12 h-12 bg-red-500/10 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
                                 <FaBullseye className="text-lg" />
                             </div>
                             <div>
-                                <h4 className="text-base font-black text-slate-900 dark:text-white font-heading">
+                                <h4 className="text-base font-black text-white font-heading">
                                     {t('about.goalTitle', 'Aniq maqsad')}
                                 </h4>
-                                <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
+                                <p className="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
                                     {t('about.goalDesc', "O'quvchi darajasini aniq belgilab, eng qisqa muddatda kerakli natijaga erishtirish.")}
                                 </p>
                             </div>
                         </div>
 
                         {/* Teacher Block */}
-                        <div className="p-6 rounded-3xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
-                            <div className="w-11 h-11 bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
+                        <div className="p-6 rounded-3xl bg-[#0c0d10]/90 backdrop-blur-md border border-white/[0.07] hover:border-red-500/50 shadow-xl shadow-black/40 hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 flex flex-col space-y-3">
+                            <div className="w-12 h-12 bg-red-500/10 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
                                 <FaChalkboardTeacher className="text-lg" />
                             </div>
                             <div>
-                                <h4 className="text-base font-black text-slate-900 dark:text-white font-heading">
+                                <h4 className="text-base font-black text-white font-heading">
                                     {t('about.teacherTitle', 'Kuchli mentorlar')}
                                 </h4>
-                                <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
+                                <p className="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
                                     {t('about.teacherDesc', "IELTS 8.0+ sertifikatiga ega va xalqaro tajribali ustozlar dars o'tadi.")}
                                 </p>
                             </div>

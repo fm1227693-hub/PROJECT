@@ -1,106 +1,577 @@
-/* Container va Canvas elementlarini to'g'ri ko'rsatish */
-canvas {
-  outline: none;
-  width: 100% !important;
-  height: 100% !important;
-  user-select: none;
+/* Optimum — Editorial Hero & Sections. All selectors prefixed .ox- to avoid collisions. */
+
+/* ─────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS (scoped to .ox-home so they can't leak)
+────────────────────────────────────────────────────────────────────── */
+.ox-home {
+    --ox-bg: #080909;
+    --ox-surface: #0c0d10;
+    --ox-ink: #f2ede8;
+    --ox-mute: rgba(242, 237, 232, 0.55);
+    --ox-dim: rgba(242, 237, 232, 0.32);
+    --ox-line: rgba(255, 255, 255, 0.065);
+    --ox-line-heavy: rgba(255, 255, 255, 0.13);
+    --ox-red: #e11d48;
+    --ox-red-vivid: #f43f5e;
+    --ox-red-deep: #9f1239;
+    --ox-orange: #fb923c;
+    --ox-warm: #fcd5b0;
+    --ox-gutter: clamp(20px, 5vw, 80px);
+    --ox-max: 1440px;
+
+    position: relative;
+    width: 100%;
+    overflow-x: clip;
+    background: var(--ox-bg);
+    color: var(--ox-ink);
+    font-family: var(--font-body, system-ui, sans-serif);
+
+    /* Thin architectural grid — 80px columns/rows */
+    background-image:
+        linear-gradient(var(--ox-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--ox-line) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-position: center top;
 }
 
-/* Sekin miltillovchi yorug'lik animatsiyasi */
-@keyframes pulseSlow {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.65; transform: scale(1.08); }
+/* ─────────────────────────────────────────────────────────────────────
+   HERO SECTION (Strict 100vh Viewport Fit)
+────────────────────────────────────────────────────────────────────── */
+.ox-hero {
+    position: relative;
+    padding-top: clamp(74px, 11vh, 88px);
+    padding-bottom: clamp(16px, 3vh, 32px);
+    padding-left: var(--ox-gutter);
+    padding-right: var(--ox-gutter);
+    min-height: 100vh;
+    max-height: 1000px;
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+    box-sizing: border-box;
 }
 
-.animate-pulse-slow {
-  animation: pulseSlow 8s ease-in-out infinite;
+/* Crimson atmospheric light centred right */
+.ox-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(55% 60% at 75% 45%, rgba(225, 29, 72, 0.18) 0%, transparent 70%),
+        radial-gradient(30% 30% at 90% 82%, rgba(251, 146, 60, 0.09) 0%, transparent 70%);
 }
 
-/* Futuristic Red Cyber Floating Deck Animation */
-.cyber-deck-scene {
-  perspective: 1200px;
+/* Bottom architectural divider */
+.ox-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--ox-gutter);
+    right: var(--ox-gutter);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ox-line-heavy) 25%, var(--ox-line-heavy) 75%, transparent);
 }
 
-.cyber-deck-wrapper {
-  transform-style: preserve-3d;
-  animation: cyberDeckFloat 6s ease-in-out infinite;
+.ox-hero__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--ox-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(16px, 3.5vw, 48px);
 }
 
+/* ── Eyebrow badge ── */
+.ox-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: clamp(12px, 1.8vh, 20px);
+    padding: 5px 12px;
+    border: 1px solid rgba(225, 29, 72, 0.30);
+    border-radius: 2px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--ox-red-vivid);
+    background: rgba(225, 29, 72, 0.07);
+    text-transform: uppercase;
+}
+.ox-eyebrow__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ox-red-vivid);
+    animation: oxPulse 2.4s ease-in-out infinite;
+}
+
+/* ── Headline — Scaled down cleanly to fit single screen ── */
+.ox-headline {
+    margin: 0;
+    font-family: var(--font-heading, system-ui, sans-serif);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+    font-size: clamp(2.4rem, 5.2vw, 5.4rem);
+    text-wrap: balance;
+}
+.ox-headline__white { color: var(--ox-ink); display: block; }
+.ox-headline__red {
+    display: block;
+    color: var(--ox-red-vivid);
+    text-shadow: 0 0 45px rgba(244, 63, 94, 0.32);
+}
+
+/* ── Sub-headline badge pills ── */
+.ox-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: clamp(12px, 1.8vh, 18px);
+}
+.ox-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border: 1px solid var(--ox-line-heavy);
+    border-radius: 2px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--ox-mute);
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.03);
+}
+.ox-badge--red { border-color: rgba(225, 29, 72, 0.35); color: var(--ox-red-vivid); background: rgba(225, 29, 72, 0.07); }
+
+/* ── Description text ── */
+.ox-lead {
+    margin: clamp(12px, 1.8vh, 20px) 0 0;
+    max-width: 32rem;
+    font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+    line-height: 1.6;
+    color: var(--ox-mute);
+}
+
+/* ── CTAs ── */
+.ox-actions {
+    margin-top: clamp(16px, 2.5vh, 28px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Primary filled CTA — Matching user's reference pill button */
+.ox-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 34px;
+    background: linear-gradient(90deg, #E11D48 0%, #F43F5E 50%, #E11D48 100%);
+    background-size: 200% auto;
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 9999px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px -4px rgba(225, 29, 72, 0.55), 0 0 14px 0 rgba(244, 63, 94, 0.35);
+    transition: all 0.25s ease;
+}
+.ox-cta-primary:hover {
+    background-position: right center;
+    box-shadow: 0 12px 28px -2px rgba(225, 29, 72, 0.7), 0 0 20px 2px rgba(244, 63, 94, 0.5);
+    transform: translateY(-2px) scale(1.02);
+}
+.ox-cta-primary:active { transform: translateY(0) scale(0.98); }
+
+/* Ghost CTA Pill */
+.ox-cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 26px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--ox-ink);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+.ox-cta-ghost:hover {
+    border-color: rgba(225, 29, 72, 0.5);
+    background: rgba(225, 29, 72, 0.08);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Ghost button (non-link) Pill */
+.ox-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 26px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--ox-ink);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    font-family: inherit;
+}
+.ox-cta-btn:hover {
+    border-color: rgba(225, 29, 72, 0.5);
+    background: rgba(225, 29, 72, 0.08);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.ox-cta-primary:focus-visible,
+.ox-cta-ghost:focus-visible,
+.ox-cta-btn:focus-visible { outline: 2px solid var(--ox-red-vivid); outline-offset: 3px; }
+
+/* ── Technical corner annotations ── */
+.ox-coord {
+    margin-top: clamp(16px, 2.5vh, 28px);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.ox-coord__item {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--ox-dim);
+    text-transform: uppercase;
+}
+.ox-coord__sep { width: 28px; height: 1px; background: var(--ox-line-heavy); }
+
+/* ── Hero artwork column ── */
+.ox-hero__art {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   RIBBON — the signature abstract artwork
+────────────────────────────────────────────────────────────────────── */
+.ox-ribbon {
+    width: min(100%, min(520px, 68vh));
+    aspect-ratio: 1 / 1;
+    height: auto;
+    overflow: visible;
+    display: block;
+    margin-right: calc(var(--ox-gutter) * -0.2);
+}
+
+/* Slow rotate the whole ribbon composition */
+.ox-ribbon__rotor {
+    transform-origin: 300px 300px;
+    animation: oxRibbon 120s linear infinite;
+    will-change: transform;
+}
+
+/* Subtle inner pulse on the glow layer only */
+.ox-ribbon__pulse {
+    animation: oxPulseOpacity 6s ease-in-out infinite;
+}
+
+@keyframes oxRibbon {
+    to { transform: rotate(360deg); }
+}
+@keyframes oxPulseOpacity {
+    0%, 100% { opacity: 0.8; }
+    50%       { opacity: 1;   }
+}
+@keyframes oxPulse {
+    0%, 100% { opacity: 1;    transform: scale(1);    }
+    50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   BRAND TICKER (inside home.jsx — the diagonal band)
+────────────────────────────────────────────────────────────────────── */
+.ox-ticker {
+    position: relative;
+    z-index: 2;
+    margin: 0 calc(var(--ox-gutter) * -1);
+    padding: 13px 0;
+    background: var(--ox-ink);
+    color: #0b0b0d;
+    transform: rotate(-1.15deg);
+    overflow: hidden;
+    border-top: 1px solid rgba(0,0,0,0.15);
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+.ox-ticker__track {
+    display: flex;
+    width: max-content;
+    animation: oxTicker 40s linear infinite;
+}
+.ox-ticker__group { display: flex; flex: none; }
+.ox-ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    padding-right: 24px;
+    font-size: clamp(0.72rem, 1vw, 0.9rem);
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+.ox-ticker__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e11d48;
+    flex-shrink: 0;
+}
+@keyframes oxTicker { to { transform: translateX(-50%); } }
+
+/* ─────────────────────────────────────────────────────────────────────
+   ABOUT (stats + editorial copy below ticker)
+────────────────────────────────────────────────────────────────────── */
+.ox-about {
+    position: relative;
+    padding: clamp(72px, 10vh, 120px) var(--ox-gutter);
+    isolation: isolate;
+}
+/* Subtle atmospheric illumination */
+.ox-about::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(45% 45% at 50% 50%, rgba(225, 29, 72, 0.08) 0%, transparent 70%);
+}
+/* Top architectural border */
+.ox-about::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--ox-gutter);
+    right: var(--ox-gutter);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ox-line-heavy) 20%, var(--ox-line-heavy) 80%, transparent);
+}
+.ox-about__inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--ox-max);
+    margin: 0 auto;
+}
+.ox-about__content {
+    width: 100%;
+}
+.ox-about__label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ox-red-vivid);
+    margin-bottom: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    background: rgba(225, 29, 72, 0.07);
+    border: 1px solid rgba(225, 29, 72, 0.25);
+    border-radius: 2px;
+}
+.ox-about__label-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ox-red-vivid);
+}
+.ox-about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: end;
+    gap: clamp(24px, 5vw, 64px);
+    margin-bottom: clamp(40px, 6vh, 64px);
+}
+.ox-about__title {
+    margin: 0;
+    font-family: var(--font-heading, system-ui, sans-serif);
+    font-size: clamp(2rem, 4.2vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    text-wrap: balance;
+    color: var(--ox-ink);
+}
+.ox-about__text {
+    margin: 0;
+    line-height: 1.75;
+    color: var(--ox-mute);
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    border-left: 2px solid rgba(225, 29, 72, 0.4);
+    padding-left: 20px;
+}
+
+/* Stats row */
+.ox-stats {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--ox-line-heavy);
+    border-bottom: 1px solid var(--ox-line);
+}
+.ox-stat {
+    padding: clamp(24px, 3.5vw, 36px) clamp(16px, 2vw, 24px);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 8px;
+    transition: background 0.2s ease;
+}
+.ox-stat:hover {
+    background: rgba(255, 255, 255, 0.015);
+}
+.ox-stat + .ox-stat {
+    border-left: 1px solid var(--ox-line);
+}
+.ox-stat dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ox-mute);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.ox-stat dd {
+    margin: 0;
+    font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--ox-ink);
+    font-family: var(--font-heading, system-ui, sans-serif);
+    line-height: 1;
+}
+.ox-stat dd span {
+    color: var(--ox-red-vivid);
+    margin-left: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   RESPONSIVE BREAKPOINTS
+────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+    .ox-hero { min-height: 0; padding-top: 100px; }
+    .ox-hero__inner { grid-template-columns: 1fr; gap: 0; }
+    .ox-hero__art { order: -1; justify-content: center; margin-bottom: -6vw; }
+    .ox-ribbon { width: min(80vw, 440px); margin-right: 0; }
+    .ox-about__inner { grid-template-columns: 1fr; }
+    .ox-about__grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+@media (max-width: 767px) {
+    .ox-headline { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+    .ox-about {
+        padding: 48px var(--ox-gutter);
+    }
+    .ox-about__grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+    .ox-about__title {
+        font-size: clamp(1.75rem, 7.5vw, 2.5rem);
+    }
+    .ox-about__text {
+        font-size: 0.92rem;
+        padding-left: 14px;
+        line-height: 1.6;
+    }
+    .ox-stats { 
+        grid-template-columns: repeat(2, minmax(0, 1fr)); 
+        row-gap: 20px; 
+    }
+    .ox-stat {
+        padding: 18px 12px;
+    }
+    .ox-stat dd {
+        font-size: clamp(1.8rem, 7vw, 2.4rem);
+    }
+    .ox-stat:nth-child(odd)  { padding-left: 0; border-left: 0; }
+    .ox-stat:nth-child(n+3)  { padding-top: 20px; border-top: 1px solid var(--ox-line); }
+    .ox-ticker { margin: 0 -16px; transform: rotate(-1deg); }
+    .ox-home { background-size: 56px 56px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   MOTION SAFETY
+────────────────────────────────────────────────────────────────────── */
+.ox-paused .ox-ribbon__rotor,
+.ox-paused .ox-ticker__track,
+.ox-paused .ox-eyebrow__dot { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+    .ox-ribbon__rotor,
+    .ox-ribbon__pulse,
+    .ox-ticker__track,
+    .ox-eyebrow__dot { animation: none; }
+    .ox-cta-primary,
+    .ox-cta-ghost,
+    .ox-cta-btn { transition: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   LEGACY SELECTORS (kept so other components keep working)
+────────────────────────────────────────────────────────────────────── */
+canvas { outline: none; width: 100% !important; height: 100% !important; user-select: none; }
+@keyframes pulseSlow { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.65;transform:scale(1.08)} }
+.animate-pulse-slow { animation: pulseSlow 8s ease-in-out infinite; }
+.cyber-deck-scene { perspective: 1200px; }
+.cyber-deck-wrapper { transform-style: preserve-3d; animation: cyberDeckFloat 6s ease-in-out infinite; }
 @keyframes cyberDeckFloat {
-  0%, 100% {
-    transform: translateY(0px) rotateX(6deg) rotateY(-8deg);
-  }
-  50% {
-    transform: translateY(-14px) rotateX(10deg) rotateY(-4deg);
-  }
+  0%,100%{transform:translateY(0) rotateX(6deg) rotateY(-8deg)}
+  50%{transform:translateY(-14px) rotateX(10deg) rotateY(-4deg)}
 }
-
-/* Soundwave Voice Bar Animations */
-@keyframes soundwave {
-  0%, 100% { height: 6px; }
-  50% { height: 24px; }
-}
-
-.animate-soundwave-1 { animation: soundwave 1.2s ease-in-out infinite 0.1s; }
-.animate-soundwave-2 { animation: soundwave 1.2s ease-in-out infinite 0.3s; }
-.animate-soundwave-3 { animation: soundwave 1.2s ease-in-out infinite 0.5s; }
-.animate-soundwave-4 { animation: soundwave 1.2s ease-in-out infinite 0.2s; }
-.animate-soundwave-5 { animation: soundwave 1.2s ease-in-out infinite 0.4s; }
-
-/* Red Neon Glass Glow Effects - Light Mode Default */
+@keyframes soundwave { 0%,100%{height:6px} 50%{height:24px} }
+.animate-soundwave-1 { animation: soundwave 1.2s ease-in-out infinite .1s; }
+.animate-soundwave-2 { animation: soundwave 1.2s ease-in-out infinite .3s; }
+.animate-soundwave-3 { animation: soundwave 1.2s ease-in-out infinite .5s; }
+.animate-soundwave-4 { animation: soundwave 1.2s ease-in-out infinite .2s; }
+.animate-soundwave-5 { animation: soundwave 1.2s ease-in-out infinite .4s; }
 .neon-glass-card {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05), 0 0 25px rgba(220, 38, 38, 0.1), inset 0 1px 2px rgba(255, 255, 255, 1);
-  transition: all 0.4s ease;
+  background: rgba(255,255,255,.55); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: 0 20px 50px rgba(0,0,0,.05), 0 0 25px rgba(220,38,38,.1), inset 0 1px 2px rgba(255,255,255,1);
+  transition: all .4s ease;
 }
-
-.neon-glass-card:hover {
-  border-color: rgba(244, 63, 94, 0.4);
-  box-shadow: 0 25px 60px rgba(220, 38, 38, 0.15), 0 0 35px rgba(244, 63, 94, 0.15);
-}
-
-/* Dark Mode Overrides */
+.neon-glass-card:hover { border-color: rgba(244,63,94,.4); box-shadow: 0 25px 60px rgba(220,38,38,.15), 0 0 35px rgba(244,63,94,.15); }
 .dark .neon-glass-card {
-  background: rgba(18, 10, 15, 0.85);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(220, 38, 38, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  background: rgba(18,10,15,.85); border: 1px solid rgba(239,68,68,.3);
+  box-shadow: 0 20px 50px rgba(0,0,0,.7), 0 0 25px rgba(220,38,38,.15), inset 0 1px 1px rgba(255,255,255,.1);
 }
-
-.dark .neon-glass-card:hover {
-  border-color: rgba(244, 63, 94, 0.6);
-  box-shadow: 0 25px 60px rgba(220, 38, 38, 0.35), 0 0 35px rgba(244, 63, 94, 0.25);
-}
-
-/* Swiper styling */
-.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: transparent;
-}
-
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.swiper-pagination-bullet {
-  background: rgba(239, 68, 68, 0.6) !important;
-  opacity: 1 !important;
-}
-.swiper-pagination-bullet-active {
-  background: #ef4444 !important;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
-}
-.swiper-pagination {
-  bottom: 20px !important;
-}
+.dark .neon-glass-card:hover { border-color: rgba(244,63,94,.6); box-shadow: 0 25px 60px rgba(220,38,38,.35), 0 0 35px rgba(244,63,94,.25); }
+.swiper { width: 100%; height: 100%; }
+.swiper-slide { text-align: center; font-size: 18px; background: transparent; }
+.swiper-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.swiper-pagination-bullet { background: rgba(239,68,68,.6) !important; opacity: 1 !important; }
+.swiper-pagination-bullet-active { background: #ef4444 !important; box-shadow: 0 0 12px rgba(239,68,68,.9); }
+.swiper-pagination { bottom: 20px !important; }

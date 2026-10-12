@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { FaUserPlus, FaClipboardCheck, FaRocket, FaArrowRight, FaCheckCircle } from 'react-icons/fa'
+import { FaUserPlus, FaClipboardCheck, FaRocket, FaArrowRight } from 'react-icons/fa'
 
 export default function Sec2() {
     const { t } = useTranslation()
@@ -10,136 +10,268 @@ export default function Sec2() {
     const steps = [
         {
             num: '01',
-            icon: <FaUserPlus className="w-5 h-5" />,
-            badge: 'Boshlanish',
-            phase: '01 // QADAM',
+            icon: <FaUserPlus />,
+            phase: t('steps.phase1', 'Boshlanish'),
             title: t('steps.step1Title', "Ro'yxatdan o'tish"),
             desc: t('steps.step1Desc', "Shaxsiy ma'lumotlaringizni qoldiring va mutaxassis bilan bepul konsultatsiyaga yoziling."),
             path: '/register',
-            actionText: "Ro'yxatdan o'tish",
-            highlight: "1 daqiqa vaqt"
+            actionText: t('steps.action1', "Ro'yxatdan o'tish"),
+            highlight: t('steps.h1', '1 daqiqa vaqt'),
         },
         {
             num: '02',
-            icon: <FaClipboardCheck className="w-5 h-5" />,
-            badge: 'Tahlil',
-            phase: '02 // QADAM',
-            title: t('steps.step2Title', "Darajangizni aniqlash"),
-            desc: t('steps.step2Desc', "30 daqiqalik CDI va grammatika testini topshirib, aniq darajangiz va kamchiliklaringizni biling."),
+            icon: <FaClipboardCheck />,
+            phase: t('steps.phase2', 'Tahlil'),
+            title: t('steps.step2Title', 'Darajangizni aniqlash'),
+            desc: t('steps.step2Desc', '30 daqiqalik CDI va grammatika testini topshirib, aniq darajangiz va kamchiliklaringizni biling.'),
             path: '/level-test',
-            actionText: "Test topshirish",
-            highlight: "Bepul tahlil"
+            actionText: t('steps.action2', 'Test topshirish'),
+            highlight: t('steps.h2', 'Bepul tahlil'),
         },
         {
             num: '03',
-            icon: <FaRocket className="w-5 h-5" />,
-            badge: 'Natija',
-            phase: '03 // QADAM',
+            icon: <FaRocket />,
+            phase: t('steps.phase3', 'Natija'),
             title: t('steps.step3Title', "O'qishni boshlash"),
             desc: t('steps.step3Desc', "Mos tarifni tanlab, IELTS 8.0+ darajali mentorlar bilan maqsad sari qat'iy intiling."),
             path: '/pricing',
-            actionText: "Tariflar bilan tanishish",
-            highlight: "Kafolatlangan o'sish"
+            actionText: t('steps.action3', 'Tariflar bilan tanishish'),
+            highlight: t('steps.h3', "Kafolatlangan o'sish"),
         }
     ]
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 select-none overflow-hidden">
-            {/* Ambient Background Glow for the Section (Hardware-optimized) */}
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] pointer-events-none -z-10 opacity-70"
-              style={{
-                background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.1) 0%, transparent 68%)"
-              }}
+        <section
+            className="relative overflow-hidden"
+            style={{
+                padding: 'clamp(80px, 12vh, 140px) clamp(20px, 5vw, 80px)',
+                background: 'transparent',
+            }}
+        >
+            {/* Architectural top divider */}
+            <div className="absolute top-0 left-0 right-0 h-px"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.08) 75%, transparent)' }}
             />
 
-            {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 relative">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] dark:bg-white/[0.03] border border-red-500/30 backdrop-blur-xl shadow-[0_0_20px_rgba(239,68,68,0.15)] mb-4">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                    <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-red-500 dark:text-red-400">
+            {/* Ambient red glow — right side */}
+            <div
+                className="absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none"
+                style={{
+                    width: 'clamp(300px, 50vw, 600px)',
+                    height: 'clamp(300px, 50vw, 600px)',
+                    background: 'radial-gradient(ellipse at right center, rgba(225,29,72,0.10) 0%, transparent 68%)',
+                }}
+            />
+
+            <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+
+                {/* Section header */}
+                <div style={{ maxWidth: '640px', marginBottom: 'clamp(48px, 8vh, 80px)' }}>
+                    {/* Label */}
+                    <p style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '0.65rem',
+                        fontWeight: 800,
+                        letterSpacing: '0.18em',
+                        textTransform: 'uppercase',
+                        color: '#f43f5e',
+                        marginBottom: '20px',
+                    }}>
+                        <span style={{
+                            width: '5px', height: '5px', borderRadius: '50%',
+                            background: '#f43f5e', display: 'inline-block',
+                        }} />
                         {t('steps.badge', '3 ODDIY QADAM // THE FAST TRACK')}
-                    </span>
+                    </p>
+
+                    <h2 style={{
+                        margin: 0,
+                        fontFamily: 'var(--font-heading, system-ui)',
+                        fontSize: 'clamp(2rem, 4.5vw, 4rem)',
+                        fontWeight: 900,
+                        letterSpacing: '-0.04em',
+                        lineHeight: 1.02,
+                        color: '#f2ede8',
+                    }}>
+                        {t('steps.title', "Qanday qilib o'qishni")}{' '}
+                        <span style={{ color: '#f43f5e' }}>boshlaysiz?</span>
+                    </h2>
+
+                    <p style={{
+                        marginTop: 'clamp(12px, 2vw, 20px)',
+                        fontSize: 'clamp(0.88rem, 1.1vw, 1rem)',
+                        lineHeight: 1.7,
+                        color: 'rgba(242,237,232,0.55)',
+                    }}>
+                        {t('steps.description', "IELTS orzuingiz sari atigi 3 ta qadam qoldi. Sinovdan o'ting, tahlil oling va guruhga qo'shiling.")}
+                    </p>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight font-heading leading-tight">
-                    {t('steps.title', "Qanday qilib o'qishni")}{' '}
-                    <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
-                        boshlaysiz?
-                    </span>
-                </h2>
+                {/* Steps grid — Responsive 1 column on mobile, 3 columns on desktop */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                    {/* Connecting horizontal rule (desktop) */}
+                    <div
+                        className="hidden lg:block absolute"
+                        style={{
+                            top: '52px',
+                            left: '10%',
+                            right: '10%',
+                            height: '1px',
+                            background: 'linear-gradient(90deg, transparent, rgba(225,29,72,0.3) 30%, rgba(225,29,72,0.3) 70%, transparent)',
+                        }}
+                    />
 
-                <p className="text-slate-600 dark:text-slate-400 mt-4 text-sm sm:text-base font-normal max-w-xl mx-auto leading-relaxed">
-                    {t('steps.description', "IELTS orzuingiz sari atigi 3 ta qadam qoldi. Sinovdan o'ting, tahlil oling va guruhga qo'shiling.")}
-                </p>
-            </div>
-
-            {/* Steps Container with connecting flow */}
-            <div className="relative">
-                {/* Horizontal Flow Line on Desktop */}
-                <div className="hidden lg:block absolute top-[72px] left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-red-500/20 via-red-500/40 to-red-500/20 -z-10">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/60 to-transparent blur-[1px]" />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative z-10">
                     {steps.map((item, index) => (
-                        <div
+                        <article
                             key={item.num}
                             onClick={() => navigate(item.path)}
-                            className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/50 shadow-lg shadow-black/5 dark:shadow-[0_15px_40px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1.5 cursor-pointer overflow-hidden"
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => e.key === 'Enter' && navigate(item.path)}
+                            aria-label={item.title}
+                            style={{
+                                position: 'relative',
+                                padding: 'clamp(28px, 3.5vw, 44px)',
+                                background: 'rgba(12,13,16,0.92)',
+                                border: '1px solid rgba(255,255,255,0.08)',
+                                borderRadius: '24px',
+                                cursor: 'pointer',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '0',
+                                boxShadow: '0 12px 36px -4px rgba(0,0,0,0.5)',
+                                transition: 'border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease',
+                            }}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.borderColor = 'rgba(225,29,72,0.5)';
+                                e.currentTarget.style.transform = 'translateY(-4px)';
+                                e.currentTarget.style.boxShadow = '0 20px 45px -4px rgba(225,29,72,0.18)';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 12px 36px -4px rgba(0,0,0,0.5)';
+                            }}
                         >
-                            {/* Ambient Top Glow Line */}
-                            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            
-                            {/* Inner ambient card backlight */}
-                            <div className="absolute -top-24 -right-24 w-48 h-48 bg-red-600/[0.08] rounded-full blur-3xl pointer-events-none group-hover:bg-red-600/[0.18] transition-all duration-500" />
+                            {/* Top accent line on hover */}
+                            <div style={{
+                                position: 'absolute', top: 0, left: 0, right: 0,
+                                height: '2px',
+                                background: index === 1
+                                    ? 'linear-gradient(90deg, transparent, rgba(225,29,72,0.8), transparent)'
+                                    : 'transparent',
+                            }} />
 
-                            <div>
-                                {/* Step Top Header */}
-                                <div className="flex items-center justify-between mb-6">
-                                    <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.35)] transition-all duration-300">
-                                        {item.icon}
-                                    </div>
-                                    <span className="font-heading text-4xl sm:text-5xl font-black text-slate-300/70 dark:text-white/10 group-hover:text-red-500/30 transition-colors tracking-tighter">
-                                        {item.num}
-                                    </span>
-                                </div>
+                            {/* Step number (huge watermark) */}
+                            <span style={{
+                                position: 'absolute',
+                                top: '16px',
+                                right: '20px',
+                                fontFamily: 'var(--font-heading)',
+                                fontSize: 'clamp(3rem, 5vw, 5rem)',
+                                fontWeight: 900,
+                                letterSpacing: '-0.05em',
+                                color: 'rgba(255,255,255,0.05)',
+                                lineHeight: 1,
+                                userSelect: 'none',
+                                pointerEvents: 'none',
+                            }}>
+                                {item.num}
+                            </span>
 
-                                {/* Step Phase & Highlight badge */}
-                                <div className="flex items-center gap-2 mb-3">
-                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 border border-red-200/60 dark:border-red-900/40">
-                                        {item.phase}
-                                    </span>
-                                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                                        <FaCheckCircle className="w-2.5 h-2.5 text-emerald-500" />
-                                        {item.highlight}
-                                    </span>
-                                </div>
-
-                                {/* Title */}
-                                <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-3 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors font-heading tracking-tight">
-                                    {item.title}
-                                </h3>
-
-                                {/* Description */}
-                                <p className="text-sm text-slate-600 dark:text-slate-300/80 leading-relaxed font-normal">
-                                    {item.desc}
-                                </p>
+                            {/* Icon */}
+                            <div style={{
+                                width: '48px', height: '48px',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                border: '1px solid rgba(225,29,72,0.30)',
+                                background: 'rgba(225,29,72,0.1)',
+                                borderRadius: '16px',
+                                color: '#f43f5e',
+                                fontSize: '1.1rem',
+                                marginBottom: '24px',
+                                flexShrink: 0,
+                            }}>
+                                {item.icon}
                             </div>
 
-                            {/* Bottom Action Footer */}
-                            <div className="pt-6 mt-6 border-t border-slate-200/60 dark:border-white/[0.06] flex items-center justify-between">
-                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors">
+                            {/* Phase label */}
+                            <p style={{
+                                margin: '0 0 10px',
+                                fontSize: '0.62rem',
+                                fontWeight: 800,
+                                letterSpacing: '0.16em',
+                                textTransform: 'uppercase',
+                                color: '#f43f5e',
+                            }}>
+                                {item.num} // {item.phase}
+                            </p>
+
+                            {/* Title */}
+                            <h3 style={{
+                                margin: '0 0 14px',
+                                fontFamily: 'var(--font-heading)',
+                                fontSize: 'clamp(1.25rem, 2vw, 1.7rem)',
+                                fontWeight: 900,
+                                letterSpacing: '-0.03em',
+                                lineHeight: 1.1,
+                                color: '#f2ede8',
+                            }}>
+                                {item.title}
+                            </h3>
+
+                            {/* Description */}
+                            <p style={{
+                                margin: 0,
+                                fontSize: 'clamp(0.82rem, 1vw, 0.92rem)',
+                                lineHeight: 1.7,
+                                color: 'rgba(242,237,232,0.55)',
+                                flex: 1,
+                            }}>
+                                {item.desc}
+                            </p>
+
+                            {/* Bottom footer */}
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: '28px',
+                                paddingTop: '20px',
+                                borderTop: '1px solid rgba(255,255,255,0.07)',
+                            }}>
+                                <span style={{
+                                    fontSize: '0.75rem',
+                                    fontWeight: 700,
+                                    color: 'rgba(242,237,232,0.55)',
+                                    letterSpacing: '0.04em',
+                                }}>
                                     {item.actionText}
                                 </span>
-                                <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-700 dark:text-slate-300 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-500 group-hover:translate-x-1 transition-all duration-300">
-                                    <FaArrowRight className="w-3 h-3" />
+                                <div style={{
+                                    width: '38px', height: '38px',
+                                    borderRadius: '9999px',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    background: 'linear-gradient(90deg, #E11D48, #F43F5E)',
+                                    color: '#ffffff',
+                                    fontSize: '0.8rem',
+                                    boxShadow: '0 4px 14px rgba(225, 29, 72, 0.4)',
+                                    transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+                                }}>
+                                    <FaArrowRight />
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
             </div>
+
+            {/* Architectural bottom divider */}
+            <div className="absolute bottom-0 left-0 right-0 h-px"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.08) 75%, transparent)' }}
+            />
         </section>
     )
 }

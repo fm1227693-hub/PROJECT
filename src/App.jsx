@@ -64,111 +64,78 @@ export default function App() {
         }
       `}</style>
 
-      {/* Full-Page Cinematic Background System with Continuous Fluid Waves (BEHIND ALL CONTENT) */}
+      {/* Editorial Background System: Exact Obsidian (#080909), Crimson Illuminations & 80px Fine Grid Lines */}
       <div className="site-background pointer-events-none fixed inset-0 z-0 overflow-hidden select-none" aria-hidden="true">
-        {/* Layer 1: Base Layer - Midnight-Black (#070911) / Warm Ivory (#F7F5F0) */}
-        <div className="absolute inset-0 bg-[#F7F5F0] dark:bg-[#070911] transition-colors duration-500" />
+        {/* Layer 1: Base Dark Obsidian (#080909) / Ivory Surface (#F8F7F4) */}
+        <div className="absolute inset-0 bg-[#F8F7F4] dark:bg-[#080909] transition-colors duration-500" />
 
-        {/* Layer 2: Continuous Flowing Fluid Wave Ribbons (Dark Mode) */}
+        {/* Layer 2: Subtle Editorial Illumination Waves (Dark Mode) */}
         <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-500 overflow-hidden">
-          {/* Base Cinematic Gradient Bed */}
+          {/* Base Atmospheric Bed */}
           <div 
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(155deg, #0e111d 0%, #070911 50%, #090c16 100%)"
+              background: "linear-gradient(160deg, #090a0c 0%, #080909 50%, #0a0b0e 100%)"
             }}
           />
 
-          {/* Primary Wave Ribbon: Flowing Crimson & Burgundy Silk Wave */}
+          {/* Primary Flowing Optimum Crimson Silk Glow */}
           <div 
-            className="wave-layer-1 absolute -inset-[20%] opacity-90 transform-gpu"
+            className="wave-layer-1 absolute -inset-[15%] opacity-70 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 65% 35% at 20% 20%, rgba(242, 13, 50, 0.24) 0%, rgba(242, 13, 50, 0.12) 35%, transparent 70%),
-                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(160, 20, 52, 0.20) 0%, rgba(160, 20, 52, 0.08) 35%, transparent 72%),
-                radial-gradient(ellipse 55% 45% at 50% 45%, rgba(215, 25, 55, 0.16) 0%, rgba(215, 25, 55, 0.06) 35%, transparent 68%)
+                radial-gradient(ellipse 65% 35% at 20% 20%, rgba(225, 29, 72, 0.12) 0%, rgba(159, 18, 57, 0.04) 40%, transparent 70%),
+                radial-gradient(ellipse 70% 38% at 80% 65%, rgba(190, 18, 60, 0.08) 0%, transparent 65%)
               `,
               backfaceVisibility: "hidden",
             }}
           />
 
-          {/* Secondary Wave Ribbon: Cool Midnight-Blue & Indigo Counter-Wave */}
+          {/* Secondary Deep Crimson Counter-Wave */}
           <div 
-            className="wave-layer-2 absolute -inset-[20%] opacity-85 transform-gpu"
+            className="wave-layer-2 absolute -inset-[15%] opacity-65 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 60% 40% at 85% 20%, rgba(45, 70, 145, 0.24) 0%, rgba(45, 70, 145, 0.10) 35%, transparent 70%),
-                radial-gradient(ellipse 65% 35% at 15% 75%, rgba(30, 55, 120, 0.20) 0%, rgba(30, 55, 120, 0.08) 35%, transparent 72%),
-                radial-gradient(ellipse 50% 30% at 65% 85%, rgba(55, 35, 100, 0.16) 0%, rgba(55, 35, 100, 0.06) 35%, transparent 65%)
-              `,
-              backfaceVisibility: "hidden",
-            }}
-          />
-
-          {/* Tertiary Wave Ribbon: Ethereal Velvet Violet & Rose Highlight Swell */}
-          <div 
-            className="wave-layer-3 absolute -inset-[20%] opacity-75 transform-gpu"
-            style={{
-              background: `
-                radial-gradient(ellipse 75% 32% at 45% 15%, rgba(220, 30, 75, 0.18) 0%, rgba(220, 30, 75, 0.08) 35%, transparent 72%),
-                radial-gradient(ellipse 60% 40% at 55% 80%, rgba(40, 75, 145, 0.18) 0%, rgba(40, 75, 145, 0.08) 35%, transparent 68%)
-              `,
-              backfaceVisibility: "hidden",
-            }}
-          />
-
-          {/* Quaternary Wave Ribbon: Diagonal Silk Stream Across All Sections */}
-          <div 
-            className="wave-layer-4 absolute -inset-[20%] opacity-70 transform-gpu"
-            style={{
-              background: `
-                radial-gradient(ellipse 80% 30% at 70% 40%, rgba(190, 18, 48, 0.16) 0%, rgba(190, 18, 48, 0.06) 35%, transparent 68%),
-                radial-gradient(ellipse 50% 45% at 30% 60%, rgba(35, 50, 110, 0.18) 0%, rgba(35, 50, 110, 0.07) 35%, transparent 68%)
+                radial-gradient(ellipse 60% 40% at 85% 25%, rgba(225, 29, 72, 0.09) 0%, transparent 65%),
+                radial-gradient(ellipse 55% 45% at 25% 75%, rgba(251, 146, 60, 0.04) 0%, transparent 60%)
               `,
               backfaceVisibility: "hidden",
             }}
           />
         </div>
 
-        {/* Light Mode Fluid Waves */}
+        {/* Light Mode Subtle Red Aura */}
         <div className="absolute inset-0 opacity-100 dark:opacity-0 transition-opacity duration-500 overflow-hidden">
           <div 
-            className="wave-layer-1 absolute -inset-[20%] opacity-70 transform-gpu"
+            className="wave-layer-1 absolute -inset-[15%] opacity-50 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 65% 35% at 25% 25%, rgba(242, 13, 50, 0.08) 0%, transparent 70%),
-                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(70, 90, 150, 0.07) 0%, transparent 70%)
+                radial-gradient(ellipse 60% 35% at 25% 25%, rgba(225, 29, 72, 0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 65% 40% at 75% 65%, rgba(40, 55, 95, 0.03) 0%, transparent 70%)
               `,
               backfaceVisibility: "hidden",
             }}
           />
         </div>
 
-        {/* Layer 3: Delicate Architectural Grid Lines */}
+        {/* Layer 3: Architectural Grid Lines (Exact 80px x 80px matching home) */}
         <div 
-          className="absolute inset-0 opacity-[0.25] dark:opacity-[0.14]"
+          className="absolute inset-0 opacity-100"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+              linear-gradient(to right, rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.065) 1px, transparent 1px)
             `,
-            backgroundSize: "48px 48px",
+            backgroundSize: "80px 80px",
+            backgroundPosition: "center top",
           }}
         />
 
-        {/* Layer 4: Delicate Grain Texture (Subtle & Tactile) */}
+        {/* Layer 4: Restrained Vignette */}
         <div 
-          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.045] mix-blend-overlay pointer-events-none"
+          className="absolute inset-0 opacity-20 dark:opacity-40 pointer-events-none"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
-
-        {/* Layer 5: Restrained Edge Vignette */}
-        <div 
-          className="absolute inset-0 opacity-20 dark:opacity-60 pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse at center, transparent 50%, rgba(7, 9, 17, 0.5) 100%)"
+            background: "radial-gradient(ellipse at center, transparent 60%, rgba(8, 9, 9, 0.75) 100%)"
           }}
         />
       </div>

@@ -65,7 +65,7 @@ export default function Stats() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
                 {/* Left Card: Progress Chart */}
-                <div className="lg:col-span-7 rounded-3xl p-6 sm:p-8 bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 shadow-xl flex flex-col justify-between">
+                <div className="lg:col-span-7 rounded-3xl p-6 sm:p-8 bg-white/85 dark:bg-[#0a0e19]/90 border border-slate-200 dark:border-white/10 shadow-xl flex flex-col justify-between">
                     <div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                             <div>

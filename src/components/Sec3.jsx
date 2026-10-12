@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaTimes, FaCheckCircle, FaSpinner } from 'react-icons/fa'
+import { FaTimes, FaCheckCircle, FaSpinner, FaArrowRight } from 'react-icons/fa'
 import axios from 'axios'
 
 export default function Sec3() {
@@ -281,29 +281,31 @@ export default function Sec3() {
               </p>
             </div>
 
-            {/* Direct Call to Actions */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 pt-1">
+            {/* Direct Call to Actions — Matching pill design */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
               <motion.a
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 href={currentTeacher.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-slate-900 dark:text-white border border-black/5 dark:border-white/10 text-xs font-bold transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/15 hover:border-red-500/50 text-xs sm:text-sm font-bold tracking-wide transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Telegram orqali suhbat</span>
+                <FaArrowRight className="w-3 h-3 opacity-60" />
               </motion.a>
               
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => {
                   setSelectedMentor(currentTeacher.name)
                   setModal(true)
                 }}
-                className="w-full sm:flex-1 py-3.5 px-6 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white text-xs sm:text-sm font-extrabold rounded-xl transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-9 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-xs sm:text-sm font-extrabold tracking-wide rounded-full transition-all shadow-xl shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 flex items-center justify-center gap-2.5 cursor-pointer"
               >
-                <span>{t('sec3.contactBtn')}</span>
+                <span>{t('sec3.contactBtn', "Bog'lanish")}</span>
+                <FaArrowRight className="w-3.5 h-3.5" />
               </motion.button>
             </div>
 

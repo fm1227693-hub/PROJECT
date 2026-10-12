@@ -114,7 +114,7 @@ export default function Gamess() {
                     whileHover={{ scale: 1.03, y: -5 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveGame(game.id)}
-                    className="relative group cursor-pointer overflow-hidden rounded-3xl bg-white/70 dark:bg-[#050505]/60 backdrop-blur-xl border border-white/60 dark:border-red-500/20 shadow-xl shadow-slate-200/50 dark:shadow-none p-6 transition-all duration-300"
+                    className="relative group cursor-pointer overflow-hidden rounded-3xl bg-white/80 dark:bg-[#0a0e19]/90 backdrop-blur-xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-xl shadow-slate-200/50 dark:shadow-none p-6 transition-all duration-300"
                   >
                     <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${game.color} opacity-10 rounded-bl-[100px] transition-transform duration-500 group-hover:scale-110`} />
                     

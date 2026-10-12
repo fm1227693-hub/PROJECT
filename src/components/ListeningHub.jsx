@@ -64,7 +64,7 @@ export default function ListeningHub() {
           {tests.map((test, idx) => (
             <div
               key={test.id}
-              className="rounded-3xl p-6 sm:p-7 bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 hover:border-red-500/40 dark:hover:border-red-500/40 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group"
+              className="rounded-3xl p-6 sm:p-7 bg-white/85 dark:bg-[#0a0e19]/90 border border-slate-200 dark:border-white/10 hover:border-red-500/40 dark:hover:border-red-500/40 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-center justify-between mb-5">

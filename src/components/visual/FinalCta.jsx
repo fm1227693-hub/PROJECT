@@ -17,7 +17,7 @@ export default function FinalCta() {
       />
 
       {/* Main Luxury Glass Showcase Card */}
-      <div className="relative rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-white/90 via-white/85 to-white/80 dark:from-[#0c1424]/95 dark:via-[#070b14]/95 dark:to-[#050810]/95 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.1] p-8 sm:p-14 lg:p-20 shadow-2xl shadow-black/10 dark:shadow-[0_30px_90px_rgba(0,0,0,0.8)] overflow-hidden text-center">
+      <div className="relative rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-white/90 via-white/85 to-white/80 dark:from-[#0d1222]/95 dark:via-[#090d18]/95 dark:to-[#07090e]/95 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] p-8 sm:p-14 lg:p-20 shadow-2xl shadow-black/10 dark:shadow-[0_30px_90px_rgba(0,0,0,0.8)] overflow-hidden text-center">
         {/* Top Glow Highlight */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent" />
         
@@ -48,11 +48,11 @@ export default function FinalCta() {
             IELTS 7.5+ orzuingizni orqaga surmang. Bepul konsultatsiya va daraja testiga yoziling, natijani mutaxassis bilan tahlil qiling.
           </p>
 
-          {/* Action CTAs */}
+          {/* Action CTAs — Pill Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
               to="/form"
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/35 transition-all duration-300 flex items-center justify-center gap-3 text-sm sm:text-base hover:-translate-y-1 active:translate-y-0 cursor-pointer"
+              className="w-full sm:w-auto px-9 py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold rounded-full shadow-xl shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 transition-all duration-300 flex items-center justify-center gap-3 text-sm sm:text-base hover:scale-105 active:scale-95 cursor-pointer"
             >
               <span>Bepul sinov darsi olish</span>
               <FaArrowRight className="w-4 h-4" />
@@ -60,9 +60,10 @@ export default function FinalCta() {
 
             <Link
               to="/level-test"
-              className="w-full sm:w-auto px-7 py-4 bg-white/60 dark:bg-white/[0.05] hover:bg-white/80 dark:hover:bg-white/[0.1] text-slate-900 dark:text-white font-bold rounded-2xl border border-slate-300/80 dark:border-white/15 backdrop-blur-xl transition-all duration-300 flex items-center justify-center gap-2.5 text-sm sm:text-base hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              className="w-full sm:w-auto px-8 py-4 bg-white/60 dark:bg-white/[0.04] hover:bg-white/80 dark:hover:bg-white/[0.08] text-slate-900 dark:text-white font-bold rounded-full border border-slate-300/80 dark:border-white/15 hover:border-red-500/50 backdrop-blur-xl transition-all duration-300 flex items-center justify-center gap-2.5 text-sm sm:text-base hover:scale-105 active:scale-95 cursor-pointer"
             >
               <span>Darajani aniqlash</span>
+              <FaArrowRight className="w-3.5 h-3.5 opacity-60" />
             </Link>
           </div>
 

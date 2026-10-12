@@ -151,7 +151,7 @@ export default function Products() {
                     {filtered.map((course) => (
                         <div
                             key={course.id}
-                            className="group relative p-8 sm:p-10 rounded-3xl bg-white/70 dark:bg-[#070b14]/75 backdrop-blur-3xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-xl shadow-black/5 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
+                            className="group relative p-8 sm:p-10 rounded-3xl bg-white/80 dark:bg-[#0a0e19]/90 backdrop-blur-3xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-xl shadow-black/5 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
                         >
                             {/* Top Ambient Glow */}
                             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

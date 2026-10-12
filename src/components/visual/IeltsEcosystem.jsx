@@ -110,49 +110,49 @@ export default function IeltsEcosystem() {
           <Link
             key={tool.id}
             to={tool.path}
-            className="group relative p-7 sm:p-9 rounded-3xl bg-white/85 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/50 shadow-xl shadow-black/5 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden cursor-pointer"
+            className="group relative p-7 sm:p-9 rounded-3xl bg-[#0c0d10]/90 backdrop-blur-md border border-white/[0.07] hover:border-red-500/50 shadow-xl shadow-black/40 hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden cursor-pointer"
           >
             {/* Top Glow Highlight Line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             <div>
               {/* Header row */}
               <div className="flex items-center justify-between mb-6">
-                <div className="w-13 h-13 rounded-2xl bg-white/60 dark:bg-white/[0.04] border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-red-500/40 transition-all duration-300 shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:border-red-500/60 group-hover:bg-red-500/20 transition-all duration-300 shadow-sm">
                   {tool.icon}
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${tool.tagColor}`}>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-red-500/30 text-red-400 bg-red-500/10">
                     {tool.badge}
                   </span>
                 </div>
               </div>
 
               {/* Title & Badge */}
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-2.5 font-heading tracking-tight group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors">
+              <h3 className="text-xl sm:text-2xl font-black text-white mb-2.5 font-heading tracking-tight group-hover:text-red-400 transition-colors">
                 {tool.name}
               </h3>
 
-              <div className="flex items-center gap-2 mb-4 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                <FaCheckCircle className="w-3 h-3 text-emerald-500" />
+              <div className="flex items-center gap-2 mb-4 text-xs font-semibold text-slate-400">
+                <FaCheckCircle className="w-3 h-3 text-red-500" />
                 <span>{tool.highlight}</span>
                 <span className="opacity-40">•</span>
                 <span>{tool.stats}</span>
               </div>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300/80 leading-relaxed font-normal mb-8">
+              <p className="text-xs sm:text-sm text-slate-300/80 leading-relaxed font-normal mb-8">
                 {tool.desc}
               </p>
             </div>
 
             {/* Bottom Action Footer */}
-            <div className="pt-6 border-t border-slate-200/60 dark:border-white/[0.06] flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors">
+            <div className="pt-6 border-t border-white/[0.07] flex items-center justify-between">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-200 group-hover:text-red-400 transition-colors">
                 {tool.action}
               </span>
-              <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-700 dark:text-slate-300 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-500 group-hover:translate-x-1 transition-all duration-300 shadow-xs">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/40 group-hover:scale-110 group-hover:shadow-red-600/60 group-hover:translate-x-1 transition-all duration-300">
                 <FaArrowRight className="w-3.5 h-3.5" />
               </div>
             </div>

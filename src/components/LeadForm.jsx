@@ -108,7 +108,7 @@ export default function LeadForm() {
                     <span>Orqaga</span>
                 </button>
 
-                <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center rounded-3xl sm:rounded-[2.5rem] bg-white/70 dark:bg-[#070b14]/75 backdrop-blur-3xl border border-black/[0.08] dark:border-white/[0.08] shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] p-6 sm:p-10 lg:p-12 overflow-hidden">
+                <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center rounded-3xl sm:rounded-[2.5rem] bg-white/80 dark:bg-[#0a0e19]/90 backdrop-blur-3xl border border-black/[0.08] dark:border-white/[0.08] shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] p-6 sm:p-10 lg:p-12 overflow-hidden">
                     {/* Top ambient highlight line */}
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
 

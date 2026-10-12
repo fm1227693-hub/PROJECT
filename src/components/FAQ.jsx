@@ -49,8 +49,8 @@ export default function FAQ() {
                                 key={index}
                                 className={`rounded-2xl sm:rounded-3xl transition-all duration-300 border ${
                                     isOpen
-                                        ? 'bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-3xl border-red-500/50 shadow-xl shadow-red-500/10'
-                                        : 'bg-white/60 dark:bg-[#070b14]/65 backdrop-blur-2xl border-black/[0.08] dark:border-white/[0.08] hover:border-slate-300 dark:hover:border-white/20'
+                                        ? 'bg-white/90 dark:bg-[#0a0e19]/95 backdrop-blur-3xl border-red-500/50 shadow-xl shadow-red-500/10'
+                                        : 'bg-white/70 dark:bg-[#0a0e19]/75 backdrop-blur-2xl border-black/[0.08] dark:border-white/[0.08] hover:border-slate-300 dark:hover:border-white/20'
                                 } overflow-hidden`}
                             >
                                 <button

@@ -163,14 +163,14 @@ export default function Navbar() {
 
     return (
         <>
-            <div data-navbar-root className={`fixed top-0 left-0 w-full z-50  select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
+            <div data-navbar-root className={`fixed top-0 left-0 w-full z-50 select-none pointer-events-none transition-all duration-500 ${scrolled ? 'px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4' : 'px-0 pt-0'} ${navHidden ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
                 <motion.header
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                 className={`mx-auto transition-all duration-500 pointer-events-auto relative ${scrolled
-                    ? 'max-w-[1216px] rounded-2xl bg-[#070911]/80 dark:bg-[#070911]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40'
-                    : 'max-w-full rounded-none bg-transparent border-b border-transparent'
+                    ? 'max-w-[1240px] rounded-2xl bg-white/85 dark:bg-[#07090e]/90 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] shadow-2xl shadow-black/40'
+                    : 'max-w-full rounded-none bg-transparent border-b border-black/[0.04] dark:border-white/[0.04]'
                 }`}
             >
                 <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between gap-3">
@@ -373,7 +373,7 @@ export default function Navbar() {
                         {/* Primary Start Learning Action Button */}
                         <Link
                             to="/form"
-                            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs shadow-md shadow-red-600/30 hover:shadow-red-600/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 shrink-0"
+                            className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs tracking-wide shadow-lg shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 transition-all duration-300 hover:scale-105 active:scale-95 shrink-0"
                         >
                             <span>{t('navbar.startLearning', "O'qishni boshlash")}</span>
                             <FaArrowRight className="w-2.5 h-2.5" />

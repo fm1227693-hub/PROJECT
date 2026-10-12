@@ -148,8 +148,8 @@ export default function Pricing() {
                                 key={plan.id}
                                 className={`group relative rounded-3xl p-7 sm:p-9 flex flex-col justify-between transition-all duration-300 overflow-hidden ${
                                     isMatched
-                                        ? 'bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-3xl border-2 border-red-500 shadow-2xl shadow-red-500/10 dark:shadow-[0_25px_60px_rgba(220,38,38,0.2)] md:-translate-y-2'
-                                        : 'bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:border-red-500/40 hover:-translate-y-1'
+                                        ? 'bg-white/90 dark:bg-[#0a0e19]/95 backdrop-blur-3xl border-2 border-red-500 shadow-2xl shadow-red-500/10 dark:shadow-[0_25px_60px_rgba(220,38,38,0.2)] md:-translate-y-2'
+                                        : 'bg-white/80 dark:bg-[#0a0e19]/80 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:border-red-500/40 hover:-translate-y-1'
                                 }`}
                             >
                                 {/* Top Glow Accent */}

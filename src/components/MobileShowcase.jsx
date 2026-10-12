@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
     FaPlus,
     FaArrowRight,
@@ -10,12 +10,18 @@ import {
     FaUserCheck,
     FaCommentDots,
     FaChalkboardTeacher,
-    FaStar
+    FaStar,
+    FaTimes,
+    FaCheckCircle
 } from 'react-icons/fa'
 
 export default function MobileShowcase() {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [currentTime, setCurrentTime] = useState('')
+    const [activeNotification, setActiveNotification] = useState(false)
+    const [selectedStudent, setSelectedStudent] = useState(null)
+    const [mentorPillModal, setMentorPillModal] = useState(null)
 
     // Live Uzbekistan Time (Asia/Tashkent UTC+5)
     useEffect(() => {
@@ -158,15 +164,20 @@ export default function MobileShowcase() {
                                 {/* Mentor App Header Row */}
                                 <div className="flex items-center justify-between py-1.5 sm:py-2 px-0.5 mt-0.5 sm:mt-1">
                                     <div className="flex items-center gap-1.5 sm:gap-2">
-                                        {/* Brand Red Mint Icon */}
-                                        <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-r from-red-600/20 to-rose-600/20 border border-red-500/30 flex items-center justify-center text-red-600 font-black shadow-sm">
+                                        {/* Brand Red Chalkboard Icon -> navigates to /about */}
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/about')}
+                                            className="w-8 sm:w-10 h-8 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-r from-red-600/20 to-rose-600/20 border border-red-500/30 flex items-center justify-center text-red-600 font-black shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition-all"
+                                            title="Markaz haqida ma'lumot"
+                                        >
                                             <FaChalkboardTeacher className="w-4 sm:w-5 h-4 sm:h-5 text-red-600" />
-                                        </div>
-                                        {/* Brand Red Plus Button */}
+                                        </button>
+                                        {/* Brand Red Plus Button -> navigates to /form */}
                                         <Link
-                                            to="/about"
-                                            className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white flex items-center justify-center text-[10px] sm:text-[12px] cursor-pointer hover:scale-105 transition-all shadow-sm shadow-red-600/30 border border-white/20"
-                                            title="Mentor bilan bog'lanish"
+                                            to="/form"
+                                            className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white flex items-center justify-center text-[10px] sm:text-[12px] cursor-pointer hover:scale-110 active:scale-95 transition-all shadow-sm shadow-red-600/30 border border-white/20"
+                                            title="Ro'yxatdan o'tish"
                                         >
                                             <FaPlus />
                                         </Link>
@@ -174,20 +185,63 @@ export default function MobileShowcase() {
 
                                     {/* Bell & Real Mentor Photo Avatar */}
                                     <div className="bg-red-500/10 p-1 rounded-full flex items-center gap-1 sm:gap-1.5 border border-red-500/20">
-                                        <div className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-white flex items-center justify-center text-slate-800 shadow-sm relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveNotification((prev) => !prev)}
+                                            className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-white flex items-center justify-center text-slate-800 shadow-sm relative cursor-pointer hover:scale-110 active:scale-95 transition-all"
+                                            title="Bildirishnomalar"
+                                        >
                                             <FaBell className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-slate-800" />
-                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full" />
-                                        </div>
-                                        <img
-                                            src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-23_23-14-12.jpg"
-                                            alt="Mentor Ruhillo Asrorov"
-                                            className="w-6.5 sm:w-7.5 h-6.5 sm:h-7.5 rounded-full object-cover object-top ring-2 ring-red-500 shadow-sm"
-                                        />
+                                            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => navigate('/about')}
+                                            className="cursor-pointer hover:scale-110 active:scale-95 transition-all"
+                                            title="Ruhillo Asrorov profili"
+                                        >
+                                            <img
+                                                src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-23_23-14-12.jpg"
+                                                alt="Mentor Ruhillo Asrorov"
+                                                className="w-6.5 sm:w-7.5 h-6.5 sm:h-7.5 rounded-full object-cover object-top ring-2 ring-red-500 shadow-sm"
+                                            />
+                                        </button>
                                     </div>
                                 </div>
 
+                                {/* Live Notification Dropdown inside Phone */}
+                                {activeNotification && (
+                                    <div className="absolute top-16 left-3 right-3 z-50 bg-[#0c0d10] border border-red-500/40 rounded-2xl p-3 shadow-2xl animate-in fade-in slide-in-from-top-2 text-white">
+                                        <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
+                                            <span className="text-[11px] font-bold text-red-400 flex items-center gap-1.5">
+                                                <FaBell className="w-2.5 h-2.5 text-red-500" />
+                                                Yangi xabar
+                                            </span>
+                                            <button 
+                                                onClick={() => setActiveNotification(false)}
+                                                className="text-white/60 hover:text-white text-xs cursor-pointer"
+                                            >
+                                                <FaTimes />
+                                            </button>
+                                        </div>
+                                        <p className="text-[10px] text-white/80 mt-1.5 leading-snug">
+                                            IELTS 8.0 guruhiga qabul davom etmoqda. Bepul konsultatsiyaga yoziling!
+                                        </p>
+                                        <button
+                                            onClick={() => { setActiveNotification(false); navigate('/form'); }}
+                                            className="mt-2 w-full py-1 bg-red-600 hover:bg-red-500 text-white rounded-lg text-[10px] font-bold transition-all text-center cursor-pointer"
+                                        >
+                                            Yozilish →
+                                        </button>
+                                    </div>
+                                )}
+
                                 {/* Main Account Card -> Ruhillo Asrorov IELTS Score & Experience */}
-                                <div className="mt-1 sm:mt-1.5 bg-white/50 backdrop-blur-sm p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-white/70 text-slate-900 shadow-sm">
+                                <div 
+                                    onClick={() => navigate('/about')}
+                                    className="mt-1 sm:mt-1.5 bg-white/60 hover:bg-white/80 backdrop-blur-sm p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-white/70 text-slate-900 shadow-sm cursor-pointer transition-all hover:scale-[1.01]"
+                                    title="Mentor haqida batafsil"
+                                >
                                     <div className="flex items-center justify-between">
                                         <span className="text-[11px] sm:text-[13px] font-bold text-red-950">Ruhillo Asrorov</span>
                                     </div>
@@ -201,48 +255,85 @@ export default function MobileShowcase() {
                                                 {t('mobileShowcase.seniorRole', 'Senior Instructor • 6+ yillik tajriba')}
                                             </p>
                                         </div>
-                                        <button className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-[10px] sm:text-[12px] font-extrabold rounded-lg sm:rounded-xl flex items-center gap-1 sm:gap-1.5 shadow-md shadow-red-600/30 transition-transform active:scale-95 border border-white/20 shrink-0">
+                                        <button 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setMentorPillModal({
+                                                    title: "Senior IELTS Instruktor",
+                                                    desc: "Ruhillo Asrorov — xalqaro IELTS 8.0 sertifikati egasi va Optimum bosh mentori."
+                                                });
+                                            }}
+                                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-[10px] sm:text-[12px] font-extrabold rounded-lg sm:rounded-xl flex items-center gap-1 sm:gap-1.5 shadow-md shadow-red-600/30 transition-transform active:scale-95 border border-white/20 shrink-0 cursor-pointer"
+                                        >
                                             <FaAward className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-amber-300" />
                                             <span>Senior</span>
                                         </button>
                                     </div>
                                 </div>
 
-                                {/* 4 Circular Red/Rose Brand Gradient Action Buttons */}
+                                {/* 4 Circular Red/Rose Brand Gradient Action Buttons (Now fully clickable) */}
                                 <div className="grid grid-cols-4 gap-1 sm:gap-2 mt-2 sm:mt-3 mb-0.5 text-center px-0.5">
-                                    <div className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer">
-                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-105 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setMentorPillModal({
+                                            title: "IELTS 8.0 Sertifikati",
+                                            desc: "Ruhillo Asrorov: Listening 8.5, Reading 8.5, Writing 7.5, Speaking 8.0 ball to'plagan."
+                                        })}
+                                        className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer focus:outline-none"
+                                    >
+                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-110 group-active:scale-95 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
                                             <FaAward className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
                                         </div>
                                         <span className="text-[10px] sm:text-[12px] font-bold text-slate-900 leading-tight">IELTS 8.0</span>
-                                    </div>
+                                    </button>
 
-                                    <div className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer">
-                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-105 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setMentorPillModal({
+                                            title: "6+ Yillik Professional Tajriba",
+                                            desc: "Cambridge metodologiyasi bo'yicha 6 yildan ortiq davom etgan muvaffaqiyatli dars berish tajribasi."
+                                        })}
+                                        className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer focus:outline-none"
+                                    >
+                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-110 group-active:scale-95 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
                                             <FaGraduationCap className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
                                         </div>
                                         <span className="text-[10px] sm:text-[12px] font-bold text-slate-900 leading-tight">
                                             {t('mobileShowcase.badge1', '6+ Yil')}
                                         </span>
-                                    </div>
+                                    </button>
 
-                                    <div className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer">
-                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-105 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setMentorPillModal({
+                                            title: "200+ IELTS Bitiruvchilari",
+                                            desc: "200 dan ortiq o'quvchilar IELTS 7.0 va 7.5+ ballik sertifikatlarni qo'lga kiritishgan."
+                                        })}
+                                        className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer focus:outline-none"
+                                    >
+                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-110 group-active:scale-95 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
                                             <FaUserCheck className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
                                         </div>
                                         <span className="text-[10px] sm:text-[12px] font-bold text-slate-900 leading-tight">
                                             {t('mobileShowcase.badge2', '200+ Student')}
                                         </span>
-                                    </div>
+                                    </button>
 
-                                    <div className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer">
-                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-105 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setMentorPillModal({
+                                            title: "Speaking & Fluency Maxsus Kursi",
+                                            desc: "Nutq ravonligi, talaffuz va leksik resurslarni rivojlantirish bo'yicha intensiv darslar."
+                                        })}
+                                        className="flex flex-col items-center gap-1 sm:gap-1.5 group cursor-pointer focus:outline-none"
+                                    >
+                                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-red-600 via-rose-600 to-red-700 group-hover:scale-110 group-active:scale-95 text-white flex items-center justify-center text-base sm:text-lg shadow-md shadow-red-600/30 transition-all border border-white/20">
                                             <FaCommentDots className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
                                         </div>
                                         <span className="text-[10px] sm:text-[12px] font-bold text-slate-900 leading-tight">
                                             {t('mobileShowcase.badge3', 'Speaking')}
                                         </span>
-                                    </div>
+                                    </button>
                                 </div>
 
                             </div>
@@ -288,10 +379,18 @@ export default function MobileShowcase() {
                                     </button>
                                 </div>
 
-                                {/* 2 Mentor Students */}
+                                {/* 2 Mentor Students (Clickable to view details) */}
                                 <div className="space-y-1.5 sm:space-y-2 overflow-y-auto max-h-[105px] sm:max-h-[120px] scrollbar-none px-0.5 sm:px-1">
                                     {/* Student 1: Javohir Munirov - Band 7.5 */}
-                                    <div className="flex items-center justify-between py-0.5 sm:py-1">
+                                    <div 
+                                        onClick={() => setSelectedStudent({
+                                            name: "Javohir Munirov",
+                                            score: "7.5",
+                                            details: "Listening: 9.0 • Reading: 7.5 • Writing: 7.0 • Speaking: 6.5",
+                                            image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg"
+                                        })}
+                                        className="flex items-center justify-between py-1 px-1.5 rounded-xl hover:bg-slate-100/80 cursor-pointer transition-all active:scale-98"
+                                    >
                                         <div className="flex items-center gap-2 sm:gap-3">
                                             <img
                                                 src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg"
@@ -310,7 +409,15 @@ export default function MobileShowcase() {
                                     </div>
 
                                     {/* Student 2: Jahongir Zayniddinov - Band 7.0 */}
-                                    <div className="flex items-center justify-between py-0.5 sm:py-1 border-t border-slate-200/70">
+                                    <div 
+                                        onClick={() => setSelectedStudent({
+                                            name: "Jahongir Zayniddinov",
+                                            score: "7.0",
+                                            details: "Listening: 8.5 • General: 7.0 • Reading: 7.0 • Speaking: 6.5",
+                                            image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg"
+                                        })}
+                                        className="flex items-center justify-between py-1 px-1.5 rounded-xl hover:bg-slate-100/80 cursor-pointer transition-all active:scale-98 border-t border-slate-200/70"
+                                    >
                                         <div className="flex items-center gap-2 sm:gap-3">
                                             <img
                                                 src="https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg"
@@ -329,8 +436,15 @@ export default function MobileShowcase() {
                                     </div>
                                 </div>
 
-                                {/* Home Bar Indicator */}
-                                <div className="w-20 sm:w-24 h-[3px] sm:h-[3.5px] bg-slate-900 rounded-full mx-auto mt-2 sm:mt-3 shrink-0 opacity-90" />
+                                {/* Home Bar Indicator -> scrolls to results */}
+                                <div 
+                                    onClick={() => {
+                                        const el = document.getElementById('results-section')
+                                        if (el) el.scrollIntoView({ behavior: 'smooth' })
+                                    }}
+                                    className="w-20 sm:w-24 h-[3px] sm:h-[3.5px] bg-slate-900 hover:bg-red-600 rounded-full mx-auto mt-2 sm:mt-3 shrink-0 opacity-90 cursor-pointer transition-colors" 
+                                    title="Natijalarni ko'rish"
+                                />
                             </div>
 
                         </div>
@@ -340,6 +454,89 @@ export default function MobileShowcase() {
                 </div>
 
             </div>
+
+            {/* Interactive Student Modal Popup */}
+            {selectedStudent && (
+                <div 
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in"
+                    onClick={() => setSelectedStudent(null)}
+                >
+                    <div 
+                        className="bg-[#0c0d10] border border-white/10 rounded-3xl p-6 max-w-sm w-full text-white shadow-2xl relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button 
+                            onClick={() => setSelectedStudent(null)}
+                            className="absolute top-4 right-4 text-white/60 hover:text-white cursor-pointer"
+                        >
+                            <FaTimes className="w-4 h-4" />
+                        </button>
+                        <div className="flex items-center gap-4 mb-4">
+                            <img 
+                                src={selectedStudent.image} 
+                                alt={selectedStudent.name} 
+                                className="w-14 h-14 rounded-full object-cover ring-2 ring-red-500 shadow-md"
+                            />
+                            <div>
+                                <h3 className="font-extrabold text-lg text-white font-heading">{selectedStudent.name}</h3>
+                                <div className="flex items-center gap-1.5 text-red-400 font-black text-sm">
+                                    <FaStar className="text-amber-400" />
+                                    <span>IELTS Overall: {selectedStudent.score}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/5 text-xs text-slate-300 mb-5 leading-relaxed">
+                            {selectedStudent.details}
+                        </div>
+                        <button
+                            onClick={() => {
+                                setSelectedStudent(null);
+                                const el = document.getElementById('results-section');
+                                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className="w-full py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full font-bold text-xs shadow-lg shadow-red-600/40 transition-all cursor-pointer text-center"
+                        >
+                            Barcha sertifikatlarni ko'rish →
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Interactive Mentor Pill Feature Modal */}
+            {mentorPillModal && (
+                <div 
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in"
+                    onClick={() => setMentorPillModal(null)}
+                >
+                    <div 
+                        className="bg-[#0c0d10] border border-white/10 rounded-3xl p-6 max-w-sm w-full text-white shadow-2xl relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button 
+                            onClick={() => setMentorPillModal(null)}
+                            className="absolute top-4 right-4 text-white/60 hover:text-white cursor-pointer"
+                        >
+                            <FaTimes className="w-4 h-4" />
+                        </button>
+                        <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 mb-4">
+                            <FaCheckCircle className="w-6 h-6" />
+                        </div>
+                        <h3 className="font-extrabold text-lg text-white font-heading mb-2">{mentorPillModal.title}</h3>
+                        <p className="text-xs text-slate-300 leading-relaxed mb-5">
+                            {mentorPillModal.desc}
+                        </p>
+                        <button
+                            onClick={() => {
+                                setMentorPillModal(null);
+                                navigate('/about');
+                            }}
+                            className="w-full py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full font-bold text-xs shadow-lg shadow-red-600/40 transition-all cursor-pointer text-center"
+                        >
+                            Mentor sahifasiga o'tish →
+                        </button>
+                    </div>
+                </div>
+            )}
         </section>
     )
 }
