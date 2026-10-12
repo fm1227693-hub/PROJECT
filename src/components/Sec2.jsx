@@ -45,8 +45,13 @@ export default function Sec2() {
 
     return (
         <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 select-none overflow-hidden">
-            {/* Ambient Background Glow for the Section */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-red-600/[0.07] rounded-full blur-[140px] pointer-events-none -z-10" />
+            {/* Ambient Background Glow for the Section (Hardware-optimized) */}
+            <div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] pointer-events-none -z-10 opacity-70"
+              style={{
+                background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.1) 0%, transparent 68%)"
+              }}
+            />
 
             {/* Section Header */}
             <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 relative">
@@ -81,7 +86,7 @@ export default function Sec2() {
                         <div
                             key={item.num}
                             onClick={() => navigate(item.path)}
-                            className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl bg-white/[0.6] dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/50 shadow-lg shadow-black/5 dark:shadow-[0_15px_40px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden"
+                            className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/50 shadow-lg shadow-black/5 dark:shadow-[0_15px_40px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1.5 cursor-pointer overflow-hidden"
                         >
                             {/* Ambient Top Glow Line */}
                             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

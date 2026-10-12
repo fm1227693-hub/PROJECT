@@ -13,12 +13,12 @@ export function LiquidGlassSurface({
   ...props
 }) {
   const variantStyles = {
-    subtle: 'bg-white/40 dark:bg-[#070b14]/50 backdrop-blur-xl border border-black/[0.06] dark:border-white/[0.06] shadow-xs',
-    elevated: 'bg-white/70 dark:bg-[#090f1d]/75 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] shadow-xl shadow-black/5 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]',
-    interactive: 'bg-white/60 dark:bg-[#070b14]/65 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 dark:hover:border-red-500/50 hover:bg-white/80 dark:hover:bg-[#0c1424]/80 shadow-md hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-1 transition-all duration-300',
-    accent: 'bg-gradient-to-br from-red-600/10 via-rose-600/5 to-transparent dark:from-red-600/15 dark:via-rose-600/5 dark:to-[#070b14]/80 backdrop-blur-2xl border border-red-500/25 dark:border-red-500/30 shadow-xl shadow-red-500/10',
-    highContrast: 'bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-lg',
-    dock: 'bg-slate-200/80 dark:bg-[#070b14]/90 border border-slate-300/80 dark:border-white/10 backdrop-blur-2xl shadow-lg'
+    subtle: 'bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-sm border border-black/[0.06] dark:border-white/[0.06] shadow-xs',
+    elevated: 'bg-white/80 dark:bg-[#090f1d]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] shadow-xl shadow-black/5 dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]',
+    interactive: 'bg-white/75 dark:bg-[#070b14]/80 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 dark:hover:border-red-500/50 hover:bg-white/90 dark:hover:bg-[#0c1424]/90 shadow-md hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-1 transition-all duration-300',
+    accent: 'bg-gradient-to-br from-red-600/10 via-rose-600/5 to-transparent dark:from-red-600/15 dark:via-rose-600/5 dark:to-[#070b14]/85 backdrop-blur-md border border-red-500/25 dark:border-red-500/30 shadow-xl shadow-red-500/10',
+    highContrast: 'bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-sm border border-black/10 dark:border-white/10 shadow-lg',
+    dock: 'bg-slate-200/85 dark:bg-[#070b14]/90 border border-slate-300/80 dark:border-white/10 backdrop-blur-md shadow-lg'
   };
 
   return (

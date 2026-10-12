@@ -94,31 +94,34 @@ export default function LeadForm() {
     }
 
     return (
-        <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 select-none relative">
+        <div className="min-h-screen pt-28 pb-20 px-4 sm:px-6 lg:px-8 select-none relative overflow-hidden">
             {/* Background Atmosphere */}
-            <div className="pointer-events-none fixed top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-[140px] -z-10" />
+            <div className="pointer-events-none fixed top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-red-600/[0.08] rounded-full blur-[160px] -z-10" />
 
             <div className="max-w-5xl mx-auto">
                 {/* Back Button */}
                 <button 
                     onClick={handleGoBack}
-                    className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors shadow-xs cursor-pointer"
+                    className="inline-flex items-center gap-2 mb-8 px-4 py-2.5 rounded-xl bg-white/60 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors shadow-xs cursor-pointer backdrop-blur-xl"
                 >
                     <HiArrowLeft className="w-4 h-4" />
                     <span>Orqaga</span>
                 </button>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center rounded-3xl sm:rounded-[2.5rem] bg-white dark:bg-[#070d19] border border-slate-200 dark:border-white/10 shadow-xl p-6 sm:p-10 lg:p-12">
-                    
+                <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center rounded-3xl sm:rounded-[2.5rem] bg-white/70 dark:bg-[#070b14]/75 backdrop-blur-3xl border border-black/[0.08] dark:border-white/[0.08] shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] p-6 sm:p-10 lg:p-12 overflow-hidden">
+                    {/* Top ambient highlight line */}
+                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
+
                     {/* Left Column: Information & Trust */}
                     <div className="lg:col-span-6 space-y-5 text-left">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 rounded-full text-xs font-black tracking-wider uppercase border border-red-200 dark:border-red-900/40">
-                            {t('leadForm.badge', 'BEPUL MASLAHAT & SINOV DARSI')}
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/[0.04] dark:bg-white/[0.03] text-red-600 dark:text-red-400 rounded-full text-xs font-black tracking-wider uppercase border border-red-500/30 backdrop-blur-xl shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                            <span>{t('leadForm.badge', 'BEPUL MASLAHAT & SINOV DARSI')}</span>
                         </div>
 
                         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12] font-heading">
                             {t('leadForm.titlePrefix', "Ingliz tilini o'rganishni")}{' '}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-rose-600 to-red-400">
                                 {t('leadForm.titleHighlight', 'bugun boshlang!')}
                             </span>
                         </h1>
@@ -127,7 +130,7 @@ export default function LeadForm() {
                             {t('leadForm.description', "Ismingiz va telefon raqamingizni qoldiring. Mutaxassislarimiz siz bilan tezda bog'lanib, bepul darsga yozishadi va barcha savollaringizga javob berishadi.")}
                         </p>
 
-                        <div className="space-y-3 pt-3 border-t border-slate-100 dark:border-white/5">
+                        <div className="space-y-3 pt-4 border-t border-slate-200/60 dark:border-white/[0.06]">
                             <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
                                 <FaCheckCircle className="text-emerald-500 w-4 h-4 shrink-0" />
                                 <span>Darajani bepul aniqlab berish</span>
@@ -145,10 +148,10 @@ export default function LeadForm() {
 
                     {/* Right Column: Direct Lead Submission Form */}
                     <div className="lg:col-span-6 w-full">
-                        <div className="rounded-3xl bg-slate-50 dark:bg-[#0c1424] border border-slate-200 dark:border-white/10 p-6 sm:p-8 shadow-sm">
+                        <div className="rounded-3xl bg-slate-50/80 dark:bg-white/[0.03] backdrop-blur-2xl border border-slate-200/60 dark:border-white/[0.06] p-6 sm:p-8 shadow-sm">
                             {success ? (
                                 <div className="py-10 text-center space-y-4">
-                                    <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl mx-auto border border-emerald-300 dark:border-emerald-800/60">
+                                    <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-3xl mx-auto border border-emerald-500/30">
                                         <FaCheckCircle />
                                     </div>
                                     <h3 className="text-xl font-black text-slate-900 dark:text-white font-heading">
@@ -160,7 +163,7 @@ export default function LeadForm() {
                                     <button
                                         type="button"
                                         onClick={() => setSuccess(false)}
-                                        className="mt-4 px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold"
+                                        className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold shadow-md cursor-pointer"
                                     >
                                         Yana yuborish
                                     </button>
@@ -175,7 +178,7 @@ export default function LeadForm() {
                                     </p>
 
                                     {error && (
-                                        <div className="p-3 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/40 text-red-600 dark:text-red-400 text-xs rounded-xl font-bold">
+                                        <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-500 text-xs rounded-xl font-bold">
                                             {error}
                                         </div>
                                     )}
@@ -193,7 +196,7 @@ export default function LeadForm() {
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
                                                 placeholder={t('leadForm.namePlaceholder', 'Masalan: Aziz')}
-                                                className="w-full pl-11 pr-4 py-3 bg-white dark:bg-[#070b14] border border-slate-200 dark:border-white/10 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none focus:border-red-600 transition-colors"
+                                                className="w-full pl-11 pr-4 py-3 bg-white/80 dark:bg-[#070b14]/80 border border-slate-200 dark:border-white/10 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all"
                                             />
                                         </div>
                                     </div>
@@ -202,16 +205,17 @@ export default function LeadForm() {
                                         <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                                             {t('leadForm.phoneLabel', 'Telefon raqamingiz')}
                                         </label>
-                                        <div className="relative flex items-center bg-white dark:bg-[#070b14] border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden focus-within:border-red-600 transition-colors">
-                                            <span className="pl-4 pr-3 text-slate-700 dark:text-slate-300 text-sm font-bold select-none border-r border-slate-200 dark:border-white/10 py-3 bg-slate-100 dark:bg-slate-800/50">
+                                        <div className="relative flex items-center">
+                                            <span className="absolute left-4 text-xs font-extrabold text-slate-600 dark:text-slate-400">
                                                 +998
                                             </span>
                                             <IMaskInput
                                                 mask="(00) 000-00-00"
                                                 value={phone}
-                                                onAccept={(value) => setPhone(value)}
+                                                unmask={true}
+                                                onAccept={(val) => setPhone(val)}
                                                 placeholder="(90) 123-45-67"
-                                                className="w-full px-4 py-3 bg-transparent text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-none"
+                                                className="w-full pl-16 pr-4 py-3 bg-white/80 dark:bg-[#070b14]/80 border border-slate-200 dark:border-white/10 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all"
                                             />
                                         </div>
                                     </div>
@@ -219,17 +223,17 @@ export default function LeadForm() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full mt-2 px-5 py-3.5 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer disabled:opacity-50"
+                                        className="w-full py-4 mt-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl shadow-red-600/30 hover:shadow-red-600/40 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
                                     >
                                         {loading ? (
                                             <>
                                                 <FaSpinner className="animate-spin text-base" />
-                                                <span>{t('leadForm.submitting', 'Yuborilmoqda...')}</span>
+                                                <span>Yuborilmoqda...</span>
                                             </>
                                         ) : (
                                             <>
-                                                <span>{t('leadForm.submitBtn', 'Joy band qilish')}</span>
-                                                <FaPaperPlane className="text-xs" />
+                                                <span>{t('leadForm.submitBtn', 'Darsga yozilish')}</span>
+                                                <FaPaperPlane className="w-3.5 h-3.5" />
                                             </>
                                         )}
                                     </button>

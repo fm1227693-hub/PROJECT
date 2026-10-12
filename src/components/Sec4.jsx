@@ -7,8 +7,13 @@ export default function Sec4() {
 
     return (
         <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 select-none overflow-hidden">
-            {/* Background Glow */}
-            <div className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 w-[550px] h-[550px] bg-red-600/[0.08] rounded-full blur-[140px] -z-10" />
+            {/* Background Glow (Hardware-optimized) */}
+            <div 
+              className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 w-[450px] h-[450px] -z-10 opacity-70"
+              style={{
+                background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.1) 0%, transparent 68%)"
+              }}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
 
@@ -36,7 +41,7 @@ export default function Sec4() {
                     {/* Value Proposition Liquid Glass Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         {/* Goal Block */}
-                        <div className="p-6 rounded-3xl bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
+                        <div className="p-6 rounded-3xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
                             <div className="w-11 h-11 bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
                                 <FaBullseye className="text-lg" />
                             </div>
@@ -51,7 +56,7 @@ export default function Sec4() {
                         </div>
 
                         {/* Teacher Block */}
-                        <div className="p-6 rounded-3xl bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
+                        <div className="p-6 rounded-3xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-md border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
                             <div className="w-11 h-11 bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
                                 <FaChalkboardTeacher className="text-lg" />
                             </div>
@@ -73,12 +78,14 @@ export default function Sec4() {
                         <img
                             src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=60&w=800&auto=format&fit=crop"
                             alt="Students studying English at Optimum"
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
 
                         {/* Floating Experience Badge */}
-                        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-xl flex items-center justify-between">
+                        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/85 dark:bg-[#070b14]/90 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-rose-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-red-600/30">
                                     5+

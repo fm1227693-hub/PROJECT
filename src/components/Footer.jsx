@@ -55,12 +55,12 @@ export default function Footer() {
 
     return (
         <footer
-            className={`relative text-slate-600 dark:text-slate-400 pt-16 pb-12 px-4 sm:px-6 lg:px-8 border-t border-slate-200 dark:border-white/10 ${
+            className={`relative text-slate-600 dark:text-slate-400 pt-16 pb-12 px-4 sm:px-6 lg:px-8 border-t border-black/[0.08] dark:border-white/[0.08] ${
                 location.pathname === '/enter' ? '' : 'mt-20'
-            } transition-colors duration-300 bg-white dark:bg-[#050914] z-10`}
+            } transition-colors duration-300 bg-white/70 dark:bg-[#050810]/80 backdrop-blur-2xl z-10`}
         >
             {/* Ambient Brand Glow */}
-            <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl -z-10" />
+            <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/[0.08] rounded-full blur-3xl -z-10" />
 
             <div className="max-w-7xl mx-auto">
                 

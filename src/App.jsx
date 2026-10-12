@@ -81,51 +81,51 @@ export default function App() {
 
           {/* Primary Wave Ribbon: Flowing Crimson & Burgundy Silk Wave */}
           <div 
-            className="wave-layer-1 absolute -inset-[30%] opacity-90"
+            className="wave-layer-1 absolute -inset-[20%] opacity-90 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 65% 35% at 20% 20%, rgba(242, 13, 50, 0.28), transparent 60%),
-                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(160, 20, 52, 0.24), transparent 65%),
-                radial-gradient(ellipse 55% 45% at 50% 45%, rgba(215, 25, 55, 0.20), transparent 60%)
+                radial-gradient(ellipse 65% 35% at 20% 20%, rgba(242, 13, 50, 0.24) 0%, rgba(242, 13, 50, 0.12) 35%, transparent 70%),
+                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(160, 20, 52, 0.20) 0%, rgba(160, 20, 52, 0.08) 35%, transparent 72%),
+                radial-gradient(ellipse 55% 45% at 50% 45%, rgba(215, 25, 55, 0.16) 0%, rgba(215, 25, 55, 0.06) 35%, transparent 68%)
               `,
-              filter: "blur(55px)",
+              backfaceVisibility: "hidden",
             }}
           />
 
           {/* Secondary Wave Ribbon: Cool Midnight-Blue & Indigo Counter-Wave */}
           <div 
-            className="wave-layer-2 absolute -inset-[30%] opacity-85"
+            className="wave-layer-2 absolute -inset-[20%] opacity-85 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 60% 40% at 85% 20%, rgba(45, 70, 145, 0.28), transparent 60%),
-                radial-gradient(ellipse 65% 35% at 15% 75%, rgba(30, 55, 120, 0.25), transparent 60%),
-                radial-gradient(ellipse 50% 30% at 65% 85%, rgba(55, 35, 100, 0.20), transparent 55%)
+                radial-gradient(ellipse 60% 40% at 85% 20%, rgba(45, 70, 145, 0.24) 0%, rgba(45, 70, 145, 0.10) 35%, transparent 70%),
+                radial-gradient(ellipse 65% 35% at 15% 75%, rgba(30, 55, 120, 0.20) 0%, rgba(30, 55, 120, 0.08) 35%, transparent 72%),
+                radial-gradient(ellipse 50% 30% at 65% 85%, rgba(55, 35, 100, 0.16) 0%, rgba(55, 35, 100, 0.06) 35%, transparent 65%)
               `,
-              filter: "blur(65px)",
+              backfaceVisibility: "hidden",
             }}
           />
 
           {/* Tertiary Wave Ribbon: Ethereal Velvet Violet & Rose Highlight Swell */}
           <div 
-            className="wave-layer-3 absolute -inset-[25%] opacity-75"
+            className="wave-layer-3 absolute -inset-[20%] opacity-75 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 75% 32% at 45% 15%, rgba(220, 30, 75, 0.22), transparent 65%),
-                radial-gradient(ellipse 60% 40% at 55% 80%, rgba(40, 75, 145, 0.22), transparent 60%)
+                radial-gradient(ellipse 75% 32% at 45% 15%, rgba(220, 30, 75, 0.18) 0%, rgba(220, 30, 75, 0.08) 35%, transparent 72%),
+                radial-gradient(ellipse 60% 40% at 55% 80%, rgba(40, 75, 145, 0.18) 0%, rgba(40, 75, 145, 0.08) 35%, transparent 68%)
               `,
-              filter: "blur(50px)",
+              backfaceVisibility: "hidden",
             }}
           />
 
           {/* Quaternary Wave Ribbon: Diagonal Silk Stream Across All Sections */}
           <div 
-            className="wave-layer-4 absolute -inset-[30%] opacity-70"
+            className="wave-layer-4 absolute -inset-[20%] opacity-70 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 80% 30% at 70% 40%, rgba(190, 18, 48, 0.20), transparent 60%),
-                radial-gradient(ellipse 50% 45% at 30% 60%, rgba(35, 50, 110, 0.22), transparent 60%)
+                radial-gradient(ellipse 80% 30% at 70% 40%, rgba(190, 18, 48, 0.16) 0%, rgba(190, 18, 48, 0.06) 35%, transparent 68%),
+                radial-gradient(ellipse 50% 45% at 30% 60%, rgba(35, 50, 110, 0.18) 0%, rgba(35, 50, 110, 0.07) 35%, transparent 68%)
               `,
-              filter: "blur(60px)",
+              backfaceVisibility: "hidden",
             }}
           />
         </div>
@@ -133,13 +133,13 @@ export default function App() {
         {/* Light Mode Fluid Waves */}
         <div className="absolute inset-0 opacity-100 dark:opacity-0 transition-opacity duration-500 overflow-hidden">
           <div 
-            className="wave-layer-1 absolute -inset-[20%] opacity-70"
+            className="wave-layer-1 absolute -inset-[20%] opacity-70 transform-gpu"
             style={{
               background: `
-                radial-gradient(ellipse 65% 35% at 25% 25%, rgba(242, 13, 50, 0.08), transparent 60%),
-                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(70, 90, 150, 0.07), transparent 60%)
+                radial-gradient(ellipse 65% 35% at 25% 25%, rgba(242, 13, 50, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 70% 38% at 75% 65%, rgba(70, 90, 150, 0.07) 0%, transparent 70%)
               `,
-              filter: "blur(60px)",
+              backfaceVisibility: "hidden",
             }}
           />
         </div>

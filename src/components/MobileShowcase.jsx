@@ -31,7 +31,7 @@ export default function MobileShowcase() {
         }
 
         updateUzbekTime()
-        const timer = setInterval(updateUzbekTime, 1000)
+        const timer = setInterval(updateUzbekTime, 10000)
 
         return () => clearInterval(timer)
     }, [])
@@ -39,14 +39,20 @@ export default function MobileShowcase() {
     return (
         <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20 select-none overflow-hidden">
             {/* Direct Editorial Composition without enclosing card */}
-            <div
-                data-aos="fade-up"
-                data-aos-duration="800"
-                className="w-full text-slate-900 dark:text-white relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12"
-            >
-                {/* Asymmetrical Focal Glow Behind Phone */}
-                <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[520px] h-[520px] bg-gradient-to-br from-red-600/12 via-rose-600/6 to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
-                <div className="absolute top-10 left-10 w-[400px] h-[400px] bg-gradient-to-tr from-sky-950/10 via-slate-900/10 to-transparent rounded-full blur-[130px] pointer-events-none -z-10" />
+            <div className="w-full text-slate-900 dark:text-white relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
+                {/* Asymmetrical Focal Glow Behind Phone (Hardware-optimized) */}
+                <div 
+                  className="absolute top-1/2 right-10 -translate-y-1/2 w-[450px] h-[450px] pointer-events-none -z-10 opacity-70"
+                  style={{
+                    background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.12) 0%, transparent 68%)"
+                  }}
+                />
+                <div 
+                  className="absolute top-10 left-10 w-[350px] h-[350px] pointer-events-none -z-10 opacity-60"
+                  style={{
+                    background: "radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, transparent 68%)"
+                  }}
+                />
 
                 {/* Left Side: Headline, Subtitle, Pill Button */}
                 <div className="w-full lg:w-1/2 space-y-4 sm:space-y-6 text-center sm:text-left relative z-10 self-center my-auto py-2 sm:py-6 lg:py-8 flex flex-col items-center sm:items-start">

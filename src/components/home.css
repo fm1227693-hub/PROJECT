@@ -3,7 +3,6 @@ canvas {
   outline: none;
   width: 100% !important;
   height: 100% !important;
-  filter: drop-shadow(0px 25px 35px rgba(0, 0, 0, 0.7));
   user-select: none;
 }
 

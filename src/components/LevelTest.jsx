@@ -298,7 +298,7 @@ useEffect(() => {
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
-                    className="max-w-lg w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80 text-center relative z-10 animate-fade-in-up"
+                    className="max-w-lg w-full bg-white/75 dark:bg-[#070b14]/80 backdrop-blur-3xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] border border-black/[0.08] dark:border-white/[0.08] text-center relative z-10 animate-fade-in-up"
                 >
                     <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block">
                         {t('levelTest.resultBadge') || 'Natija'}
@@ -366,7 +366,7 @@ useEffect(() => {
                 <div
                     data-aos="zoom-in"
                     data-aos-duration="600"
-                    className="max-w-md w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80 text-center animate-fade-in-up"
+                    className="max-w-md w-full bg-white/75 dark:bg-[#070b14]/80 backdrop-blur-3xl p-5 xs:p-7 sm:p-10 rounded-2xl xs:rounded-3xl shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] border border-black/[0.08] dark:border-white/[0.08] text-center animate-fade-in-up"
                 >
                     <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full inline-block">
                         {t('levelTest.doneBadge') || 'Test yakunlandi'}
@@ -399,7 +399,7 @@ useEffect(() => {
             <div
                 data-aos="fade-up"
                 data-aos-duration="500"
-                className="max-w-xl w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl p-4 xs:p-6 sm:p-9 rounded-2xl xs:rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800/80"
+                className="max-w-xl w-full bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-3xl p-4 xs:p-6 sm:p-9 rounded-2xl xs:rounded-3xl shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] border border-black/[0.08] dark:border-white/[0.08]"
             >
                 <div className="flex items-center justify-between mb-4 xs:mb-5">
                     <span className="text-[10px] xs:text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2.5 xs:px-3 py-1 rounded-full">

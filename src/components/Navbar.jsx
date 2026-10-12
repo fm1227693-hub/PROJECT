@@ -61,10 +61,15 @@ export default function Navbar() {
             document.documentElement.classList.remove('dark')
         }
 
+        let lastScrolled = window.scrollY > 20
         const handleScroll = () => {
-            setScrolled(window.scrollY > 20)
+            const isScrolled = window.scrollY > 20
+            if (isScrolled !== lastScrolled) {
+                lastScrolled = isScrolled
+                setScrolled(isScrolled)
+            }
         }
-        window.addEventListener('scroll', handleScroll)
+        window.addEventListener('scroll', handleScroll, { passive: true })
 
         const handleClickOutside = (event) => {
             if (aboutRef.current && !aboutRef.current.contains(event.target)) {
@@ -312,13 +317,28 @@ export default function Navbar() {
                             </AnimatePresence>
                         </div>
 
-                        {/* 4. FAQ */}
+                        {/* 4. Kurslar va Tariflar */}
+                        <Link
+                            to="/pricing"
+                            className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.pathname === '/pricing' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                        >
+                            <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
+                            {t('navbar.pricing', 'Kurslar & Tariflar')}
+                            {location.pathname === '/pricing' && (
+                                <motion.div layoutId="activeTab" className="absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-gradient-to-r from-[#8a0f1e] to-[#c41e30]" />
+                            )}
+                        </Link>
+
+                        {/* 5. FAQ */}
                         <Link
                             to="/faq"
                             className={`group relative px-3 py-2 text-[12px] font-medium tracking-wide transition-colors duration-200 whitespace-nowrap rounded-full ${location.pathname === '/faq' ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                         >
                             <span className="absolute inset-0 rounded-full bg-black/[0.04] dark:bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10" />
                             {t('navbar.faq', 'FAQ')}
+                            {location.pathname === '/faq' && (
+                                <motion.div layoutId="activeTab" className="absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-gradient-to-r from-[#8a0f1e] to-[#c41e30]" />
+                            )}
                         </Link>
 
                     </nav>
@@ -335,6 +355,7 @@ export default function Navbar() {
                             transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                             onClick={Theme}
                             className="hidden lg:flex w-9 h-9 items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-[#c41e30] dark:hover:text-[#c41e30] hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer shrink-0"
+                            aria-label="Toggle Dark / Light Theme"
                         >
                             <AnimatePresence mode="wait" initial={false}>
                                 <motion.div
@@ -348,6 +369,15 @@ export default function Navbar() {
                                 </motion.div>
                             </AnimatePresence>
                         </motion.button>
+
+                        {/* Primary Start Learning Action Button */}
+                        <Link
+                            to="/form"
+                            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs shadow-md shadow-red-600/30 hover:shadow-red-600/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 shrink-0"
+                        >
+                            <span>{t('navbar.startLearning', "O'qishni boshlash")}</span>
+                            <FaArrowRight className="w-2.5 h-2.5" />
+                        </Link>
 
                         {/* Hamburger Button (Visible on Mobile) */}
                         <motion.button

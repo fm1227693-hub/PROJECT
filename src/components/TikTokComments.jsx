@@ -55,10 +55,12 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     useEffect(() => {
         loadCommentsORG()
 
-        // Real-vaqtda sinxronlash (har 30 soniyada)
+        // Real-vaqtda sinxronlash (faqat faol tabda, 60s)
         const interval = setInterval(() => {
-            loadCommentsORG()
-        }, 30000)
+            if (!document.hidden) {
+                loadCommentsORG()
+            }
+        }, 60000)
 
         return () => clearInterval(interval)
     }, [])

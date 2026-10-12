@@ -37,19 +37,24 @@ export default function Sec3() {
 
   const currentTeacher = teachers.find((tch) => tch.id === activeTeacher.id) || teachers[0]
 
-  // Matnni sekinroq va silliq yozish effekti (45ms)
+  // Matnni silliq yozish effekti (kam re-render va tezkor yakunlash)
   useEffect(() => {
+    const fullText = currentTeacher.quote || ''
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setDisplayedText(fullText)
+      return
+    }
     setDisplayedText('')
     let i = 0
-    const fullText = currentTeacher.quote || ''
     const typingInterval = setInterval(() => {
       if (i <= fullText.length) {
         setDisplayedText(fullText.substring(0, i))
-        i++
+        i += 2
       } else {
+        setDisplayedText(fullText)
         clearInterval(typingInterval)
       }
-    }, 45)
+    }, 35)
     return () => clearInterval(typingInterval)
   }, [currentTeacher.id, i18n.language])
 
@@ -103,27 +108,27 @@ export default function Sec3() {
 
   return (
     <section className="relative pt-2 sm:pt-4 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-300 ">
-      {/* Orqa fondagi jozibali va sekin pulslanuvchi nurlar */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-10 left-5 sm:left-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-red-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
+      {/* Orqa fondagi jozibali nurlar (Hardware-optimized zero rasterization cost) */}
+      <div
+        className="absolute top-10 left-5 sm:left-10 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] pointer-events-none opacity-60 -z-10"
+        style={{
+          background: "radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 68%)"
+        }}
       />
-      <motion.div
-        animate={{ scale: [1.2, 1, 1.2], opacity: [0.1, 0.2, 0.1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-10 right-5 sm:right-10 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-500/10 rounded-full blur-[120px] sm:blur-[150px] pointer-events-none"
+      <div
+        className="absolute bottom-10 right-5 sm:right-10 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] pointer-events-none opacity-60 -z-10"
+        style={{
+          background: "radial-gradient(circle, rgba(168, 85, 247, 0.10) 0%, transparent 68%)"
+        }}
       />
       <div className="relative max-w-7xl mx-auto ">
-        <div data-aos="fade-up" className="text-center mb-3">
+        <div className="text-center mb-3">
           <span className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-red-600 dark:text-red-400 text-xs font-semibold px-3.5 sm:px-4 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
             {t('sec3.badge')}
           </span>
         </div>
         <h2
-          data-aos="fade-up"
-          data-aos-delay="100"
           className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white text-center mb-4 sm:mb-6 px-2"
         >
           {t('sec3.title')}
@@ -131,8 +136,6 @@ export default function Sec3() {
 
         {/* O'qituvchilar tanlash paneli */}
         <div
-          data-aos="fade-up"
-          data-aos-delay="150"
           className="flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 scrollbar-none px-2 pt-1"
         >
           {teachers.map((teacher) => {

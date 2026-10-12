@@ -477,6 +477,8 @@ export default function ResultsSlider() {
                                             <img
                                                 src={activeStudent.certImage}
                                                 alt={`${activeStudent.name} Certificate`}
+                                                loading="lazy"
+                                                decoding="async"
                                                 className="w-full h-full object-contain group-hover:scale-102 transition-transform duration-500"
                                             />
 

@@ -1,34 +1,43 @@
-import React, { useEffect } from 'react'
-import Lenis from 'lenis'
-import 'lenis/dist/lenis.css'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import React from 'react'
 import Home from './home'
+import BrandTicker from './visual/BrandTicker'
 import MobileShowcase from './MobileShowcase'
-import LevelsScroll from './LevelsScroll'
+import IeltsEcosystem from './visual/IeltsEcosystem'
 import Sec3 from './Sec3'
 import Sec2 from './Sec2'
 import Sec4 from './Sec4'
 import Sec5 from './Sec5'
-
-// GSAP ScrollTrigger ro'yxatdan o'tkazish
-gsap.registerPlugin(ScrollTrigger);
+import FinalCta from './visual/FinalCta'
 
 export default function Main() {
-  useEffect(() => {
-    // Lenis smooth scroll and GSAP ScrollTrigger ticker removed to prevent site freezing
-  }, []);
-
   return (
-    <div className="">
+    <div className="relative w-full">
+      {/* 1. Cinematic Hero Viewport with 3D Centerpiece */}
       <Home />
+
+      {/* 2. Diagonal Editorial Brand Ticker */}
+      <BrandTicker />
+
+      {/* 3. Mobile Platform & Ecosystem Showcase */}
       <MobileShowcase />
-      {/* 🎓 Kurslar darajalari: pinned horizontal scroll effekti 🎓 */}
-      <LevelsScroll />
+
+      {/* 5. IELTS CDI & AI Digital Tools Suite */}
+      <IeltsEcosystem />
+
+      {/* 6. Lead Specialist / Mentor Feature */}
       <Sec3 />
+
+      {/* 7. Three-Step Learning Methodology */}
       <Sec2 />
+
+      {/* 8. Mission, Vision & Quality Values */}
       <Sec4 />
-      <Sec5/>
+
+      {/* 9. Authentic Student Scores & Certificate Gallery with Lightbox */}
+      <Sec5 />
+
+      {/* 10. Striking Final Conversion Section */}
+      <FinalCta />
     </div>
   )
 }
