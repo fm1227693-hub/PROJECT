@@ -108,10 +108,12 @@ export default function Home() {
 
                         {/* Right Column: Platform Overview Surface */}
                         <div className="lg:col-span-5 w-full">
-                            <div className="relative rounded-2xl sm:rounded-3xl bg-slate-50 dark:bg-[#0c1424] border border-slate-200 dark:border-white/10 p-5 sm:p-7 shadow-lg">
+                            <div className="relative rounded-2xl sm:rounded-3xl bg-white/70 dark:bg-[#070b14]/75 backdrop-blur-3xl border border-black/[0.08] dark:border-white/[0.08] p-5 sm:p-7 shadow-2xl shadow-black/5 dark:shadow-[0_25px_60px_rgba(0,0,0,0.6)] overflow-hidden">
+                                {/* Top ambient highlight glow */}
+                                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
                                 
                                 {/* Card Header */}
-                                <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">
+                                <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-white/[0.08]">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-600 text-white flex items-center justify-center shadow-md shadow-red-600/30">
                                             <FaLayerGroup className="w-4 h-4" />
@@ -125,14 +127,14 @@ export default function Home() {
                                             </p>
                                         </div>
                                     </div>
-                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800/50">
+                                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                                         LIVE
                                     </span>
                                 </div>
 
                                 {/* Feature Metrics */}
-                                <div className="space-y-4 pt-5">
-                                    <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/5 space-y-2">
+                                <div className="space-y-3.5 pt-5">
+                                    <div className="p-3.5 rounded-xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] space-y-2">
                                         <div className="flex items-center justify-between text-xs font-bold">
                                             <span className="text-slate-700 dark:text-slate-300 flex items-center gap-2">
                                                 <FaLaptopCode className="text-red-600 dark:text-red-400" />
@@ -140,12 +142,12 @@ export default function Home() {
                                             </span>
                                             <span className="text-red-600 dark:text-red-400 font-extrabold">100% Real</span>
                                         </div>
-                                        <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                                        <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
                                             <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full w-[96%]" />
                                         </div>
                                     </div>
 
-                                    <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/5 space-y-2">
+                                    <div className="p-3.5 rounded-xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] space-y-2">
                                         <div className="flex items-center justify-between text-xs font-bold">
                                             <span className="text-slate-700 dark:text-slate-300 flex items-center gap-2">
                                                 <FaAward className="text-rose-500 dark:text-rose-400" />
@@ -153,12 +155,12 @@ export default function Home() {
                                             </span>
                                             <span className="text-rose-600 dark:text-rose-400 font-extrabold">Instant Bands</span>
                                         </div>
-                                        <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                                        <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
                                             <div className="h-full bg-gradient-to-r from-rose-500 to-red-500 rounded-full w-[94%]" />
                                         </div>
                                     </div>
 
-                                    <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/5 space-y-2">
+                                    <div className="p-3.5 rounded-xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06] space-y-2">
                                         <div className="flex items-center justify-between text-xs font-bold">
                                             <span className="text-slate-700 dark:text-slate-300 flex items-center gap-2">
                                                 <FaChartLine className="text-amber-500 dark:text-amber-400" />
@@ -166,14 +168,14 @@ export default function Home() {
                                             </span>
                                             <span className="text-amber-600 dark:text-amber-400 font-extrabold">Band 7.5+ Aim</span>
                                         </div>
-                                        <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                                        <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
                                             <div className="h-full bg-gradient-to-r from-red-500 to-amber-500 rounded-full w-[92%]" />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Bottom Quick Action Strip */}
-                                <div className="mt-5 pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
+                                <div className="mt-5 pt-4 border-t border-slate-200/60 dark:border-white/[0.08] flex items-center justify-between">
                                     <div className="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400">
                                         <FaCheckCircle className="text-emerald-500" />
                                         <span>Rasmiy Cambridge dasturi</span>

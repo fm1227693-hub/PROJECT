@@ -6,22 +6,24 @@ export default function Sec4() {
     const { t } = useTranslation()
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 select-none">
+        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 select-none overflow-hidden">
             {/* Background Glow */}
-            <div className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl -z-10" />
+            <div className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 w-[550px] h-[550px] bg-red-600/[0.08] rounded-full blur-[140px] -z-10" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
 
                 {/* Left Column: Mission, Vision and Quality */}
                 <div className="lg:col-span-7 flex flex-col space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 rounded-full text-xs font-black uppercase tracking-wider w-fit border border-red-200 dark:border-red-900/40">
-                        <span className="w-2 h-2 rounded-full bg-red-600 dark:bg-red-400 animate-pulse" />
-                        {t('about.badge', 'BIZNING MISSYAMIZ')}
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] dark:bg-white/[0.03] border border-red-500/30 backdrop-blur-xl shadow-[0_0_20px_rgba(239,68,68,0.15)] w-fit">
+                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                        <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-red-500 dark:text-red-400">
+                            {t('about.badge', 'BIZNING MISSIYAMIZ')}
+                        </span>
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.12] font-heading">
                         {t('about.titleStart', 'Har bir o‘quvchiga')}{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-rose-600 to-red-500">
                             {t('about.titleHighlight', 'individual yondashuv')}
                         </span>{' '}
                         {t('about.titleEnd', 'va kafolatlangan natija')}
@@ -31,12 +33,12 @@ export default function Sec4() {
                         {t('about.description', "Optimum English Learning Center — zamonaviy metodikalar, Cambridge standartlari va sun'iy intellekt texnologiyalarini o'zida birlashtirgan yetakchi til markazidir.")}
                     </p>
 
-                    {/* Value Proposition Cards */}
+                    {/* Value Proposition Liquid Glass Cards */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         {/* Goal Block */}
-                        <div className="p-5 rounded-2xl bg-white dark:bg-[#090e1a] border border-slate-200 dark:border-white/10 shadow-sm hover:border-red-500/30 transition-all flex flex-col space-y-3">
-                            <div className="w-10 h-10 bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-xl flex items-center justify-center font-bold border border-red-200 dark:border-red-800/40">
-                                <FaBullseye className="text-base" />
+                        <div className="p-6 rounded-3xl bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
+                            <div className="w-11 h-11 bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
+                                <FaBullseye className="text-lg" />
                             </div>
                             <div>
                                 <h4 className="text-base font-black text-slate-900 dark:text-white font-heading">
@@ -49,9 +51,9 @@ export default function Sec4() {
                         </div>
 
                         {/* Teacher Block */}
-                        <div className="p-5 rounded-2xl bg-white dark:bg-[#090e1a] border border-slate-200 dark:border-white/10 shadow-sm hover:border-red-500/30 transition-all flex flex-col space-y-3">
-                            <div className="w-10 h-10 bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-xl flex items-center justify-center font-bold border border-red-200 dark:border-red-800/40">
-                                <FaChalkboardTeacher className="text-base" />
+                        <div className="p-6 rounded-3xl bg-white/60 dark:bg-[#070b14]/70 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/40 shadow-lg shadow-black/5 dark:shadow-[0_15px_35px_rgba(0,0,0,0.5)] hover:shadow-2xl hover:shadow-red-500/10 transition-all duration-300 flex flex-col space-y-3">
+                            <div className="w-11 h-11 bg-gradient-to-br from-red-500/20 to-red-950/40 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center font-bold shadow-xs">
+                                <FaChalkboardTeacher className="text-lg" />
                             </div>
                             <div>
                                 <h4 className="text-base font-black text-slate-900 dark:text-white font-heading">
@@ -67,7 +69,7 @@ export default function Sec4() {
 
                 {/* Right Column: Visual Feature Showcase */}
                 <div className="lg:col-span-5 relative">
-                    <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl bg-slate-900 h-[420px] sm:h-[480px]">
+                    <div className="relative rounded-3xl overflow-hidden border border-black/[0.08] dark:border-white/[0.1] shadow-2xl bg-slate-900 h-[420px] sm:h-[480px]">
                         <img
                             src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=60&w=800&auto=format&fit=crop"
                             alt="Students studying English at Optimum"
@@ -76,7 +78,7 @@ export default function Sec4() {
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
 
                         {/* Floating Experience Badge */}
-                        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-lg flex items-center justify-between">
+                        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-white/80 dark:bg-[#070b14]/85 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-xl flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-rose-600 text-white flex items-center justify-center font-black text-xl shadow-md shadow-red-600/30">
                                     5+
