@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommentsORG from './TikTokComments'
+import { FaKey, FaLock, FaUserSlash, FaEye, FaEyeSlash } from 'react-icons/fa'
+import { getUsers, saveUsers, adminResetPassword, adminUpdateStudentCredentials, adminSetStudentStatus, adminTransferStudent, adminApproveStudent, generateInviteCode } from '../utils/authService'
 import toast, { Toaster } from 'react-hot-toast'
 import { 
     FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, 
@@ -177,6 +179,23 @@ export default function AdminORG() {
     const [showStudentGroupDropdown, setShowStudentGroupDropdown] = useState(false)
     const [deleteModalStudent, setDeleteModalStudent] = useState(null)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [registeredUsers, setRegisteredUsers] = useState([])
+    const [studentSearchTerm, setStudentSearchTerm] = useState('')
+    const [studentGroupFilter, setStudentGroupFilter] = useState('all')
+    const [studentStatusFilter, setStudentStatusFilter] = useState('all')
+    const [resetPasswordModalStudent, setResetPasswordModalStudent] = useState(null)
+    const [newResetPasswordValue, setNewResetPasswordValue] = useState('')
+    const [editModalUsername, setEditModalUsername] = useState('')
+    const [transferModalStudent, setTransferModalStudent] = useState(null)
+    const [transferTargetGroupId, setTransferTargetGroupId] = useState('')
+    const [revealedPasswords, setRevealedPasswords] = useState({})
+
+    const toggleRevealPassword = (id) => {
+        setRevealedPasswords(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }))
+    }
 
     const handleCreateLead = async (e) => {
         e.preventDefault()
@@ -293,17 +312,26 @@ localStorage.setItem('admin_leads', '[]')
 }
     }
 
-useEffect(() => {
-    loadLeads()
-    loadSchedules()
-    loadGroups()
-    const interval = setInterval(() => {
+    const loadRegisteredUsers = async () => {
+        try {
+            const users = await getUsers()
+            setRegisteredUsers(users.filter(u => u.role === 'student'))
+        } catch (e) {}
+    }
+
+    useEffect(() => {
         loadLeads()
         loadSchedules()
         loadGroups()
-    }, 3000)
-    return () => clearInterval(interval)
-}, [])
+        loadRegisteredUsers()
+        const interval = setInterval(() => {
+            loadLeads()
+            loadSchedules()
+            loadGroups()
+            loadRegisteredUsers()
+        }, 4000)
+        return () => clearInterval(interval)
+    }, [])
 
 const loadSchedules = async () => {
     setLoadingSchedules(true)
@@ -479,7 +507,13 @@ const loadSchedules = async () => {
             const newGroup = {
                 id: Date.now(),
                 name: newName,
-                color: newGroupColor
+                color: newGroupColor,
+                inviteCode: generateInviteCode('OPT'),
+                isCodeActive: true,
+                status: 'active',
+                course: newName.includes('IELTS') ? 'IELTS Preparation' : 'General English',
+                level: 'B2 Intermediate',
+                students: []
             }
             updatedList = [newGroup, ...groups]
         }
@@ -1098,20 +1132,47 @@ return (
                                     <thead>
                                         <tr className="border-b border-gray-100 dark:border-gray-800 text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400">
                                             <th className="py-4 px-4 font-medium">{t('adminDashboard.groupName', 'Guruh Nomi')}</th>
+                                            <th className="py-4 px-4 font-medium">Taklif Kodi</th>
+                                            <th className="py-4 px-4 font-medium">O'quvchilar</th>
                                             <th className="py-4 px-4 font-medium text-right">{t('adminDashboard.actions', 'Amallar')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {groups.length === 0 ? (
                                             <tr>
-                                                <td colSpan="2" className="py-8 text-center text-gray-500">
+                                                <td colSpan="4" className="py-8 text-center text-gray-500">
                                                     {t('adminDashboard.noGroups', 'Guruhlar topilmadi')}
                                                 </td>
                                             </tr>
                                         ) : (
                                             groups.map(group => (
                                                 <tr key={group.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
-                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">{group.name}</td>
+                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white flex items-center gap-2.5">
+                                                        {group.color && <span className="w-3.5 h-3.5 rounded-full shadow-xs shrink-0" style={{ background: group.color }} />}
+                                                        <span>{group.name}</span>
+                                                    </td>
+                                                    <td className="py-4 px-4 font-mono font-bold text-red-600 dark:text-red-400">
+                                                        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-red-50 dark:bg-white/[0.04] border border-red-500/20 text-xs">
+                                                            <span>{group.inviteCode || 'KODSIZ'}</span>
+                                                            <button
+                                                                onClick={async () => {
+                                                                    const newCode = generateInviteCode('OPT');
+                                                                    const updated = groups.map(g => g.id === group.id ? { ...g, inviteCode: newCode, isCodeActive: true } : g);
+                                                                    setGroups(updated);
+                                                                    localStorage.setItem('admin_groups', JSON.stringify(updated));
+                                                                    await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updated).catch(()=>{});
+                                                                    toast.success("Guruh kodi yangilandi: " + newCode);
+                                                                }}
+                                                                className="text-gray-400 hover:text-red-500 text-[10px] cursor-pointer"
+                                                                title="Kodni yangilash"
+                                                            >
+                                                                <FaSync />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-4 px-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                                        {(group.students || []).length} nafar
+                                                    </td>
                                                     <td className="py-4 px-4 text-right">
                                                         <div className="flex items-center justify-end gap-3">
                                                             <button onClick={() => {
@@ -1141,72 +1202,238 @@ return (
                 )}
                 
                 {activeTab === 'students' && (
-                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-                            <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
-                                {t('adminDashboard.studentsTab')}
-                            </h2>
-                            {groups.flatMap(g => (g.students || [])).length > 0 && (
-                                <button onClick={() => {
-                                    setEditingStudentId(null);
-                                    setNewStudentName('');
-                                    setNewStudentPhone('');
-                                    setNewStudentGender('erkak');
-                                    setNewStudentGroupId('');
-                                    setShowAddStudentModal(true);
-                                }} className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2">
-                                    <FaUserPlus /> {t('adminDashboard.addStudentBtn', "O'quvchi qo'shish")}
-                                </button>
-                            )}
+                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden space-y-6">
+                        {/* Header & Controls */}
+                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                            <div>
+                                <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                                    <FaUserGraduate className="text-red-500" />
+                                    <span>{t('adminDashboard.studentsTab', "O'quvchilar Boshqaruvi")}</span>
+                                </h2>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    Ro'yxatdan o'tgan o'quvchilar hisoblari, status va parollarni tiklash
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+                                <div className="relative flex-1 sm:w-64">
+                                    <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                    <input
+                                        type="text"
+                                        value={studentSearchTerm}
+                                        onChange={(e) => setStudentSearchTerm(e.target.value)}
+                                        placeholder="Ism yoki login bo'yicha qidirish..."
+                                        className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white"
+                                    />
+                                </div>
+
+                                <select
+                                    value={studentGroupFilter}
+                                    onChange={(e) => setStudentGroupFilter(e.target.value)}
+                                    className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
+                                >
+                                    <option value="all">Barcha guruhlar</option>
+                                    {groups.map(g => (
+                                        <option key={g.id} value={g.id}>{g.name}</option>
+                                    ))}
+                                </select>
+
+                                <select
+                                    value={studentStatusFilter}
+                                    onChange={(e) => setStudentStatusFilter(e.target.value)}
+                                    className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
+                                >
+                                    <option value="all">Barcha statuslar</option>
+                                    <option value="pending">⏳ Kutilmoqda (Tasdiqlash kerak)</option>
+                                    <option value="active">✅ Faol</option>
+                                    <option value="suspended">⛔ To'xtatilgan</option>
+                                </select>
+                            </div>
                         </div>
 
-                        {groups.flatMap(g => (g.students || []).map(s => ({...s, groupName: g.name, groupId: g.id}))).length === 0 ? (
-                            <div className="text-center py-16 flex flex-col items-center justify-center">
-                                <FaUserGraduate className="text-6xl text-gray-200 dark:text-gray-700 mb-4" />
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('adminDashboard.noStudentsTitle', "Hali o'quvchilar yo'q")}</h3>
-                                <p className="text-gray-500 mb-6">{t('adminDashboard.noStudentsDesc', "Guruhlarga kirib o'quvchi qo'shishingiz mumkin.")}</p>
-                                <button onClick={() => {
-                                    setEditingStudentId(null);
-                                    setNewStudentName('');
-                                    setNewStudentPhone('');
-                                    setNewStudentGender('erkak');
-                                    setNewStudentGroupId('');
-                                    setShowAddStudentModal(true);
-                                }} className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-500/20 flex items-center gap-2">
-                                    <FaUserPlus /> {t('adminDashboard.addStudentBtn', "O'quvchi qo'shish")}
+                        {/* Pending Students Alert Banner */}
+                        {registeredUsers.filter(u => u.status === 'pending').length > 0 && (
+                            <div className="mb-4 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
+                                    <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
+                                        🔔 Yangi arizalar: {registeredUsers.filter(u => u.status === 'pending').length} ta talaba hisobi administrator tasdig'ini kutmoqda!
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={() => setStudentStatusFilter('pending')}
+                                    className="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
+                                >
+                                    Kutilayotganlarni ko'rish
                                 </button>
                             </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                {groups.flatMap(g => (g.students || []).map(s => ({...s, groupName: g.name, groupId: g.id}))).map(student => (
-                                    <div key={student.id} className="bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-4 hover:shadow-md hover:bg-white dark:hover:bg-gray-800 transition-all group">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-14 h-14 rounded-full shrink-0 border-2 border-gray-100 dark:border-gray-600 flex items-center justify-center text-3xl shadow-sm ${student.gender === 'ayol' ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-500' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-500'}`}>
-                                                <FaUser />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h4 className="font-bold text-gray-900 dark:text-white truncate" title={student.name}>{student.name}</h4>
-                                                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1 truncate">{student.phone}</p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                                            <span className="inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400 truncate max-w-[150px]">
-                                                {student.groupName}
-                                            </span>
-                                            
-                                            <button onClick={() => {
-                                                const group = groups.find(g => g.id === student.groupId);
-                                                setSelectedGroupDetails(group);
-                                                setActiveTab('groups');
-                                                // We can also trigger editing the student, but viewing the group is good enough
-                                            }} className="w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-blue-50 hover:text-blue-500 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-900/40 flex items-center justify-center transition-colors">
-                                                <FaRegEye className="text-xs" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
                         )}
+
+                        {/* Student Accounts Table */}
+                        <div className="overflow-x-auto custom-scrollbar pb-2">
+                            <table className="w-full text-left border-collapse min-w-[750px]">
+                                <thead>
+                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-500 dark:text-gray-400">
+                                        <th className="py-3.5 px-4 font-medium">O'quvchi</th>
+                                        <th className="py-3.5 px-4 font-medium">Login (Username)</th>
+                                        <th className="py-3.5 px-4 font-medium">Guruh</th>
+                                        <th className="py-3.5 px-4 font-medium">Status</th>
+                                        <th className="py-3.5 px-4 font-medium">Telefon</th>
+                                        <th className="py-3.5 px-4 font-medium text-right">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {registeredUsers
+                                        .filter(st => {
+                                            const matchesSearch = (st.name || '').toLowerCase().includes(studentSearchTerm.toLowerCase()) ||
+                                                                  (st.username || '').toLowerCase().includes(studentSearchTerm.toLowerCase()) ||
+                                                                  (st.phone || '').includes(studentSearchTerm);
+                                            const matchesGroup = studentGroupFilter === 'all' || String(st.groupId) === String(studentGroupFilter);
+                                            const matchesStatus = studentStatusFilter === 'all' || st.status === studentStatusFilter;
+                                            return matchesSearch && matchesGroup && matchesStatus;
+                                        })
+                                        .length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" className="py-12 text-center text-gray-500">
+                                                Mos keluvchi ro'yxatdan o'tgan o'quvchilar topilmadi.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        registeredUsers
+                                            .filter(st => {
+                                                const matchesSearch = (st.name || '').toLowerCase().includes(studentSearchTerm.toLowerCase()) ||
+                                                                      (st.username || '').toLowerCase().includes(studentSearchTerm.toLowerCase()) ||
+                                                                      (st.phone || '').includes(studentSearchTerm);
+                                                const matchesGroup = studentGroupFilter === 'all' || String(st.groupId) === String(studentGroupFilter);
+                                                const matchesStatus = studentStatusFilter === 'all' || st.status === studentStatusFilter;
+                                                return matchesSearch && matchesGroup && matchesStatus;
+                                            })
+                                            .map(st => (
+                                                <tr key={st.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
+                                                    <td className="py-3.5 px-4 font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-xs shrink-0">
+                                                            {st.name?.charAt(0).toUpperCase() || 'S'}
+                                                        </div>
+                                                        <span className="truncate">{st.name}</span>
+                                                    </td>
+                                                    <td className="py-3.5 px-4 font-mono text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                                        <div className="font-bold text-gray-900 dark:text-white">@{st.username}</div>
+                                                        <div className="flex items-center gap-1.5 mt-1">
+                                                            <span className="text-[10px] text-gray-400 font-sans">Parol:</span>
+                                                            <span className="font-mono text-xs text-indigo-600 dark:text-indigo-400 font-bold">
+                                                                {revealedPasswords[st.id] ? (st.rawPassword || '••••••••') : '••••••••'}
+                                                            </span>
+                                                            {st.rawPassword && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => toggleRevealPassword(st.id)}
+                                                                    className="text-gray-400 hover:text-indigo-500 transition ml-0.5"
+                                                                    title={revealedPasswords[st.id] ? "Yashirish" : "Ko'rish"}
+                                                                >
+                                                                    {revealedPasswords[st.id] ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-3.5 px-4">
+                                                        <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400">
+                                                            {st.groupName || groups.find(g => g.id === st.groupId)?.name || 'Guruhsiz'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-3.5 px-4">
+                                                        {st.status === 'pending' ? (
+                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-500/20">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                                                                <span>Kutilmoqda</span>
+                                                            </span>
+                                                        ) : st.status === 'suspended' ? (
+                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                                                                <span>To'xtatilgan</span>
+                                                            </span>
+                                                        ) : (
+                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                                                <span>Faol</span>
+                                                            </span>
+                                                        )}
+                                                    </td>
+                                                    <td className="py-3.5 px-4 text-xs font-mono text-gray-500 dark:text-gray-400">
+                                                        {st.phone || '-'}
+                                                    </td>
+                                                    <td className="py-3.5 px-4 text-right">
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            {st.status === 'pending' && (
+                                                                <button
+                                                                    onClick={async () => {
+                                                                        try {
+                                                                            await adminApproveStudent(st.id, st.groupId);
+                                                                            loadRegisteredUsers();
+                                                                            toast.success(`${st.name} tasdiqlandi va faollashtirildi!`);
+                                                                        } catch (err) {
+                                                                            toast.error("Tasdiqlashda xatolik yuz berdi");
+                                                                        }
+                                                                    }}
+                                                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+                                                                    title="O'quvchini tasdiqlash"
+                                                                >
+                                                                    <FaCheckCircle className="text-xs" />
+                                                                    <span>Tasdiqlash</span>
+                                                                </button>
+                                                            )}
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setResetPasswordModalStudent(st);
+                                                                    setEditModalUsername(st.username || (st.name ? st.name.toLowerCase().replace(/[^a-z0-9]/g, '') : ''));
+                                                                    setNewResetPasswordValue('');
+                                                                }}
+                                                                className="p-1.5 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 transition-colors"
+                                                                title="Login va parolni sozlash"
+                                                            >
+                                                                <FaKey className="text-xs" />
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setTransferModalStudent(st);
+                                                                    setTransferTargetGroupId(st.groupId || '');
+                                                                }}
+                                                                className="p-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 transition-colors"
+                                                                title="Boshqa guruhga ko'chirish"
+                                                            >
+                                                                <FaUsers className="text-xs" />
+                                                            </button>
+
+                                                            <button
+                                                                onClick={async () => {
+                                                                    const nextStatus = st.status === 'suspended' ? 'active' : 'suspended';
+                                                                    try {
+                                                                        await adminSetStudentStatus(st.id, nextStatus);
+                                                                        loadRegisteredUsers();
+                                                                        toast.success(`O'quvchi statusi o'zgartirildi: ${nextStatus}`);
+                                                                    } catch (err) {
+                                                                        toast.error("Xatolik yuz berdi");
+                                                                    }
+                                                                }}
+                                                                className={`p-1.5 rounded-lg transition-colors ${
+                                                                    st.status === 'suspended'
+                                                                        ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400'
+                                                                        : 'bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400'
+                                                                }`}
+                                                                title={st.status === 'suspended' ? "Faollashtirish" : "To'xtatish"}
+                                                            >
+                                                                {st.status === 'suspended' ? <FaCheckCircle className="text-xs" /> : <FaTimesCircle className="text-xs" />}
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                    )}
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
                 
@@ -1217,6 +1444,175 @@ return (
                 )}
             </div>
         </main>
+
+        {/* Reset Password Modal */}
+        {resetPasswordModalStudent && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 relative">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-900/20 text-amber-500 flex items-center justify-center text-xl shrink-0">
+                            <FaKey />
+                        </div>
+                        <div>
+                            <h3 className="text-base font-black text-gray-900 dark:text-white">Kirish ma'lumotlarini sozlash</h3>
+                            <p className="text-xs text-gray-400 mt-0.5">{resetPasswordModalStudent.name}</p>
+                        </div>
+                    </div>
+
+                    <form onSubmit={async (e) => {
+                        e.preventDefault();
+                        if (!editModalUsername || editModalUsername.length < 3) {
+                            toast.error("Login kamida 3 ta belgi bo'lishi kerak!");
+                            return;
+                        }
+                        if (!newResetPasswordValue || newResetPasswordValue.length < 6) {
+                            toast.error("Parol kamida 6 ta belgi bo'lishi kerak!");
+                            return;
+                        }
+                        try {
+                            await adminUpdateStudentCredentials(resetPasswordModalStudent.id, editModalUsername, newResetPasswordValue, resetPasswordModalStudent.name);
+                            toast.success("O'quvchi logini va paroli saqlandi!");
+                            setResetPasswordModalStudent(null);
+                            await loadRegisteredUsers();
+                            await loadGroups();
+                            if (selectedGroupDetails) {
+                                setSelectedGroupDetails(prev => {
+                                    if (!prev) return prev;
+                                    return {
+                                        ...prev,
+                                        students: (prev.students || []).map(st => {
+                                            if (
+                                                st.id === resetPasswordModalStudent.id || 
+                                                String(st.id) === String(resetPasswordModalStudent.id) ||
+                                                (st.name && st.name === resetPasswordModalStudent.name) ||
+                                                (st.username && st.username === resetPasswordModalStudent.username)
+                                            ) {
+                                                return { ...st, username: editModalUsername, rawPassword: newResetPasswordValue };
+                                            }
+                                            return st;
+                                        })
+                                    };
+                                });
+                            }
+                            // Auto-reveal the saved password for immediate feedback
+                            setRevealedPasswords(prev => ({
+                                ...prev,
+                                [resetPasswordModalStudent.id]: true,
+                                [resetPasswordModalStudent.name]: true,
+                                [editModalUsername]: true
+                            }));
+                        } catch (err) {
+                            toast.error(err.message || "Xatolik yuz berdi");
+                        }
+                    }} className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Login (Username)</label>
+                            <div className="relative">
+                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-xs">@</span>
+                                <input
+                                    type="text"
+                                    value={editModalUsername}
+                                    onChange={(e) => setEditModalUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
+                                    placeholder="login"
+                                    className="w-full pl-8 pr-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-mono font-bold focus:outline-none focus:border-indigo-500 text-indigo-600 dark:text-indigo-400"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Yangi parol</label>
+                            <input
+                                type="text"
+                                value={newResetPasswordValue}
+                                onChange={(e) => setNewResetPasswordValue(e.target.value)}
+                                placeholder="Kamida 6 ta belgi"
+                                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-indigo-500 text-gray-900 dark:text-white"
+                                required
+                            />
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => setResetPasswordModalStudent(null)}
+                                className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 transition"
+                            >
+                                Bekor qilish
+                            </button>
+                            <button
+                                type="submit"
+                                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-500/20 transition"
+                            >
+                                Saqlash
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
+
+        {/* Group Transfer Modal */}
+        {transferModalStudent && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl space-y-5 relative">
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                            <FaUsers />
+                        </div>
+                        <div>
+                            <h3 className="text-base font-black text-gray-900 dark:text-white">Guruhga ko'chirish</h3>
+                            <p className="text-xs text-gray-400 mt-0.5">{transferModalStudent.name}</p>
+                        </div>
+                    </div>
+
+                    <form onSubmit={async (e) => {
+                        e.preventDefault();
+                        if (!transferTargetGroupId) {
+                            toast.error("Guruhni tanlang!");
+                            return;
+                        }
+                        try {
+                            await adminTransferStudent(transferModalStudent.id, transferTargetGroupId);
+                            toast.success("O'quvchi boshqa guruhga ko'chirildi!");
+                            setTransferModalStudent(null);
+                            loadRegisteredUsers();
+                            loadGroups();
+                        } catch (err) {
+                            toast.error(err.message || "Xatolik yuz berdi");
+                        }
+                    }} className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Yangi guruhni tanlang</label>
+                            <select
+                                value={transferTargetGroupId}
+                                onChange={(e) => setTransferTargetGroupId(e.target.value)}
+                                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white"
+                                required
+                            >
+                                <option value="">Guruhni tanlang...</option>
+                                {groups.map(g => (
+                                    <option key={g.id} value={g.id}>{g.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => setTransferModalStudent(null)}
+                                className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 transition"
+                            >
+                                Bekor qilish
+                            </button>
+                            <button
+                                type="submit"
+                                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition"
+                            >
+                                Ko'chirish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
 
         {/* Modals are kept similar */}
         {selectedDateForModal && (
@@ -1537,25 +1933,79 @@ return (
                                     <p className="text-gray-500 font-semibold">{t('adminDashboard.noStudents')}</p>
                                 </div>
                             ) : (
-                                selectedGroupDetails.students.map(student => (
-                                    <div key={student.id} className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-4 flex items-center gap-4 hover:shadow-md transition-shadow group">
-                                        <div className={`w-16 h-16 rounded-full shrink-0 border-2 border-gray-100 dark:border-gray-600 flex items-center justify-center text-3xl shadow-sm ${student.gender === 'ayol' ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-500' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-500'}`}>
-                                            <FaUser />
+                                selectedGroupDetails.students.map(student => {
+                                    const regUser = registeredUsers.find(u => 
+                                        u.id === student.id || 
+                                        String(u.id) === String(student.id) || 
+                                        (student.username && u.username === student.username) || 
+                                        (student.phone && u.phone && u.phone.replace(/\D/g, '') === student.phone.replace(/\D/g, '')) ||
+                                        (student.name && u.name && u.name.trim().toLowerCase() === student.name.trim().toLowerCase())
+                                    );
+                                    const pwd = student.rawPassword || regUser?.rawPassword;
+                                    const uname = student.username || regUser?.username;
+                                    const studentKey = student.id || student.phone || student.name;
+                                    const avatarImg = student.avatar || student.image || regUser?.avatar || regUser?.image;
+
+                                    return (
+                                        <div key={student.id} className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-4 flex items-center gap-4 hover:shadow-md transition-shadow group">
+                                            <div className="w-16 h-16 rounded-full shrink-0 border-2 border-gray-100 dark:border-gray-600 overflow-hidden flex items-center justify-center text-3xl shadow-sm">
+                                                {avatarImg ? (
+                                                    <img src={avatarImg} alt={student.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className={`w-full h-full flex items-center justify-center ${student.gender === 'ayol' ? 'bg-pink-50 dark:pink-900/20 text-pink-500' : 'bg-blue-50 dark:bg-blue-900/20 text-blue-500'}`}>
+                                                        <FaUser />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="font-bold text-gray-900 dark:text-white truncate" title={student.name}>{student.name}</h4>
+                                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate mt-0.5">{student.phone}</p>
+                                                <div className="flex items-center gap-1.5 mt-1 text-xs">
+                                                    <span className="text-gray-400 font-sans">Login:</span>
+                                                    <span className="font-mono text-indigo-500 dark:text-indigo-400 font-bold truncate">@{uname || (student.name ? student.name.toLowerCase().replace(/[^a-z0-9]/g, '') : 'student')}</span>
+                                                </div>
+                                                {pwd ? (
+                                                    <div className="flex items-center gap-1.5 mt-1 bg-gray-50 dark:bg-gray-900/50 px-2.5 py-1 rounded-lg border border-gray-100 dark:border-gray-700/50 w-fit">
+                                                        <span className="text-[10px] text-gray-400 font-sans">Parol:</span>
+                                                        <span className="font-mono text-xs text-emerald-600 dark:text-emerald-400 font-bold">
+                                                            {revealedPasswords[studentKey] ? pwd : '••••••••'}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => toggleRevealPassword(studentKey)}
+                                                            className="text-gray-400 hover:text-emerald-500 transition ml-1"
+                                                            title={revealedPasswords[studentKey] ? "Yashirish" : "Ko'rish"}
+                                                        >
+                                                            {revealedPasswords[studentKey] ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const targetStudent = regUser || { id: student.id, name: student.name, username: uname || student.name?.toLowerCase().replace(/[^a-z0-9]/g, '') };
+                                                            setResetPasswordModalStudent(targetStudent);
+                                                            setEditModalUsername(uname || (student.name ? student.name.toLowerCase().replace(/[^a-z0-9]/g, '') : ''));
+                                                            setNewResetPasswordValue('');
+                                                        }}
+                                                        className="flex items-center gap-1 mt-1 text-[11px] font-bold text-amber-500 hover:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/20 w-fit transition cursor-pointer"
+                                                        title="Login va parol o'rnatish"
+                                                    >
+                                                        <FaKey className="text-[9px]" /> <span>Login va parol o'rnatish</span>
+                                                    </button>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button onClick={() => handleEditStudentClick(student)} className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 flex items-center justify-center transition-colors">
+                                                    <FaPen className="text-xs" />
+                                                </button>
+                                                <button onClick={() => setDeleteModalStudent(student)} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-900/20 dark:hover:bg-rose-900/40 flex items-center justify-center transition-colors">
+                                                    <FaTrash className="text-xs" />
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div className="flex-1 min-w-0">
-                                            <h4 className="font-bold text-gray-900 dark:text-white truncate" title={student.name}>{student.name}</h4>
-                                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate mt-0.5">{student.phone}</p>
-                                        </div>
-                                        <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button onClick={() => handleEditStudentClick(student)} className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 flex items-center justify-center transition-colors">
-                                                <FaPen className="text-xs" />
-                                            </button>
-                                            <button onClick={() => setDeleteModalStudent(student)} className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-900/20 dark:hover:bg-rose-900/40 flex items-center justify-center transition-colors">
-                                                <FaTrash className="text-xs" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
                     </div>

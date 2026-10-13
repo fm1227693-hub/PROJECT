@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaHeadphones, FaBookOpen } from 'react-icons/fa'
-import { Link, useLocation } from 'react-router-dom'
+import { FaRegMoon, FaRegSun, FaBars, FaTimes, FaArrowRight, FaChevronDown, FaHome, FaInfoCircle, FaGamepad, FaClipboardList, FaChalkboardTeacher, FaChartBar, FaQuestionCircle, FaGraduationCap, FaUserShield, FaHeadphones, FaBookOpen, FaUser, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEventEmitter } from '../utils/eventEmitter'
+import { useAuth } from '../utils/AuthContext'
 
 const LANGS = {
     uz: { label: "O'zbekcha", short: 'UZ' },
@@ -14,6 +15,8 @@ const LANGS = {
 export default function Navbar() {
     const { t, i18n } = useTranslation()
     const location = useLocation()
+    const navigate = useNavigate()
+    const { currentUser, logout } = useAuth()
 
     const [dark, isDark] = useState(() => {
         const saved = localStorage.getItem('theme')
@@ -24,6 +27,7 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false)
     const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false)
     const [testsDropdownOpen, setTestsDropdownOpen] = useState(false)
+    const [userDropdownOpen, setUserDropdownOpen] = useState(false)
     const [langOpen, setLangOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const [navHidden, setNavHidden] = useState(false)
@@ -31,6 +35,7 @@ export default function Navbar() {
     const aboutRef = useRef(null)
     const testsRef = useRef(null)
     const langRef = useRef(null)
+    const userRef = useRef(null)
 
     // eventBus orqali eshitib turish
     useEventEmitter('toggle-nav', (payload) => {
@@ -80,6 +85,9 @@ export default function Navbar() {
             }
             if (langRef.current && !langRef.current.contains(event.target)) {
                 setLangOpen(false)
+            }
+            if (userRef.current && !userRef.current.contains(event.target)) {
+                setUserDropdownOpen(false)
             }
         }
         document.addEventListener('mousedown', handleClickOutside)
@@ -370,6 +378,78 @@ export default function Navbar() {
                             </AnimatePresence>
                         </motion.button>
 
+                        {/* Student / Admin Portal Dropdown or Login Button */}
+                        {currentUser ? (
+                            <div className="relative hidden sm:block" ref={userRef}>
+                                <button
+                                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                                    className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-white transition-all cursor-pointer shadow-xs"
+                                >
+                                    <div className="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center text-[10px]">
+                                        <FaUser />
+                                    </div>
+                                    <span className="max-w-[100px] truncate">{currentUser.name?.split(' ')[0]}</span>
+                                    <FaChevronDown className={`w-2.5 h-2.5 opacity-60 transition-transform ${userDropdownOpen ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                <AnimatePresence>
+                                    {userDropdownOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                                            exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                                            className="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-[#070b14] rounded-2xl shadow-2xl border border-gray-200/80 dark:border-white/10 p-2 z-[120] flex flex-col gap-1"
+                                        >
+                                            <div className="px-3 py-2 border-b border-gray-100 dark:border-white/5 mb-1">
+                                                <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{currentUser.name}</p>
+                                                <p className="text-[10px] text-gray-400 font-mono">@{currentUser.username}</p>
+                                            </div>
+
+                                            {currentUser.role === 'admin' ? (
+                                                <Link
+                                                    to="/enter"
+                                                    onClick={() => setUserDropdownOpen(false)}
+                                                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                                                >
+                                                    <FaUserShield className="text-sm" />
+                                                    <span>Admin Panel</span>
+                                                </Link>
+                                            ) : (
+                                                <Link
+                                                    to="/student/dashboard"
+                                                    onClick={() => setUserDropdownOpen(false)}
+                                                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                                                >
+                                                    <FaGraduationCap className="text-sm text-red-500" />
+                                                    <span>Mening kabinetim</span>
+                                                </Link>
+                                            )}
+
+                                            <button
+                                                onClick={() => {
+                                                    logout();
+                                                    setUserDropdownOpen(false);
+                                                    navigate('/');
+                                                }}
+                                                className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors cursor-pointer w-full text-left"
+                                            >
+                                                <FaSignOutAlt className="text-sm" />
+                                                <span>Chiqish</span>
+                                            </button>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors shadow-xs"
+                            >
+                                <FaSignInAlt className="text-xs" />
+                                <span>{t('auth.loginBtn', 'Kirish')}</span>
+                            </Link>
+                        )}
+
                         {/* Primary Start Learning Action Button */}
                         <Link
                             to="/form"
@@ -547,8 +627,54 @@ export default function Navbar() {
                             </div>
 
                             {/* Bottom Actions */}
-                            <div className="px-6 py-6 border-t border-black/[0.05] dark:border-white/[0.08] flex flex-col gap-4 bg-gray-50/50 dark:bg-white/[0.02]">
+                            <div className="px-6 py-6 border-t border-black/[0.05] dark:border-white/[0.08] flex flex-col gap-3 bg-gray-50/50 dark:bg-white/[0.02]">
                                 {renderLanguageSelector('left', true)}
+
+                                {currentUser ? (
+                                    <div className="flex flex-col gap-2">
+                                        <Link
+                                            to={currentUser.role === 'admin' ? '/enter' : '/student/dashboard'}
+                                            onClick={() => setMenuOpen(false)}
+                                            className="w-full py-3 px-4 bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10 rounded-2xl flex items-center justify-between text-slate-800 dark:text-white font-bold text-xs"
+                                        >
+                                            <div className="flex items-center gap-2.5">
+                                                <FaGraduationCap className="text-red-500 text-base" />
+                                                <span>{currentUser.role === 'admin' ? 'Admin Panel' : 'Mening kabinetim'}</span>
+                                            </div>
+                                            <span className="text-[10px] font-mono text-gray-400">@{currentUser.username}</span>
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                logout();
+                                                setMenuOpen(false);
+                                                navigate('/');
+                                            }}
+                                            className="w-full py-2.5 rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400 text-xs font-bold transition-colors cursor-pointer text-center"
+                                        >
+                                            Tizimdan chiqish
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <Link
+                                            to="/login"
+                                            onClick={() => setMenuOpen(false)}
+                                            className="py-3 px-3 bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10 rounded-2xl flex items-center justify-center gap-1.5 text-slate-800 dark:text-white font-bold text-xs"
+                                        >
+                                            <FaSignInAlt className="text-xs" />
+                                            <span>Kirish</span>
+                                        </Link>
+                                        <Link
+                                            to="/student/register"
+                                            onClick={() => setMenuOpen(false)}
+                                            className="py-3 px-3 bg-red-50 dark:bg-red-950/30 border border-red-500/20 text-red-600 dark:text-red-400 rounded-2xl flex items-center justify-center gap-1.5 font-bold text-xs"
+                                        >
+                                            <FaUserPlus className="text-xs" />
+                                            <span>Ro'yxatdan o'tish</span>
+                                        </Link>
+                                    </div>
+                                )}
+
                                 <Link
                                     to="/form"
                                     onClick={() => setMenuOpen(false)}

@@ -5,10 +5,14 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import '../i18n.js'
 
+import { AuthProvider } from './utils/AuthContext'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -6,6 +6,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 
+import { AuthProvider } from "./utils/AuthContext";
+
 // Lazy-loaded routes for performance & low initial JS payload
 const Stats = lazy(() => import("./components/Stats"));
 const Products = lazy(() => import("./components/Products"));
@@ -24,6 +26,9 @@ const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 const TermsOfUse = lazy(() => import("./components/TermsOfUse"));
 const IeltsWritingAssessor = lazy(() => import("./components/IeltsWritingAssessor"));
 const Principle = lazy(() => import("./components/Principle"));
+const Login = lazy(() => import("./components/Login"));
+const StudentRegister = lazy(() => import("./components/StudentRegister"));
+const StudentDashboard = lazy(() => import("./components/StudentDashboard"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -172,6 +177,9 @@ export default function App() {
                 <Route path="/terms-of-use" element={<TermsOfUse />} />
                 <Route path="/ielts-writing" element={<IeltsWritingAssessor />} />
                 <Route path="/principle/:id" element={<Principle />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/student/register" element={<StudentRegister />} />
+                <Route path="/student/dashboard" element={<StudentDashboard />} />
               </Routes>
             </Suspense>
             {location.pathname !== '/enter' && <Footer />}

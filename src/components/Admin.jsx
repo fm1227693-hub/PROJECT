@@ -4,16 +4,25 @@ import AdminORG from './AdminORG'
 import toast, { Toaster } from 'react-hot-toast'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
+import { useAuth } from '../utils/AuthContext'
+
 export default function Admin() {
     const { t } = useTranslation()
+    const { currentUser, login } = useAuth()
     const [cod, setCod] = useState('')
-    const [kirish, setKirish] = useState(false)
+    const [kirish, setKirish] = useState(() => {
+        return currentUser && currentUser.role === 'admin'
+    })
     const [showPassword, setShowPassword] = useState(false)
 
-    const alo = () => {
-        if (cod === '88888888') {
+    React.useEffect(() => {
+        if (currentUser && currentUser.role === 'admin') {
             setKirish(true)
-        } else if (cod === '') {
+        }
+    }, [currentUser])
+
+    const alo = async () => {
+        if (!cod) {
             toast.error(t('admin.emptyError', "Parolni kiriting!"), {
                 style: {
                     background: '#1f2937',
@@ -21,18 +30,32 @@ export default function Admin() {
                     borderRadius: '12px',
                     border: '1px solid rgba(239, 68, 68, 0.3)',
                 }
-            })
-        } else {
-            toast.error(t('admin.wrongPassword', "Noto'g'ri parol!"), {
+            });
+            return;
+        }
+
+        try {
+            await login('admin@optimum.uz', cod);
+            setKirish(true);
+            toast.success("Admin panelga xush kelibsiz!");
+        } catch (err) {
+            if (cod === '88888888') {
+                try {
+                    await login('admin', '88888888');
+                    setKirish(true);
+                    return;
+                } catch (e) {}
+            }
+            toast.error(err.message || t('admin.wrongPassword', "Noto'g'ri parol!"), {
                 style: {
                     background: '#1f2937',
                     color: '#fff',
                     borderRadius: '12px',
                     border: '1px solid rgba(239, 68, 68, 0.3)',
                 }
-            })
+            });
         }
-    }
+    };
 
     if (kirish) {
         return <AdminORG />
