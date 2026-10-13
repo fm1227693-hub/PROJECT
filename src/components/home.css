@@ -1,21 +1,21 @@
 /* Optimum — Editorial Hero & Sections. All selectors prefixed .ox- to avoid collisions. */
 
 /* ─────────────────────────────────────────────────────────────────────
-   DESIGN TOKENS (scoped to .ox-home so they can't leak)
+   DESIGN TOKENS (Theme-aware for Light & Dark mode)
 ────────────────────────────────────────────────────────────────────── */
 .ox-home {
-    --ox-bg: #080909;
-    --ox-surface: #0c0d10;
-    --ox-ink: #f2ede8;
-    --ox-mute: rgba(242, 237, 232, 0.55);
-    --ox-dim: rgba(242, 237, 232, 0.32);
-    --ox-line: rgba(255, 255, 255, 0.065);
-    --ox-line-heavy: rgba(255, 255, 255, 0.13);
+    --ox-bg: #f8f7f4;
+    --ox-surface: #ffffff;
+    --ox-ink: #11141a;
+    --ox-mute: #4b5563;
+    --ox-dim: #9ca3af;
+    --ox-line: rgba(0, 0, 0, 0.08);
+    --ox-line-heavy: rgba(0, 0, 0, 0.15);
     --ox-red: #e11d48;
     --ox-red-vivid: #f43f5e;
     --ox-red-deep: #9f1239;
-    --ox-orange: #fb923c;
-    --ox-warm: #fcd5b0;
+    --ox-orange: #ea580c;
+    --ox-warm: #fef3c7;
     --ox-gutter: clamp(20px, 5vw, 80px);
     --ox-max: 1440px;
 
@@ -32,6 +32,21 @@
         linear-gradient(90deg, var(--ox-line) 1px, transparent 1px);
     background-size: 80px 80px;
     background-position: center top;
+}
+
+.dark .ox-home {
+    --ox-bg: #080909;
+    --ox-surface: #0c0d10;
+    --ox-ink: #f2ede8;
+    --ox-mute: rgba(242, 237, 232, 0.55);
+    --ox-dim: rgba(242, 237, 232, 0.32);
+    --ox-line: rgba(255, 255, 255, 0.065);
+    --ox-line-heavy: rgba(255, 255, 255, 0.13);
+    --ox-red: #e11d48;
+    --ox-red-vivid: #f43f5e;
+    --ox-red-deep: #9f1239;
+    --ox-orange: #fb923c;
+    --ox-warm: #fcd5b0;
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -201,21 +216,25 @@
     justify-content: center;
     gap: 10px;
     padding: 13px 26px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.04);
     color: var(--ox-ink);
     font-size: 0.88rem;
     font-weight: 700;
     letter-spacing: 0.02em;
     text-decoration: none;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--ox-line-heavy);
     border-radius: 9999px;
     cursor: pointer;
     transition: all 0.22s ease;
 }
+.dark .ox-cta-ghost {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.15);
+}
 .ox-cta-ghost:hover {
     border-color: rgba(225, 29, 72, 0.5);
     background: rgba(225, 29, 72, 0.08);
-    color: #ffffff;
+    color: var(--ox-red-vivid);
     transform: translateY(-2px);
 }
 
@@ -226,21 +245,25 @@
     justify-content: center;
     gap: 10px;
     padding: 13px 26px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.04);
     color: var(--ox-ink);
     font-size: 0.88rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--ox-line-heavy);
     border-radius: 9999px;
     cursor: pointer;
     transition: all 0.22s ease;
     font-family: inherit;
 }
+.dark .ox-cta-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.15);
+}
 .ox-cta-btn:hover {
     border-color: rgba(225, 29, 72, 0.5);
     background: rgba(225, 29, 72, 0.08);
-    color: #ffffff;
+    color: var(--ox-red-vivid);
     transform: translateY(-2px);
 }
 

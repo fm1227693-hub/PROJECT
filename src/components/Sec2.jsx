@@ -42,69 +42,37 @@ export default function Sec2() {
 
     return (
         <section
-            className="relative overflow-hidden"
-            style={{
-                padding: 'clamp(80px, 12vh, 140px) clamp(20px, 5vw, 80px)',
-                background: 'transparent',
-            }}
+            className="relative overflow-hidden py-20 sm:py-28 px-4 sm:px-6 lg:px-8 select-none"
         >
             {/* Architectural top divider */}
-            <div className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.08) 75%, transparent)' }}
-            />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-white/[0.08] to-transparent" />
 
             {/* Ambient red glow — right side */}
             <div
-                className="absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none"
+                className="absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] opacity-70 -z-10"
                 style={{
-                    width: 'clamp(300px, 50vw, 600px)',
-                    height: 'clamp(300px, 50vw, 600px)',
                     background: 'radial-gradient(ellipse at right center, rgba(225,29,72,0.10) 0%, transparent 68%)',
                 }}
             />
 
-            <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+            <div className="max-w-7xl mx-auto">
 
                 {/* Section header */}
-                <div style={{ maxWidth: '640px', marginBottom: 'clamp(48px, 8vh, 80px)' }}>
+                <div className="max-w-2xl mb-12 sm:mb-16">
                     {/* Label */}
-                    <p style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontSize: '0.65rem',
-                        fontWeight: 800,
-                        letterSpacing: '0.18em',
-                        textTransform: 'uppercase',
-                        color: '#f43f5e',
-                        marginBottom: '20px',
-                    }}>
-                        <span style={{
-                            width: '5px', height: '5px', borderRadius: '50%',
-                            background: '#f43f5e', display: 'inline-block',
-                        }} />
-                        {t('steps.badge', '3 ODDIY QADAM // THE FAST TRACK')}
-                    </p>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 dark:bg-white/[0.03] border border-red-500/30 backdrop-blur-xl shadow-xs mb-4">
+                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                        <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-red-600 dark:text-red-400">
+                            {t('steps.badge', '3 ODDIY QADAM // THE FAST TRACK')}
+                        </span>
+                    </div>
 
-                    <h2 style={{
-                        margin: 0,
-                        fontFamily: 'var(--font-heading, system-ui)',
-                        fontSize: 'clamp(2rem, 4.5vw, 4rem)',
-                        fontWeight: 900,
-                        letterSpacing: '-0.04em',
-                        lineHeight: 1.02,
-                        color: '#f2ede8',
-                    }}>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08] font-heading">
                         {t('steps.title', "Qanday qilib o'qishni")}{' '}
-                        <span style={{ color: '#f43f5e' }}>boshlaysiz?</span>
+                        <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">boshlaysiz?</span>
                     </h2>
 
-                    <p style={{
-                        marginTop: 'clamp(12px, 2vw, 20px)',
-                        fontSize: 'clamp(0.88rem, 1.1vw, 1rem)',
-                        lineHeight: 1.7,
-                        color: 'rgba(242,237,232,0.55)',
-                    }}>
+                    <p className="mt-4 text-sm sm:text-base text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
                         {t('steps.description', "IELTS orzuingiz sari atigi 3 ta qadam qoldi. Sinovdan o'ting, tahlil oling va guruhga qo'shiling.")}
                     </p>
                 </div>
@@ -113,12 +81,8 @@ export default function Sec2() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
                     {/* Connecting horizontal rule (desktop) */}
                     <div
-                        className="hidden lg:block absolute"
+                        className="hidden md:block absolute top-[52px] left-[10%] right-[10%] h-[1px] pointer-events-none -z-0"
                         style={{
-                            top: '52px',
-                            left: '10%',
-                            right: '10%',
-                            height: '1px',
                             background: 'linear-gradient(90deg, transparent, rgba(225,29,72,0.3) 30%, rgba(225,29,72,0.3) 70%, transparent)',
                         }}
                     />
@@ -131,135 +95,44 @@ export default function Sec2() {
                             tabIndex={0}
                             onKeyDown={(e) => e.key === 'Enter' && navigate(item.path)}
                             aria-label={item.title}
-                            style={{
-                                position: 'relative',
-                                padding: 'clamp(28px, 3.5vw, 44px)',
-                                background: 'rgba(12,13,16,0.92)',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                                borderRadius: '24px',
-                                cursor: 'pointer',
-                                overflow: 'hidden',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0',
-                                boxShadow: '0 12px 36px -4px rgba(0,0,0,0.5)',
-                                transition: 'border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease',
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.borderColor = 'rgba(225,29,72,0.5)';
-                                e.currentTarget.style.transform = 'translateY(-4px)';
-                                e.currentTarget.style.boxShadow = '0 20px 45px -4px rgba(225,29,72,0.18)';
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = '0 12px 36px -4px rgba(0,0,0,0.5)';
-                            }}
+                            className="group relative p-6 sm:p-8 rounded-3xl bg-white/90 dark:bg-[#0c0d10]/95 backdrop-blur-xl border border-black/[0.08] dark:border-white/[0.08] hover:border-red-500/50 shadow-xl shadow-black/5 dark:shadow-black/50 hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden flex flex-col justify-between"
                         >
                             {/* Top accent line on hover */}
-                            <div style={{
-                                position: 'absolute', top: 0, left: 0, right: 0,
-                                height: '2px',
-                                background: index === 1
-                                    ? 'linear-gradient(90deg, transparent, rgba(225,29,72,0.8), transparent)'
-                                    : 'transparent',
-                            }} />
+                            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                            {/* Step number (huge watermark) */}
-                            <span style={{
-                                position: 'absolute',
-                                top: '16px',
-                                right: '20px',
-                                fontFamily: 'var(--font-heading)',
-                                fontSize: 'clamp(3rem, 5vw, 5rem)',
-                                fontWeight: 900,
-                                letterSpacing: '-0.05em',
-                                color: 'rgba(255,255,255,0.05)',
-                                lineHeight: 1,
-                                userSelect: 'none',
-                                pointerEvents: 'none',
-                            }}>
-                                {item.num}
-                            </span>
+                            <div>
+                                {/* Step number (huge watermark) */}
+                                <span className="absolute top-4 right-5 font-heading text-5xl sm:text-6xl font-black text-black/[0.04] dark:text-white/[0.04] pointer-events-none select-none leading-none">
+                                    {item.num}
+                                </span>
 
-                            {/* Icon */}
-                            <div style={{
-                                width: '48px', height: '48px',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                border: '1px solid rgba(225,29,72,0.30)',
-                                background: 'rgba(225,29,72,0.1)',
-                                borderRadius: '16px',
-                                color: '#f43f5e',
-                                fontSize: '1.1rem',
-                                marginBottom: '24px',
-                                flexShrink: 0,
-                            }}>
-                                {item.icon}
+                                {/* Icon */}
+                                <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 flex items-center justify-center text-lg mb-6 group-hover:scale-110 transition-transform">
+                                    {item.icon}
+                                </div>
+
+                                {/* Phase label */}
+                                <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-red-600 dark:text-red-400 mb-2.5">
+                                    {item.num} // {item.phase}
+                                </p>
+
+                                {/* Title */}
+                                <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-heading tracking-tight mb-3 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-tight">
+                                    {item.title}
+                                </h3>
+
+                                {/* Description */}
+                                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                    {item.desc}
+                                </p>
                             </div>
 
-                            {/* Phase label */}
-                            <p style={{
-                                margin: '0 0 10px',
-                                fontSize: '0.62rem',
-                                fontWeight: 800,
-                                letterSpacing: '0.16em',
-                                textTransform: 'uppercase',
-                                color: '#f43f5e',
-                            }}>
-                                {item.num} // {item.phase}
-                            </p>
-
-                            {/* Title */}
-                            <h3 style={{
-                                margin: '0 0 14px',
-                                fontFamily: 'var(--font-heading)',
-                                fontSize: 'clamp(1.25rem, 2vw, 1.7rem)',
-                                fontWeight: 900,
-                                letterSpacing: '-0.03em',
-                                lineHeight: 1.1,
-                                color: '#f2ede8',
-                            }}>
-                                {item.title}
-                            </h3>
-
-                            {/* Description */}
-                            <p style={{
-                                margin: 0,
-                                fontSize: 'clamp(0.82rem, 1vw, 0.92rem)',
-                                lineHeight: 1.7,
-                                color: 'rgba(242,237,232,0.55)',
-                                flex: 1,
-                            }}>
-                                {item.desc}
-                            </p>
-
                             {/* Bottom footer */}
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                marginTop: '28px',
-                                paddingTop: '20px',
-                                borderTop: '1px solid rgba(255,255,255,0.07)',
-                            }}>
-                                <span style={{
-                                    fontSize: '0.75rem',
-                                    fontWeight: 700,
-                                    color: 'rgba(242,237,232,0.55)',
-                                    letterSpacing: '0.04em',
-                                }}>
+                            <div className="mt-7 pt-5 border-t border-slate-200 dark:border-white/[0.07] flex items-center justify-between">
+                                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                                     {item.actionText}
                                 </span>
-                                <div style={{
-                                    width: '38px', height: '38px',
-                                    borderRadius: '9999px',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    background: 'linear-gradient(90deg, #E11D48, #F43F5E)',
-                                    color: '#ffffff',
-                                    fontSize: '0.8rem',
-                                    boxShadow: '0 4px 14px rgba(225, 29, 72, 0.4)',
-                                    transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                                }}>
+                                <div className="w-9 h-9 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white flex items-center justify-center text-xs shadow-md shadow-red-600/30 group-hover:scale-110 group-hover:translate-x-1 transition-all shrink-0">
                                     <FaArrowRight />
                                 </div>
                             </div>
@@ -269,9 +142,7 @@ export default function Sec2() {
             </div>
 
             {/* Architectural bottom divider */}
-            <div className="absolute bottom-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.08) 75%, transparent)' }}
-            />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-white/[0.08] to-transparent" />
         </section>
     )
 }
