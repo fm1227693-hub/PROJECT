@@ -77,7 +77,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
 
         setSubmitting(true)
 
-        const authorName = currentUser ? (currentUser.name || currentUser.username) : "O'quvchi"
+        const authorName = currentUser ? (currentUser.name || currentUser.username) : "Mehmon"
         const authorUsername = currentUser ? (currentUser.username || '') : ''
         const authorAvatar = currentUser ? (currentUser.avatar || currentUser.image || null) : null
         const authorId = currentUser ? currentUser.id : null
@@ -285,7 +285,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                 <div className="flex-1 min-w-0 space-y-1">
                                     <div className="flex items-center gap-1.5 flex-wrap">
                                         <span className="text-xs font-bold text-gray-900 dark:text-white">
-                                            {comment.name || "O'quvchi"}
+                                            {(!comment.name || comment.name === "O'quvchi") && !comment.username ? "Mehmon" : (comment.name || "Mehmon")}
                                         </span>
                                         {comment.username && (
                                             <span className="text-[10px] text-gray-400 font-mono">
@@ -361,7 +361,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                                                     <div className="flex-1 min-w-0 space-y-0.5">
                                                                         <div className="flex items-center gap-1.5 flex-wrap">
                                                                             <span className="text-[11px] font-bold text-gray-900 dark:text-white">
-                                                                                {reply.name || "O'quvchi"}
+                                                                                {(!reply.name || reply.name === "O'quvchi") && !reply.username ? "Mehmon" : (reply.name || "Mehmon")}
                                                                             </span>
                                                                             {reply.username && (
                                                                                 <span className="text-[9px] text-gray-400 font-mono">
