@@ -165,7 +165,7 @@ export default function AboutUs() {
                                 href={FIXED_LOCATION.mapUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="px-6 py-3.5 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-black text-xs sm:text-sm shadow-xl flex items-center gap-2 hover:scale-105 transition-all cursor-pointer"
+                                className="px-7 py-3.5 rounded-full bg-white text-slate-900 hover:bg-slate-100 font-extrabold text-xs sm:text-sm shadow-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                             >
                                 <span>Xaritada ochish (Google Maps)</span>
                                 <HiExternalLink className="text-base" />

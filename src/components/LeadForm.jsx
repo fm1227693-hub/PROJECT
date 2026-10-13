@@ -102,7 +102,7 @@ export default function LeadForm() {
                 {/* Back Button */}
                 <button 
                     onClick={handleGoBack}
-                    className="inline-flex items-center gap-2 mb-8 px-4 py-2.5 rounded-xl bg-white/60 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors shadow-xs cursor-pointer backdrop-blur-xl"
+                    className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full bg-white/60 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 transition-all shadow-xs cursor-pointer backdrop-blur-xl"
                 >
                     <HiArrowLeft className="w-4 h-4" />
                     <span>Orqaga</span>
@@ -163,7 +163,7 @@ export default function LeadForm() {
                                     <button
                                         type="button"
                                         onClick={() => setSuccess(false)}
-                                        className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold shadow-md cursor-pointer"
+                                        className="mt-4 px-7 py-3 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-extrabold shadow-lg shadow-red-600/40 cursor-pointer hover:scale-105 active:scale-95 transition-all"
                                     >
                                         Yana yuborish
                                     </button>
@@ -223,7 +223,7 @@ export default function LeadForm() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full py-4 mt-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl shadow-red-600/30 hover:shadow-red-600/40 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
+                                        className="w-full py-4 mt-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs sm:text-sm rounded-full shadow-xl shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60 hover:scale-[1.02] active:scale-[0.98]"
                                     >
                                         {loading ? (
                                             <>

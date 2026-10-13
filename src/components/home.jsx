@@ -5,16 +5,8 @@ import { FaArrowRight, FaCompass, FaBookOpen } from 'react-icons/fa';
 import CourseFinderModal from './CourseFinderModal';
 import DailyPracticeModal from './DailyPracticeModal';
 import OptimumRibbon from './visual/OptimumRibbon';
+import BrandTicker from './visual/BrandTicker';
 import './home.css';
-
-const TICKER_ITEMS = [
-    'OPTIMUM ELC',
-    'CAMBRIDGE',
-    'CDI SIMULATOR',
-    'IELTS 7.5+',
-    'AI ESSAY FEEDBACK',
-    'BUKHARA',
-];
 
 export default function Home() {
     const { t } = useTranslation();
@@ -133,22 +125,9 @@ export default function Home() {
             </section>
 
             {/* ═══════════════════════════════════════
-                DIAGONAL EDITORIAL TICKER
+                EDITORIAL BRAND TICKER
             ═══════════════════════════════════════ */}
-            <div className="ox-ticker" aria-hidden="true">
-                <div className="ox-ticker__track">
-                    {[0, 1].map((dup) => (
-                        <div className="ox-ticker__group" key={dup}>
-                            {[...TICKER_ITEMS, ...TICKER_ITEMS].map((word, i) => (
-                                <span key={`${dup}-${i}`} className="ox-ticker__item">
-                                    {word}
-                                    <i className="ox-ticker__dot" />
-                                </span>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <BrandTicker />
 
             {/* ═══════════════════════════════════════
                 ABOUT / STATS SECTION

@@ -1,6 +1,5 @@
 import React from 'react'
 import Home from './home'
-import BrandTicker from './visual/BrandTicker'
 import MobileShowcase from './MobileShowcase'
 import IeltsEcosystem from './visual/IeltsEcosystem'
 import Sec3 from './Sec3'
@@ -12,13 +11,10 @@ import FinalCta from './visual/FinalCta'
 export default function Main() {
   return (
     <div className="relative w-full">
-      {/* 1. Cinematic Hero Viewport with 3D Centerpiece */}
+      {/* 1. Cinematic Hero Viewport & Brand Introduction */}
       <Home />
 
-      {/* 2. Diagonal Editorial Brand Ticker */}
-      <BrandTicker />
-
-      {/* 3. Mobile Platform & Ecosystem Showcase */}
+      {/* 2. Mobile Platform & Ecosystem Showcase */}
       <MobileShowcase />
 
       {/* 5. IELTS CDI & AI Digital Tools Suite */}

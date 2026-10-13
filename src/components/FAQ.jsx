@@ -104,10 +104,10 @@ export default function FAQ() {
                     </p>
                     <Link
                         to="/form"
-                        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-red-600/30 hover:scale-105 transition-all cursor-pointer"
+                        className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
                         <span>Konsultatsiyaga yozilish</span>
-                        <FaArrowRight className="w-3 h-3" />
+                        <FaArrowRight className="w-3.5 h-3.5" />
                     </Link>
                 </div>
 

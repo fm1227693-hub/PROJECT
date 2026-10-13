@@ -207,10 +207,10 @@ export default function Pricing() {
                                     <button
                                         type="button"
                                         onClick={() => contactTelegram(plan.levelsLabel)}
-                                        className={`w-full py-3.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                                        className={`w-full py-3.5 rounded-full font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg hover:scale-105 active:scale-95 ${
                                             isMatched
-                                                ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white shadow-lg shadow-red-600/30'
-                                                : 'bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900'
+                                                ? 'bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white shadow-red-600/40 hover:shadow-red-600/60 border border-white/20'
+                                                : 'bg-white/[0.06] hover:bg-white/[0.1] text-white border border-white/15 hover:border-red-500/50'
                                         }`}
                                     >
                                         <FaTelegramPlane className="w-4 h-4" />

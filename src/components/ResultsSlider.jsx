@@ -11,7 +11,10 @@ import {
     FaHeadphones, 
     FaBookOpen, 
     FaPenNib, 
-    FaMicrophone 
+    FaMicrophone,
+    FaSearchPlus,
+    FaSearchMinus,
+    FaUndo
 } from "react-icons/fa";
 import CommentsORG from "./TikTokComments";
 
@@ -157,6 +160,60 @@ export default function ResultsSlider() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
+    const [zoomLevel, setZoomLevel] = useState(1);
+    const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const dragStartRef = useRef({ x: 0, y: 0 });
+
+    const openLightbox = () => {
+        setZoomLevel(1);
+        setPanPosition({ x: 0, y: 0 });
+        setIsLightboxOpen(true);
+    };
+
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+        setZoomLevel(1);
+        setPanPosition({ x: 0, y: 0 });
+    };
+
+    const handleZoomIn = (e) => {
+        if (e) e.stopPropagation();
+        setZoomLevel((prev) => Math.min(prev + 0.5, 3.5));
+    };
+
+    const handleZoomOut = (e) => {
+        if (e) e.stopPropagation();
+        setZoomLevel((prev) => {
+            const next = Math.max(prev - 0.5, 1);
+            if (next === 1) setPanPosition({ x: 0, y: 0 });
+            return next;
+        });
+    };
+
+    const handleResetZoom = (e) => {
+        if (e) e.stopPropagation();
+        setZoomLevel(1);
+        setPanPosition({ x: 0, y: 0 });
+    };
+
+    const handleMouseDown = (e) => {
+        if (zoomLevel <= 1) return;
+        setIsDragging(true);
+        dragStartRef.current = { x: e.clientX - panPosition.x, y: e.clientY - panPosition.y };
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging || zoomLevel <= 1) return;
+        setPanPosition({
+            x: e.clientX - dragStartRef.current.x,
+            y: e.clientY - dragStartRef.current.y
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
 
     const activeData = activeTab === 'ielts' ? ieltsData : cefrData;
     const indexRef = useRef(currentIndex);
@@ -465,7 +522,7 @@ export default function ResultsSlider() {
                                     exit={{ opacity: 0, scale: 0.96 }}
                                     transition={{ duration: 0.4, ease: "easeOut" }}
                                     className="relative w-full max-w-lg lg:max-w-none group cursor-pointer"
-                                    onClick={() => setIsLightboxOpen(true)}
+                                    onClick={openLightbox}
                                 >
                                     {/* Certificate Ambient Backlight Halo */}
                                     <div className="absolute -inset-2 bg-gradient-to-r from-red-600/20 via-rose-500/15 to-transparent rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500 -z-10" />
@@ -485,7 +542,7 @@ export default function ResultsSlider() {
                                             {/* Hover overlay hint */}
                                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-xs">
                                                 <div className="px-4 py-2 rounded-full bg-black/80 border border-white/20 text-white text-xs font-bold flex items-center gap-2 shadow-xl">
-                                                    <FaExpand className="w-3.5 h-3.5 text-red-400" />
+                                                    <FaSearchPlus className="w-3.5 h-3.5 text-red-400" />
                                                     <span>Kattalashtirib ko'rish</span>
                                                 </div>
                                             </div>
@@ -514,39 +571,103 @@ export default function ResultsSlider() {
                 </div>
             </div>
 
-            {/* Certificate Lightbox Modal for Full View */}
+            {/* Certificate Lightbox Modal with Compact Magnifier / Zoom Toolbar */}
             <AnimatePresence>
                 {isLightboxOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
-                        onClick={() => setIsLightboxOpen(false)}
+                        className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 select-none"
+                        onClick={closeLightbox}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
                     >
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
+                            initial={{ scale: 0.92, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative max-w-4xl max-h-[90vh] w-full flex flex-col items-center justify-center"
+                            exit={{ scale: 0.92, opacity: 0 }}
+                            className="relative max-w-4xl max-h-[95vh] w-full flex flex-col items-center justify-center"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button
-                                type="button"
-                                onClick={() => setIsLightboxOpen(false)}
-                                className="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
-                                aria-label="Close modal"
+                            {/* Floating Top Control Bar (Ixcham Lupa va Yopish paneli) */}
+                            <div className="w-full flex items-center justify-between mb-3 px-2">
+                                {/* Compact Magnifier Pill Bar */}
+                                <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-black/80 border border-white/20 backdrop-blur-xl shadow-2xl">
+                                    <button
+                                        type="button"
+                                        onClick={handleZoomIn}
+                                        title="Kattalashtirish (+)"
+                                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-red-600/80 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer"
+                                        aria-label="Kattalashtirish"
+                                    >
+                                        <FaSearchPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleZoomOut}
+                                        disabled={zoomLevel <= 1}
+                                        title="Kichiklashtirish (-)"
+                                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-white/10 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer"
+                                        aria-label="Kichiklashtirish"
+                                    >
+                                        <FaSearchMinus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleResetZoom}
+                                        disabled={zoomLevel === 1}
+                                        title="Asliga qaytarish"
+                                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-white/10 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer"
+                                        aria-label="Asliga qaytarish"
+                                    >
+                                        <FaUndo className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                    </button>
+                                    <span className="text-[11px] sm:text-xs font-mono font-bold text-slate-300 px-2 py-0.5 rounded-full bg-white/5">
+                                        {Math.round(zoomLevel * 100)}%
+                                    </span>
+                                </div>
+
+                                {/* Close Button */}
+                                <button
+                                    type="button"
+                                    onClick={closeLightbox}
+                                    title="Yopish"
+                                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-red-600 text-white flex items-center justify-center transition-colors cursor-pointer shadow-xl border border-white/15"
+                                    aria-label="Yopish"
+                                >
+                                    <FaTimes className="w-4 h-4 sm:w-5 sm:h-5" />
+                                </button>
+                            </div>
+
+                            {/* Viewport Frame with Overflow Hidden & Pan Support */}
+                            <div 
+                                className={`relative w-full max-h-[78vh] sm:max-h-[82vh] overflow-hidden rounded-2xl bg-black/60 border border-white/15 shadow-2xl flex items-center justify-center ${
+                                    zoomLevel > 1 ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-zoom-in'
+                                }`}
+                                onMouseDown={handleMouseDown}
+                                onClick={(e) => {
+                                    if (zoomLevel === 1) {
+                                        handleZoomIn(e);
+                                    }
+                                }}
                             >
-                                <FaTimes className="w-5 h-5" />
-                            </button>
+                                <img
+                                    src={activeStudent.certImage}
+                                    alt={`${activeStudent.name} Certificate`}
+                                    style={{
+                                        transform: `scale(${zoomLevel}) translate3d(${panPosition.x / zoomLevel}px, ${panPosition.y / zoomLevel}px, 0)`,
+                                        transition: isDragging ? 'none' : 'transform 0.25s ease-out',
+                                        maxHeight: '80vh',
+                                        maxWidth: '100%'
+                                    }}
+                                    className="object-contain rounded-xl select-none pointer-events-none"
+                                    draggable={false}
+                                />
+                            </div>
 
-                            <img
-                                src={activeStudent.certImage}
-                                alt={`${activeStudent.name} Certificate`}
-                                className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/20"
-                            />
-
-                            <div className="mt-4 text-center text-white text-sm font-semibold">
+                            {/* Bottom Caption Pill */}
+                            <div className="mt-2.5 px-4 py-1.5 rounded-full bg-black/60 border border-white/10 text-center text-white text-xs sm:text-sm font-semibold">
                                 {activeStudent.name} — {activeStudent.scores.overall} ({activeTab.toUpperCase()})
                             </div>
                         </motion.div>

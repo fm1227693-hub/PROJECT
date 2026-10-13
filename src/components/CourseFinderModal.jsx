@@ -76,7 +76,7 @@ export default function CourseFinderModal({ isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full max-w-lg bg-white dark:bg-[#0a0f1d] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden p-6 sm:p-8 z-10"
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-[#090c14] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl p-6 sm:p-8 z-10"
           >
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-white/10 mb-6">
@@ -210,7 +210,7 @@ export default function CourseFinderModal({ isOpen, onClose }) {
                       resetAndClose();
                       navigate(recommendation.targetPath, { state: recommendation.state });
                     }}
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-bold text-sm shadow-lg shadow-red-600/30 hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
+                    className="flex-1 py-3.5 px-6 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white font-extrabold text-sm shadow-lg shadow-red-600/40 hover:shadow-red-600/60 active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/20"
                   >
                     <span>{t('courseFinder.viewTariff', 'Tarifni ko‘rish')}</span>
                     <FaArrowRight className="w-3.5 h-3.5" />
@@ -220,7 +220,7 @@ export default function CourseFinderModal({ isOpen, onClose }) {
                       resetAndClose();
                       navigate('/level-test');
                     }}
-                    className="py-3.5 px-5 rounded-xl border border-slate-200 dark:border-white/10 hover:border-red-500/50 text-slate-700 dark:text-slate-200 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all text-center"
+                    className="py-3.5 px-6 rounded-full border border-slate-200 dark:border-white/10 hover:border-red-500/50 text-slate-700 dark:text-slate-200 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all text-center"
                   >
                     {t('courseFinder.exactTest', 'Aniq test topshirish')}
                   </button>

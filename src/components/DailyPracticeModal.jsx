@@ -104,7 +104,7 @@ export default function DailyPracticeModal({ isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full max-w-lg bg-white dark:bg-[#0a0f1d] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden p-6 sm:p-8 z-10"
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-[#090c14] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl p-6 sm:p-8 z-10"
           >
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-white/10 mb-6">

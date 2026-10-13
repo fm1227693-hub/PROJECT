@@ -7,77 +7,33 @@ import {
   FaPenNib, 
   FaClipboardCheck, 
   FaArrowRight, 
-  FaBolt, 
   FaCheckCircle,
   FaShieldAlt,
-  FaRobot
+  FaRobot,
+  FaPlay,
+  FaVolumeUp,
+  FaClock
 } from 'react-icons/fa';
 
 export default function IeltsEcosystem() {
   const { t } = useTranslation();
 
-  const tools = [
-    {
-      id: 'listening',
-      name: "CDI Listening Hub",
-      badge: "REAL AUDIO EXAM",
-      tagColor: "border-sky-500/30 text-sky-400 bg-sky-500/10",
-      accentGrad: "from-sky-500 via-blue-600 to-indigo-600",
-      icon: <FaHeadphones className="w-5 h-5 text-sky-400" />,
-      desc: "Xalqaro British Council va IDP formatidagi audio treklar, interaktiv javob varaqasi va soniyali natijalar.",
-      stats: "6 ta to'liq test • Real vaqt",
-      path: "/listening-tests",
-      action: "Listening testni boshlash",
-      highlight: "Rasmiy CDI interfeysi"
-    },
-    {
-      id: 'reading',
-      name: "CDI Reading Hub",
-      badge: "ACADEMIC PASSAGES",
-      tagColor: "border-emerald-500/30 text-emerald-400 bg-emerald-500/10",
-      accentGrad: "from-emerald-500 via-teal-600 to-cyan-600",
-      icon: <FaBookOpen className="w-5 h-5 text-emerald-400" />,
-      desc: "Haqiqiy imtihon matnlari, matndan nusxa olish, qulay matn-savol ekrani va avtomatik xatolar diagnostikasi.",
-      stats: "6 ta akademik modul • 40 savol",
-      path: "/reading-tests",
-      action: "Reading testni boshlash",
-      highlight: "Ikki oynali split-screen"
-    },
-    {
-      id: 'writing',
-      name: "IELTS Writing AI Assessor",
-      badge: "AI BAND EVALUATION",
-      tagColor: "border-rose-500/30 text-rose-400 bg-rose-500/10",
-      accentGrad: "from-red-600 via-rose-600 to-amber-500",
-      icon: <FaPenNib className="w-5 h-5 text-rose-400" />,
-      desc: "Task 1 va Task 2 insholaringizni sun'iy intellekt orqali 4 ta mezon (TR, CC, LR, GRA) bo'yicha darhol baholang.",
-      stats: "Daqiqalik tahlil • Band 5.0 - 9.0",
-      path: "/ielts-writing",
-      action: "Inshoni tekshirish",
-      highlight: "AI xatolar tahlili"
-    },
-    {
-      id: 'level-test',
-      name: "Placement Level Test",
-      badge: "INSTANT DIAGNOSTIC",
-      tagColor: "border-amber-500/30 text-amber-400 bg-amber-500/10",
-      accentGrad: "from-amber-500 via-orange-600 to-red-600",
-      icon: <FaClipboardCheck className="w-5 h-5 text-amber-400" />,
-      desc: "Grammatika va lug'at boyligingizni 20 ta savol orqali 10 daqiqada sinovdan o'tkazing va mos tarifni biling.",
-      stats: "20 ta savol • Bepul natija",
-      path: "/level-test",
-      action: "Darajangizni aniqlash",
-      highlight: "10 daqiqada CEFR natija"
-    }
-  ];
-
   return (
-    <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 select-none overflow-hidden">
-      {/* Background Lighting (Hardware-optimized) */}
+    <section 
+      aria-label="IELTS CDI and AI Digital Ecosystem"
+      className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 select-none overflow-hidden"
+    >
+      {/* Background Lighting Aura (Hardware-optimized, 0 rasterization cost) */}
       <div 
-        className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[380px] pointer-events-none -z-10 opacity-60"
+        className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[400px] pointer-events-none -z-10 opacity-60"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.1) 0%, transparent 68%)"
+          background: "radial-gradient(ellipse at center, rgba(220, 38, 38, 0.12) 0%, transparent 68%)"
+        }}
+      />
+      <div 
+        className="absolute bottom-1/4 right-1/4 translate-x-1/3 w-[500px] h-[350px] pointer-events-none -z-10 opacity-50"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(14, 165, 233, 0.08) 0%, transparent 68%)"
         }}
       />
 
@@ -100,64 +56,306 @@ export default function IeltsEcosystem() {
         </div>
 
         <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base font-normal max-w-md leading-relaxed md:text-right">
-          Optimum platformasida kompyuterda topshiriladigan real CDI formati va sun'iy intellekt tahlillari bitta ekotizimda birlashtirilgan.
+          Optimum platformasida kompyuterda topshiriladigan rasmiy CDI formati va sun'iy intellekt tahlillari bitta yagona ekotizimda mujassamlashgan.
         </p>
       </div>
 
-      {/* Tools Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-        {tools.map((tool) => (
+      {/* Asymmetric Master Digital Tools Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+
+        {/* ═══════════════════════════════════════════════
+            TOOL 1: CDI LAB SIMULATOR (Listening & Reading)
+            Takes 7 columns on Desktop for true command-center prominence
+        ═══════════════════════════════════════════════ */}
+        <div className="lg:col-span-7 flex flex-col gap-6">
+          
+          {/* CDI Listening Hub Card */}
           <Link
-            key={tool.id}
-            to={tool.path}
-            className="group relative p-7 sm:p-9 rounded-3xl bg-[#0c0d10]/90 backdrop-blur-md border border-white/[0.07] hover:border-red-500/50 shadow-xl shadow-black/40 hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden cursor-pointer"
+            to="/listening-tests"
+            className="group relative p-4 sm:p-7 lg:p-8 rounded-3xl bg-[#0c0d10]/95 backdrop-blur-xl border border-white/[0.08] hover:border-sky-500/50 shadow-xl shadow-black/50 hover:shadow-2xl hover:shadow-sky-500/10 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden cursor-pointer"
           >
-            {/* Top Glow Highlight Line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sky-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
             <div>
-              {/* Header row */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:border-red-500/60 group-hover:bg-red-500/20 transition-all duration-300 shadow-sm">
-                  {tool.icon}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform shrink-0">
+                    <FaHeadphones className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-2xl font-black text-white font-heading tracking-tight group-hover:text-sky-400 transition-colors leading-tight">
+                      CDI Listening Simulator
+                    </h3>
+                    <span className="text-[11px] sm:text-xs text-slate-400 font-medium block">British Council & IDP rasmiy formati</span>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-red-500/30 text-red-400 bg-red-500/10">
-                    {tool.badge}
-                  </span>
+                <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-sky-500/30 text-sky-400 bg-sky-500/10 shrink-0">
+                  REAL AUDIO EXAM
+                </span>
+              </div>
+
+              {/* Interactive Telemetry Mockup: Audio Waveform & Timer HUD */}
+              <div className="my-3 sm:my-4 p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 flex flex-col gap-2.5 sm:gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-1.5 text-[11px] sm:text-xs font-mono text-slate-400">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+                      <FaPlay className="w-2 h-2 sm:w-2.5 sm:h-2.5 ml-0.5" />
+                    </div>
+                    <span className="text-slate-200 font-bold truncate">Part 1 — Section 1</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+                    <FaClock className="w-3 h-3 text-sky-400" />
+                    <span className="text-sky-400 font-bold">28:15 / 30:00</span>
+                  </div>
+                </div>
+
+                {/* Simulated Audio Waveform Bars */}
+                <div className="flex items-center gap-0.5 sm:gap-1 h-6 sm:h-7 px-1.5 sm:px-2 bg-white/[0.02] rounded-xl overflow-hidden">
+                  {[40, 65, 30, 85, 95, 45, 60, 75, 90, 50, 70, 35, 80, 100, 60, 45, 85, 70, 55, 90, 65, 40, 80, 95, 50, 70, 30, 85, 60, 40, 75, 90, 55, 35, 70].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 rounded-full bg-gradient-to-t from-sky-600 to-sky-400 opacity-70 group-hover:opacity-100 transition-opacity min-w-[2px]"
+                      style={{ height: `${h}%` }}
+                    />
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[10px] sm:text-[11px] text-slate-400 font-medium pt-1">
+                  <span>40 savol • Quloqchin sinovi</span>
+                  <span className="text-sky-400 font-bold">Avtomatik natija hisoblash</span>
                 </div>
               </div>
-
-              {/* Title & Badge */}
-              <h3 className="text-xl sm:text-2xl font-black text-white mb-2.5 font-heading tracking-tight group-hover:text-red-400 transition-colors">
-                {tool.name}
-              </h3>
-
-              <div className="flex items-center gap-2 mb-4 text-xs font-semibold text-slate-400">
-                <FaCheckCircle className="w-3 h-3 text-red-500" />
-                <span>{tool.highlight}</span>
-                <span className="opacity-40">•</span>
-                <span>{tool.stats}</span>
-              </div>
-
-              {/* Description */}
-              <p className="text-xs sm:text-sm text-slate-300/80 leading-relaxed font-normal mb-8">
-                {tool.desc}
-              </p>
             </div>
 
-            {/* Bottom Action Footer */}
-            <div className="pt-6 border-t border-white/[0.07] flex items-center justify-between">
-              <span className="text-xs font-black uppercase tracking-wider text-slate-200 group-hover:text-red-400 transition-colors">
-                {tool.action}
+            <div className="pt-3 sm:pt-4 border-t border-white/[0.06] flex items-center justify-between">
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-200 group-hover:text-sky-400 transition-colors">
+                Listening testni boshlash
               </span>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/40 group-hover:scale-110 group-hover:shadow-red-600/60 group-hover:translate-x-1 transition-all duration-300">
-                <FaArrowRight className="w-3.5 h-3.5" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-sky-500/20 text-sky-400 group-hover:bg-sky-500 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:translate-x-1 shrink-0">
+                <FaArrowRight className="w-3 h-3" />
               </div>
             </div>
           </Link>
-        ))}
+
+          {/* CDI Reading Hub Card */}
+          <Link
+            to="/reading-tests"
+            className="group relative p-4 sm:p-7 lg:p-8 rounded-3xl bg-[#0c0d10]/95 backdrop-blur-xl border border-white/[0.08] hover:border-emerald-500/50 shadow-xl shadow-black/50 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden cursor-pointer"
+          >
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform shrink-0">
+                    <FaBookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-2xl font-black text-white font-heading tracking-tight group-hover:text-emerald-400 transition-colors leading-tight">
+                      CDI Reading Hub
+                    </h3>
+                    <span className="text-[11px] sm:text-xs text-slate-400 font-medium block">Haqiqiy imtihon matnlari va split-screen</span>
+                  </div>
+                </div>
+
+                <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-emerald-500/30 text-emerald-400 bg-emerald-500/10 shrink-0">
+                  ACADEMIC PASSAGES
+                </span>
+              </div>
+
+              {/* Split Screen Telemetry Diagram */}
+              <div className="my-3 sm:my-4 p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
+                  <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400">
+                    <span>PASSAGE 1</span>
+                    <span className="text-slate-400">Matn tahlili</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed line-clamp-2">
+                    "The Architecture of Ancient Irrigation Systems in Central Asia..."
+                  </p>
+                  <span className="inline-block px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">
+                    Highlighter faol
+                  </span>
+                </div>
+
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
+                  <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400">
+                    <span>QUESTIONS 1-13</span>
+                    <span className="text-slate-400">True / False</span>
+                  </div>
+                  <div className="flex gap-1.5 pt-1">
+                    {[1, 2, 3, 4, 5].map((q) => (
+                      <span key={q} className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold ${q <= 3 ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/40' : 'bg-white/5 text-slate-400'}`}>
+                        {q}
+                      </span>
+                    ))}
+                    <span className="text-slate-500 text-[10px] self-center">... 40</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 block pt-0.5">Avtomatik kalitlar tahlili</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-3 sm:pt-4 border-t border-white/[0.06] flex items-center justify-between">
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-200 group-hover:text-emerald-400 transition-colors">
+                Reading testni boshlash
+              </span>
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500/20 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:translate-x-1 shrink-0">
+                <FaArrowRight className="w-3 h-3" />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* ═══════════════════════════════════════════════
+            TOOL 2 & 3: AI ESSAY FEEDBACK & LEVEL TEST
+            Takes 5 columns on Desktop — Showcases the 4 Criteria Visually!
+        ═══════════════════════════════════════════════ */}
+        <div className="lg:col-span-5 flex flex-col gap-6">
+
+          {/* AI ESSAY FEEDBACK — Dedicated 4 Criteria Treatment */}
+          <Link
+            to="/ielts-writing"
+            className="group relative p-4 sm:p-7 lg:p-8 rounded-3xl bg-[#0c0d10]/95 backdrop-blur-xl border border-white/[0.08] hover:border-red-500/50 shadow-xl shadow-black/50 hover:shadow-2xl hover:shadow-red-500/15 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden cursor-pointer flex-1"
+          >
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform shrink-0">
+                    <FaPenNib className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-2xl font-black text-white font-heading tracking-tight group-hover:text-red-400 transition-colors leading-tight">
+                      AI Essay Feedback
+                    </h3>
+                    <span className="text-[11px] sm:text-xs text-slate-400 font-medium block">Writing Task 1 & 2 Baholovchi AI</span>
+                  </div>
+                </div>
+
+                <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-red-500/30 text-red-400 bg-red-500/10 shrink-0">
+                  4 MEZON BAHOSI
+                </span>
+              </div>
+
+              <p className="text-[11px] sm:text-xs text-slate-300/90 leading-relaxed mb-3 sm:mb-4">
+                Insho matnini joylashtiring va rasmiy Cambridge rubrikasi bo'yicha darhol 4 ta mezonli tahlilga ega bo'ling:
+              </p>
+
+              {/* The 4 Assessment Criteria Visual Telemetry Bars */}
+              <div className="space-y-2 p-3 sm:p-4 rounded-2xl bg-black/40 border border-white/5 mb-3 sm:mb-4">
+                {/* 1. TR */}
+                <div>
+                  <div className="flex justify-between text-[10px] sm:text-[11px] font-mono mb-1">
+                    <span className="text-slate-300 font-bold">Task Response (TR)</span>
+                    <span className="text-red-400 font-bold">Band 8.0</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full" style={{ width: '88%' }} />
+                  </div>
+                </div>
+
+                {/* 2. CC */}
+                <div>
+                  <div className="flex justify-between text-[10px] sm:text-[11px] font-mono mb-1">
+                    <span className="text-slate-300 font-bold">Coherence & Cohesion (CC)</span>
+                    <span className="text-rose-400 font-bold">Band 7.5</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full" style={{ width: '83%' }} />
+                  </div>
+                </div>
+
+                {/* 3. LR */}
+                <div>
+                  <div className="flex justify-between text-[10px] sm:text-[11px] font-mono mb-1">
+                    <span className="text-slate-300 font-bold">Lexical Resource (LR)</span>
+                    <span className="text-amber-400 font-bold">Band 8.0</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-red-600 to-amber-500 rounded-full" style={{ width: '88%' }} />
+                  </div>
+                </div>
+
+                {/* 4. GRA */}
+                <div>
+                  <div className="flex justify-between text-[10px] sm:text-[11px] font-mono mb-1">
+                    <span className="text-slate-300 font-bold">Grammatical Range (GRA)</span>
+                    <span className="text-rose-400 font-bold">Band 7.5</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-red-600 to-rose-500 rounded-full" style={{ width: '83%' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-3 sm:pt-4 border-t border-white/[0.06] flex items-center justify-between">
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-200 group-hover:text-red-400 transition-colors">
+                Inshoni tekshirish
+              </span>
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md shadow-red-600/40 group-hover:scale-110 group-hover:translate-x-1 transition-all shrink-0">
+                <FaArrowRight className="w-3 h-3" />
+              </div>
+            </div>
+          </Link>
+
+          {/* DIAGNOSTIC LEVEL TEST CARD */}
+          <Link
+            to="/level-test"
+            className="group relative p-4 sm:p-7 rounded-3xl bg-[#0c0d10]/95 backdrop-blur-xl border border-white/[0.08] hover:border-amber-500/50 shadow-xl shadow-black/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden cursor-pointer"
+          >
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <div>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 sm:mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform shrink-0">
+                    <FaClipboardCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-xl font-black text-white font-heading tracking-tight group-hover:text-amber-400 transition-colors leading-tight">
+                      Placement Level Test
+                    </h3>
+                    <span className="text-[11px] sm:text-xs text-slate-400 font-medium block">10 daqiqada CEFR va IELTS start ballingiz</span>
+                  </div>
+                </div>
+
+                <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-amber-500/30 text-amber-400 bg-amber-500/10 shrink-0">
+                  20 SAVOL
+                </span>
+              </div>
+
+              {/* CEFR Level Gauge */}
+              <div className="p-2.5 sm:p-3 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-between text-xs font-mono mb-3 sm:mb-4 overflow-x-auto gap-1">
+                {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((lvl) => (
+                  <span
+                    key={lvl}
+                    className={`px-2 py-1 rounded-lg text-center font-bold text-[11px] sm:text-xs ${
+                      lvl === 'B2' || lvl === 'C1'
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-xs'
+                        : 'text-slate-500'
+                    }`}
+                  >
+                    {lvl}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-3 sm:pt-3.5 border-t border-white/[0.06] flex items-center justify-between">
+              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-200 group-hover:text-amber-400 transition-colors">
+                Darajani aniqlash
+              </span>
+              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:translate-x-1 shrink-0">
+                <FaArrowRight className="w-3 h-3" />
+              </div>
+            </div>
+          </Link>
+
+        </div>
       </div>
     </section>
   );
