@@ -127,6 +127,8 @@ export async function getUsers() {
                         phone: p.phone || existing.phone || '',
                         role: p.role || existing.role || 'student',
                         status: p.status || existing.status || 'pending',
+                        avatar: p.avatar_url || existing.avatar || existing.image || null,
+                        image: p.avatar_url || existing.image || existing.avatar || null,
                         groupId: p.group_id || existing.groupId
                     });
                 }
@@ -1232,4 +1234,179 @@ export async function updateStudentAvatar(userIdOrUsername, avatarDataUrl) {
 
     return updatedUser;
 }
+
+/**
+ * Update user's own profile info (Name, Login/Username, Password, Phone)
+ * Saves to localStorage, Firebase RTDB (/users.json and /groups.json), and Supabase profiles & auth
+ */
+export async function updateUserProfile(userIdOrUsername, { newName, newUsername, newPassword, newPhone }) {
+    if (!userIdOrUsername) throw new Error("Foydalanuvchi aniqlanmadi!");
+    const cleanId = String(userIdOrUsername).trim().toLowerCase().replace(/^@/, '');
+
+    const users = await getUsers();
+    const userIndex = users.findIndex(u => 
+        (u.username && u.username.toLowerCase().replace(/^@/, '') === cleanId) ||
+        (u.id && String(u.id).toLowerCase() === cleanId)
+    );
+
+    if (userIndex === -1) {
+        throw new Error("Foydalanuvchi hisobi topilmadi!");
+    }
+
+    const currentTarget = users[userIndex];
+    const oldUsername = (currentTarget.username || '').toLowerCase().replace(/^@/, '');
+
+    // Validate new name if provided
+    let updatedName = currentTarget.name;
+    if (newName !== undefined && newName !== null) {
+        const trimmedName = String(newName).trim();
+        if (trimmedName.length < 2) {
+            throw new Error("Ism-familiya kamida 2 ta belgidan iborat bo'lishi kerak!");
+        }
+        updatedName = trimmedName;
+    }
+
+    // Validate new username if provided
+    let updatedUsername = oldUsername;
+    if (newUsername !== undefined && newUsername !== null) {
+        const cleanNewUsername = String(newUsername).trim().toLowerCase().replace(/^@/, '').replace(/\s+/g, '');
+        if (cleanNewUsername.length < 3) {
+            throw new Error("Login kamida 3 ta belgidan iborat bo'lishi kerak!");
+        }
+        // Check uniqueness if username changed
+        if (cleanNewUsername !== oldUsername) {
+            const isTaken = users.some((u, idx) => 
+                idx !== userIndex && (u.username || '').toLowerCase().replace(/^@/, '') === cleanNewUsername
+            );
+            if (isTaken) {
+                throw new Error("Ushbu login band! Iltimos, boshqa login tanlang.");
+            }
+            updatedUsername = cleanNewUsername;
+        }
+    }
+
+    // Validate and hash new password if provided
+    let updatedPassword = currentTarget.rawPassword;
+    let newHashData = null;
+    if (newPassword && String(newPassword).trim()) {
+        const trimmedPass = String(newPassword).trim();
+        if (trimmedPass.length < 6) {
+            throw new Error("Yangi parol kamida 6 ta belgidan iborat bo'lishi kerak!");
+        }
+        updatedPassword = trimmedPass;
+        newHashData = await hashPassword(trimmedPass);
+    }
+
+    // Validate phone if provided
+    let updatedPhone = currentTarget.phone;
+    if (newPhone !== undefined && newPhone !== null) {
+        updatedPhone = String(newPhone).trim();
+    }
+
+    // 1. Update user in users list
+    users[userIndex].name = updatedName;
+    users[userIndex].username = updatedUsername;
+    users[userIndex].phone = updatedPhone;
+    users[userIndex].rawPassword = updatedPassword;
+    if (newHashData) {
+        users[userIndex].passwordHash = newHashData.hash;
+        users[userIndex].passwordSalt = newHashData.salt;
+        users[userIndex].hashAlgo = newHashData.algo;
+        users[userIndex].hashIterations = newHashData.iterations;
+    }
+    users[userIndex].updatedAt = new Date().toISOString();
+    await saveUsers(users);
+
+    const updatedUserObj = users[userIndex];
+
+    // 2. Update student inside groups
+    try {
+        const groups = await getGroups();
+        let groupModified = false;
+        const updatedGroups = groups.map(g => {
+            const students = (g.students || []).map(st => {
+                const stUname = (st.username || (st.name ? st.name.toLowerCase().replace(/\s+/g, '') : '')).toLowerCase().replace(/^@/, '');
+                const isMatch = stUname === oldUsername || stUname === updatedUsername || (st.id && String(st.id).toLowerCase() === cleanId);
+                if (isMatch) {
+                    groupModified = true;
+                    return {
+                        ...st,
+                        name: updatedName,
+                        username: updatedUsername,
+                        phone: updatedPhone,
+                        rawPassword: updatedPassword
+                    };
+                }
+                return st;
+            });
+            return { ...g, students };
+        });
+
+        if (groupModified) {
+            await saveGroups(updatedGroups);
+        }
+    } catch (e) {
+        console.warn('Group credentials sync error:', e);
+    }
+
+    // 3. Update current active session in localStorage
+    try {
+        const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed.user) {
+                const sessUname = (parsed.user.username || '').toLowerCase().replace(/^@/, '');
+                const sessId = String(parsed.user.id || '').toLowerCase();
+                if (sessUname === oldUsername || sessId === cleanId) {
+                    parsed.user = {
+                        ...parsed.user,
+                        name: updatedName,
+                        username: updatedUsername,
+                        phone: updatedPhone,
+                        rawPassword: updatedPassword
+                    };
+                    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(parsed));
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Session profile update error:', e);
+    }
+
+    // 4. Update in Supabase profiles
+    try {
+        if (oldUsername) {
+            await supabase
+                .from('profiles')
+                .update({ 
+                    username: updatedUsername,
+                    full_name: updatedName,
+                    phone: updatedPhone
+                })
+                .eq('username', oldUsername);
+        }
+    } catch (e) {}
+
+    // 5. If password or username changed, register/update Supabase Auth
+    if (newHashData || updatedUsername !== oldUsername) {
+        try {
+            const studentEmail = `${updatedUsername}@student.optimum.uz`;
+            await supabase.auth.signUp({
+                email: studentEmail,
+                password: updatedPassword,
+                options: {
+                    data: {
+                        full_name: updatedName,
+                        username: updatedUsername,
+                        phone: updatedPhone,
+                        raw_password: updatedPassword
+                    }
+                }
+            });
+        } catch (e) {}
+    }
+
+    return updatedUserObj;
+}
+
 

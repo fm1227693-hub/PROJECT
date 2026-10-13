@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { FaHeart, FaRegHeart, FaPaperPlane, FaTrash, FaCheckCircle, FaUserCircle, FaSync, FaChevronDown, FaChevronUp, FaTimes, FaEnvelope, FaAt, FaComments, FaCommentDots } from 'react-icons/fa'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { useAuth } from '../utils/AuthContext'
 
 const API_URL = import.meta.env.VITE_FIREBASE_COMMENTS_URL
 
 export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     const { t } = useTranslation()
+    const { currentUser } = useAuth()
     const [isOpen, setIsOpen] = useState(isAdmin ? true : defaultOpen)
     const [CommentsORG, setCommentsORG] = useState([])
     const [replyingTo, setReplyingTo] = useState(null)
@@ -68,23 +70,25 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
     const handleAddComment = async (e) => {
         e.preventDefault()
 
-        const finalName = "O'quvchi"
-
         if (!text.trim()) {
             toast.error(t('studentCommentsORG.fillError', "Iltimos, izohni to'liq kiriting!"))
             return
         }
 
         setSubmitting(true)
-        const formattedUsername = finalName.startsWith('@')
-            ? finalName
-            : `@${finalName.toLowerCase().replace(/\s+/g, '_')}`
 
-        const displayName = finalName.replace(/^@/, '')
+        const authorName = currentUser ? (currentUser.name || currentUser.username) : "O'quvchi"
+        const authorUsername = currentUser ? (currentUser.username || '') : ''
+        const authorAvatar = currentUser ? (currentUser.avatar || currentUser.image || null) : null
+        const authorId = currentUser ? currentUser.id : null
 
         const newComment = {
             id: Date.now(),
             text: text.trim(),
+            name: authorName,
+            username: authorUsername,
+            avatar: authorAvatar,
+            userId: authorId,
             date: `${new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })} · ${String(new Date().getDate()).padStart(2, '0')}.${String(new Date().getMonth() + 1).padStart(2, '0')}.${new Date().getFullYear()}`,
             replies: []
         }
@@ -267,9 +271,29 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, x: -20 }}
                                 transition={{ duration: 0.25 }}
-                                className="pt-4 first:pt-0 flex items-start justify-between gap-3 group"
+                                className="pt-4 first:pt-0 flex items-start gap-3 group"
                             >
+                                {/* Author Avatar */}
+                                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden shrink-0 border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800 flex items-center justify-center mt-0.5 shadow-xs">
+                                    {comment.avatar ? (
+                                        <img src={comment.avatar} alt={comment.name || 'Avatar'} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <FaUserCircle className="text-2xl sm:text-3xl text-gray-400 dark:text-gray-500" />
+                                    )}
+                                </div>
+
                                 <div className="flex-1 min-w-0 space-y-1">
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                        <span className="text-xs font-bold text-gray-900 dark:text-white">
+                                            {comment.name || "O'quvchi"}
+                                        </span>
+                                        {comment.username && (
+                                            <span className="text-[10px] text-gray-400 font-mono">
+                                                @{comment.username.replace(/^@/, '')}
+                                            </span>
+                                        )}
+                                    </div>
+
                                     <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 leading-relaxed break-words">
                                         {comment.text}
                                     </p>
@@ -283,7 +307,10 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                         >
                                             {t('studentCommentsORG.reply')}
                                         </button>
-                                        {isAdmin && (
+                                        {(isAdmin || (currentUser && (
+                                            (comment.userId && String(comment.userId) === String(currentUser.id)) ||
+                                            (comment.username && currentUser.username && comment.username.toLowerCase() === currentUser.username.toLowerCase())
+                                        ))) && (
                                             <button
                                                 onClick={() => handleDeleteComment(comment.id)}
                                                 className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
@@ -317,32 +344,57 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                                                         exit={{ opacity: 0, height: 0 }}
                                                         className="space-y-3 border-l-2 border-gray-200 dark:border-gray-800 pl-3 mt-3 overflow-hidden"
                                                     >
-                                                        {comment.replies.map(reply => (
-                                                            <div key={reply.id} className="pt-2 first:pt-0">
-                                                                <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 leading-relaxed break-words">
-                                                                    {reply.text}
-                                                                </p>
-                                                                <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-400 pt-1">
-                                                                    <span>{reply.date ? reply.date.replace('Bugun', t('studentCommentsORG.today', 'Bugun')) : t('studentCommentsORG.justNow')}</span>
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
-                                                                        className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer transition-colors"
-                                                                    >
-                                                                        {t('studentCommentsORG.reply')}
-                                                                    </button>
-                                                                    {isAdmin && (
-                                                                        <button
-                                                                            onClick={() => handleDeleteReply(comment.id, reply.id)}
-                                                                            className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
-                                                                        >
-                                                                            <FaTrash className="text-[9px]" />
-                                                                            <span>{t('studentCommentsORG.deleteBtn')}</span>
-                                                                        </button>
-                                                                    )}
+                                                        {comment.replies.map(reply => {
+                                                            const canDeleteReply = isAdmin || (currentUser && (
+                                                                (reply.userId && String(reply.userId) === String(currentUser.id)) ||
+                                                                (reply.username && currentUser.username && reply.username.toLowerCase() === currentUser.username.toLowerCase())
+                                                            ));
+                                                            return (
+                                                                <div key={reply.id} className="pt-2 first:pt-0 flex items-start gap-2.5">
+                                                                    <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden shrink-0 border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800 flex items-center justify-center mt-0.5 shadow-xs">
+                                                                        {reply.avatar ? (
+                                                                            <img src={reply.avatar} alt={reply.name || 'Avatar'} className="w-full h-full object-cover" />
+                                                                        ) : (
+                                                                            <FaUserCircle className="text-lg sm:text-xl text-gray-400 dark:text-gray-500" />
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="flex-1 min-w-0 space-y-0.5">
+                                                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                                                            <span className="text-[11px] font-bold text-gray-900 dark:text-white">
+                                                                                {reply.name || "O'quvchi"}
+                                                                            </span>
+                                                                            {reply.username && (
+                                                                                <span className="text-[9px] text-gray-400 font-mono">
+                                                                                    @{reply.username.replace(/^@/, '')}
+                                                                                </span>
+                                                                            )}
+                                                                        </div>
+                                                                        <p className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 leading-relaxed break-words">
+                                                                            {reply.text}
+                                                                        </p>
+                                                                        <div className="flex items-center gap-4 text-[10px] font-semibold text-gray-400 pt-1">
+                                                                            <span>{reply.date ? reply.date.replace('Bugun', t('studentCommentsORG.today', 'Bugun')) : t('studentCommentsORG.justNow')}</span>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => { setReplyingTo(comment.id); document.getElementById('comment-input')?.focus(); }}
+                                                                                className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer transition-colors"
+                                                                            >
+                                                                                {t('studentCommentsORG.reply')}
+                                                                            </button>
+                                                                            {canDeleteReply && (
+                                                                                <button
+                                                                                    onClick={() => handleDeleteReply(comment.id, reply.id)}
+                                                                                    className="text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                                                                >
+                                                                                    <FaTrash className="text-[9px]" />
+                                                                                    <span>{t('studentCommentsORG.deleteBtn')}</span>
+                                                                                </button>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        ))}
+                                                            );
+                                                        })}
                                                     </motion.div>
                                                 )}
                                             </AnimatePresence>
@@ -387,24 +439,44 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                     </div>
                 )}
 
-                <div className="relative flex items-center">
-                    <input
-                        type="text"
-                        id="comment-input"
-                        placeholder={t('studentCommentsORG.textPlaceholder', "Izohingizni yozing...")}
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
-                        required
-                    />
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                    {/* Active User Avatar */}
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden shrink-0 border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 flex items-center justify-center shadow-xs">
+                        {currentUser?.avatar || currentUser?.image ? (
+                            <img 
+                                src={currentUser.avatar || currentUser.image} 
+                                alt={currentUser.name || 'Avatar'} 
+                                className="w-full h-full object-cover" 
+                            />
+                        ) : (
+                            <FaUserCircle className="text-2xl sm:text-3xl text-gray-400 dark:text-gray-500" />
+                        )}
+                    </div>
 
-                    <button
-                        type="submit"
-                        disabled={submitting}
-                        className="absolute right-2 p-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold transition-all shadow-md shadow-red-600/30 cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-50"
-                    >
-                        <FaPaperPlane className="text-xs" />
-                    </button>
+                    <div className="relative flex-1 flex items-center">
+                        <input
+                            type="text"
+                            id="comment-input"
+                            placeholder={
+                                currentUser
+                                    ? `${currentUser.name || currentUser.username} sifatida izoh yozing...`
+                                    : t('studentCommentsORG.textPlaceholder', "Izohingizni yozing...")
+                            }
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            className="w-full pl-4 pr-12 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:border-red-600 text-gray-900 dark:text-white"
+                            required
+                        />
+
+                        <button
+                            type="submit"
+                            disabled={submitting || !text.trim()}
+                            className="absolute right-2 p-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold transition-all shadow-md shadow-red-600/30 cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-50"
+                            title="Yuborish"
+                        >
+                            <FaPaperPlane className="text-xs" />
+                        </button>
+                    </div>
                 </div>
             </form>
 
