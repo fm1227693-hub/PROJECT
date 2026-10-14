@@ -172,20 +172,14 @@ export default function Login() {
                     </form>
 
                     <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-white/[0.08] text-center space-y-3.5">
-                        <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                        <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-1.5">
                             <span>{t('auth.noAccountPrompt', "Hali shaxsiy hisobingiz yo'qmi?")}</span>
-                            <div className="inline-flex items-center gap-2">
-                                <Link to="/student/register" className="font-bold text-red-600 dark:text-red-400 hover:underline">
-                                    {t('auth.registerNow', "Ro'yxatdan o'tish")}
-                                </Link>
-                                <span className="text-slate-300 dark:text-slate-700 font-normal">|</span>
-                                <Link 
-                                    to="/access-request" 
-                                    className="font-bold text-emerald-600 dark:text-emerald-400 hover:underline hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
-                                >
-                                    {t('auth.requestAccess', "Kirish so'rovini yuborish")}
-                                </Link>
-                            </div>
+                            <Link 
+                                to="/access-request" 
+                                className="font-bold text-red-600 dark:text-red-400 hover:underline hover:text-red-500 transition-colors"
+                            >
+                                {t('auth.requestAccess', "Kirish so'rovini yuborish")}
+                            </Link>
                         </div>
 
                         <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 pt-1">
