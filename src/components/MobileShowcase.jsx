@@ -125,7 +125,7 @@ export default function MobileShowcase() {
                             </div>
 
                             {/* UPPER FLOATING WHITE CARD */}
-                            <div className="w-full bg-white/70 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] rounded-t-[34px] sm:rounded-t-[42px] rounded-b-[28px] sm:rounded-b-[36px] pt-2 sm:pt-2.5 px-2.5 sm:px-3.5 pb-2 sm:pb-3 font-sans text-slate-900 relative">
+                            <div className="w-full bg-white shadow-md rounded-t-[34px] sm:rounded-t-[42px] rounded-b-[28px] sm:rounded-b-[36px] pt-2 sm:pt-2.5 px-2.5 sm:px-3.5 pb-2 sm:pb-3 font-sans text-slate-900 relative">
 
                                 {/* Status Bar (Live Real-Time Uzbekistan HH:mm, Cellular Signal, Wi-Fi, Battery) */}
                                 <div className="flex items-center justify-between px-1 sm:px-1.5 pt-0.5 pb-1 text-slate-900 font-sans">
@@ -239,7 +239,7 @@ export default function MobileShowcase() {
                                 {/* Main Account Card -> Ruhillo Asrorov IELTS Score & Experience */}
                                 <div 
                                     onClick={() => navigate('/about')}
-                                    className="mt-1 sm:mt-1.5 bg-white/60 hover:bg-white/80 backdrop-blur-sm p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-white/70 text-slate-900 shadow-sm cursor-pointer transition-all hover:scale-[1.01]"
+                                    className="mt-1 sm:mt-1.5 bg-slate-50 hover:bg-slate-100 p-2.5 sm:p-3 rounded-[20px] sm:rounded-[26px] border border-slate-200 text-slate-900 shadow-xs cursor-pointer transition-all hover:scale-[1.01]"
                                     title="Mentor haqida batafsil"
                                 >
                                     <div className="flex items-center justify-between">
@@ -338,11 +338,11 @@ export default function MobileShowcase() {
 
                             </div>
 
-                            {/* BLACK OLED SEPARATOR GAP */}
-                            <div className="h-1.5 sm:h-2 bg-black w-full shrink-0" />
+                            {/* SEPARATOR GAP */}
+                            <div className="h-1.5 sm:h-2 bg-slate-100 w-full shrink-0 border-y border-slate-200/50" />
 
                             {/* LOWER FLOATING WHITE CARD */}
-                            <div className="w-full bg-white/70 backdrop-blur-xl border border-white/60 border-b-0 shadow-[0_-8px_32px_rgba(0,0,0,0.03)] rounded-t-[28px] sm:rounded-t-[36px] rounded-b-none p-2.5 sm:p-3 pt-2.5 sm:pt-3 flex flex-col justify-between flex-1 pb-2 sm:pb-3">
+                            <div className="w-full bg-white border-t border-slate-200/80 shadow-md rounded-t-[28px] sm:rounded-t-[36px] rounded-b-none p-2.5 sm:p-3 pt-2.5 sm:pt-3 flex flex-col justify-between flex-1 pb-2 sm:pb-3">
                                 <div className="flex items-center justify-between mb-2 sm:mb-3 px-0.5 sm:px-1">
                                     <h4 className="text-[14px] sm:text-[16px] font-black text-slate-900">
                                         {t('mobileShowcase.studentsTitle', "O'quvchilar Natijalari")}
@@ -389,7 +389,7 @@ export default function MobileShowcase() {
                                             details: "Listening: 9.0 • Reading: 7.5 • Writing: 7.0 • Speaking: 6.5",
                                             image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-27.jpg"
                                         })}
-                                        className="flex items-center justify-between py-1 px-1.5 rounded-xl hover:bg-slate-100/80 cursor-pointer transition-all active:scale-98"
+                                        className="flex items-center justify-between py-1.5 px-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/60 cursor-pointer transition-all active:scale-98"
                                     >
                                         <div className="flex items-center gap-2 sm:gap-3">
                                             <img
@@ -416,7 +416,7 @@ export default function MobileShowcase() {
                                             details: "Listening: 8.5 • General: 7.0 • Reading: 7.0 • Speaking: 6.5",
                                             image: "https://szmzkerbxkkxgocvxnhn.supabase.co/storage/v1/object/public/IMAGES/photo_2026-07-14_23-35-01.jpg"
                                         })}
-                                        className="flex items-center justify-between py-1 px-1.5 rounded-xl hover:bg-slate-100/80 cursor-pointer transition-all active:scale-98 border-t border-slate-200/70"
+                                        className="flex items-center justify-between py-1.5 px-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/60 cursor-pointer transition-all active:scale-98"
                                     >
                                         <div className="flex items-center gap-2 sm:gap-3">
                                             <img

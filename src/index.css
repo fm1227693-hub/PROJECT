@@ -7,6 +7,7 @@
  * Palette: Deep charcoal & near-black surfaces, vivid crimson accents, warm white & muted slate typography
  */
 :root {
+  color-scheme: light;
   /* Typography */
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
