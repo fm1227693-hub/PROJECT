@@ -188,17 +188,6 @@ export default function Login() {
                             </div>
                         </div>
 
-                        {/* Direct prompt badge */}
-                        <Link 
-                            to="/access-request"
-                            className="group block p-2.5 rounded-2xl bg-emerald-500/5 hover:bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-400 font-semibold transition-all hover:scale-[1.01]"
-                        >
-                            <span>🔑 Guruh kodingiz yo'qmi? </span>
-                            <span className="font-bold underline group-hover:text-emerald-800 dark:group-hover:text-emerald-300">
-                                Adminga kirish so'rovini yuboring &rarr;
-                            </span>
-                        </Link>
-
                         <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 pt-1">
                             <FaShieldAlt className="w-3 h-3 text-emerald-500" />
                             <span>Optimum ELC rasmiy xavfsiz tizimi</span>
