@@ -1,8 +1,8 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState, useRef, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Toaster, toast } from 'react-hot-toast';
-import { FaAndroid } from 'react-icons/fa';
+import { FaAndroid, FaPhone, FaTimes, FaHeadset } from 'react-icons/fa';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
@@ -50,6 +50,22 @@ function RouteFallback() {
 
 export default function App() {
   const location = useLocation();
+  const [fabOpen, setFabOpen] = useState(false);
+  const fabRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (fabRef.current && !fabRef.current.contains(e.target)) {
+        setFabOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-[#F7F5F0] dark:bg-[#080B12] transition-colors duration-300 overflow-x-hidden font-sans">
@@ -188,52 +204,106 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {/* Bottom Floating Actions (App Download & Quick Call) */}
+      {/* Expandable Floating Quick Actions (Speed Dial Menu) */}
       {!location.pathname.startsWith('/enter') && 
        !location.pathname.startsWith('/reading-tests') && 
        !location.pathname.startsWith('/listening-tests') && 
        !location.pathname.startsWith('/ielts-writing') && (
-        <div className="fab-button-container fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-all duration-300">
-          
-          {/* Download App (APK) Button */}
-          <div className="relative group flex items-center">
-            {/* Tooltip / Label on PC hover */}
-            <span className="pointer-events-none absolute right-16 px-3 py-1.5 rounded-xl bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 text-xs font-bold tracking-wide shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap hidden sm:block border border-white/10 dark:border-slate-800">
-              Ilovani yuklab olish (.apk)
-            </span>
+        <div 
+          ref={fabRef}
+          className="fab-button-container fixed bottom-6 right-5 sm:right-6 z-50 flex flex-col items-end gap-2.5 select-none"
+        >
+          {/* Pop-out Expanded Action Buttons */}
+          <AnimatePresence>
+            {fabOpen && (
+              <motion.div 
+                initial={{ opacity: 0, y: 15, scale: 0.85 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 15, scale: 0.85 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="flex flex-col items-end gap-2.5 mb-1"
+              >
+                {/* 1. Download App (APK) Action */}
+                <div className="flex items-center gap-2.5">
+                  <span className="px-3 py-1.5 rounded-xl bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 text-xs font-bold tracking-wide shadow-xl border border-white/10 dark:border-slate-800 whitespace-nowrap animate-in fade-in">
+                    Ilovani yuklab olish (.apk)
+                  </span>
+                  <a
+                    href="/Optimum.apk"
+                    download="Optimum.apk"
+                    onClick={() => {
+                      toast.success("Optimum ilovasi yuklanmoqda! (1.7 MB)", {
+                        icon: '📲',
+                        duration: 4000
+                      });
+                      setFabOpen(false);
+                    }}
+                    className="relative w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/35 border-2 border-white/80 dark:border-slate-800 transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                    title="Optimum APK ilovasini yuklab olish"
+                  >
+                    <span className="absolute -top-1 -right-1 px-1 py-0.2 rounded-full text-[8px] font-mono font-black bg-white text-emerald-700 shadow-xs border border-emerald-500/30">
+                      APK
+                    </span>
+                    <FaAndroid className="w-5 h-5" />
+                  </a>
+                </div>
 
-            <a
-              href="/Optimum.apk"
-              download="Optimum.apk"
-              onClick={() => {
-                toast.success("Optimum ilovasi yuklanmoqda! (1.7 MB)", {
-                  icon: '📲',
-                  duration: 4000
-                });
-              }}
-              className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-emerald-500/35 transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/60 dark:border-slate-800 group"
-              title="Optimum ilovasini yuklab olish (.apk)"
-              aria-label="Optimum mobil ilovasini yuklab olish"
-            >
-              {/* Badge on top */}
-              <span className="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full text-[9px] font-mono font-black bg-white text-emerald-700 shadow-sm border border-emerald-500/30">
-                APK
-              </span>
-              <FaAndroid className="w-6 h-6 group-hover:scale-110 transition-transform" />
-            </a>
-          </div>
+                {/* 2. Direct Call Action */}
+                <div className="flex items-center gap-2.5">
+                  <span className="px-3 py-1.5 rounded-xl bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 text-xs font-bold tracking-wide shadow-xl border border-white/10 dark:border-slate-800 whitespace-nowrap animate-in fade-in">
+                    Qo'ng'iroq qilish (+998 91 082 99 79)
+                  </span>
+                  <a
+                    href="tel:+998910829979"
+                    onClick={() => setFabOpen(false)}
+                    className="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white flex items-center justify-center shadow-lg shadow-red-600/35 border-2 border-white/80 dark:border-slate-800 transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                    title="Bog'lanish uchun qo'ng'iroq qiling"
+                  >
+                    <FaPhone className="w-4 h-4" />
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Call button */}
-          <a
-            href="tel:+998910829979"
-            className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-red-600/35 transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/40 dark:border-slate-800 group"
-            title="Qo'ng'iroq qilish"
-            aria-label="Telefon orqali bog'lanish"
+          {/* Single Main FAB Trigger Button */}
+          <button
+            type="button"
+            onClick={() => setFabOpen(prev => !prev)}
+            className={`relative w-13 h-13 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/80 dark:border-slate-800 ${
+              fabOpen 
+                ? 'bg-slate-900 dark:bg-white dark:text-slate-900 shadow-slate-900/40' 
+                : 'bg-gradient-to-br from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 shadow-red-600/40'
+            }`}
+            title={fabOpen ? "Yopish" : "Bog'lanish va Ilova"}
+            aria-label="Tezkor menyu"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 relative z-10 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-          </a>
+            <AnimatePresence mode="wait">
+              {fabOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <FaTimes className="w-5 h-5" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="open"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex items-center justify-center"
+                >
+                  <span className="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-25 pointer-events-none" />
+                  <FaHeadset className="w-5 h-5 sm:w-6 sm:h-6 relative z-10" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
         </div>
       )}
     </div>
