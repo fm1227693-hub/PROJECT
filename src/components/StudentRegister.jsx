@@ -99,9 +99,6 @@ export default function StudentRegister() {
                         <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-heading tracking-tight">
                             {t('auth.registerTitle', "O'quvchi kabinetini ochish")}
                         </h1>
-                        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                            {t('auth.registerSubtitle', "Ma'lumotlaringizni to'ldiring va shaxsiy kabinetingizga ega bo'ling")}
-                        </p>
                     </div>
 
                     {error && (

@@ -563,7 +563,6 @@
         "alreadyHaveAccount": "Уже есть аккаунт?",
         "backToLogin": "На страницу входа",
         "registerTitle": "Создание кабинета студента",
-        "registerSubtitle": "По коду группы вы будете автоматически зачислены в свою группу",
         "inviteCodeLabel": "Код приглашения группы",
         "fullNameLabel": "Имя и Фамилия",
         "usernameLabel2": "Логин (username)",
