@@ -10,7 +10,6 @@ import {
     FaEyeSlash, 
     FaGraduationCap, 
     FaSpinner, 
-    FaKey, 
     FaPhoneAlt, 
     FaCheckCircle, 
     FaShieldAlt 
@@ -31,7 +30,6 @@ export default function StudentRegister() {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [inviteCode, setInviteCode] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -53,7 +51,6 @@ export default function StudentRegister() {
                 username,
                 password,
                 confirmPassword,
-                inviteCode,
                 phone: `+998 ${phone}`
             });
 
@@ -103,7 +100,7 @@ export default function StudentRegister() {
                             {t('auth.registerTitle', "O'quvchi kabinetini ochish")}
                         </h1>
                         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                            {t('auth.registerSubtitle', "Guruh kodingiz orqali o'z guruhingizga biriktirilasiz")}
+                            {t('auth.registerSubtitle', "Ma'lumotlaringizni to'ldiring va shaxsiy kabinetingizga ega bo'ling")}
                         </p>
                     </div>
 
@@ -114,28 +111,6 @@ export default function StudentRegister() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Group Invitation Code - Prominent High Security Field */}
-                        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-red-500/5 via-rose-500/5 to-transparent border border-red-500/20">
-                            <label className="block text-[11px] font-black uppercase tracking-wider text-red-600 dark:text-red-400 mb-1.5 flex items-center justify-between">
-                                <span>{t('auth.inviteCodeLabel', 'Guruh taklif kodi')} *</span>
-                                <span className="text-[10px] font-normal text-slate-400">
-                                    Kodingiz yo'qmi? <Link to="/access-request" className="font-bold text-emerald-600 dark:text-emerald-400 underline">So'rov yuborish &rarr;</Link>
-                                </span>
-                            </label>
-                            <div className="relative flex items-center">
-                                <span className="absolute left-4 text-red-500 pointer-events-none text-xs">
-                                    <FaKey />
-                                </span>
-                                <input
-                                    type="text"
-                                    value={inviteCode}
-                                    onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                                    placeholder="OPT-XXXXX"
-                                    className="w-full pl-11 pr-4 py-3 bg-white dark:bg-[#07090e] border border-red-500/30 rounded-xl text-slate-900 dark:text-white font-mono font-bold tracking-wider placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20 uppercase"
-                                    required
-                                />
-                            </div>
-                        </div>
 
                         {/* Full Name */}
                         <div>

@@ -500,21 +500,20 @@ export async function registerStudent({
     if (password !== confirmPassword) {
         throw new Error("Kiritilgan parollar mos kelmadi!");
     }
-    if (!inviteCode || !inviteCode.trim()) {
-        throw new Error("Guruh taklif kodini kiriting! (Kodni o'qituvchingizdan oling)");
-    }
 
-    // 3. Invite Code Verification
-    const cleanCode = inviteCode.trim().toUpperCase();
+    // 3. Group Assignment (Invite code optional)
+    let matchingGroup = null;
     const groups = await ensureGroupInviteCodes();
-    const matchingGroup = groups.find(g => 
-        (g.inviteCode || '').toUpperCase() === cleanCode && 
-        g.isCodeActive !== false && 
-        g.status !== 'archived'
-    );
-
+    if (inviteCode && inviteCode.trim()) {
+        const cleanCode = inviteCode.trim().toUpperCase();
+        matchingGroup = groups.find(g => 
+            (g.inviteCode || '').toUpperCase() === cleanCode && 
+            g.isCodeActive !== false && 
+            g.status !== 'archived'
+        );
+    }
     if (!matchingGroup) {
-        throw new Error("Yaroqsiz yoki muddati o'tgan guruh kodi! O'qituvchingiz bilan bog'laning.");
+        matchingGroup = groups.find(g => g.status !== 'archived') || groups[0] || { id: 1, name: 'Optimum Students', course: 'English Program' };
     }
 
     // 4. Unique Username Verification via safe Supabase RPC
