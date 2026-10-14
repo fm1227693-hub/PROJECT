@@ -1,0 +1,20 @@
+{
+  "name": "Optimum ELC — English Learning Center",
+  "short_name": "Optimum",
+  "description": "Optimum School of English - Ingliz tilini noldan mukammallikkacha o'rganing.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#070911",
+  "theme_color": "#C82032",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
