@@ -1,7 +1,8 @@
 import React, { Suspense, lazy } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
+import { FaAndroid } from 'react-icons/fa';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
@@ -187,12 +188,42 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {/* Bottom Floating Quick Call Action */}
+      {/* Bottom Floating Actions (App Download & Quick Call) */}
       {!location.pathname.startsWith('/enter') && 
        !location.pathname.startsWith('/reading-tests') && 
        !location.pathname.startsWith('/listening-tests') && 
        !location.pathname.startsWith('/ielts-writing') && (
-        <div className="fab-button-container fixed bottom-6 right-6 z-50 flex items-center gap-3 transition-all duration-300">
+        <div className="fab-button-container fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-all duration-300">
+          
+          {/* Download App (APK) Button */}
+          <div className="relative group flex items-center">
+            {/* Tooltip / Label on PC hover */}
+            <span className="pointer-events-none absolute right-16 px-3 py-1.5 rounded-xl bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 text-xs font-bold tracking-wide shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap hidden sm:block border border-white/10 dark:border-slate-800">
+              Ilovani yuklab olish (.apk)
+            </span>
+
+            <a
+              href="/Optimum.apk"
+              download="Optimum.apk"
+              onClick={() => {
+                toast.success("Optimum ilovasi yuklanmoqda! (1.7 MB)", {
+                  icon: '📲',
+                  duration: 4000
+                });
+              }}
+              className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-emerald-500/35 transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/60 dark:border-slate-800 group"
+              title="Optimum ilovasini yuklab olish (.apk)"
+              aria-label="Optimum mobil ilovasini yuklab olish"
+            >
+              {/* Badge on top */}
+              <span className="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full text-[9px] font-mono font-black bg-white text-emerald-700 shadow-sm border border-emerald-500/30">
+                APK
+              </span>
+              <FaAndroid className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
+
+          {/* Call button */}
           <a
             href="tel:+998910829979"
             className="relative w-14 h-14 bg-gradient-to-br from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-red-600/35 transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/40 dark:border-slate-800 group"

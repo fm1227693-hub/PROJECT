@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/((?!assets/|favicon|manifest\\.json|sw\\.js|_redirects).*)",
+      "source": "/((?!assets/|favicon|manifest\\.json|sw\\.js|Optimum\\.apk|_redirects).*)",
       "destination": "/index.html"
     }
   ]
