@@ -118,7 +118,9 @@ export default function StudentRegister() {
                         <div className="p-3.5 rounded-2xl bg-gradient-to-r from-red-500/5 via-rose-500/5 to-transparent border border-red-500/20">
                             <label className="block text-[11px] font-black uppercase tracking-wider text-red-600 dark:text-red-400 mb-1.5 flex items-center justify-between">
                                 <span>{t('auth.inviteCodeLabel', 'Guruh taklif kodi')} *</span>
-                                <span className="text-[10px] font-normal text-slate-400">O'qituvchidan oling</span>
+                                <span className="text-[10px] font-normal text-slate-400">
+                                    Kodingiz yo'qmi? <Link to="/access-request" className="font-bold text-emerald-600 dark:text-emerald-400 underline">So'rov yuborish &rarr;</Link>
+                                </span>
                             </label>
                             <div className="relative flex items-center">
                                 <span className="absolute left-4 text-red-500 pointer-events-none text-xs">

@@ -29,6 +29,7 @@ const IeltsWritingAssessor = lazy(() => import("./components/IeltsWritingAssesso
 const Principle = lazy(() => import("./components/Principle"));
 const Login = lazy(() => import("./components/Login"));
 const StudentRegister = lazy(() => import("./components/StudentRegister"));
+const AccessRequest = lazy(() => import("./components/AccessRequest"));
 const StudentDashboard = lazy(() => import("./components/StudentDashboard"));
 
 function ScrollToTop() {
@@ -196,6 +197,7 @@ export default function App() {
                 <Route path="/principle/:id" element={<Principle />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/student/register" element={<StudentRegister />} />
+                <Route path="/access-request" element={<AccessRequest />} />
                 <Route path="/student/dashboard" element={<StudentDashboard />} />
               </Routes>
             </Suspense>

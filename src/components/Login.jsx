@@ -171,14 +171,35 @@ export default function Login() {
                         </button>
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-white/[0.08] text-center space-y-3">
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                            {t('auth.noAccountPrompt', "Hali shaxsiy hisobingiz yo'qmi?")}{' '}
-                            <Link to="/student/register" className="font-bold text-red-600 dark:text-red-400 hover:underline">
-                                {t('auth.registerNow', "Ro'yxatdan o'tish")}
-                            </Link>
-                        </p>
-                        <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400">
+                    <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-white/[0.08] text-center space-y-3.5">
+                        <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                            <span>{t('auth.noAccountPrompt', "Hali shaxsiy hisobingiz yo'qmi?")}</span>
+                            <div className="inline-flex items-center gap-2">
+                                <Link to="/student/register" className="font-bold text-red-600 dark:text-red-400 hover:underline">
+                                    {t('auth.registerNow', "Ro'yxatdan o'tish")}
+                                </Link>
+                                <span className="text-slate-300 dark:text-slate-700 font-normal">|</span>
+                                <Link 
+                                    to="/access-request" 
+                                    className="font-bold text-emerald-600 dark:text-emerald-400 hover:underline hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                                >
+                                    {t('auth.requestAccess', "Kirish so'rovini yuborish")}
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* Direct prompt badge */}
+                        <Link 
+                            to="/access-request"
+                            className="group block p-2.5 rounded-2xl bg-emerald-500/5 hover:bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-400 font-semibold transition-all hover:scale-[1.01]"
+                        >
+                            <span>🔑 Guruh kodingiz yo'qmi? </span>
+                            <span className="font-bold underline group-hover:text-emerald-800 dark:group-hover:text-emerald-300">
+                                Adminga kirish so'rovini yuboring &rarr;
+                            </span>
+                        </Link>
+
+                        <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 pt-1">
                             <FaShieldAlt className="w-3 h-3 text-emerald-500" />
                             <span>Optimum ELC rasmiy xavfsiz tizimi</span>
                         </div>

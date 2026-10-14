@@ -621,22 +621,35 @@ const handleEditScheduleClick = (schedule) => {
     setShowAddScheduleModal(true)
 }
 
-const handleAcceptLeadToGroup = () => {
+    const handleAcceptLeadToGroup = async () => {
         if (!acceptToGroupId) {
             toast.error("Iltimos, guruhni tanlang!");
             return;
         }
-        
+
+        const selectedGroup = groups.find(g => String(g.id) === String(acceptToGroupId));
+        const studentId = Date.now();
+
+        // Extract requested credentials or generate clean ones
+        const reqUname = (leadToAccept.requestedUsername || leadToAccept.username || leadToAccept.name.toLowerCase().replace(/\s+/g, '')).trim().replace(/^@/, '').toLowerCase();
+        const reqPass = String(leadToAccept.requestedPassword || leadToAccept.rawPassword || '123456').trim();
+
         const newStudent = {
-            id: Date.now(),
+            id: studentId,
+            userId: studentId,
             name: leadToAccept.name,
             phone: leadToAccept.phone,
+            username: reqUname,
+            rawPassword: reqPass,
             image: null,
-            gender: 'erkak'
+            gender: 'erkak',
+            status: 'active',
+            joinedAt: new Date().toISOString()
         };
-        
+
+        // 1. Add student to selected group in Firebase & localStorage
         const updatedGroups = groups.map(g => {
-            if (g.id === parseInt(acceptToGroupId)) {
+            if (String(g.id) === String(acceptToGroupId)) {
                 return {
                     ...g,
                     students: [...(g.students || []), newStudent]
@@ -644,17 +657,44 @@ const handleAcceptLeadToGroup = () => {
             }
             return g;
         });
-        
+
         setGroups(updatedGroups);
         localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
-        axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups).catch(()=>{});
-        
-        updateLeadStatus(leadToAccept.id, 'Qabul qilindi');
-        
+        try {
+            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups);
+        } catch(e) {}
+
+        // 2. Create and activate User account in users.json & optimum_users
+        const newUser = {
+            id: studentId,
+            username: reqUname,
+            name: leadToAccept.name,
+            phone: leadToAccept.phone,
+            role: 'student',
+            status: 'active',
+            rawPassword: reqPass,
+            groupId: selectedGroup?.id || acceptToGroupId,
+            groupName: selectedGroup?.name || 'Optimum Group',
+            course: selectedGroup?.course || leadToAccept.course || 'English Program',
+            createdAt: new Date().toISOString()
+        };
+
+        try {
+            const existingUsers = await getUsers();
+            const updatedUsers = [...existingUsers.filter(u => (u.username || '').toLowerCase() !== reqUname), newUser];
+            await saveUsers(updatedUsers);
+            loadRegisteredUsers();
+        } catch (uErr) {
+            console.error('Error saving student account:', uErr);
+        }
+
+        // 3. Mark lead status as 'Qabul qilindi'
+        await updateLeadStatus(leadToAccept.id, 'Qabul qilindi');
+
         setShowAcceptLeadModal(false);
         setLeadToAccept(null);
         setAcceptToGroupId('');
-        toast.success("O'quvchi guruhga muvaffaqiyatli qo'shildi!");
+        toast.success(`O'quvchi guruhga biriktirildi va @${reqUname} akkaunti ochildi!`, { duration: 4000 });
     };
     
     const updateLeadStatus = async (id, newStatus) => {
@@ -728,6 +768,7 @@ const filteredLeads = leads
     .filter(lead => {
         const matchesSearch = lead.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             lead.phone?.includes(searchTerm) ||
+            lead.requestedUsername?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             lead.type?.toLowerCase().includes(searchTerm.toLowerCase())
         const matchesStatus = statusFilter === 'all' || lead.status === statusFilter || (statusFilter === 'Kutilmoqda' && !lead.status)
         const matchesType = typeFilter === 'all' || lead.type?.toLowerCase().includes(typeFilter.toLowerCase())
@@ -742,6 +783,7 @@ const filteredLeads = leads
 
 const getTranslatedType = (type) => {
     if (!type) return t('adminPanel.typeMurojaat', "Murojaat");
+    if (type === "Kirish so'rovi") return "Kirish so'rovi";
     if (type === "Ro'yxatdan o'tish") return t('adminPanel.typeRegistration', "Ro'yxatdan o'tish");
     if (type === "Bepul maslahat") return t('adminPanel.typeFreeConsultation', "Bepul maslahat");
     if (type === "Ingliz tili") return t('adminPanel.typeEnglish', "Ingliz tili");
@@ -912,8 +954,24 @@ return (
                                         ) : (
                                             filteredLeads.map(lead => (
                                                 <tr key={lead.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
-                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">{lead.name}</td>
-                                                    <td className="py-4 px-4 text-gray-600 dark:text-gray-300">{getTranslatedType(lead.type)}</td>
+                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">
+                                                        <div>{lead.name}</div>
+                                                        {lead.requestedUsername && (
+                                                            <div className="text-[11px] font-mono font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                                                <span>@{lead.requestedUsername}</span>
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                    <td className="py-4 px-4 text-gray-600 dark:text-gray-300">
+                                                        {lead.type === "Kirish so'rovi" || lead.requestedUsername ? (
+                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-500/30 whitespace-nowrap">
+                                                                <FaKey className="text-[10px]" />
+                                                                <span>Kirish so'rovi</span>
+                                                            </span>
+                                                        ) : (
+                                                            getTranslatedType(lead.type)
+                                                        )}
+                                                    </td>
                                                     <td className="py-4 px-4 text-gray-600 dark:text-gray-300">{lead.phone}</td>
                                                     <td className="py-4 px-4 text-gray-500 whitespace-nowrap">{lead.date}</td>
                                                     <td className="py-4 px-4">
@@ -2159,6 +2217,26 @@ return (
                         </div>
                     </div>
 
+                    {leadToAccept && (leadToAccept.requestedUsername || leadToAccept.type === "Kirish so'rovi") && (
+                        <div className="p-3.5 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/40 rounded-2xl space-y-1.5 text-xs text-left">
+                            <div className="flex items-center justify-between text-purple-700 dark:text-purple-300 font-bold">
+                                <span className="flex items-center gap-1.5">
+                                    <FaKey className="text-[11px]" />
+                                    <span>Biriktiriladigan akkaunt:</span>
+                                </span>
+                                <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 px-2 py-0.5 rounded-full font-bold">
+                                    Avtomatik
+                                </span>
+                            </div>
+                            <div className="text-gray-700 dark:text-gray-300 font-mono text-xs space-y-0.5 pt-1">
+                                <div><span className="text-gray-400 font-sans">Login:</span> <strong className="text-purple-600 dark:text-purple-400">@{leadToAccept.requestedUsername}</strong></div>
+                                <div><span className="text-gray-400 font-sans">Parol:</span> <strong>{leadToAccept.requestedPassword}</strong></div>
+                                {leadToAccept.course && <div><span className="text-gray-400 font-sans">Kurs:</span> {leadToAccept.course}</div>}
+                                {leadToAccept.note && <div><span className="text-gray-400 font-sans">Taklif/Izoh:</span> {leadToAccept.note}</div>}
+                            </div>
+                        </div>
+                    )}
+
                     <div className="space-y-4">
                         <div>
                             <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.selectGroup', 'Guruhni tanlang')}</label>
@@ -2178,7 +2256,7 @@ return (
                                 </button>
 
                                 {showAcceptGroupDropdown && (
-                                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in">
+                                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in max-h-60 overflow-y-auto">
                                         <div className="fixed inset-0 z-[-1]" onClick={() => setShowAcceptGroupDropdown(false)}></div>
                                         {groups.map(g => (
                                             <button
@@ -2207,17 +2285,93 @@ return (
 
         {deleteModalLead && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
-                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 flex items-center justify-center text-2xl mx-auto">
-                        <FaTrash />
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-5 relative">
+                    <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 flex items-center justify-center text-lg">
+                                <FaClipboardList />
+                            </div>
+                            <div>
+                                <h3 className="text-base font-black text-gray-900 dark:text-white">Murojaat tafsilotlari</h3>
+                                <p className="text-xs text-gray-400">{deleteModalLead.date}</p>
+                            </div>
+                        </div>
+                        <button onClick={() => setDeleteModalLead(null)} className="text-gray-400 hover:text-gray-600 dark:hover:text-white text-lg">
+                            <FaTimes />
+                        </button>
                     </div>
-                    <div>
-                        <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminPanel.deleteConfirmTitle', "Ushbu murojaatni o'chirmoqchimisiz?")}</h3>
-                        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalLead.name}</p>
+
+                    <div className="space-y-3 text-xs">
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                            <span className="text-gray-400 font-medium">F.I.O:</span>
+                            <span className="font-bold text-gray-900 dark:text-white">{deleteModalLead.name}</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                            <span className="text-gray-400 font-medium">Telefon:</span>
+                            <span className="font-bold text-gray-900 dark:text-white font-mono">{deleteModalLead.phone}</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                            <span className="text-gray-400 font-medium">Turi:</span>
+                            <span className="font-bold text-gray-900 dark:text-white">{deleteModalLead.type}</span>
+                        </div>
+                        {deleteModalLead.requestedUsername && (
+                            <div className="p-3 bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/40 rounded-xl space-y-1 font-mono">
+                                <div className="text-purple-700 dark:text-purple-300 font-bold font-sans">🔑 Akkaunt ma'lumotlari:</div>
+                                <div><span className="text-gray-400 font-sans">Login:</span> <strong className="text-purple-600 dark:text-purple-400">@{deleteModalLead.requestedUsername}</strong></div>
+                                <div><span className="text-gray-400 font-sans">Parol:</span> <strong>{deleteModalLead.requestedPassword}</strong></div>
+                            </div>
+                        )}
+                        {deleteModalLead.course && (
+                            <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                                <span className="text-gray-400 font-medium">Kurs / Yo'nalish:</span>
+                                <span className="font-bold text-gray-900 dark:text-white">{deleteModalLead.course}</span>
+                            </div>
+                        )}
+                        {deleteModalLead.note && (
+                            <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 space-y-1">
+                                <span className="text-gray-400 font-medium">Taklif / Izoh:</span>
+                                <p className="text-gray-700 dark:text-gray-300 font-normal">{deleteModalLead.note}</p>
+                            </div>
+                        )}
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                            <span className="text-gray-400 font-medium">Status:</span>
+                            <span className={`px-2 py-0.5 rounded-md font-bold ${
+                                deleteModalLead.status === 'Qabul qilindi' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400' :
+                                deleteModalLead.status === 'Rad etildi' ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' :
+                                'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400'
+                            }`}>
+                                {deleteModalLead.status || 'Kutilmoqda'}
+                            </span>
+                        </div>
                     </div>
-                    <div className="flex items-center justify-center gap-3 pt-2">
-                        <button onClick={() => setDeleteModalLead(null)} className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminPanel.noBtn', "Bekor qilish")}</button>
-                        <button onClick={() => handleDeleteLead(deleteModalLead.id)} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition">{t('adminPanel.yesBtn', "O'chirish")}</button>
+
+                    <div className="flex gap-2 pt-2">
+                        {deleteModalLead.status !== 'Qabul qilindi' && (
+                            <button 
+                                onClick={() => { 
+                                    setLeadToAccept(deleteModalLead); 
+                                    setShowAcceptLeadModal(true); 
+                                    setDeleteModalLead(null); 
+                                }} 
+                                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-1.5"
+                            >
+                                <FaCheckCircle />
+                                <span>Guruhga qabul</span>
+                            </button>
+                        )}
+                        <button 
+                            onClick={() => handleDeleteLead(deleteModalLead.id)} 
+                            className="px-4 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-md shadow-rose-500/20 transition flex items-center justify-center gap-1.5"
+                        >
+                            <FaTrash />
+                            <span>O'chirish</span>
+                        </button>
+                        <button 
+                            onClick={() => setDeleteModalLead(null)} 
+                            className="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                        >
+                            Yopish
+                        </button>
                     </div>
                 </div>
             </div>

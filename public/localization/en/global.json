@@ -558,6 +558,7 @@
         "loggingIn": "Signing in...",
         "noAccountPrompt": "Don't have an account yet?",
         "registerNow": "Register now",
+        "requestAccess": "Send access request",
         "alreadyHaveAccount": "Already have an account?",
         "backToLogin": "Back to login",
         "registerTitle": "Student Registration",
