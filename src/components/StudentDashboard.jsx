@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -69,6 +69,101 @@ export default function StudentDashboard() {
     const [editingMsgId, setEditingMsgId] = useState(null);
     const [editMsgText, setEditMsgText] = useState('');
     const chatBottomRef = useRef(null);
+    const directChatBottomRef = useRef(null);
+
+    const cleanU = (u) => (u || '').toString().trim().toLowerCase().replace(/^@/, '');
+    const cleanN = (n) => (n || '').toString().trim().toLowerCase();
+
+    // Group only messages (Umumiy guruh xabarlari - shaxsiy SMSlar bu yerda MUTLAQO KO'RINMAYDI)
+    const groupOnlyMessages = useMemo(() => {
+        return messages.filter(m => {
+            const target = (m.targetUsername || '').toString().trim().toLowerCase().replace(/^@/, '');
+            return !target || target === 'all' || target === 'barcha' || target === 'barchaga';
+        });
+    }, [messages]);
+
+    // Direct 1-on-1 messages between currentUser and selectedChatStudent (Umumiy guruh xabarlari bu yerda MUTLAQO KO'RINMAYDI)
+    const directMessages = useMemo(() => {
+        if (!selectedChatStudent || !currentUser) return [];
+
+        const myU = cleanU(currentUser.username);
+        const myN = cleanN(currentUser.name);
+        const myId = String(currentUser.id || '');
+
+        const targetU = cleanU(selectedChatStudent.username);
+        const targetN = cleanN(selectedChatStudent.name);
+        const targetId = String(selectedChatStudent.id || selectedChatStudent.userId || '');
+
+        return messages.filter(m => {
+            // Strictly exclude general group broadcast messages
+            const msgTarget = (m.targetUsername || '').toString().trim().toLowerCase().replace(/^@/, '');
+            if (!msgTarget || msgTarget === 'all' || msgTarget === 'barcha' || msgTarget === 'barchaga') {
+                return false;
+            }
+
+            const senderU = cleanU(m.senderUsername);
+            const senderN = cleanN(m.senderName);
+            const senderId = String(m.senderId || '');
+
+            const destU = cleanU(m.targetUsername);
+            const destN = cleanN(m.targetName);
+            const destId = String(m.targetId || '');
+
+            // 1. Sent by ME to THIS specific classmate
+            const isFromMeToSelected = (
+                (myU && destU && senderU === myU && destU === targetU) ||
+                (myId && destId && senderId === myId && destId === targetId) ||
+                (myN && destN && senderN === myN && destN === targetN)
+            );
+
+            // 2. Sent by THIS specific classmate to ME
+            const isFromSelectedToMe = (
+                (targetU && myU && senderU === targetU && destU === myU) ||
+                (targetId && myId && senderId === targetId && destId === myId) ||
+                (targetN && myN && senderN === targetN && destN === myN)
+            );
+
+            return isFromMeToSelected || isFromSelectedToMe;
+        });
+    }, [messages, selectedChatStudent, currentUser]);
+
+    // Count direct messages with a specific classmate for the badge
+    const getDirectCountWithClassmate = (st) => {
+        if (!currentUser || !st) return 0;
+        const myU = cleanU(currentUser.username);
+        const myN = cleanN(currentUser.name);
+        const myId = String(currentUser.id || '');
+
+        const stU = cleanU(st.username);
+        const stN = cleanN(st.name);
+        const stId = String(st.id || st.userId || '');
+
+        return messages.filter(m => {
+            const msgTarget = (m.targetUsername || '').toString().trim().toLowerCase().replace(/^@/, '');
+            if (!msgTarget || msgTarget === 'all' || msgTarget === 'barcha' || msgTarget === 'barchaga') return false;
+
+            const senderU = cleanU(m.senderUsername);
+            const senderN = cleanN(m.senderName);
+            const senderId = String(m.senderId || '');
+
+            const destU = cleanU(m.targetUsername);
+            const destN = cleanN(m.targetName);
+            const destId = String(m.targetId || '');
+
+            const isMeToSt = (
+                (myU && destU && senderU === myU && destU === stU) ||
+                (myId && destId && senderId === myId && destId === stId) ||
+                (myN && destN && senderN === myN && destN === stN)
+            );
+            const isStToMe = (
+                (stU && myU && senderU === stU && destU === myU) ||
+                (stId && myId && senderId === stId && destId === myId) ||
+                (stN && myN && senderN === stN && destN === myN)
+            );
+
+            return isMeToSt || isStToMe;
+        }).length;
+    };
 
     // Avatar upload state
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -284,19 +379,25 @@ export default function StudentDashboard() {
 
         setSendingMsg(true);
         try {
+            const cleanTarget = (selectedChatStudent.username || '').replace(/^@/, '');
             const msgObj = {
                 senderId: currentUser.id,
                 senderName: currentUser.name,
-                senderUsername: currentUser.username,
+                senderUsername: (currentUser.username || '').replace(/^@/, ''),
                 senderAvatar: currentUser.avatar || currentUser.image || null,
-                targetUsername: selectedChatStudent.username || selectedChatStudent.name,
+                targetId: selectedChatStudent.id || selectedChatStudent.userId || null,
+                targetUsername: cleanTarget || selectedChatStudent.name,
                 targetName: selectedChatStudent.name,
+                isDirect: true,
                 text: text
             };
             const sent = await sendGroupMessage(gid, msgObj);
             setMessages(prev => [...prev, sent]);
             setDirectMsgInput('');
-            toast.success("Xabar yuborildi!");
+            toast.success("Shaxsiy SMS yuborildi!");
+            setTimeout(() => {
+                directChatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         } catch (e) {
             toast.error("Xabar yuborishda xatolik");
         } finally {
@@ -315,22 +416,34 @@ export default function StudentDashboard() {
             const msgObj = {
                 senderId: currentUser.id,
                 senderName: currentUser.name,
-                senderUsername: currentUser.username,
+                senderUsername: (currentUser.username || '').replace(/^@/, ''),
                 senderAvatar: currentUser.avatar || currentUser.image || null,
                 targetUsername: 'all',
                 targetName: 'Barcha guruhdoshlar',
+                isDirect: false,
                 text: text
             };
             const sent = await sendGroupMessage(gid, msgObj);
             setMessages(prev => [...prev, sent]);
             setGroupMsgInput('');
-            toast.success("Xabar guruhga yuborildi!");
+            toast.success("Xabar umumiy guruhga yuborildi!");
+            setTimeout(() => {
+                chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         } catch (e) {
             toast.error("Xabar yuborishda xatolik");
         } finally {
             setSendingMsg(false);
         }
     };
+
+    useEffect(() => {
+        if (selectedChatStudent) {
+            setTimeout(() => {
+                directChatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    }, [selectedChatStudent, directMessages.length]);
 
     const handleStartEdit = (msg) => {
         const isOwner = (msg.senderUsername && currentUser?.username && msg.senderUsername.toLowerCase() === currentUser.username.toLowerCase()) ||
@@ -875,10 +988,7 @@ export default function StudentDashboard() {
                                                  (st.name && st.name.toLowerCase() === currentUser.name.toLowerCase());
 
                                     // Count direct messages with this classmate
-                                    const directCount = messages.filter(m => 
-                                        (m.senderUsername === st.username && m.targetUsername === currentUser.username) ||
-                                        (m.senderUsername === currentUser.username && m.targetUsername === st.username)
-                                    ).length;
+                                    const directCount = getDirectCountWithClassmate(st);
 
                                     return (
                                         <div 
@@ -918,7 +1028,7 @@ export default function StudentDashboard() {
                                                     <button
                                                         onClick={() => setSelectedChatStudent(st)}
                                                         className="w-full py-2 px-3 rounded-xl bg-red-500/10 hover:bg-red-500 hover:text-white text-red-600 dark:text-red-400 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-red-500/20 shadow-xs cursor-pointer active:scale-95"
-                                                        title={`${st.name} ga SMS xabar yozish`}
+                                                        title={`${st.name} ga shaxsiy SMS yozish`}
                                                     >
                                                         <FaPaperPlane className="text-[10px]" />
                                                         <span>SMS yozish</span>
@@ -940,7 +1050,7 @@ export default function StudentDashboard() {
                             </div>
                         </div>
 
-                        {/* Guruhdoshlar jonli umumiy chati & SMS */}
+                        {/* Guruh umumiy chati (Faqat umumiy xabarlar) */}
                         <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 space-y-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2.5">
@@ -949,31 +1059,30 @@ export default function StudentDashboard() {
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                                            Guruh umumiy chati & SMS
+                                            Guruh umumiy chati
                                         </h4>
                                         <p className="text-[11px] text-slate-400">
-                                            Barcha guruhdoshlar bu yerdagi xabarlarni real-vaqtda ko'rishadi
+                                            Barcha guruhdoshlar bu yerdagi umumiy xabarlarni real-vaqtda ko'rishadi
                                         </p>
                                     </div>
                                 </div>
                                 <span className="text-xs font-mono font-bold text-slate-500">
-                                    {messages.length} ta xabar
+                                    {groupOnlyMessages.length} ta xabar
                                 </span>
                             </div>
 
                             {/* Message Feed */}
                             <div className="rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/5 p-3 sm:p-4 h-72 sm:h-80 overflow-y-auto space-y-3 custom-scrollbar flex flex-col">
-                                {messages.length === 0 ? (
+                                {groupOnlyMessages.length === 0 ? (
                                     <div className="my-auto text-center py-8 text-slate-400 space-y-2">
                                         <FaCommentDots className="w-10 h-10 mx-auto opacity-30 text-slate-400" />
-                                        <p className="text-xs font-bold">Hozircha xabarlar yo'q</p>
+                                        <p className="text-xs font-bold">Hozircha umumiy xabarlar yo'q</p>
                                         <p className="text-[11px]">Guruhdoshlaringizga birinchi bo'lib salom yozing!</p>
                                     </div>
                                 ) : (
-                                    messages.map((m, idx) => {
+                                    groupOnlyMessages.map((m, idx) => {
                                         const isMine = (m.senderUsername && currentUser?.username && m.senderUsername.toLowerCase() === currentUser.username.toLowerCase()) || 
                                                        (m.senderId && currentUser?.id && String(m.senderId) === String(currentUser.id));
-                                        const isDirectToMe = m.targetUsername && currentUser?.username && m.targetUsername.toLowerCase() === currentUser.username.toLowerCase();
                                         const isEditing = editingMsgId === (m.id || m.firebaseKey);
 
                                         const senderStudent = (myGroup?.students || []).find(s => 
@@ -1001,11 +1110,6 @@ export default function StudentDashboard() {
                                                     <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
                                                         {isMine ? 'Siz' : (m.senderName || m.senderUsername)}
                                                     </span>
-                                                    {m.targetUsername && m.targetUsername !== 'all' && (
-                                                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/10 text-indigo-500 font-bold">
-                                                            ➔ @{m.targetUsername}
-                                                        </span>
-                                                    )}
                                                     {m.isEdited && (
                                                         <span className="text-[9px] text-slate-400 italic">
                                                             (tahrirlangan)
@@ -1070,8 +1174,6 @@ export default function StudentDashboard() {
                                                         className={`px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs max-w-[85%] sm:max-w-[70%] break-words leading-relaxed shadow-xs ${
                                                             isMine
                                                                 ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-tr-none'
-                                                                : isDirectToMe
-                                                                ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 border border-indigo-500/30 rounded-tl-none font-medium'
                                                                 : 'bg-white dark:bg-white/[0.08] text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-white/5 rounded-tl-none'
                                                         }`}
                                                     >
@@ -1082,6 +1184,7 @@ export default function StudentDashboard() {
                                         );
                                     })
                                 )}
+                                <div ref={chatBottomRef} />
                             </div>
 
                             {/* Input Form */}
@@ -1090,7 +1193,7 @@ export default function StudentDashboard() {
                                     type="text"
                                     value={groupMsgInput}
                                     onChange={(e) => setGroupMsgInput(e.target.value)}
-                                    placeholder="Guruhdoshlaringizga xabar yozing (SMS)..."
+                                    placeholder="Guruhdoshlaringizga umumiy xabar yozing..."
                                     className="flex-1 px-3.5 sm:px-4 py-2.5 rounded-xl bg-white dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-red-500"
                                 />
                                 <button
@@ -1170,13 +1273,13 @@ export default function StudentDashboard() {
                                         </div>
                                         <div className="min-w-0">
                                             <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                                                {selectedChatStudent.name}
+                                                {selectedChatStudent.name} bilan shaxsiy chat
                                             </h3>
                                             <div className="flex items-center gap-2 text-[11px] text-slate-400">
                                                 <span>@{selectedChatStudent.username || 'student'}</span>
-                                                <span className="flex items-center gap-1 text-emerald-500 font-bold">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                                    Online
+                                                <span className="flex items-center gap-1 text-rose-500 font-bold">
+                                                    <FaLock className="text-[10px]" />
+                                                    Maxfiy 1x1 SMS
                                                 </span>
                                             </div>
                                         </div>
@@ -1189,33 +1292,24 @@ export default function StudentDashboard() {
                                     </button>
                                 </div>
 
-                                {/* Direct Message Feed */}
+                                {/* Direct Message Feed (Faqat 2 kishi o'rtasidagi yozishmalar) */}
                                 <div className="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 custom-scrollbar flex flex-col bg-slate-50/50 dark:bg-black/20">
-                                    {(() => {
-                                        const directMsgs = messages.filter(m => 
-                                            (m.senderUsername === currentUser.username && m.targetUsername === selectedChatStudent.username) ||
-                                            (m.senderUsername === selectedChatStudent.username && (m.targetUsername === currentUser.username || m.targetUsername === 'all'))
-                                        );
-
-                                        if (directMsgs.length === 0) {
-                                            return (
-                                                <div className="my-auto text-center py-8 text-slate-400 space-y-3">
-                                                    <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-xl sm:text-2xl">
-                                                        <FaPaperPlane />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                            {selectedChatStudent.name} ga SMS xabar yozing
-                                                        </p>
-                                                        <p className="text-[11px] text-slate-400 mt-1">
-                                                            Siz yozgan xabar o'quvchi profilida darhol ko'rinadi.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }
-
-                                        return directMsgs.map((m, idx) => {
+                                    {directMessages.length === 0 ? (
+                                        <div className="my-auto text-center py-8 text-slate-400 space-y-3">
+                                            <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-xl sm:text-2xl">
+                                                <FaPaperPlane />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                    {selectedChatStudent.name} bilan shaxsiy suhbat
+                                                </p>
+                                                <p className="text-[11px] text-slate-400 mt-1 max-w-xs mx-auto">
+                                                    Bu yerdagi xabarlar umumiy guruh chatiga chiqmaydi va faqat siz ikkingizga ko'rinadi.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        directMessages.map((m, idx) => {
                                             const isMine = (m.senderUsername && currentUser?.username && m.senderUsername.toLowerCase() === currentUser.username.toLowerCase()) ||
                                                            (m.senderId && currentUser?.id && String(m.senderId) === String(currentUser.id));
                                             const isEditing = editingMsgId === (m.id || m.firebaseKey);
@@ -1302,8 +1396,9 @@ export default function StudentDashboard() {
                                                     )}
                                                 </div>
                                             );
-                                        });
-                                    })()}
+                                        })
+                                    )}
+                                    <div ref={directChatBottomRef} />
                                 </div>
 
                                 {/* Modal Input Footer */}
@@ -1313,7 +1408,7 @@ export default function StudentDashboard() {
                                         autoFocus
                                         value={directMsgInput}
                                         onChange={(e) => setDirectMsgInput(e.target.value)}
-                                        placeholder={`${selectedChatStudent.name} ga SMS yozing...`}
+                                        placeholder={`${selectedChatStudent.name} ga shaxsiy SMS yozing...`}
                                         className="flex-1 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-red-500"
                                     />
                                     <button
