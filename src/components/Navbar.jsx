@@ -134,23 +134,28 @@ html.dark {
   box-shadow: inset 0 1px 0 var(--lg-hi), inset 0 0 0 1px var(--lg-btn-edge);
 }
 
-/* Red "liquid" CTA */
+/* Red Primary CTA — Matching .ox-cta-primary */
 .lg-cta {
-  position: relative; overflow: hidden; color: #fff;
-  background: linear-gradient(180deg, #e8394f 0%, #c41e30 55%, #a3182a 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.55),
-    inset 0 -8px 14px rgba(0,0,0,.18),
-    0 0 0 1px rgba(163,24,42,.6),
-    0 10px 22px -8px rgba(196,30,48,.65);
-  transition: transform .2s ease, filter .2s ease;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  background: linear-gradient(90deg, #E11D48 0%, #F43F5E 50%, #E11D48 100%);
+  background-size: 200% auto;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px -4px rgba(225, 29, 72, 0.55), 0 0 14px 0 rgba(244, 63, 94, 0.35);
+  transition: all 0.25s ease;
 }
 .lg-cta::before {
-  content: ''; position: absolute; left: 4%; right: 4%; top: 0; height: 52%;
-  border-radius: 999px; pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0));
+  display: none;
 }
-.lg-cta:hover { filter: brightness(1.07); }
+.lg-cta:hover {
+  background-position: right center;
+  box-shadow: 0 12px 28px -2px rgba(225, 29, 72, 0.7), 0 0 20px 2px rgba(244, 63, 94, 0.5);
+  transform: translateY(-1px) scale(1.02);
+}
+.lg-cta:active {
+  transform: translateY(0) scale(0.97);
+}
 
 /* Mobile drawer */
 .lg-drawer {
@@ -635,7 +640,7 @@ export default function Navbar() {
                             {/* Primary CTA: red liquid-glass button */}
                             <Link
                                 to="/access-request"
-                                className="lg-cta hidden sm:inline-flex h-10 ml-1 px-5 items-center gap-2 rounded-full text-[13px] font-semibold active:scale-95"
+                                className="lg-cta hidden sm:inline-flex h-10 ml-1 px-5 items-center gap-2 rounded-full text-[13px] font-bold tracking-wide active:scale-95"
                             >
                                 <span className="relative">{t('navbar.signUp', 'Sign Up')}</span>
                                 <FaArrowRight className="relative w-2.5 h-2.5" />
