@@ -634,10 +634,10 @@ export default function Navbar() {
 
                             {/* Primary CTA: red liquid-glass button */}
                             <Link
-                                to="/form"
+                                to="/access-request"
                                 className="lg-cta hidden sm:inline-flex h-10 ml-1 px-5 items-center gap-2 rounded-full text-[13px] font-semibold active:scale-95"
                             >
-                                <span className="relative">{t('navbar.startLearning', "O'qishni boshlash")}</span>
+                                <span className="relative">{t('navbar.signUp', 'Sign Up')}</span>
                                 <FaArrowRight className="relative w-2.5 h-2.5" />
                             </Link>
 
@@ -781,12 +781,12 @@ export default function Navbar() {
                                             <span>{t('auth.loginBtn', 'Kirish')}</span>
                                         </Link>
                                         <Link
-                                            to="/student/register"
+                                            to="/access-request"
                                             onClick={closeMenu}
                                             className="h-[52px] rounded-2xl bg-[#c41e30]/10 ring-1 ring-[#c41e30]/25 flex items-center justify-center gap-2 text-[13px] font-bold text-[#c41e30] dark:text-red-400 active:scale-[0.98] transition-transform"
                                         >
                                             <FaUserPlus className="w-3 h-3" />
-                                            <span>Ro'yxatdan o'tish</span>
+                                            <span>{t('navbar.signUp', 'Sign Up')}</span>
                                         </Link>
                                     </div>
                                 )}

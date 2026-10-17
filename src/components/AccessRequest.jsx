@@ -198,10 +198,10 @@ export default function AccessRequest() {
                     {!submitted ? (
                         <>
                             <div className="text-center space-y-2 mb-8">
-                                <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-600/30">
+                                <div className="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-red-600 via-rose-600 to-red-700 text-white flex items-center justify-center text-xl shadow-xl shadow-red-600/35 ring-4 ring-red-500/20">
                                     <FaPaperPlane />
                                 </div>
-                                <div className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+                                <div className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-500/25">
                                     OPTIMUM // ADMIN ACCESS REQUEST
                                 </div>
                                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-heading tracking-tight">
@@ -366,7 +366,7 @@ export default function AccessRequest() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full py-4 mt-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-600/30 hover:shadow-emerald-600/50 border border-white/20 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60 hover:scale-[1.01] active:scale-[0.99]"
+                                    className="w-full py-4 mt-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-red-600/30 hover:shadow-red-600/50 border border-white/20 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60 hover:scale-[1.01] active:scale-[0.99]"
                                 >
                                     {loading ? (
                                         <>
@@ -385,12 +385,12 @@ export default function AccessRequest() {
                     ) : (
                         /* Submission Success View */
                         <div className="py-4 space-y-6 text-center animate-in fade-in zoom-in-95 duration-300">
-                            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 flex items-center justify-center text-3xl shadow-lg shadow-emerald-500/20">
+                            <div className="w-16 h-16 mx-auto rounded-full bg-red-500/10 text-red-500 border border-red-500/30 flex items-center justify-center text-3xl shadow-lg shadow-red-500/20">
                                 <FaCheckCircle />
                             </div>
 
                             <div className="space-y-2">
-                                <span className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+                                <span className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-500/25">
                                     SO'ROV YUBORILDI
                                 </span>
                                 <h2 className="text-2xl font-black text-slate-900 dark:text-white">
@@ -430,7 +430,7 @@ export default function AccessRequest() {
                                         onClick={handleCopyCredentials}
                                         className="mt-2 w-full py-1.5 px-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-sans font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                                     >
-                                        {copied ? <FaCheck className="text-emerald-500" /> : <FaCopy />}
+                                        {copied ? <FaCheck className="text-red-500" /> : <FaCopy />}
                                         <span>{copied ? "Nusxalandi!" : "Login va parolni nusxalash"}</span>
                                     </button>
                                 </div>
@@ -455,7 +455,7 @@ export default function AccessRequest() {
                             </Link>
                         </p>
                         <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400">
-                            <FaShieldAlt className="w-3 h-3 text-emerald-500" />
+                            <FaShieldAlt className="w-3 h-3 text-red-500" />
                             <span>Optimum ELC rasmiy xavfsiz tizimi</span>
                         </div>
                     </div>
