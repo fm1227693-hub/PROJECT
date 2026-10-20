@@ -46,48 +46,180 @@ const rateLimiter = {
     }
 };
 
+// Persistent deleted students blacklist key
+const DELETED_BLACKLIST_KEY = 'optimum_deleted_users';
+
 /**
- * Fetch all users from Supabase, Firebase, or LocalStorage
+ * Retrieve the deleted blacklist from localStorage
+ */
+export function getDeletedBlacklist() {
+    try {
+        const raw = localStorage.getItem(DELETED_BLACKLIST_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+/**
+ * Add deleted user identifiers (id, username, name, phone) to the persistent blacklist
+ */
+export function addToDeletedBlacklist(entries) {
+    try {
+        const list = getDeletedBlacklist();
+        const items = Array.isArray(entries) ? entries : [entries];
+        const clean = (s) => (s || '').toString().trim().toLowerCase();
+        const cleanDigits = (s) => (s || '').toString().replace(/\D/g, '');
+
+        items.forEach(item => {
+            if (!item) return;
+            const targetId = item.id ? String(item.id).trim() : (item.userId ? String(item.userId).trim() : '');
+            const targetU = clean(item.username).replace(/^@/, '');
+            const targetN = clean(item.name);
+            const targetP = cleanDigits(item.phone);
+
+            // Never blacklist the system admin account
+            if (targetU === 'admin' || (item.role || '').toLowerCase() === 'admin') return;
+
+            // Check if already in blacklist
+            const exists = list.some(b => 
+                (targetId && b.id === targetId) || 
+                (targetU && b.username === targetU) ||
+                (targetN && b.name === targetN)
+            );
+            if (!exists && (targetId || targetU || targetN || targetP)) {
+                list.push({
+                    id: targetId,
+                    username: targetU,
+                    name: targetN,
+                    phone: targetP,
+                    deletedAt: Date.now()
+                });
+            }
+        });
+        localStorage.setItem(DELETED_BLACKLIST_KEY, JSON.stringify(list));
+    } catch (e) {}
+}
+
+/**
+ * Remove an account from blacklist when registered or re-enrolled
+ */
+export function removeFromDeletedBlacklist(username, name = null) {
+    try {
+        const clean = (s) => (s || '').toString().trim().toLowerCase().replace(/^@/, '');
+        const targetU = clean(username);
+        const targetN = (name || '').toString().trim().toLowerCase();
+        const list = getDeletedBlacklist().filter(b => {
+            if (targetU && b.username === targetU) return false;
+            if (targetN && b.name === targetN) return false;
+            return true;
+        });
+        localStorage.setItem(DELETED_BLACKLIST_KEY, JSON.stringify(list));
+    } catch (e) {}
+}
+
+/**
+ * Check if a user matches the deleted blacklist
+ */
+export function isUserBlacklisted(user) {
+    if (!user) return false;
+    const clean = (s) => (s || '').toString().trim().toLowerCase();
+    const cleanDigits = (s) => (s || '').toString().replace(/\D/g, '');
+
+    const role = (user.role || '').toLowerCase();
+    const targetU = clean(user.username).replace(/^@/, '');
+    if (role === 'admin' || targetU === 'admin') return false;
+
+    const list = getDeletedBlacklist();
+    if (!list || list.length === 0) return false;
+
+    const targetId = user.id ? String(user.id).trim() : (user.userId ? String(user.userId).trim() : '');
+    const targetN = clean(user.name);
+    const targetP = cleanDigits(user.phone);
+
+    return list.some(b => {
+        if (targetId && b.id && (targetId === b.id || (user.userId && String(user.userId) === b.id))) return true;
+        if (targetU && b.username && targetU === b.username) return true;
+        if (targetN && b.name && targetN === b.name) return true;
+        if (targetP && b.phone && targetP.length >= 7 && targetP === b.phone) return true;
+        return false;
+    });
+}
+
+/**
+ * Fetch all users from Firebase RTDB (source of truth), Supabase, or LocalStorage
+ * Strictly filters out blacklisted students and prunes stale local ghosts
  */
 export async function getUsers() {
     const userMap = new Map();
+    const clean = (s) => (s || '').toString().trim().toLowerCase();
 
-    // 1. Load from localStorage first as fast base
+    // 1. Fetch authoritative remote list from Firebase Realtime Database
+    let fbSuccess = false;
+    let fbList = [];
     try {
-        const local = localStorage.getItem('optimum_users');
-        if (local) {
-            JSON.parse(local).forEach(u => {
-                const key = (u.username || '').trim().replace(/^@/, '').toLowerCase();
-                if (key) userMap.set(key, u);
-            });
-        }
-    } catch (e) {}
-
-    // 2. Fetch from Firebase Realtime Database (shared across all devices & browsers)
-    try {
-        const res = await axios.get(DB_USERS_URL, { validateStatus: s => s < 500 });
+        const res = await axios.get(DB_USERS_URL, { validateStatus: s => s < 500, timeout: 5000 });
         if (res.status === 200 && res.data) {
-            const fbList = Array.isArray(res.data) ? res.data : Object.values(res.data);
-            fbList.forEach(fu => {
-                const key = (fu.username || '').trim().replace(/^@/, '').toLowerCase();
-                if (key) {
-                    const existing = userMap.get(key) || {};
-                    userMap.set(key, { ...existing, ...fu });
-                }
-            });
+            fbList = Array.isArray(res.data) ? res.data : Object.values(res.data);
+            fbSuccess = true;
         }
     } catch (e) {
         console.warn('Firebase users fetch error:', e);
     }
 
-    // 3. Include students from groups (Firebase / local)
+    if (fbSuccess) {
+        // Firebase is reachable: populate ONLY with authoritative remote users
+        fbList.forEach(fu => {
+            if (isUserBlacklisted(fu)) return;
+            const key = clean(fu.username).replace(/^@/, '') || (fu.id ? String(fu.id) : null);
+            if (key) {
+                userMap.set(key, fu);
+            }
+        });
+
+        // Ensure local admin account is retained if not present in Firebase response
+        try {
+            const local = localStorage.getItem('optimum_users');
+            if (local) {
+                JSON.parse(local).forEach(u => {
+                    if (u.role === 'admin' || clean(u.username) === 'admin') {
+                        const key = clean(u.username).replace(/^@/, '');
+                        if (key && !userMap.has(key)) {
+                            userMap.set(key, u);
+                        }
+                    }
+                });
+            }
+        } catch (e) {}
+    } else {
+        // Fallback for offline mode: load from localStorage
+        try {
+            const local = localStorage.getItem('optimum_users');
+            if (local) {
+                JSON.parse(local).forEach(u => {
+                    if (isUserBlacklisted(u)) return;
+                    const key = clean(u.username).replace(/^@/, '') || (u.id ? String(u.id) : null);
+                    if (key) userMap.set(key, u);
+                });
+            }
+        } catch (e) {}
+    }
+
+    // 2. Include students from groups (Firebase / local), stripping any blacklisted students
     try {
         const groups = await getGroups();
         if (groups && groups.length > 0) {
+            let groupsPruned = false;
             groups.forEach(g => {
-                (g.students || []).forEach(st => {
-                    const uname = (st.username || (st.name ? st.name.toLowerCase().replace(/\s+/g, '') : '')).trim().replace(/^@/, '').toLowerCase();
-                    if (uname) {
+                const originalStudents = g.students || [];
+                const validStudents = originalStudents.filter(st => !isUserBlacklisted(st));
+                if (validStudents.length !== originalStudents.length) {
+                    g.students = validStudents;
+                    groupsPruned = true;
+                }
+                validStudents.forEach(st => {
+                    const uname = clean(st.username || (st.name ? st.name.replace(/\s+/g, '') : '')).replace(/^@/, '');
+                    if (uname && !isUserBlacklisted({ ...st, username: uname })) {
                         const existing = userMap.get(uname) || {};
                         userMap.set(uname, {
                             id: st.id || st.userId || existing.id || Date.now(),
@@ -108,15 +240,21 @@ export async function getUsers() {
                     }
                 });
             });
+
+            if (groupsPruned) {
+                localStorage.setItem('admin_groups', JSON.stringify(groups));
+                axios.put(DB_GROUPS_URL, groups).catch(e => console.warn('Groups blacklist clean sync:', e));
+            }
         }
     } catch (e) {}
 
-    // 4. Merge Supabase profiles
+    // 3. Merge Supabase profiles (strictly non-blacklisted)
     try {
         const { data: supaProfiles, error: supaErr } = await supabase.from('profiles').select('*');
         if (!supaErr && supaProfiles && supaProfiles.length > 0) {
             supaProfiles.forEach(p => {
-                const key = (p.username || '').trim().replace(/^@/, '').toLowerCase();
+                if (isUserBlacklisted({ id: p.id, username: p.username, name: p.full_name, phone: p.phone, role: p.role })) return;
+                const key = clean(p.username).replace(/^@/, '');
                 if (key) {
                     const existing = userMap.get(key) || {};
                     userMap.set(key, {
@@ -136,7 +274,7 @@ export async function getUsers() {
         }
     } catch (err) {}
 
-    const unifiedList = Array.from(userMap.values());
+    const unifiedList = Array.from(userMap.values()).filter(u => !isUserBlacklisted(u));
     try {
         localStorage.setItem('optimum_users', JSON.stringify(unifiedList));
     } catch (e) {}
@@ -147,9 +285,10 @@ export async function getUsers() {
  * Save users array
  */
 export async function saveUsers(usersList) {
-    localStorage.setItem('optimum_users', JSON.stringify(usersList));
+    const list = (usersList || []).filter(u => !isUserBlacklisted(u));
+    localStorage.setItem('optimum_users', JSON.stringify(list));
     try {
-        const profilesToUpsert = usersList.map(u => ({
+        const profilesToUpsert = list.map(u => ({
             full_name: u.name,
             username: u.username,
             phone: u.phone || '',
@@ -165,7 +304,7 @@ export async function saveUsers(usersList) {
         console.warn('Supabase profiles upsert notice:', e);
     }
     try {
-        await axios.put(DB_USERS_URL, usersList);
+        await axios.put(DB_USERS_URL, list);
     } catch (e) {
         console.warn('Firebase users save error, stored locally', e);
     }
@@ -587,6 +726,9 @@ export async function registerStudent({
         createdAt: new Date().toISOString(),
         lastLogin: new Date().toISOString()
     };
+
+    // Ensure any stale blacklist entry is removed for newly registered student
+    removeFromDeletedBlacklist(cleanUsername, fullName);
 
     // Save user to memory/local fallback
     const users = await getUsers();
@@ -1136,77 +1278,161 @@ export async function adminTransferStudent(userId, newGroupId) {
 
 /**
  * Admin: Delete student completely from users and all groups
+ * Permanently blacklists the student so they can NEVER resurrect from stale local cache or interval polls
  */
 export async function adminDeleteStudent(studentId, username = null, name = null, phone = null) {
+    let targetId = studentId;
+    let targetUname = username;
+    let targetName = name;
+    let targetPhone = phone;
+
+    // Handle student object being passed as first argument
+    if (typeof studentId === 'object' && studentId !== null) {
+        targetId = studentId.id || studentId.userId;
+        targetUname = studentId.username || targetUname;
+        targetName = studentId.name || targetName;
+        targetPhone = studentId.phone || targetPhone;
+    }
+
     const cleanU = (u) => (u || '').toString().trim().toLowerCase().replace(/^@/, '');
     const cleanN = (n) => (n || '').toString().trim().toLowerCase();
     const cleanP = (p) => (p || '').toString().replace(/\D/g, '');
 
-    const targetU = cleanU(username);
-    const targetN = cleanN(name);
-    const targetP = cleanP(phone);
-    const targetId = String(studentId || '');
+    const tU = cleanU(targetUname);
+    const tN = cleanN(targetName);
+    const tP = cleanP(targetPhone);
+    const tId = targetId ? String(targetId).trim() : '';
 
-    // 1. Read existing users from localStorage first (0ms)
+    // 1. Immediately record in persistent blacklist
+    addToDeletedBlacklist({ id: tId, username: tU, name: tN, phone: tP });
+
+    const matchesTarget = (item) => {
+        if (!item) return false;
+        // Never delete system admin
+        if (item.role === 'admin' || cleanU(item.username) === 'admin') return false;
+
+        const iId = item.id ? String(item.id).trim() : (item.userId ? String(item.userId).trim() : '');
+        const iU = cleanU(item.username);
+        const iN = cleanN(item.name);
+        const iP = cleanP(item.phone);
+
+        if (tId && iId && (tId === iId || (item.userId && String(item.userId) === tId))) return true;
+        if (tU && iU && tU === iU) return true;
+        if (tN && iN && tN === iN) return true;
+        if (tP && iP && tP.length >= 7 && tP === iP) return true;
+        return isUserBlacklisted(item);
+    };
+
+    // 2. Filter localStorage optimum_users immediately
+    let users = [];
+    try {
+        const raw = localStorage.getItem('optimum_users');
+        if (raw) users = JSON.parse(raw);
+    } catch (e) {}
+    const updatedUsers = users.filter(u => !matchesTarget(u));
+    try {
+        localStorage.setItem('optimum_users', JSON.stringify(updatedUsers));
+    } catch (e) {}
+
+    // 3. Filter localStorage admin_groups immediately
+    let groups = [];
+    try {
+        const rawG = localStorage.getItem('admin_groups');
+        if (rawG) groups = JSON.parse(rawG);
+    } catch (e) {}
+    const updatedGroups = groups.map(g => ({
+        ...g,
+        students: (g.students || []).filter(s => !matchesTarget(s))
+    }));
+    try {
+        localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+    } catch (e) {}
+
+    // 4. Remote sync to Firebase and Supabase in background
+    const tasks = [
+        axios.put(DB_USERS_URL, updatedUsers).catch(e => console.warn('Firebase users delete sync:', e)),
+        axios.put(DB_GROUPS_URL, updatedGroups).catch(e => console.warn('Firebase groups delete sync:', e))
+    ];
+
+    if (tU) {
+        tasks.push(
+            supabase.from('profiles').delete().eq('username', tU).catch(e => console.warn('Supabase delete error:', e))
+        );
+    }
+    if (tId && tId.length > 20) {
+        tasks.push(
+            supabase.from('profiles').delete().eq('id', tId).catch(e => console.warn('Supabase delete error:', e))
+        );
+    }
+
+    await Promise.allSettled(tasks);
+    return true;
+}
+
+/**
+ * Admin: Completely clear all students from all stores (Firebase, LocalStorage, Supabase, Groups)
+ * Preserves ONLY administrator accounts.
+ */
+export async function adminClearAllStudents() {
+    // 1. Separate admin from student users in localStorage
     let users = [];
     try {
         const raw = localStorage.getItem('optimum_users');
         if (raw) users = JSON.parse(raw);
     } catch (e) {}
 
-    const targetUser = users.find(u => {
-        if (targetId && (u.id === studentId || String(u.id) === targetId)) return true;
-        if (targetU && cleanU(u.username) === targetU) return true;
-        if (targetP && targetP.length >= 7 && cleanP(u.phone) === targetP) return true;
-        if (targetN && cleanN(u.name) === targetN) return true;
-        return false;
-    });
+    const adminUsers = users.filter(u => u.role === 'admin' || (u.username || '').toLowerCase() === 'admin');
+    const studentsToDelete = users.filter(u => u.role !== 'admin' && (u.username || '').toLowerCase() !== 'admin');
 
-    const finalUname = cleanU(targetUser?.username || targetU);
+    // Default admin fallback if none existed
+    if (adminUsers.length === 0) {
+        adminUsers.push({
+            id: 'c74aad9e-0047-472d-9474-21287efb623c',
+            name: 'Optimum Admin',
+            username: 'admin',
+            phone: '',
+            rawPassword: '',
+            role: 'admin',
+            status: 'active'
+        });
+    }
 
-    const updatedUsers = users.filter(u => {
-        if (targetId && (u.id === studentId || String(u.id) === targetId)) return false;
-        if (finalUname && cleanU(u.username) === finalUname) return false;
-        if (targetP && targetP.length >= 7 && cleanP(u.phone) === targetP) return false;
-        return true;
-    });
-
-    // 2. Read existing groups from localStorage (0ms)
+    // 2. Collect students from all groups
     let groups = [];
     try {
         const rawG = localStorage.getItem('admin_groups');
         if (rawG) groups = JSON.parse(rawG);
     } catch (e) {}
 
-    const updatedGroups = groups.map(g => ({
+    groups.forEach(g => {
+        (g.students || []).forEach(st => studentsToDelete.push(st));
+    });
+
+    // 3. Blacklist all detected students
+    addToDeletedBlacklist(studentsToDelete);
+
+    // 4. Update localStorage immediately (0ms)
+    try {
+        localStorage.setItem('optimum_users', JSON.stringify(adminUsers));
+    } catch (e) {}
+
+    const emptiedGroups = groups.map(g => ({
         ...g,
-        students: (g.students || []).filter(s => {
-            if (targetId && (s.id === studentId || String(s.id) === targetId || s.userId === studentId || String(s.userId) === targetId)) return false;
-            if (finalUname && cleanU(s.username) === finalUname) return false;
-            if (targetP && targetP.length >= 7 && cleanP(s.phone) === targetP) return false;
-            if (targetN && cleanN(s.name) === targetN) return false;
-            return true;
-        })
+        students: []
     }));
+    try {
+        localStorage.setItem('admin_groups', JSON.stringify(emptiedGroups));
+    } catch (e) {}
 
-    // Save to localStorage immediately
-    localStorage.setItem('optimum_users', JSON.stringify(updatedUsers));
-    localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
-
-    // 3. Parallel sync across all remote stores in background
+    // 5. Remote sync to Firebase and Supabase
     const tasks = [
-        axios.put(DB_USERS_URL, updatedUsers).catch(e => console.warn('Firebase users delete sync:', e)),
-        axios.put(DB_GROUPS_URL, updatedGroups).catch(e => console.warn('Firebase groups delete sync:', e))
+        axios.put(DB_USERS_URL, adminUsers).catch(e => console.warn('Firebase users clear sync:', e)),
+        axios.put(DB_GROUPS_URL, emptiedGroups).catch(e => console.warn('Firebase groups clear sync:', e)),
+        supabase.from('profiles').delete().neq('role', 'admin').catch(e => console.warn('Supabase clear profiles:', e))
     ];
 
-    if (finalUname) {
-        tasks.push(
-            supabase.from('profiles').delete().eq('username', finalUname).catch(e => console.warn('Supabase delete error:', e))
-        );
-    }
-
     await Promise.allSettled(tasks);
-    return true;
+    return { success: true, count: studentsToDelete.length };
 }
 
 /**

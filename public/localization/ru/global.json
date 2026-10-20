@@ -1200,9 +1200,13 @@
     "boy": "Мальчик",
     "girl": "Девочка",
     "deleteStudentConfirm": "Вы хотите удалить студента?",
+    "clearAllStudentsBtn": "Очистить всех",
+    "clearAllStudentsConfirmTitle": "Удалить всех студентов",
+    "clearAllStudentsConfirmDesc": "Вы уверены, что хотите полностью удалить всех студентов и их данные? Это действие нельзя отменить.",
     "deleteGroupConfirm": "Вы уверены, что хотите удалить эту группу?",
     "deleteConfirmBtn": "Удалить",
     "toast": {
+      "allStudentsCleared": "Все студенты и их данные были полностью удалены!",
       "fillAllFields": "Заполните все поля!",
       "timeConflict": "Ошибка! На это время и день уже назначено занятие для другой группы.",
       "scheduleUpdated": "Расписание обновлено!",

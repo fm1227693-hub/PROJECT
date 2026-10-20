@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommentsORG from './TikTokComments'
 import { FaKey, FaLock, FaUserSlash, FaEye, FaEyeSlash } from 'react-icons/fa'
-import { getUsers, saveUsers, adminResetPassword, adminUpdateStudentCredentials, adminSetStudentStatus, adminTransferStudent, adminApproveStudent, adminDeleteStudent, generateInviteCode } from '../utils/authService'
+import { getUsers, saveUsers, adminResetPassword, adminUpdateStudentCredentials, adminSetStudentStatus, adminTransferStudent, adminApproveStudent, adminDeleteStudent, adminClearAllStudents, removeFromDeletedBlacklist, generateInviteCode } from '../utils/authService'
 import toast, { Toaster } from 'react-hot-toast'
 import { 
     FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, 
@@ -209,6 +209,8 @@ export default function AdminORG() {
     const [newStudentGroupId, setNewStudentGroupId] = useState('')
     const [showStudentGroupDropdown, setShowStudentGroupDropdown] = useState(false)
     const [deleteModalStudent, setDeleteModalStudent] = useState(null)
+    const [showClearAllStudentsModal, setShowClearAllStudentsModal] = useState(false)
+    const [isClearingAllStudents, setIsClearingAllStudents] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [registeredUsers, setRegisteredUsers] = useState([])
     const [studentSearchTerm, setStudentSearchTerm] = useState('')
@@ -520,7 +522,7 @@ const loadSchedules = async () => {
 
     const handleDeleteStudent = async (student) => {
         if (!student) return;
-        const studentId = typeof student === 'object' ? student.id : student;
+        const studentId = typeof student === 'object' ? (student.id || student.userId) : student;
         const studentUsername = typeof student === 'object' ? student.username : null;
         const studentName = typeof student === 'object' ? student.name : null;
         const studentPhone = typeof student === 'object' ? student.phone : null;
@@ -529,21 +531,24 @@ const loadSchedules = async () => {
         setDeleteModalStudent(null);
         toast.success(t('adminDashboard.toast.studentDeleted', "O'quvchi muvaffaqiyatli o'chirildi!"));
 
+        const matchesStudent = (st) => {
+            if (!st || !student) return false;
+            const clean = (s) => (s || '').toString().trim().toLowerCase();
+            const cleanDigits = (s) => (s || '').toString().replace(/\D/g, '');
+            if (studentId && (st.id === studentId || String(st.id) === String(studentId) || st.userId === studentId || String(st.userId) === String(studentId))) return true;
+            if (studentUsername && st.username && clean(st.username).replace(/^@/, '') === clean(studentUsername).replace(/^@/, '')) return true;
+            if (studentName && st.name && clean(st.name) === clean(studentName)) return true;
+            if (studentPhone && st.phone && cleanDigits(st.phone).length >= 7 && cleanDigits(st.phone) === cleanDigits(studentPhone)) return true;
+            return false;
+        };
+
         // 2. Optimistic UI update: remove student from registeredUsers
-        setRegisteredUsers(prev => prev.filter(st => !(
-            st.id === studentId ||
-            String(st.id) === String(studentId) ||
-            (studentUsername && st.username && st.username.toLowerCase() === studentUsername.toLowerCase())
-        )));
+        setRegisteredUsers(prev => prev.filter(st => !matchesStudent(st)));
 
         // 3. Optimistic UI update: remove student from groups
         setGroups(prev => prev.map(g => ({
             ...g,
-            students: (g.students || []).filter(st => !(
-                st.id === studentId ||
-                String(st.id) === String(studentId) ||
-                (studentUsername && st.username && st.username.toLowerCase() === studentUsername.toLowerCase())
-            ))
+            students: (g.students || []).filter(st => !matchesStudent(st))
         })));
 
         // 4. Optimistic UI update: remove from selectedGroupDetails modal if opened
@@ -552,11 +557,7 @@ const loadSchedules = async () => {
                 if (!prev) return null;
                 return {
                     ...prev,
-                    students: (prev.students || []).filter(st => !(
-                        st.id === studentId ||
-                        String(st.id) === String(studentId) ||
-                        (studentUsername && st.username && st.username.toLowerCase() === studentUsername.toLowerCase())
-                    ))
+                    students: (prev.students || []).filter(st => !matchesStudent(st))
                 };
             });
         }
@@ -566,6 +567,26 @@ const loadSchedules = async () => {
             await adminDeleteStudent(studentId, studentUsername, studentName, studentPhone);
         } catch (err) {
             console.error('Delete student background sync error:', err);
+        }
+    };
+
+    const handleClearAllStudents = async () => {
+        setIsClearingAllStudents(true);
+        setShowClearAllStudentsModal(false);
+        // Instant optimistic update (0ms)
+        setRegisteredUsers([]);
+        setGroups(prev => prev.map(g => ({ ...g, students: [] })));
+        if (selectedGroupDetails) {
+            setSelectedGroupDetails(prev => prev ? { ...prev, students: [] } : null);
+        }
+        toast.success(t('adminDashboard.toast.allStudentsCleared', "Barcha o'quvchilar va ularning ma'lumotlari butunlay o'chirildi!"));
+        try {
+            await adminClearAllStudents();
+        } catch (err) {
+            console.error('Clear all students error:', err);
+            toast.error(err.message || "Xatolik yuz berdi");
+        } finally {
+            setIsClearingAllStudents(false);
         }
     };
 
@@ -785,13 +806,14 @@ const handleEditScheduleClick = (schedule) => {
                 const raw = localStorage.getItem('optimum_users');
                 if (raw) existingUsers = JSON.parse(raw);
             } catch(e) {}
+            removeFromDeletedBlacklist(newUser.username, newUser.name);
             const updatedUsers = [...existingUsers.filter(u => (u.username || '').toLowerCase() !== reqUname), newUser];
             localStorage.setItem('optimum_users', JSON.stringify(updatedUsers));
 
             Promise.allSettled([
                 axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups),
                 axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads),
-                axios.put(import.meta.env.VITE_FIREBASE_USERS_URL || 'https://optimum-21-default-rtdb.firebaseio.com/users.json', updatedUsers),
+                axios.put(import.meta.env.VITE_FIREBASE_USERS_URL || 'https://optimum-a2d13-default-rtdb.firebaseio.com/users.json', updatedUsers),
                 supabase.from('profiles').upsert([{
                     full_name: newUser.name,
                     username: newUser.username,
@@ -1459,7 +1481,7 @@ return (
                             </div>
                         )}
 
-                        {/* Student Accounts Table Header with Zoom Control */}
+                        {/* Student Accounts Table Header with Zoom Control & Clear All */}
                         <div className="flex items-center justify-between gap-2 mb-2 pt-1">
                             <div className="flex items-center gap-2 min-w-0">
                                 <h3 className="text-xs sm:text-base font-bold text-gray-900 dark:text-white truncate">
@@ -1469,7 +1491,20 @@ return (
                                     {registeredUsers.length}
                                 </span>
                             </div>
-                            <TableZoomControls zoom={tableZoom} setZoom={setTableZoom} t={t} />
+                            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                                {registeredUsers.length > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowClearAllStudentsModal(true)}
+                                        className="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 font-bold text-[10px] sm:text-xs transition cursor-pointer shrink-0 border border-rose-200/60 dark:border-rose-900/40 shadow-2xs"
+                                        title={t('adminDashboard.clearAllStudentsBtn', "Barchasini tozalash")}
+                                    >
+                                        <FaTrash className="text-[9px] sm:text-[11px]" />
+                                        <span className="hidden sm:inline">{t('adminDashboard.clearAllStudentsBtn', "Barchasini tozalash")}</span>
+                                    </button>
+                                )}
+                                <TableZoomControls zoom={tableZoom} setZoom={setTableZoom} t={t} />
+                            </div>
                         </div>
 
                         {/* Student Accounts Table */}
@@ -2536,6 +2571,41 @@ return (
                             className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition cursor-pointer"
                         >
                             {t('adminDashboard.deleteConfirmBtn', "O'chirish")}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {showClearAllStudentsModal && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+                <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
+                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-950/40 text-rose-500 flex items-center justify-center text-2xl mx-auto shadow-md shadow-rose-500/10">
+                        <FaTrash />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">
+                            {t('adminDashboard.clearAllStudentsConfirmTitle', "Barcha o'quvchilarni o'chirish")}
+                        </h3>
+                        <p className="text-xs text-rose-500 dark:text-rose-400 mt-2 font-medium">
+                            {t('adminDashboard.clearAllStudentsConfirmDesc', "Haqiqatan ham barcha o'quvchilarni va ularning ma'lumotlarini butunlay o'chirib tashlamoqchimisiz? Bu amalni ortga qaytarib bo'lmaydi.")}
+                        </p>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 pt-2">
+                        <button
+                            type="button"
+                            onClick={() => setShowClearAllStudentsModal(false)}
+                            className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition cursor-pointer"
+                        >
+                            {t('adminDashboard.cancel', 'Bekor qilish')}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleClearAllStudents}
+                            disabled={isClearingAllStudents}
+                            className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-lg shadow-rose-600/30 transition cursor-pointer disabled:opacity-50"
+                        >
+                            {isClearingAllStudents ? '...' : t('adminDashboard.deleteConfirmBtn', "O'chirish")}
                         </button>
                     </div>
                 </div>

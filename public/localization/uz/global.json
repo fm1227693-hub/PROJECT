@@ -1241,9 +1241,13 @@
     "boy": "O'g'il bola",
     "girl": "Qiz bola",
     "deleteStudentConfirm": "O'quvchini o'chirmoqchimisiz?",
+    "clearAllStudentsBtn": "Barchasini tozalash",
+    "clearAllStudentsConfirmTitle": "Barcha o'quvchilarni o'chirish",
+    "clearAllStudentsConfirmDesc": "Haqiqatan ham barcha o'quvchilarni va ularning ma'lumotlarini butunlay o'chirib tashlamoqchimisiz? Bu amalni ortga qaytarib bo'lmaydi.",
     "deleteGroupConfirm": "Ushbu guruhni o'chirmoqchimisiz?",
     "deleteConfirmBtn": "O'chirish",
     "toast": {
+      "allStudentsCleared": "Barcha o'quvchilar va ularning ma'lumotlari butunlay o'chirildi!",
       "fillAllFields": "Barcha maydonlarni to'ldiring!",
       "timeConflict": "Xatolik! Bu vaqt va kunda boshqa guruhga dars belgilangan.",
       "scheduleUpdated": "Jadval yangilandi!",
