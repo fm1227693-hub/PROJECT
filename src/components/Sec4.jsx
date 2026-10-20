@@ -84,15 +84,15 @@ export default function Sec4() {
                                 </div>
                                 <div>
                                     <span className="text-[9px] sm:text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-red-600 dark:text-red-400 block">
-                                        ACCREDITED STANDARD
+                                        {t('about.hub.standard', 'ACCREDITED STANDARD')}
                                     </span>
                                     <h3 className="text-base sm:text-xl font-black text-slate-900 dark:text-white font-heading tracking-tight leading-tight">
-                                        Optimum Academic Hub
+                                        {t('about.hub.title', 'Optimum Academic Hub')}
                                     </h3>
                                 </div>
                             </div>
                             <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 shrink-0">
-                                5+ YIL TAJRIBA
+                                {t('about.hub.experience', '5+ YIL TAJRIBA')}
                             </span>
                         </div>
 
@@ -102,26 +102,26 @@ export default function Sec4() {
                                 <div className="p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.05]">
                                     <div className="flex items-center gap-1 sm:gap-1.5 text-red-600 dark:text-red-400 text-[10px] sm:text-xs font-bold mb-0.5 sm:mb-1">
                                         <FaStar className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-500 dark:text-amber-400 shrink-0" />
-                                        <span className="truncate">7.5 - 8.5 BAND</span>
+                                        <span className="truncate">{t('about.hub.band', '7.5 - 8.5 BAND')}</span>
                                     </div>
                                     <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-mono">
                                         85%
                                     </div>
                                     <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                                        Yuqori ball bilan bitiradi
+                                        {t('about.hub.highScore', 'Yuqori ball bilan bitiradi')}
                                     </p>
                                 </div>
 
                                 <div className="p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.05]">
                                     <div className="flex items-center gap-1 sm:gap-1.5 text-emerald-600 dark:text-emerald-400 text-[10px] sm:text-xs font-bold mb-0.5 sm:mb-1">
                                         <FaShieldAlt className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                                        <span className="truncate">100% RASMIY</span>
+                                        <span className="truncate">{t('about.hub.official', '100% RASMIY')}</span>
                                     </div>
                                     <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-mono truncate">
-                                        CDI & CEFR
+                                        {t('about.hub.formatTitle', 'CDI & CEFR')}
                                     </div>
                                     <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                                        Rasmiy test formati
+                                        {t('about.hub.officialFormat', 'Rasmiy test formati')}
                                     </p>
                                 </div>
                             </div>
@@ -132,19 +132,19 @@ export default function Sec4() {
                                     <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 text-[9px] sm:text-[10px] font-bold mt-0.5">
                                         ✓
                                     </div>
-                                    <span>Cambridge Universiteti metodologiyasiga asoslangan darsliklar</span>
+                                    <span>{t('about.hub.bullet1', 'Cambridge Universiteti metodologiyasiga asoslangan darsliklar')}</span>
                                 </div>
                                 <div className="flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 leading-snug">
                                     <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 text-[9px] sm:text-[10px] font-bold mt-0.5">
                                         ✓
                                     </div>
-                                    <span>Sun'iy intellekt orqali har haftalik Task 1 va 2 insholar tahlili</span>
+                                    <span>{t('about.hub.bullet2', "Sun'iy intellekt orqali har haftalik Task 1 va 2 insholar tahlili")}</span>
                                 </div>
                                 <div className="flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 leading-snug">
                                     <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 text-[9px] sm:text-[10px] font-bold mt-0.5">
                                         ✓
                                     </div>
-                                    <span>Individual kurator va har oy rasmiy Mock Exam imtihoni</span>
+                                    <span>{t('about.hub.bullet3', 'Individual kurator va har oy rasmiy Mock Exam imtihoni')}</span>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@ export default function Sec4() {
                         <div className="pt-3.5 sm:pt-5 border-t border-slate-200 dark:border-white/[0.07] flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 text-[11px] sm:text-xs">
                             <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                                 <FaGlobeAmericas className="w-3.5 h-3.5 text-red-600 dark:text-red-500 shrink-0" />
-                                <span className="leading-snug">Buxoro shahri · Rasmiy litsenziyalangan markaz</span>
+                                <span className="leading-snug">{t('about.hub.location', 'Buxoro shahri · Rasmiy litsenziyalangan markaz')}</span>
                             </div>
                             <span className="font-mono text-[10px] sm:text-[11px] text-red-600 dark:text-red-400 font-bold self-start sm:self-auto">
                                 #OPTIMUM_ELC

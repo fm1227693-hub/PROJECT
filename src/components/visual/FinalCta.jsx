@@ -31,21 +31,21 @@ export default function FinalCta() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] dark:bg-white/[0.03] border border-red-500/30 backdrop-blur-xl shadow-[0_0_20px_rgba(239,68,68,0.15)] mx-auto">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-red-500 dark:text-red-400">
-              OPTIMUM ELC // QABUL OCHIQ
+              {t('finalCta.badge', 'OPTIMUM ELC // QABUL OCHIQ')}
             </span>
           </div>
 
           {/* Grand Headline */}
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08] font-heading">
-            Kelajagingizni bugun{' '}
+            {t('finalCta.titleStart', 'Kelajagingizni bugun')}{' '}
             <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
               Optimum
             </span>{' '}
-            bilan quring
+            {t('finalCta.titleEnd', 'bilan quring')}
           </h2>
 
           <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-lg font-normal max-w-xl mx-auto leading-relaxed">
-            IELTS 7.5+ orzuingizni orqaga surmang. Bepul konsultatsiya va daraja testiga yoziling, natijani mutaxassis bilan tahlil qiling.
+            {t('finalCta.description', "IELTS 7.5+ orzuingizni orqaga surmang. Bepul konsultatsiya va daraja testiga yoziling, natijani mutaxassis bilan tahlil qiling.")}
           </p>
 
           {/* Action CTAs — Pill Buttons */}
@@ -54,7 +54,7 @@ export default function FinalCta() {
               to="/form"
               className="w-full sm:w-auto px-9 py-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-extrabold rounded-full shadow-xl shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 transition-all duration-300 flex items-center justify-center gap-3 text-sm sm:text-base hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <span>Bepul sinov darsi olish</span>
+              <span>{t('finalCta.trialBtn', 'Bepul sinov darsi olish')}</span>
               <FaArrowRight className="w-4 h-4" />
             </Link>
 
@@ -62,7 +62,7 @@ export default function FinalCta() {
               to="/level-test"
               className="w-full sm:w-auto px-8 py-4 bg-white/60 dark:bg-white/[0.04] hover:bg-white/80 dark:hover:bg-white/[0.08] text-slate-900 dark:text-white font-bold rounded-full border border-slate-300/80 dark:border-white/15 hover:border-red-500/50 backdrop-blur-xl transition-all duration-300 flex items-center justify-center gap-2.5 text-sm sm:text-base hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <span>Darajani aniqlash</span>
+              <span>{t('finalCta.levelBtn', 'Darajani aniqlash')}</span>
               <FaArrowRight className="w-3.5 h-3.5 opacity-60" />
             </Link>
           </div>
@@ -71,11 +71,11 @@ export default function FinalCta() {
           <div className="pt-8 border-t border-slate-200/60 dark:border-white/[0.06] flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
             <div className="flex items-center gap-2">
               <FaCheckCircle className="text-emerald-500" />
-              <span>Kafolatlangan ta'lim dasturi</span>
+              <span>{t('finalCta.guarantee1', "Kafolatlangan ta'lim dasturi")}</span>
             </div>
             <div className="flex items-center gap-2">
               <FaStar className="text-amber-500" />
-              <span>IELTS 8.0+ darajali instruktorlar</span>
+              <span>{t('finalCta.guarantee2', 'IELTS 8.0+ darajali instruktorlar')}</span>
             </div>
             <div className="flex items-center gap-2">
               <FaPhoneAlt className="text-red-500" />

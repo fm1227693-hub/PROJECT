@@ -11,7 +11,7 @@ export default function Sec2() {
         {
             num: '01',
             icon: <FaUserPlus />,
-            phase: t('steps.phase1', 'Boshlanish'),
+            phase: t('steps.phase1', 'BOSHLANISH'),
             title: t('steps.step1Title', "Ro'yxatdan o'tish"),
             desc: t('steps.step1Desc', "Shaxsiy ma'lumotlaringizni qoldiring va mutaxassis bilan bepul konsultatsiyaga yoziling."),
             path: '/register',
@@ -21,7 +21,7 @@ export default function Sec2() {
         {
             num: '02',
             icon: <FaClipboardCheck />,
-            phase: t('steps.phase2', 'Tahlil'),
+            phase: t('steps.phase2', 'TAHLIL'),
             title: t('steps.step2Title', 'Darajangizni aniqlash'),
             desc: t('steps.step2Desc', '30 daqiqalik CDI va grammatika testini topshirib, aniq darajangiz va kamchiliklaringizni biling.'),
             path: '/level-test',
@@ -31,7 +31,7 @@ export default function Sec2() {
         {
             num: '03',
             icon: <FaRocket />,
-            phase: t('steps.phase3', 'Natija'),
+            phase: t('steps.phase3', 'NATIJA'),
             title: t('steps.step3Title', "O'qishni boshlash"),
             desc: t('steps.step3Desc', "Mos tarifni tanlab, IELTS 8.0+ darajali mentorlar bilan maqsad sari qat'iy intiling."),
             path: '/pricing',
@@ -68,8 +68,10 @@ export default function Sec2() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08] font-heading">
-                        {t('steps.title', "Qanday qilib o'qishni")}{' '}
-                        <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">boshlaysiz?</span>
+                        {t('steps.titleStart', "Qanday qilib o'qishni")}{' '}
+                        <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
+                            {t('steps.titleHighlight', 'boshlaysiz?')}
+                        </span>
                     </h2>
 
                     <p className="mt-4 text-sm sm:text-base text-slate-600 dark:text-slate-400 font-normal leading-relaxed">

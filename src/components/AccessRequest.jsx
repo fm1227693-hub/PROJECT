@@ -62,32 +62,32 @@ export default function AccessRequest() {
         const cleanUsername = username.trim().toLowerCase().replace(/^@/, '');
 
         if (!cleanName) {
-            setError("Iltimos, ism va familiyangizni to'liq kiriting!");
+            setError(t('accessRequest.errors.fillName', "Iltimos, ism va familiyangizni to'liq kiriting!"));
             return;
         }
 
         if (digitsOnly.length < 9) {
-            setError("Telefon raqamingizni to'liq kiriting (+998...)");
+            setError(t('accessRequest.errors.fillPhone', "Telefon raqamingizni to'liq kiriting (+998...)"));
             return;
         }
 
         if (cleanUsername.length < 3) {
-            setError("Login kamida 3 ta belgidan iborat bo'lishi kerak!");
+            setError(t('accessRequest.errors.shortUsername', "Login kamida 3 ta belgidan iborat bo'lishi kerak!"));
             return;
         }
 
         if (!/^[a-z0-9_.]+$/.test(cleanUsername)) {
-            setError("Login faqat lotin harflari, raqamlar va '_' yoki '.' dan iborat bo'lishi kerak!");
+            setError(t('accessRequest.errors.invalidUsername', "Login faqat lotin harflari, raqamlar va '_' yoki '.' dan iborat bo'lishi kerak!"));
             return;
         }
 
         if (password.length < 6) {
-            setError("Parol kamida 6 ta belgidan iborat bo'lishi kerak!");
+            setError(t('accessRequest.errors.shortPassword', "Parol kamida 6 ta belgidan iborat bo'lishi kerak!"));
             return;
         }
 
         if (password !== confirmPassword) {
-            setError("Kiritilgan parollar mos kelmadi!");
+            setError(t('accessRequest.errors.passwordMismatch', "Kiritilgan parollar mos kelmadi!"));
             return;
         }
 
@@ -98,7 +98,7 @@ export default function AccessRequest() {
             const existingUsers = await getUsers();
             const isTaken = existingUsers.some(u => (u.username || '').toLowerCase() === cleanUsername);
             if (isTaken) {
-                setError("Ushbu login allaqachon band! Iltimos, boshqa login tanlang.");
+                setError(t('accessRequest.errors.usernameTaken', "Ushbu login allaqachon band! Iltimos, boshqa login tanlang."));
                 setLoading(false);
                 return;
             }
@@ -162,10 +162,10 @@ export default function AccessRequest() {
             }
 
             setSubmitted(true);
-            toast.success("So'rovingiz adminga muvaffaqiyatli yuborildi!");
+            toast.success(t('accessRequest.toastSuccess', "So'rovingiz adminga muvaffaqiyatli yuborildi!"));
         } catch (err) {
             console.error("Submission error:", err);
-            setError("So'rov yuborishda xatolik yuz berdi. Internet aloqangizni tekshirib qayta urinib ko'ring.");
+            setError(t('accessRequest.errors.general', "So'rov yuborishda xatolik yuz berdi. Internet aloqangizni tekshirib qayta urinib ko'ring."));
         } finally {
             setLoading(false);
         }
@@ -183,7 +183,7 @@ export default function AccessRequest() {
                     className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/80 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors shadow-xs backdrop-blur-xl"
                 >
                     <HiArrowLeft className="w-3.5 h-3.5" />
-                    <span>Kirish sahifasiga qaytish</span>
+                    <span>{t('accessRequest.backToLogin', "Kirish sahifasiga qaytish")}</span>
                 </Link>
 
                 <motion.div
@@ -202,13 +202,13 @@ export default function AccessRequest() {
                                     <FaPaperPlane />
                                 </div>
                                 <div className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-500/25">
-                                    OPTIMUM // ADMIN ACCESS REQUEST
+                                    {t('accessRequest.badge', "OPTIMUM // ADMIN ACCESS REQUEST")}
                                 </div>
                                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-heading tracking-tight">
-                                    Kirish so'rovini yuborish
+                                    {t('accessRequest.title', "Kirish so'rovini yuborish")}
                                 </h1>
                                 <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                                    O'zingiz xohlagan login va parolni kiriting. Admin tasdiqlashi bilan tizimga kiritilasiz.
+                                    {t('accessRequest.subtitle', "O'zingiz xohlagan login va parolni kiriting. Admin tasdiqlashi bilan tizimga kiritilasiz.")}
                                 </p>
                             </div>
 
@@ -222,7 +222,7 @@ export default function AccessRequest() {
                                 {/* Full Name */}
                                 <div>
                                     <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                                        Ism va Familiyangiz *
+                                        {t('accessRequest.fullNameLabel', "Ism va Familiyangiz *")}
                                     </label>
                                     <div className="relative flex items-center">
                                         <span className="absolute left-4 text-slate-400 dark:text-slate-500 pointer-events-none text-xs">
@@ -232,7 +232,7 @@ export default function AccessRequest() {
                                             type="text"
                                             value={fullName}
                                             onChange={(e) => setFullName(e.target.value)}
-                                            placeholder="Masalan: Sardor Rahimov"
+                                            placeholder={t('accessRequest.fullNamePlaceholder', 'Masalan: Sardor Rahimov')}
                                             className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-[#07090e] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all shadow-xs"
                                             required
                                         />
@@ -243,7 +243,7 @@ export default function AccessRequest() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                                            Telefon raqami *
+                                            {t('accessRequest.phoneLabel', 'Telefon raqami *')}
                                         </label>
                                         <div className="relative flex items-center">
                                             <span className="absolute left-3 text-xs font-mono font-bold text-slate-500 pointer-events-none">
@@ -263,7 +263,7 @@ export default function AccessRequest() {
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
-                                            <span>Xohlagan Loginingiz *</span>
+                                            <span>{t('accessRequest.usernameLabel', 'Xohlagan Loginingiz *')}</span>
                                             <span className="text-[10px] text-slate-400 lowercase">username</span>
                                         </label>
                                         <div className="relative flex items-center">
@@ -272,7 +272,7 @@ export default function AccessRequest() {
                                                 type="text"
                                                 value={username}
                                                 onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
-                                                placeholder="sardor_2026"
+                                                placeholder={t('accessRequest.usernamePlaceholder', 'sardor_2026')}
                                                 className="w-full pl-8 pr-3 py-3 bg-slate-50 dark:bg-[#07090e] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all shadow-xs font-mono"
                                                 required
                                             />
@@ -284,14 +284,14 @@ export default function AccessRequest() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                                            O'zingiz tanlagan Parol *
+                                            {t('accessRequest.passwordLabel', "O'zingiz tanlagan Parol *")}
                                         </label>
                                         <div className="relative flex items-center">
                                             <input
                                                 type={showPassword ? 'text' : 'password'}
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
-                                                placeholder="Kamida 6 ta belgi"
+                                                placeholder={t('accessRequest.passwordPlaceholder', 'Kamida 6 ta belgi')}
                                                 className="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-[#07090e] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20"
                                                 required
                                             />
@@ -307,13 +307,13 @@ export default function AccessRequest() {
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                                            Parolni tasdiqlang *
+                                            {t('accessRequest.confirmPasswordLabel', 'Parolni tasdiqlang *')}
                                         </label>
                                         <input
                                             type={showPassword ? 'text' : 'password'}
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
-                                            placeholder="Qayta kiriting"
+                                            placeholder={t('accessRequest.confirmPasswordPlaceholder', 'Qayta kiriting')}
                                             className="w-full px-4 py-3 bg-slate-50 dark:bg-[#07090e] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 text-sm focus:outline-hidden focus:border-red-600 focus:ring-2 focus:ring-red-600/20"
                                             required
                                         />
@@ -324,7 +324,7 @@ export default function AccessRequest() {
                                 <div>
                                     <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-1.5">
                                         <FaBookOpen className="text-red-500 text-xs" />
-                                        <span>Qiziqayotgan Kurs yoki Yo'nalish</span>
+                                        <span>{t('accessRequest.courseLabel', "Qiziqayotgan Kurs yoki Yo'nalish")}</span>
                                     </label>
                                     <select
                                         value={course}
@@ -335,14 +335,14 @@ export default function AccessRequest() {
                                         <option value="General English">General English (Grammar & Speaking)</option>
                                         <option value="Kids English">Kids English (Bolalar uchun)</option>
                                         <option value="CEFR / Attestatsiya">CEFR & Attestatsiya tayyorgarlik</option>
-                                        <option value="Boshqa">Boshqa taklif / kurs</option>
+                                        <option value="Boshqa">{t('accessRequest.otherOption', 'Boshqa taklif / kurs')}</option>
                                     </select>
                                     {course === 'Boshqa' && (
                                         <input
                                             type="text"
                                             value={customCourse}
                                             onChange={(e) => setCustomCourse(e.target.value)}
-                                            placeholder="Qaysi kurs yoki guruhga qiziqmoqdasiz?"
+                                            placeholder={t('accessRequest.otherCourse', 'Qaysi kurs yoki guruhga qiziqmoqdasiz?')}
                                             className="w-full mt-2 px-4 py-2.5 bg-slate-50 dark:bg-[#07090e] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-xs placeholder-slate-400 focus:outline-hidden focus:border-red-600"
                                         />
                                     )}
@@ -352,13 +352,13 @@ export default function AccessRequest() {
                                 <div>
                                     <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-1.5">
                                         <FaCommentAlt className="text-slate-400 text-xs" />
-                                        <span>Adminga taklif yoki qo'shimcha xabar (ixtiyoriy)</span>
+                                        <span>{t('accessRequest.noteLabel', "Adminga taklif yoki qo'shimcha xabar (ixtiyoriy)")}</span>
                                     </label>
                                     <textarea
                                         rows={2}
                                         value={note}
                                         onChange={(e) => setNote(e.target.value)}
-                                        placeholder="Masalan: Dars vaqti soat 14:00 dan keyin bo'lsa yaxshi edi..."
+                                        placeholder={t('accessRequest.notePlaceholder', "Masalan: Dars vaqti soat 14:00 dan keyin bo'lsa yaxshi edi...")}
                                         className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#07090e] border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white text-xs placeholder-slate-400 focus:outline-hidden focus:border-red-600"
                                     />
                                 </div>
@@ -371,11 +371,11 @@ export default function AccessRequest() {
                                     {loading ? (
                                         <>
                                             <FaSpinner className="animate-spin text-base" />
-                                            <span>So'rov yuborilmoqda...</span>
+                                            <span>{t('accessRequest.submitting', "So'rov yuborilmoqda...")}</span>
                                         </>
                                     ) : (
                                         <>
-                                            <span>Adminga so'rov yuborish</span>
+                                            <span>{t('accessRequest.submitBtn', "Adminga so'rov yuborish")}</span>
                                             <FaPaperPlane className="w-3.5 h-3.5" />
                                         </>
                                     )}
@@ -391,13 +391,13 @@ export default function AccessRequest() {
 
                             <div className="space-y-2">
                                 <span className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-500/25">
-                                    SO'ROV YUBORILDI
+                                    {t('accessRequest.successBadge', "SO'ROV YUBORILDI")}
                                 </span>
                                 <h2 className="text-2xl font-black text-slate-900 dark:text-white">
-                                    So'rovingiz adminga muvaffaqiyatli yuborildi!
+                                    {t('accessRequest.successTitle', "So'rovingiz adminga muvaffaqiyatli yuborildi!")}
                                 </h2>
                                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
-                                    Admin arizangizni ko'rib chiqib, guruhga biriktirgach akkauntingiz ishga tushadi.
+                                    {t('accessRequest.successDesc', "Admin arizangizni ko'rib chiqib, guruhga biriktirgach akkauntingiz ishga tushadi.")}
                                 </p>
                             </div>
 
@@ -405,23 +405,23 @@ export default function AccessRequest() {
                             <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/10 border-2 border-amber-500/30 text-left space-y-3">
                                 <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-black text-xs uppercase tracking-wide">
                                     <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                                    <span>Muhim eslatma (24-48 soat):</span>
+                                    <span>{t('accessRequest.importantNotice', "Muhim eslatma (24-48 soat):")}</span>
                                 </div>
                                 <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                                    Admin sizni <strong>24-48 soat ichida</strong> tegishli guruhga biriktiradi. Shundan so'ng quyidagi login va parolingiz orqali to'g'ridan-to'g'ri tizimga kiring:
+                                    {t('accessRequest.importantDesc', "Admin sizni 24-48 soat ichida tegishli guruhga biriktiradi. Shundan so'ng quyidagi login va parolingiz orqali to'g'ridan-to'g'ri tizimga kiring:")}
                                 </p>
 
                                 <div className="p-3 bg-white dark:bg-[#07090e] rounded-xl border border-amber-500/20 font-mono text-xs space-y-1.5 relative">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-slate-500">Login (username):</span>
+                                        <span className="text-slate-500">{t('accessRequest.labelUsername', "Login (username):")}</span>
                                         <span className="font-bold text-slate-900 dark:text-white">@{username}</span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-slate-500">Parol:</span>
+                                        <span className="text-slate-500">{t('accessRequest.labelPassword', "Parol:")}</span>
                                         <span className="font-bold text-slate-900 dark:text-white">{password}</span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-slate-500">Telefon:</span>
+                                        <span className="text-slate-500">{t('accessRequest.labelPhone', "Telefon:")}</span>
                                         <span className="font-bold text-slate-900 dark:text-white">+998 {phone}</span>
                                     </div>
 
@@ -431,7 +431,7 @@ export default function AccessRequest() {
                                         className="mt-2 w-full py-1.5 px-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-sans font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                                     >
                                         {copied ? <FaCheck className="text-red-500" /> : <FaCopy />}
-                                        <span>{copied ? "Nusxalandi!" : "Login va parolni nusxalash"}</span>
+                                        <span>{copied ? t('accessRequest.copied', "Nusxalandi!") : t('accessRequest.copyBtn', "Login va parolni nusxalash")}</span>
                                     </button>
                                 </div>
                             </div>
@@ -441,7 +441,7 @@ export default function AccessRequest() {
                                 onClick={() => navigate('/login')}
                                 className="w-full py-3.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm uppercase tracking-wider rounded-xl shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
                             >
-                                <span>Tizimga kirish sahifasiga o'tish</span>
+                                <span>{t('accessRequest.goToLogin', "Tizimga kirish sahifasiga o'tish")}</span>
                                 <FaArrowRight className="w-3.5 h-3.5" />
                             </button>
                         </div>
@@ -449,14 +449,14 @@ export default function AccessRequest() {
 
                     <div className="mt-8 pt-6 border-t border-slate-200/80 dark:border-white/[0.08] text-center space-y-3">
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Profilingiz allaqachon bormi?{' '}
+                            {t('accessRequest.alreadyHaveAccount', "Profilingiz allaqachon bormi?")}{' '}
                             <Link to="/login" className="font-bold text-red-600 dark:text-red-400 hover:underline">
-                                Tizimga kirish
+                                {t('accessRequest.loginLink', "Tizimga kirish")}
                             </Link>
                         </p>
                         <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400">
                             <FaShieldAlt className="w-3 h-3 text-red-500" />
-                            <span>Optimum ELC rasmiy xavfsiz tizimi</span>
+                            <span>{t('auth.secureSystem', "Optimum ELC rasmiy xavfsiz tizimi")}</span>
                         </div>
                     </div>
                 </motion.div>

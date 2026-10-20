@@ -184,7 +184,7 @@ export default function Login() {
 
                         <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 pt-1">
                             <FaShieldAlt className="w-3 h-3 text-red-500" />
-                            <span>Optimum ELC rasmiy xavfsiz tizimi</span>
+                            <span>{t('auth.secureSystem', 'Optimum ELC rasmiy xavfsiz tizimi')}</span>
                         </div>
                     </div>
                 </motion.div>

@@ -276,9 +276,9 @@ export default function ResultsSlider() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight font-heading leading-tight">
-                        {t("resultsSlider.title", "Ba'zi o'quvchilarimizning")}{' '}
+                        {t("resultsSlider.titleStart", "Ba'zi o'quvchilarimizning")}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
-                            natijalari
+                            {t("resultsSlider.titleHighlight", "natijalari")}
                         </span>
                     </h2>
 
@@ -426,7 +426,7 @@ export default function ResultsSlider() {
                                         <div className="flex items-baseline justify-between">
                                             <div>
                                                 <div className="text-[11px] font-black uppercase tracking-[0.2em] text-red-600 dark:text-red-400 mb-1">
-                                                    OVERALL BAND SCORE
+                                                    {t("resultsSlider.overallBand", "OVERALL BAND SCORE")}
                                                 </div>
                                                 <div className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white font-heading tracking-tighter">
                                                     {activeStudent.scores.overall}
@@ -506,7 +506,7 @@ export default function ResultsSlider() {
                                     {/* Guarantee Footer Note */}
                                     <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        <span>Rasmiy xalqaro test markazi ma'lumotlar bazasida ro'yxatga olingan.</span>
+                                        <span>{t("resultsSlider.guaranteeNote", "Rasmiy xalqaro test markazi ma'lumotlar bazasida ro'yxatga olingan.")}</span>
                                     </div>
                                 </motion.div>
                             </AnimatePresence>
@@ -543,7 +543,7 @@ export default function ResultsSlider() {
                                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-xs">
                                                 <div className="px-4 py-2 rounded-full bg-black/80 border border-white/20 text-white text-xs font-bold flex items-center gap-2 shadow-xl">
                                                     <FaSearchPlus className="w-3.5 h-3.5 text-red-400" />
-                                                    <span>Kattalashtirib ko'rish</span>
+                                                    <span>{t("resultsSlider.zoomInHint", "Kattalashtirib ko'rish")}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -551,11 +551,11 @@ export default function ResultsSlider() {
                                         {/* Bottom Caption Pill */}
                                         <div className="mt-3 flex items-center justify-between px-2 text-xs">
                                             <span className="font-semibold text-slate-600 dark:text-slate-400">
-                                                {activeTab === 'ielts' ? 'IELTS Test Report Form' : 'CEFR Davlat Guvohnomasi'}
+                                                {activeTab === 'ielts' ? t('resultsSlider.ieltsTrf', 'IELTS Test Report Form') : t('resultsSlider.cefrCert', 'CEFR Davlat Guvohnomasi')}
                                             </span>
                                             <span className="text-[11px] font-bold text-red-600 dark:text-red-400 flex items-center gap-1">
                                                 <FaCheckCircle className="w-2.5 h-2.5" />
-                                                Tasdiqlangan
+                                                {t('resultsSlider.verifiedStatus', 'Tasdiqlangan')}
                                             </span>
                                         </div>
                                     </div>
@@ -597,9 +597,9 @@ export default function ResultsSlider() {
                                     <button
                                         type="button"
                                         onClick={handleZoomIn}
-                                        title="Kattalashtirish (+)"
+                                        title={t("resultsSlider.zoomIn", "Kattalashtirish (+)")}
                                         className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-red-600/80 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer"
-                                        aria-label="Kattalashtirish"
+                                        aria-label={t("resultsSlider.zoomIn", "Kattalashtirish (+)")}
                                     >
                                         <FaSearchPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </button>
@@ -607,9 +607,9 @@ export default function ResultsSlider() {
                                         type="button"
                                         onClick={handleZoomOut}
                                         disabled={zoomLevel <= 1}
-                                        title="Kichiklashtirish (-)"
+                                        title={t("resultsSlider.zoomOut", "Kichiklashtirish (-)")}
                                         className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-white/10 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer"
-                                        aria-label="Kichiklashtirish"
+                                        aria-label={t("resultsSlider.zoomOut", "Kichiklashtirish (-)")}
                                     >
                                         <FaSearchMinus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </button>
@@ -617,9 +617,9 @@ export default function ResultsSlider() {
                                         type="button"
                                         onClick={handleResetZoom}
                                         disabled={zoomLevel === 1}
-                                        title="Asliga qaytarish"
+                                        title={t("resultsSlider.resetZoom", "Asliga qaytarish")}
                                         className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:hover:bg-white/10 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer"
-                                        aria-label="Asliga qaytarish"
+                                        aria-label={t("resultsSlider.resetZoom", "Asliga qaytarish")}
                                     >
                                         <FaUndo className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                                     </button>
@@ -632,9 +632,9 @@ export default function ResultsSlider() {
                                 <button
                                     type="button"
                                     onClick={closeLightbox}
-                                    title="Yopish"
+                                    title={t("resultsSlider.close", "Yopish")}
                                     className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-red-600 text-white flex items-center justify-center transition-colors cursor-pointer shadow-xl border border-white/15"
-                                    aria-label="Yopish"
+                                    aria-label={t("resultsSlider.close", "Yopish")}
                                 >
                                     <FaTimes className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </button>

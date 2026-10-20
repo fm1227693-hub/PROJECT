@@ -608,12 +608,12 @@ export default function Navbar() {
                                                 {currentUser.role === 'admin' ? (
                                                     <Link to="/enter" className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-[#c41e30] dark:text-[#ff5a6a] hover:bg-black/[0.05] dark:hover:bg-white/[0.06] transition-colors">
                                                         <FaUserShield className="w-3.5 h-3.5" />
-                                                        <span>Admin Panel</span>
+                                                        <span>{t('navbar.adminPanel', 'Admin Panel')}</span>
                                                     </Link>
                                                 ) : (
                                                     <Link to="/student/dashboard" className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-gray-800 dark:text-white/90 hover:bg-black/[0.05] dark:hover:bg-white/[0.06] transition-colors">
                                                         <FaGraduationCap className="w-3.5 h-3.5 text-[#c41e30] dark:text-[#ff5a6a]" />
-                                                        <span>Mening kabinetim</span>
+                                                        <span>{t('navbar.myCabinet', 'Mening kabinetim')}</span>
                                                     </Link>
                                                 )}
                                                 <button
@@ -621,7 +621,7 @@ export default function Navbar() {
                                                     className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer text-left"
                                                 >
                                                     <FaSignOutAlt className="w-3.5 h-3.5" />
-                                                    <span>Chiqish</span>
+                                                    <span>{t('auth.logoutBtn', 'Chiqish')}</span>
                                                 </button>
                                             </motion.div>
                                         )}
@@ -642,7 +642,7 @@ export default function Navbar() {
                                 to="/access-request"
                                 className="lg-cta hidden sm:inline-flex h-10 ml-1 px-5 items-center gap-2 rounded-full text-[13px] font-bold tracking-wide active:scale-95"
                             >
-                                <span className="relative">{t('navbar.signUp', 'Sign Up')}</span>
+                                <span className="relative">{t('navbar.signUp', "Ro'yxatdan o'tish")}</span>
                                 <FaArrowRight className="relative w-2.5 h-2.5" />
                             </Link>
 
@@ -763,13 +763,13 @@ export default function Navbar() {
                                                 <FaUser />
                                             </span>
                                             <span className="min-w-0">
-                                                <span className="block text-[13px] font-bold leading-tight truncate">{currentUser.role === 'admin' ? 'Admin Panel' : 'Mening kabinetim'}</span>
+                                                <span className="block text-[13px] font-bold leading-tight truncate">{currentUser.role === 'admin' ? t('navbar.adminPanel', 'Admin Panel') : t('navbar.myCabinet', 'Mening kabinetim')}</span>
                                                 <span className="block text-[10px] font-mono text-gray-500 dark:text-gray-400 truncate">@{currentUser.username}</span>
                                             </span>
                                         </Link>
                                         <button
                                             onClick={handleLogout}
-                                            aria-label="Chiqish"
+                                            aria-label={t('auth.logoutBtn', 'Chiqish')}
                                             className="w-[52px] h-[52px] shrink-0 grid place-items-center rounded-2xl bg-rose-500/10 ring-1 ring-rose-500/20 text-rose-600 dark:text-rose-400 active:scale-95 transition-transform cursor-pointer"
                                         >
                                             <FaSignOutAlt className="w-4 h-4" />
@@ -791,7 +791,7 @@ export default function Navbar() {
                                             className="h-[52px] rounded-2xl bg-[#c41e30]/10 ring-1 ring-[#c41e30]/25 flex items-center justify-center gap-2 text-[13px] font-bold text-[#c41e30] dark:text-red-400 active:scale-[0.98] transition-transform"
                                         >
                                             <FaUserPlus className="w-3 h-3" />
-                                            <span>{t('navbar.signUp', 'Sign Up')}</span>
+                                            <span>{t('navbar.signUp', "Ro'yxatdan o'tish")}</span>
                                         </Link>
                                     </div>
                                 )}

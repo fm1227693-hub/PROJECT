@@ -212,22 +212,22 @@ export default function StudentDashboard() {
         if (!file) return;
 
         if (!file.type.startsWith('image/')) {
-            toast.error("Iltimos, rasm faylini tanlang (JPG, PNG, WebP)!");
+            toast.error(t('studentDashboard.toasts.selectImage', "Iltimos, rasm faylini tanlang (JPG, PNG, WebP)!"));
             return;
         }
 
         try {
             setUploadingAvatar(true);
-            const loadToast = toast.loading("Rasm saqlanmoqda...");
+            const loadToast = toast.loading(t('studentDashboard.toasts.savingImage', "Rasm saqlanmoqda..."));
             const compressedBase64 = await compressImage(file);
             await updateStudentAvatar(currentUser.username || currentUser.id, compressedBase64);
             await refreshSession();
             await loadStudentData();
             toast.dismiss(loadToast);
-            toast.success("Profil rasmi muvaffaqiyatli yangilandi! 🎉");
+            toast.success(t('studentDashboard.toasts.imageUpdated', "Profil rasmi muvaffaqiyatli yangilandi! 🎉"));
         } catch (err) {
             console.error('Avatar upload error:', err);
-            toast.error("Rasmni saqlashda xatolik yuz berdi");
+            toast.error(t('studentDashboard.toasts.imageSaveError', "Rasmni saqlashda xatolik yuz berdi"));
         } finally {
             setUploadingAvatar(false);
             if (fileInputRef.current) fileInputRef.current.value = '';
@@ -235,15 +235,15 @@ export default function StudentDashboard() {
     };
 
     const handleRemoveAvatar = async () => {
-        if (!window.confirm("Profilingiz rasmini o'chirishni xohlaysizmi?")) return;
+        if (!window.confirm(t('studentDashboard.confirmRemovePhoto', "Profilingiz rasmini o'chirishni xohlaysizmi?"))) return;
         try {
             setUploadingAvatar(true);
             await updateStudentAvatar(currentUser.username || currentUser.id, null);
             await refreshSession();
             await loadStudentData();
-            toast.success("Profil rasmi o'chirildi");
+            toast.success(t('studentDashboard.toasts.imageRemoved', "Profil rasmi o'chirildi"));
         } catch (err) {
-            toast.error("Xatolik yuz berdi");
+            toast.error(t('common.error', "Xatolik yuz berdi"));
         } finally {
             setUploadingAvatar(false);
         }
@@ -269,22 +269,22 @@ export default function StudentDashboard() {
     const handleSaveProfile = async (e) => {
         if (e) e.preventDefault();
         if (!editProfileName.trim()) {
-            toast.error("Ism-familiyangizni kiriting!");
+            toast.error(t('studentDashboard.toasts.enterName', "Ism-familiyangizni kiriting!"));
             return;
         }
         const cleanUname = editProfileUsername.trim().toLowerCase().replace(/^@/, '').replace(/\s+/g, '');
         if (!cleanUname || cleanUname.length < 3) {
-            toast.error("Login kamida 3 ta belgidan iborat bo'lishi kerak!");
+            toast.error(t('studentDashboard.toasts.shortUsername', "Login kamida 3 ta belgidan iborat bo'lishi kerak!"));
             return;
         }
         if (editProfilePassword && editProfilePassword.length < 6) {
-            toast.error("Parol kamida 6 ta belgidan iborat bo'lishi kerak!");
+            toast.error(t('studentDashboard.toasts.shortPassword', "Parol kamida 6 ta belgidan iborat bo'lishi kerak!"));
             return;
         }
 
         try {
             setSavingProfile(true);
-            const loadToast = toast.loading("Profil ma'lumotlari yangilanmoqda...");
+            const loadToast = toast.loading(t('studentDashboard.toasts.updatingProfile', "Profil ma'lumotlari yangilanmoqda..."));
             await updateUserProfile(currentUser.username || currentUser.id, {
                 newName: editProfileName.trim(),
                 newUsername: cleanUname,
@@ -293,11 +293,11 @@ export default function StudentDashboard() {
             await refreshSession();
             await loadStudentData();
             toast.dismiss(loadToast);
-            toast.success("Profil ma'lumotlaringiz muvaffaqiyatli yangilandi! 🎉");
+            toast.success(t('studentDashboard.toasts.profileUpdated', "Profil ma'lumotlaringiz muvaffaqiyatli yangilandi! 🎉"));
             setIsEditProfileOpen(false);
         } catch (err) {
             console.error('Save profile error:', err);
-            toast.error(err.message || "Xatolik yuz berdi");
+            toast.error(err.message || t('common.error', "Xatolik yuz berdi"));
         } finally {
             setSavingProfile(false);
         }
@@ -394,12 +394,12 @@ export default function StudentDashboard() {
             const sent = await sendGroupMessage(gid, msgObj);
             setMessages(prev => [...prev, sent]);
             setDirectMsgInput('');
-            toast.success("Shaxsiy SMS yuborildi!");
+            toast.success(t('studentDashboard.toasts.directSmsSent', "Shaxsiy SMS yuborildi!"));
             setTimeout(() => {
                 directChatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
             }, 100);
         } catch (e) {
-            toast.error("Xabar yuborishda xatolik");
+            toast.error(t('studentDashboard.toasts.sendError', "Xabar yuborishda xatolik"));
         } finally {
             setSendingMsg(false);
         }
@@ -426,12 +426,12 @@ export default function StudentDashboard() {
             const sent = await sendGroupMessage(gid, msgObj);
             setMessages(prev => [...prev, sent]);
             setGroupMsgInput('');
-            toast.success("Xabar umumiy guruhga yuborildi!");
+            toast.success(t('studentDashboard.toasts.groupMsgSent', "Xabar umumiy guruhga yuborildi!"));
             setTimeout(() => {
                 chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
             }, 100);
         } catch (e) {
-            toast.error("Xabar yuborishda xatolik");
+            toast.error(t('studentDashboard.toasts.sendError', "Xabar yuborishda xatolik"));
         } finally {
             setSendingMsg(false);
         }
@@ -449,7 +449,7 @@ export default function StudentDashboard() {
         const isOwner = (msg.senderUsername && currentUser?.username && msg.senderUsername.toLowerCase() === currentUser.username.toLowerCase()) ||
                         (msg.senderId && currentUser?.id && String(msg.senderId) === String(currentUser.id));
         if (!isOwner) {
-            toast.error("Faqat o'zingiz yozgan xabarni tahrirlashingiz mumkin!");
+            toast.error(t('studentDashboard.toasts.editOnlyOwn', "Faqat o'zingiz yozgan xabarni tahrirlashingiz mumkin!"));
             return;
         }
         setEditingMsgId(msg.id || msg.firebaseKey);
@@ -469,24 +469,24 @@ export default function StudentDashboard() {
             }));
             setEditingMsgId(null);
             setEditMsgText('');
-            toast.success("Xabaringiz tahrirlandi!");
+            toast.success(t('studentDashboard.toasts.msgEdited', "Xabaringiz tahrirlandi!"));
         } catch (err) {
-            toast.error(err.message || "Tahrirlashda xatolik");
+            toast.error(err.message || t('studentDashboard.toasts.editError', "Tahrirlashda xatolik"));
         }
     };
 
     const handleDeleteMessage = async (msgId, senderUsername) => {
         if (senderUsername && currentUser?.username && senderUsername.toLowerCase() !== currentUser.username.toLowerCase()) {
-            toast.error("Faqat o'zingiz yozgan xabarni o'chirishingiz mumkin!");
+            toast.error(t('studentDashboard.toasts.deleteOnlyOwn', "Faqat o'zingiz yozgan xabarni o'chirishingiz mumkin!"));
             return;
         }
         const gid = myGroup?.id || currentUser?.groupId || 'default_group';
         try {
             await deleteGroupMessage(gid, msgId, currentUser.id, currentUser.username);
             setMessages(prev => prev.filter(m => m.id !== msgId && m.firebaseKey !== msgId));
-            toast.success("Xabaringiz o'chirildi!");
+            toast.success(t('studentDashboard.toasts.msgDeleted', "Xabaringiz o'chirildi!"));
         } catch (err) {
-            toast.error(err.message || "O'chirishda xatolik");
+            toast.error(err.message || t('studentDashboard.toasts.deleteError', "O'chirishda xatolik"));
         }
     };
 
@@ -549,32 +549,32 @@ export default function StudentDashboard() {
 
                         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold tracking-wider uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 mb-4">
                             <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                            <span>TASDIQLASH KUTILMOQDA</span>
+                            <span>{t('studentDashboard.statusPendingBadge', 'TASDIQLASH KUTILMOQDA')}</span>
                         </div>
 
                         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-3">
-                            Arizangiz qabul qilindi, {currentUser.name}!
+                            {t('studentDashboard.pendingGreeting', 'Arizangiz qabul qilindi, {{name}}!', { name: currentUser.name })}
                         </h2>
 
                         <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-lg mx-auto leading-relaxed mb-8">
-                            Hisobingiz muvaffaqiyatli ro'yxatdan o'tdi. Administrator sizning arizangizni tasdiqlab, o'quv guruhiga biriktirgach, barcha darslar jadvali, xona raqamlari va uy vazifalari avtomatik ravishda ochiladi.
+                            {t('studentDashboard.pendingDesc', "Hisobingiz muvaffaqiyatli ro'yxatdan o'tdi. Administrator sizning arizangizni tasdiqlab, o'quv guruhiga biriktirgach, barcha darslar jadvali, xona raqamlari va uy vazifalari avtomatik ravishda ochiladi.")}
                         </p>
 
                         <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 rounded-2xl p-5 mb-8 text-left space-y-3">
                             <div className="flex justify-between items-center text-xs sm:text-sm">
-                                <span className="text-slate-500 dark:text-slate-400">Login (Username):</span>
+                                <span className="text-slate-500 dark:text-slate-400">{t('studentDashboard.labelUsername', 'Login (Username):')}</span>
                                 <span className="font-mono font-bold text-slate-800 dark:text-white">@{currentUser.username}</span>
                             </div>
                             {currentUser.rawPassword && (
                                 <div className="flex justify-between items-center text-xs sm:text-sm">
-                                    <span className="text-slate-500 dark:text-slate-400">Parolingiz:</span>
+                                    <span className="text-slate-500 dark:text-slate-400">{t('studentDashboard.labelPassword', 'Parolingiz:')}</span>
                                     <div className="flex items-center gap-2 font-mono font-bold text-indigo-600 dark:text-indigo-400">
                                         <span>{showMyPassword ? currentUser.rawPassword : '••••••••'}</span>
                                         <button
                                             type="button"
                                             onClick={() => setShowMyPassword(!showMyPassword)}
                                             className="text-slate-400 hover:text-indigo-500 transition"
-                                            title={showMyPassword ? "Yashirish" : "Ko'rish"}
+                                            title={showMyPassword ? t('common.hide', 'Yashirish') : t('common.view', "Ko'rish")}
                                         >
                                             {showMyPassword ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
                                         </button>
@@ -582,18 +582,18 @@ export default function StudentDashboard() {
                                 </div>
                             )}
                             <div className="flex justify-between items-center text-xs sm:text-sm">
-                                <span className="text-slate-500 dark:text-slate-400">Telefon:</span>
+                                <span className="text-slate-500 dark:text-slate-400">{t('studentDashboard.labelPhone', 'Telefon:')}</span>
                                 <span className="font-semibold text-slate-800 dark:text-white">{currentUser.phone || '-'}</span>
                             </div>
                             <div className="flex justify-between items-center text-xs sm:text-sm">
-                                <span className="text-slate-500 dark:text-slate-400">Tanlangan guruh / kurs:</span>
-                                <span className="font-bold text-red-600 dark:text-red-400">{currentUser.groupName || currentUser.course || 'Guruh kodi kiritilgan'}</span>
+                                <span className="text-slate-500 dark:text-slate-400">{t('studentDashboard.labelGroupCourse', 'Tanlangan guruh / kurs:')}</span>
+                                <span className="font-bold text-red-600 dark:text-red-400">{currentUser.groupName || currentUser.course || t('studentDashboard.groupCodeEntered', 'Guruh kodi kiritilgan')}</span>
                             </div>
                             <div className="flex justify-between items-center text-xs sm:text-sm">
-                                <span className="text-slate-500 dark:text-slate-400">Holat:</span>
+                                <span className="text-slate-500 dark:text-slate-400">{t('studentDashboard.labelStatus', 'Holat:')}</span>
                                 <span className="text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1.5">
                                     <span className="w-2 h-2 rounded-full bg-amber-500" />
-                                    Tekshirilmoqda (Kutilmoqda)
+                                    {t('studentDashboard.statusChecking', 'Tekshirilmoqda (Kutilmoqda)')}
                                 </span>
                             </div>
                         </div>
@@ -604,10 +604,10 @@ export default function StudentDashboard() {
                                     setLoadingData(true);
                                     const updated = await refreshSession();
                                     if (updated && updated.status === 'active') {
-                                        toast.success("Hisobingiz tasdiqlandi!");
+                                        toast.success(t('studentDashboard.accountApproved', 'Hisobingiz tasdiqlandi!'));
                                         loadStudentData();
                                     } else {
-                                        toast("Hali tasdiqlanmadi. Administrator tekshirmoqda.", { icon: '⏳' });
+                                        toast(t('studentDashboard.notApprovedYet', 'Hali tasdiqlanmadi. Administrator tekshirmoqda.'), { icon: '⏳' });
                                     }
                                     setLoadingData(false);
                                 }}
@@ -615,7 +615,7 @@ export default function StudentDashboard() {
                                 className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-sm shadow-lg shadow-red-600/25 hover:from-red-500 hover:to-rose-500 transition-all flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <FaSync className={loadingData ? 'animate-spin' : ''} />
-                                <span>Holatni tekshirish</span>
+                                <span>{t('studentDashboard.checkStatusBtn', 'Holatni tekshirish')}</span>
                             </button>
 
                             <button
@@ -624,7 +624,7 @@ export default function StudentDashboard() {
                                 className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 font-bold text-sm border border-slate-200 dark:border-white/10 transition-colors flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <FaUserEdit className="text-base" />
-                                <span>Tahrirlash</span>
+                                <span>{t('studentDashboard.editBtn', 'Tahrirlash')}</span>
                             </button>
 
                             <button
@@ -632,7 +632,7 @@ export default function StudentDashboard() {
                                 className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-500/20 font-bold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <FaSignOutAlt />
-                                <span>Chiqish</span>
+                                <span>{t('auth.logoutBtn', 'Chiqish')}</span>
                             </button>
                         </div>
                     </motion.div>
@@ -649,15 +649,15 @@ export default function StudentDashboard() {
                     <div className="w-16 h-16 mx-auto rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-3xl mb-4">
                         <FaTimesCircle />
                     </div>
-                    <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2">Hisobingiz to'xtatilgan</h2>
+                    <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('studentDashboard.suspendedTitle', "Hisobingiz to'xtatilgan")}</h2>
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-                        Ushbu hisob ma'muriyat tomonidan vaqtincha to'xtatilgan. Iltimos, o'quv markazi ma'muriyati bilan bog'laning.
+                        {t('studentDashboard.suspendedDesc', "Ushbu hisob ma'muriyat tomonidan vaqtincha to'xtatilgan. Iltimos, o'quv markazi ma'muriyati bilan bog'laning.")}
                     </p>
                     <button
                         onClick={() => { logout(); navigate('/'); }}
                         className="px-6 py-2.5 rounded-xl bg-slate-200 dark:bg-white/10 font-bold text-sm"
                     >
-                        Chiqish
+                        {t('auth.logoutBtn', 'Chiqish')}
                     </button>
                 </div>
             </div>
@@ -721,7 +721,7 @@ export default function StudentDashboard() {
                                         {currentUser.name}
                                     </h1>
                                     <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
-                                        FAOL O'QUVCHI
+                                        {t('studentDashboard.activeStudentBadge', "FAOL O'QUVCHI")}
                                     </span>
                                     {(currentUser.avatar || currentUser.image) && (
                                         <button
@@ -729,22 +729,22 @@ export default function StudentDashboard() {
                                             onClick={handleRemoveAvatar}
                                             disabled={uploadingAvatar}
                                             className="text-[10px] text-slate-400 hover:text-rose-500 transition underline cursor-pointer ml-1"
-                                            title="Rasmni o'chirish"
+                                            title={t('studentDashboard.removePhoto', "Rasmni o'chirish")}
                                         >
-                                            Rasmni o'chirish
+                                            {t('studentDashboard.removePhoto', "Rasmni o'chirish")}
                                         </button>
                                     )}
                                 </div>
                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
-                                    <span className="truncate">@{currentUser.username} • Guruh: <strong className="text-slate-800 dark:text-white font-bold">{myGroup?.name || currentUser.groupName || "Biriktirilmagan"}</strong></span>
+                                    <span className="truncate">@{currentUser.username} • {t('studentDashboard.groupLabel', 'Guruh:')} <strong className="text-slate-800 dark:text-white font-bold">{myGroup?.name || currentUser.groupName || t('studentDashboard.notAssigned', "Biriktirilmagan")}</strong></span>
                                     {currentUser.rawPassword && (
                                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-bold">
-                                            <span>Parol: {showMyPassword ? currentUser.rawPassword : '••••••••'}</span>
+                                            <span>{t('studentDashboard.passwordLabel', 'Parol:')} {showMyPassword ? currentUser.rawPassword : '••••••••'}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => setShowMyPassword(!showMyPassword)}
                                                 className="text-slate-400 hover:text-indigo-500 transition ml-0.5 cursor-pointer"
-                                                title={showMyPassword ? "Yashirish" : "Ko'rish"}
+                                                title={showMyPassword ? t('common.hide', "Yashirish") : t('common.view', "Ko'rish")}
                                             >
                                                 {showMyPassword ? <FaEyeSlash className="text-[11px]" /> : <FaEye className="text-[11px]" />}
                                             </button>
@@ -758,15 +758,15 @@ export default function StudentDashboard() {
                             <button
                                 onClick={openEditProfileModal}
                                 className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-100 dark:bg-white/[0.04] text-slate-700 dark:text-slate-300 hover:text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/10 transition-all border border-slate-200 dark:border-white/10 text-xs font-bold cursor-pointer active:scale-95 shadow-xs"
-                                title="Ism, login va parolni tahrirlash"
+                                title={t('studentDashboard.editTooltip', "Ism, login va parolni tahrirlash")}
                             >
                                 <FaUserEdit className="text-sm" />
-                                <span className="hidden sm:inline">Tahrirlash</span>
+                                <span className="hidden sm:inline">{t('studentDashboard.editBtn', "Tahrirlash")}</span>
                             </button>
                             <button
                                 onClick={loadStudentData}
                                 className="p-2 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-white/[0.04] text-slate-700 dark:text-slate-300 hover:text-red-500 transition-colors border border-slate-200 dark:border-white/10 cursor-pointer"
-                                title="Yangilash"
+                                title={t('studentDashboard.refreshBtn', "Yangilash")}
                             >
                                 <FaSync className={loadingData ? 'animate-spin' : ''} />
                             </button>
@@ -775,7 +775,7 @@ export default function StudentDashboard() {
                                 className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-xs font-bold transition-colors cursor-pointer"
                             >
                                 <FaSignOutAlt />
-                                <span>Chiqish</span>
+                                <span>{t('auth.logoutBtn', "Chiqish")}</span>
                             </button>
                         </div>
                     </div>
@@ -783,10 +783,10 @@ export default function StudentDashboard() {
                     {/* Navigation Tabs - Horizontal Swipe on Mobile */}
                     <div className="flex items-center gap-2 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-slate-200/80 dark:border-white/[0.08] overflow-x-auto no-scrollbar pb-1 sm:pb-0">
                         {[
-                            { id: 'overview', label: 'Umumiy holat', icon: <FaGraduationCap /> },
-                            { id: 'schedule', label: `Dars jadvali (${upcomingLessons.length})`, icon: <FaCalendarAlt /> },
-                            { id: 'group', label: `Mening guruhim`, icon: <FaUsers /> },
-                            { id: 'homework', label: `Vazifalar (${homeworkList.length})`, icon: <FaBook /> },
+                            { id: 'overview', label: t('studentDashboard.tabs.overview', 'Umumiy holat'), icon: <FaGraduationCap /> },
+                            { id: 'schedule', label: `${t('studentDashboard.tabs.schedule', 'Dars jadvali')} (${upcomingLessons.length})`, icon: <FaCalendarAlt /> },
+                            { id: 'group', label: t('studentDashboard.tabs.group', 'Mening guruhim'), icon: <FaUsers /> },
+                            { id: 'homework', label: `${t('studentDashboard.tabs.homework', 'Vazifalar')} (${homeworkList.length})`, icon: <FaBook /> },
                         ].map((tab) => (
                             <button
                                 key={tab.id}
@@ -811,43 +811,43 @@ export default function StudentDashboard() {
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#0c0f18]/95 border border-slate-200 dark:border-white/10 shadow-sm">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Guruh</span>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('studentDashboard.metrics.group', 'Guruh')}</span>
                                     <div className="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center text-sm">
                                         <FaUsers />
                                     </div>
                                 </div>
                                 <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-2">
-                                    {myGroup?.name || currentUser.groupName || "Mavjud emas"}
+                                    {myGroup?.name || currentUser.groupName || t('studentDashboard.metrics.none', "Mavjud emas")}
                                 </div>
                                 <p className="text-xs text-slate-400 mt-1">{myGroup?.course || 'Optimum Academic Program'}</p>
                             </div>
 
                             <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#0c0f18]/95 border border-slate-200 dark:border-white/10 shadow-sm">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Keyingi dars</span>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('studentDashboard.metrics.nextLesson', 'Keyingi dars')}</span>
                                     <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center text-sm">
                                         <FaClock />
                                     </div>
                                 </div>
                                 <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-2">
-                                    {upcomingLessons.length > 0 ? moment(upcomingLessons[0].start).format('DD MMM, HH:mm') : "Belgilanmagan"}
+                                    {upcomingLessons.length > 0 ? moment(upcomingLessons[0].start).format('DD MMM, HH:mm') : t('studentDashboard.metrics.notSet', "Belgilanmagan")}
                                 </div>
                                 <p className="text-xs text-slate-400 mt-1">
-                                    {upcomingLessons.length > 0 ? upcomingLessons[0].title || "Optimum Lesson" : "Hozircha rejalashtirilgan dars yo'q"}
+                                    {upcomingLessons.length > 0 ? upcomingLessons[0].title || "Optimum Lesson" : t('studentDashboard.metrics.noUpcomingLessons', "Hozircha rejalashtirilgan dars yo'q")}
                                 </p>
                             </div>
 
                             <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#0c0f18]/95 border border-slate-200 dark:border-white/10 shadow-sm">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Guruh a'zolari</span>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('studentDashboard.metrics.members', "Guruh a'zolari")}</span>
                                     <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm">
                                         <FaUserGraduate />
                                     </div>
                                 </div>
                                 <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-2">
-                                    {myGroup?.students ? myGroup.students.length : 1} nafar
+                                    {myGroup?.students ? myGroup.students.length : 1} {t('studentDashboard.metrics.people', 'nafar')}
                                 </div>
-                                <p className="text-xs text-slate-400 mt-1">Guruh statusi: Faol</p>
+                                <p className="text-xs text-slate-400 mt-1">{t('studentDashboard.metrics.groupActive', 'Guruh statusi: Faol')}</p>
                             </div>
                         </div>
 
@@ -855,20 +855,20 @@ export default function StudentDashboard() {
                         <div className="rounded-3xl bg-white/95 dark:bg-[#0c0f18]/95 border border-slate-200 dark:border-white/10 p-6 sm:p-8 shadow-sm">
                             <h3 className="text-lg font-black text-slate-900 dark:text-white font-heading mb-4 flex items-center gap-2">
                                 <FaCalendarAlt className="text-red-500" />
-                                <span>Yaqinlashayotgan darslar</span>
+                                <span>{t('studentDashboard.schedule.upcomingTitle', 'Yaqinlashayotgan darslar')}</span>
                             </h3>
 
                             {upcomingLessons.length === 0 ? (
                                 <div className="text-center py-12 text-slate-500 space-y-2">
                                     <FaClock className="w-10 h-10 mx-auto text-slate-400 opacity-40" />
-                                    <p className="text-sm font-bold">Hozirda yaqin darslar jadvalga kiritilmagan</p>
-                                    <p className="text-xs">Administrator dars qo'shganda bu yerda avtomatik ko'rinadi.</p>
+                                    <p className="text-sm font-bold">{t('studentDashboard.schedule.noUpcoming', 'Hozirda yaqin darslar jadvalga kiritilmagan')}</p>
+                                    <p className="text-xs">{t('studentDashboard.schedule.adminAutoNotice', "Administrator dars qo'shganda bu yerda avtomatik ko'rinadi.")}</p>
                                 </div>
                             ) : (
                                 <div className="space-y-3">
                                     {upcomingLessons.slice(0, 3).map((lesson) => (
                                         <div key={lesson.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                            <div className="flex items-center gap-3.5">
+                                             <div className="flex items-center gap-3.5">
                                                 <div className="w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex flex-col items-center justify-center font-mono font-black shrink-0 border border-red-500/20">
                                                     <span className="text-xs leading-none">{moment(lesson.start).format('DD')}</span>
                                                     <span className="text-[10px] leading-none uppercase">{moment(lesson.start).format('MMM')}</span>
@@ -876,12 +876,12 @@ export default function StudentDashboard() {
                                                 <div>
                                                     <h4 className="font-bold text-slate-900 dark:text-white text-sm">{lesson.title || lesson.group}</h4>
                                                     <p className="text-xs text-slate-500 font-mono mt-0.5">
-                                                        {moment(lesson.start).format('HH:mm')} - {moment(lesson.end).format('HH:mm')} (Toshkent vaqti)
+                                                        {moment(lesson.start).format('HH:mm')} - {moment(lesson.end).format('HH:mm')} {t('studentDashboard.schedule.tashkentTime', '(Toshkent vaqti)')}
                                                     </p>
                                                 </div>
                                             </div>
                                             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 self-start sm:self-center border border-emerald-500/20">
-                                                Rejalashtirilgan
+                                                {t('studentDashboard.schedule.scheduled', 'Rejalashtirilgan')}
                                             </span>
                                         </div>
                                     ))}
@@ -896,17 +896,17 @@ export default function StudentDashboard() {
                     <div className="rounded-3xl bg-white/95 dark:bg-[#0c0f18]/95 border border-slate-200 dark:border-white/10 p-6 sm:p-8 shadow-sm space-y-6">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-black text-slate-900 dark:text-white font-heading">
-                                Guruh dars jadvali
+                                {t('studentDashboard.schedule.groupScheduleTitle', 'Guruh dars jadvali')}
                             </h3>
                             <span className="text-xs font-mono font-bold text-slate-500">
-                                Jami: {schedules.length} ta dars
+                                {t('studentDashboard.schedule.totalLessons', 'Jami: {{count}} ta dars', { count: schedules.length })}
                             </span>
                         </div>
 
                         {schedules.length === 0 ? (
                             <div className="text-center py-16 text-slate-500">
                                 <FaCalendarAlt className="w-12 h-12 mx-auto text-slate-400 opacity-40 mb-3" />
-                                <p className="text-sm font-bold">Ushbu guruh uchun darslar belgilanmagan</p>
+                                <p className="text-sm font-bold">{t('studentDashboard.schedule.noLessons', 'Ushbu guruh uchun darslar belgilanmagan')}</p>
                             </div>
                         ) : (
                             <div className="space-y-3">
@@ -940,7 +940,7 @@ export default function StudentDashboard() {
                                                     ? 'bg-slate-200 dark:bg-white/5 text-slate-500 border-transparent' 
                                                     : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
                                             }`}>
-                                                {isPast ? "O'tkazilgan" : "Kutilmoqda"}
+                                                {isPast ? t('studentDashboard.schedule.completed', "O'tkazilgan") : t('studentDashboard.schedule.pending', "Kutilmoqda")}
                                             </span>
                                         </div>
                                     );
@@ -956,15 +956,15 @@ export default function StudentDashboard() {
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-white/10">
                             <div>
                                 <h3 className="text-xl font-black text-slate-900 dark:text-white font-heading">
-                                    {myGroup?.name || currentUser.groupName || "Guruh biriktirilmagan"}
+                                    {myGroup?.name || currentUser.groupName || t('studentDashboard.notAssigned', "Guruh biriktirilmagan")}
                                 </h3>
                                 <p className="text-xs text-slate-500 mt-1">
-                                    Kurs: {myGroup?.course || "General English"} • Daraja: {myGroup?.level || "B2 Intermediate"}
+                                    {t('studentDashboard.group.course', 'Kurs:')} {myGroup?.course || "General English"} • {t('studentDashboard.group.level', 'Daraja:')} {myGroup?.level || "B2 Intermediate"}
                                 </p>
                             </div>
                             {myGroup?.inviteCode && (
                                 <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-center">
-                                    <span className="text-[10px] uppercase font-bold text-red-500 block">Guruh taklif kodi</span>
+                                    <span className="text-[10px] uppercase font-bold text-red-500 block">{t('studentDashboard.group.inviteCode', 'Guruh taklif kodi')}</span>
                                     <span className="text-base font-mono font-black text-red-600 dark:text-red-400">{myGroup.inviteCode}</span>
                                 </div>
                             )}
@@ -974,10 +974,10 @@ export default function StudentDashboard() {
                             <div className="flex items-center justify-between mb-4">
                                 <div>
                                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                                        Guruhdoshlar ro'yxati ({myGroup?.students ? myGroup.students.length : 1} nafar)
+                                        {t('studentDashboard.group.membersList', "Guruhdoshlar ro'yxati")} ({myGroup?.students ? myGroup.students.length : 1} {t('studentDashboard.metrics.people', 'nafar')})
                                     </h4>
                                     <p className="text-[11px] text-slate-400">
-                                        Istalgan guruhdoshingizga SMS xabar yozishingiz mumkin
+                                        {t('studentDashboard.group.membersSubtitle', "Istalgan guruhdoshingizga SMS xabar yozishingiz mumkin")}
                                     </p>
                                 </div>
                             </div>
@@ -1015,7 +1015,7 @@ export default function StudentDashboard() {
                                                         <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{st.name}</p>
                                                         {isMe && (
                                                             <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-red-500/10 text-red-600 dark:text-red-400">
-                                                                Siz
+                                                                {t('studentDashboard.group.you', 'Siz')}
                                                             </span>
                                                         )}
                                                     </div>
@@ -1028,10 +1028,10 @@ export default function StudentDashboard() {
                                                     <button
                                                         onClick={() => setSelectedChatStudent(st)}
                                                         className="w-full py-2 px-3 rounded-xl bg-red-500/10 hover:bg-red-500 hover:text-white text-red-600 dark:text-red-400 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-red-500/20 shadow-xs cursor-pointer active:scale-95"
-                                                        title={`${st.name} ga shaxsiy SMS yozish`}
+                                                        title={t('studentDashboard.group.writeSmsTo', "{{name}} ga shaxsiy SMS yozish", { name: st.name })}
                                                     >
                                                         <FaPaperPlane className="text-[10px]" />
-                                                        <span>SMS yozish</span>
+                                                        <span>{t('studentDashboard.group.writeSms', 'SMS yozish')}</span>
                                                         {directCount > 0 && (
                                                             <span className="ml-1 px-1.5 py-0.2 rounded-full text-[9px] bg-red-600 text-white font-mono">
                                                                 {directCount}
@@ -1040,7 +1040,7 @@ export default function StudentDashboard() {
                                                     </button>
                                                 ) : (
                                                     <div className="w-full py-1.5 text-center text-[10px] font-bold text-slate-400">
-                                                        Sizning profilingiz
+                                                        {t('studentDashboard.group.yourProfile', 'Sizning profilingiz')}
                                                     </div>
                                                 )}
                                             </div>
@@ -1059,15 +1059,15 @@ export default function StudentDashboard() {
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                                            Guruh umumiy chati
+                                            {t('studentDashboard.group.generalChat', 'Guruh umumiy chati')}
                                         </h4>
                                         <p className="text-[11px] text-slate-400">
-                                            Barcha guruhdoshlar bu yerdagi umumiy xabarlarni real-vaqtda ko'rishadi
+                                            {t('studentDashboard.group.generalChatDesc', "Barcha guruhdoshlar bu yerdagi umumiy xabarlarni real-vaqtda ko'rishadi")}
                                         </p>
                                     </div>
                                 </div>
                                 <span className="text-xs font-mono font-bold text-slate-500">
-                                    {groupOnlyMessages.length} ta xabar
+                                    {groupOnlyMessages.length} {t('studentDashboard.group.messagesCount', 'ta xabar')}
                                 </span>
                             </div>
 
@@ -1076,8 +1076,8 @@ export default function StudentDashboard() {
                                 {groupOnlyMessages.length === 0 ? (
                                     <div className="my-auto text-center py-8 text-slate-400 space-y-2">
                                         <FaCommentDots className="w-10 h-10 mx-auto opacity-30 text-slate-400" />
-                                        <p className="text-xs font-bold">Hozircha umumiy xabarlar yo'q</p>
-                                        <p className="text-[11px]">Guruhdoshlaringizga birinchi bo'lib salom yozing!</p>
+                                        <p className="text-xs font-bold">{t('studentDashboard.group.noMessages', "Hozircha umumiy xabarlar yo'q")}</p>
+                                        <p className="text-[11px]">{t('studentDashboard.group.beFirstToSayHi', "Guruhdoshlaringizga birinchi bo'lib salom yozing!")}</p>
                                     </div>
                                 ) : (
                                     groupOnlyMessages.map((m, idx) => {
@@ -1108,11 +1108,11 @@ export default function StudentDashboard() {
                                                         )}
                                                     </div>
                                                     <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
-                                                        {isMine ? 'Siz' : (m.senderName || m.senderUsername)}
+                                                        {isMine ? t('studentDashboard.group.you', 'Siz') : (m.senderName || m.senderUsername)}
                                                     </span>
                                                     {m.isEdited && (
                                                         <span className="text-[9px] text-slate-400 italic">
-                                                            (tahrirlangan)
+                                                            ({t('studentDashboard.group.edited', 'tahrirlangan')})
                                                         </span>
                                                     )}
                                                     <span className="text-[9px] text-slate-400 font-mono">
@@ -1125,14 +1125,14 @@ export default function StudentDashboard() {
                                                             <button
                                                                 onClick={() => handleStartEdit(m)}
                                                                 className="p-1 rounded hover:bg-slate-200 dark:hover:bg-white/10 text-slate-400 hover:text-amber-500 text-[10px] cursor-pointer"
-                                                                title="Xabarni tahrirlash"
+                                                                title={t('studentDashboard.group.editMsgTooltip', "Xabarni tahrirlash")}
                                                             >
                                                                 <FaEdit />
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDeleteMessage(m.id || m.firebaseKey, m.senderUsername)}
                                                                 className="p-1 rounded hover:bg-slate-200 dark:hover:bg-white/10 text-slate-400 hover:text-rose-500 text-[10px] cursor-pointer"
-                                                                title="Xabarni o'chirish"
+                                                                title={t('studentDashboard.group.deleteMsgTooltip', "Xabarni o'chirish")}
                                                             >
                                                                 <FaTrash />
                                                             </button>
@@ -1157,14 +1157,14 @@ export default function StudentDashboard() {
                                                         <button
                                                             onClick={() => handleSaveEdit(m.id || m.firebaseKey)}
                                                             className="p-2 rounded-xl bg-emerald-500 text-white text-xs hover:bg-emerald-600 transition shadow-xs cursor-pointer"
-                                                            title="Saqlash"
+                                                            title={t('common.save', "Saqlash")}
                                                         >
                                                             <FaCheck />
                                                         </button>
                                                         <button
                                                             onClick={() => setEditingMsgId(null)}
                                                             className="p-2 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-300 text-xs hover:bg-slate-300 transition cursor-pointer"
-                                                            title="Bekor qilish"
+                                                            title={t('common.cancel', "Bekor qilish")}
                                                         >
                                                             <FaTimes />
                                                         </button>
@@ -1193,7 +1193,7 @@ export default function StudentDashboard() {
                                     type="text"
                                     value={groupMsgInput}
                                     onChange={(e) => setGroupMsgInput(e.target.value)}
-                                    placeholder="Guruhdoshlaringizga umumiy xabar yozing..."
+                                    placeholder={t('studentDashboard.group.inputPlaceholder', "Guruhdoshlaringizga umumiy xabar yozing...")}
                                     className="flex-1 px-3.5 sm:px-4 py-2.5 rounded-xl bg-white dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-red-500"
                                 />
                                 <button
@@ -1202,7 +1202,7 @@ export default function StudentDashboard() {
                                     className="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 disabled:opacity-50 text-white text-xs font-bold transition-all flex items-center gap-1.5 sm:gap-2 shadow-md shadow-red-600/20 cursor-pointer active:scale-95 shrink-0"
                                 >
                                     <FaPaperPlane className="text-[11px]" />
-                                    <span className="hidden sm:inline">Yuborish</span>
+                                    <span className="hidden sm:inline">{t('studentDashboard.group.sendBtn', "Yuborish")}</span>
                                 </button>
                             </form>
                         </div>
@@ -1214,18 +1214,18 @@ export default function StudentDashboard() {
                     <div className="rounded-3xl bg-white/95 dark:bg-[#0c0f18]/95 border border-slate-200 dark:border-white/10 p-4 sm:p-8 shadow-sm space-y-6">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-black text-slate-900 dark:text-white font-heading">
-                                Uyga vazifalar
+                                {t('studentDashboard.homework.title', 'Uyga vazifalar')}
                             </h3>
                             <span className="text-xs font-mono font-bold text-slate-500">
-                                {homeworkList.length} ta topshiriq
+                                {homeworkList.length} {t('studentDashboard.homework.tasksCount', 'ta topshiriq')}
                             </span>
                         </div>
 
                         {homeworkList.length === 0 ? (
                             <div className="text-center py-16 text-slate-500">
                                 <FaBook className="w-12 h-12 mx-auto text-slate-400 opacity-40 mb-3" />
-                                <p className="text-sm font-bold">Ushbu guruh uchun yangi vazifalar yo'q</p>
-                                <p className="text-xs mt-1">O'qituvchi yangi vazifa yuklaganda bu yerda paydo bo'ladi.</p>
+                                <p className="text-sm font-bold">{t('studentDashboard.homework.noTasks', "Ushbu guruh uchun yangi vazifalar yo'q")}</p>
+                                <p className="text-xs mt-1">{t('studentDashboard.homework.teacherNotice', "O'qituvchi yangi vazifa yuklaganda bu yerda paydo bo'ladi.")}</p>
                             </div>
                         ) : (
                             <div className="space-y-4">
@@ -1235,7 +1235,7 @@ export default function StudentDashboard() {
                                             <h4 className="font-bold text-slate-900 dark:text-white text-sm">{hw.title}</h4>
                                             {hw.dueDate && (
                                                 <span className="text-[11px] font-mono text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
-                                                    Muddati: {hw.dueDate}
+                                                    {t('studentDashboard.homework.deadline', 'Muddati:')} {hw.dueDate}
                                                 </span>
                                             )}
                                         </div>
@@ -1273,13 +1273,13 @@ export default function StudentDashboard() {
                                         </div>
                                         <div className="min-w-0">
                                             <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                                                {selectedChatStudent.name} bilan shaxsiy chat
+                                                {t('studentDashboard.directChat.title', '{{name}} bilan shaxsiy chat', { name: selectedChatStudent.name })}
                                             </h3>
                                             <div className="flex items-center gap-2 text-[11px] text-slate-400">
                                                 <span>@{selectedChatStudent.username || 'student'}</span>
                                                 <span className="flex items-center gap-1 text-rose-500 font-bold">
                                                     <FaLock className="text-[10px]" />
-                                                    Maxfiy 1x1 SMS
+                                                    {t('studentDashboard.directChat.privateBadge', 'Maxfiy 1x1 SMS')}
                                                 </span>
                                             </div>
                                         </div>
@@ -1301,10 +1301,10 @@ export default function StudentDashboard() {
                                             </div>
                                             <div>
                                                 <p className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                    {selectedChatStudent.name} bilan shaxsiy suhbat
+                                                    {t('studentDashboard.directChat.heading', '{{name}} bilan shaxsiy suhbat', { name: selectedChatStudent.name })}
                                                 </p>
                                                 <p className="text-[11px] text-slate-400 mt-1 max-w-xs mx-auto">
-                                                    Bu yerdagi xabarlar umumiy guruh chatiga chiqmaydi va faqat siz ikkingizga ko'rinadi.
+                                                    {t('studentDashboard.directChat.notice', "Bu yerdagi xabarlar umumiy guruh chatiga chiqmaydi va faqat siz ikkingizga ko'rinadi.")}
                                                 </p>
                                             </div>
                                         </div>
@@ -1330,9 +1330,9 @@ export default function StudentDashboard() {
                                                                 <span>{(isMine ? currentUser.name : selectedChatStudent.name).charAt(0).toUpperCase()}</span>
                                                             )}
                                                         </div>
-                                                        <span>{isMine ? 'Siz' : selectedChatStudent.name}</span>
+                                                        <span>{isMine ? t('studentDashboard.group.you', 'Siz') : selectedChatStudent.name}</span>
                                                         <span>•</span>
-                                                        {m.isEdited && <span className="italic text-slate-400">(tahrirlangan) •</span>}
+                                                        {m.isEdited && <span className="italic text-slate-400">({t('studentDashboard.group.edited', 'tahrirlangan')}) •</span>}
                                                         <span>{m.createdAt ? moment(m.createdAt).format('HH:mm') : ''}</span>
 
                                                         {/* Edit / Delete strictly for owner */}
@@ -1341,14 +1341,14 @@ export default function StudentDashboard() {
                                                                 <button
                                                                     onClick={() => handleStartEdit(m)}
                                                                     className="p-0.5 rounded text-slate-400 hover:text-amber-500 cursor-pointer"
-                                                                    title="Tahrirlash"
+                                                                    title={t('studentDashboard.group.editMsgTooltip', "Tahrirlash")}
                                                                 >
                                                                     <FaEdit className="text-[10px]" />
                                                                 </button>
                                                                 <button
                                                                     onClick={() => handleDeleteMessage(m.id || m.firebaseKey, m.senderUsername)}
                                                                     className="p-0.5 rounded text-slate-400 hover:text-rose-500 cursor-pointer"
-                                                                    title="O'chirish"
+                                                                    title={t('studentDashboard.group.deleteMsgTooltip', "O'chirish")}
                                                                 >
                                                                     <FaTrash className="text-[10px]" />
                                                                 </button>
@@ -1408,7 +1408,7 @@ export default function StudentDashboard() {
                                         autoFocus
                                         value={directMsgInput}
                                         onChange={(e) => setDirectMsgInput(e.target.value)}
-                                        placeholder={`${selectedChatStudent.name} ga shaxsiy SMS yozing...`}
+                                        placeholder={t('studentDashboard.directChat.inputPlaceholder', '{{name}} ga shaxsiy SMS yozing...', { name: selectedChatStudent.name })}
                                         className="flex-1 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-red-500"
                                     />
                                     <button
@@ -1417,7 +1417,7 @@ export default function StudentDashboard() {
                                         className="px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 disabled:opacity-50 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-md shadow-red-600/20 cursor-pointer active:scale-95 shrink-0"
                                     >
                                         <FaPaperPlane className="text-[11px]" />
-                                        <span>Yuborish</span>
+                                        <span>{t('studentDashboard.group.sendBtn', 'Yuborish')}</span>
                                     </button>
                                 </form>
                             </motion.div>
@@ -1442,10 +1442,10 @@ export default function StudentDashboard() {
                                         </div>
                                         <div>
                                             <h3 className="text-base font-black text-slate-900 dark:text-white font-heading">
-                                                Profilni tahrirlash
+                                                {t('studentDashboard.profile.title', 'Profilni tahrirlash')}
                                             </h3>
                                             <p className="text-[11px] text-slate-400">
-                                                Ismingiz, login va parolingizni yangilang
+                                                {t('studentDashboard.profile.subtitle', 'Ismingiz, login va parolingizni yangilang')}
                                             </p>
                                         </div>
                                     </div>
@@ -1463,7 +1463,7 @@ export default function StudentDashboard() {
                                     <div className="space-y-1.5">
                                         <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                                             <FaUser className="text-red-500 text-[11px]" />
-                                            <span>To'liq ism-familiya</span>
+                                            <span>{t('studentDashboard.profile.fullName', "To'liq ism-familiya")}</span>
                                         </label>
                                         <input
                                             type="text"
@@ -1479,7 +1479,7 @@ export default function StudentDashboard() {
                                     <div className="space-y-1.5">
                                         <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                                             <span className="text-red-500 font-mono font-bold text-sm">@</span>
-                                            <span>Login (Username)</span>
+                                            <span>{t('studentDashboard.labelUsername', 'Login (Username)')}</span>
                                         </label>
                                         <div className="relative flex items-center">
                                             <span className="absolute left-3.5 text-slate-400 font-mono font-bold text-xs select-none">
@@ -1495,7 +1495,7 @@ export default function StudentDashboard() {
                                             />
                                         </div>
                                         <p className="text-[10px] text-slate-400">
-                                            Tizimga kirish uchun ushbu login ishlatiladi (kamida 3 belgi)
+                                            {t('studentDashboard.profile.usernameHint', 'Tizimga kirish uchun ushbu login ishlatiladi (kamida 3 belgi)')}
                                         </p>
                                     </div>
 
@@ -1503,14 +1503,14 @@ export default function StudentDashboard() {
                                     <div className="space-y-1.5">
                                         <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                                             <FaLock className="text-red-500 text-[11px]" />
-                                            <span>Parol</span>
+                                            <span>{t('studentDashboard.profile.password', 'Parol')}</span>
                                         </label>
                                         <div className="relative flex items-center">
                                             <input
                                                 type={showEditPassword ? 'text' : 'password'}
                                                 value={editProfilePassword}
                                                 onChange={(e) => setEditProfilePassword(e.target.value)}
-                                                placeholder="Yangi parol (kamida 6 ta belgi)"
+                                                placeholder={t('studentDashboard.profile.passwordPlaceholder', 'Yangi parol (kamida 6 ta belgi)')}
                                                 required
                                                 className="w-full pl-4 pr-10 py-2.5 rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white font-mono placeholder:text-slate-400 focus:outline-none focus:border-red-500 transition-colors"
                                             />
@@ -1518,13 +1518,13 @@ export default function StudentDashboard() {
                                                 type="button"
                                                 onClick={() => setShowEditPassword(!showEditPassword)}
                                                 className="absolute right-3 text-slate-400 hover:text-red-500 transition cursor-pointer"
-                                                title={showEditPassword ? "Yashirish" : "Ko'rish"}
+                                                title={showEditPassword ? t('common.hide', 'Yashirish') : t('common.view', "Ko'rish")}
                                             >
                                                 {showEditPassword ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
                                             </button>
                                         </div>
                                         <p className="text-[10px] text-slate-400">
-                                            Yangi parolni kiriting (kamida 6 ta belgi)
+                                            {t('studentDashboard.profile.passwordHint', 'Yangi parolni kiriting (kamida 6 ta belgi)')}
                                         </p>
                                     </div>
 
@@ -1534,7 +1534,7 @@ export default function StudentDashboard() {
                                             onClick={() => setIsEditProfileOpen(false)}
                                             className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 text-xs font-bold transition cursor-pointer"
                                         >
-                                            Bekor qilish
+                                            {t('common.cancel', 'Bekor qilish')}
                                         </button>
                                         <button
                                             type="submit"
@@ -1544,12 +1544,12 @@ export default function StudentDashboard() {
                                             {savingProfile ? (
                                                 <>
                                                     <FaSync className="animate-spin text-xs" />
-                                                    <span>Saqlanmoqda...</span>
+                                                    <span>{t('common.saving', 'Saqlanmoqda...')}</span>
                                                 </>
                                             ) : (
                                                 <>
                                                     <FaCheck className="text-xs" />
-                                                    <span>Saqlash</span>
+                                                    <span>{t('common.save', 'Saqlash')}</span>
                                                 </>
                                             )}
                                         </button>

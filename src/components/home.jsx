@@ -100,7 +100,7 @@ export default function Home() {
                                 type="button"
                                 className="ox-cta-btn"
                                 onClick={() => setIsPracticeOpen(true)}
-                                title="Kun so'zi va lug'at amaliyoti"
+                                title={t('home.dailyWordTitle', "Kun so'zi va lug'at amaliyoti")}
                             >
                                 <FaBookOpen aria-hidden="true" />
                                 {t('home.dailyWordBtn', "Kun so'zi")}

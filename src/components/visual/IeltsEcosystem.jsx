@@ -43,20 +43,20 @@ export default function IeltsEcosystem() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] dark:bg-white/[0.03] border border-red-500/30 backdrop-blur-xl shadow-[0_0_20px_rgba(239,68,68,0.15)] w-fit">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span className="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-red-500 dark:text-red-400">
-              OPTIMUM CDI & AI SUITE // 4 TA AMALIY VOSITA
+              {t('ieltsEcosystem.badge', 'OPTIMUM CDI & AI SUITE // 4 TA AMALIY VOSITA')}
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08] font-heading">
-            IELTS imtihoniga to'liq{' '}
+            {t('ieltsEcosystem.titlePrefix', "IELTS imtihoniga to'liq")}{' '}
             <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
-              raqamli tayyorgarlik
+              {t('ieltsEcosystem.titleHighlight', 'raqamli tayyorgarlik')}
             </span>
           </h2>
         </div>
 
         <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base font-normal max-w-md leading-relaxed md:text-right">
-          Optimum platformasida kompyuterda topshiriladigan rasmiy CDI formati va sun'iy intellekt tahlillari bitta yagona ekotizimda mujassamlashgan.
+          {t('ieltsEcosystem.description', "Optimum platformasida kompyuterda topshiriladigan rasmiy CDI formati va sun'iy intellekt tahlillari bitta yagona ekotizimda mujassamlashgan.")}
         </p>
       </div>
 
@@ -84,14 +84,16 @@ export default function IeltsEcosystem() {
                   </div>
                   <div>
                     <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-heading tracking-tight group-hover:text-sky-500 dark:group-hover:text-sky-400 transition-colors leading-tight">
-                      CDI Listening Simulator
+                      {t('ieltsEcosystem.listening.title', 'CDI Listening Simulator')}
                     </h3>
-                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">British Council & IDP rasmiy formati</span>
+                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">
+                      {t('ieltsEcosystem.listening.subtitle', 'British Council & IDP rasmiy formati')}
+                    </span>
                   </div>
                 </div>
 
                 <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-sky-500/30 text-sky-600 dark:text-sky-400 bg-sky-500/10 shrink-0">
-                  REAL AUDIO EXAM
+                  {t('ieltsEcosystem.listening.badge', 'REAL AUDIO EXAM')}
                 </span>
               </div>
 
@@ -102,7 +104,9 @@ export default function IeltsEcosystem() {
                     <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
                       <FaPlay className="w-2 h-2 sm:w-2.5 sm:h-2.5 ml-0.5" />
                     </div>
-                    <span className="text-slate-900 dark:text-slate-200 font-bold truncate">Part 1 — Section 1</span>
+                    <span className="text-slate-900 dark:text-slate-200 font-bold truncate">
+                      {t('ieltsEcosystem.listening.part', 'Part 1 — Section 1')}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0 ml-auto">
                     <FaClock className="w-3 h-3 text-sky-500 dark:text-sky-400" />
@@ -122,15 +126,17 @@ export default function IeltsEcosystem() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium pt-1">
-                  <span>40 savol • Quloqchin sinovi</span>
-                  <span className="text-sky-600 dark:text-sky-400 font-bold">Avtomatik natija hisoblash</span>
+                  <span>{t('ieltsEcosystem.listening.meta', '40 savol • Quloqchin sinovi')}</span>
+                  <span className="text-sky-600 dark:text-sky-400 font-bold">
+                    {t('ieltsEcosystem.listening.autoCalc', 'Avtomatik natija hisoblash')}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="pt-3 sm:pt-4 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between">
               <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                Listening testni boshlash
+                {t('ieltsEcosystem.listening.btn', 'Listening testni boshlash')}
               </span>
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-sky-500/10 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400 group-hover:bg-sky-500 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:translate-x-1 shrink-0">
                 <FaArrowRight className="w-3 h-3" />
@@ -153,14 +159,16 @@ export default function IeltsEcosystem() {
                   </div>
                   <div>
                     <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-heading tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors leading-tight">
-                      CDI Reading Hub
+                      {t('ieltsEcosystem.reading.title', 'CDI Reading Hub')}
                     </h3>
-                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">Haqiqiy imtihon matnlari va split-screen</span>
+                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">
+                      {t('ieltsEcosystem.reading.subtitle', 'Haqiqiy imtihon matnlari va split-screen')}
+                    </span>
                   </div>
                 </div>
 
                 <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 shrink-0">
-                  ACADEMIC PASSAGES
+                  {t('ieltsEcosystem.reading.badge', 'ACADEMIC PASSAGES')}
                 </span>
               </div>
 
@@ -168,20 +176,20 @@ export default function IeltsEcosystem() {
               <div className="my-3 sm:my-4 p-3 sm:p-4 rounded-2xl bg-slate-100/80 dark:bg-black/40 border border-slate-200 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div className="p-2.5 sm:p-3 rounded-xl bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 space-y-1.5 shadow-xs">
                   <div className="flex items-center justify-between text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-                    <span>PASSAGE 1</span>
-                    <span className="text-slate-500 dark:text-slate-400">Matn tahlili</span>
+                    <span>{t('ieltsEcosystem.reading.passage', 'PASSAGE 1')}</span>
+                    <span className="text-slate-500 dark:text-slate-400">{t('ieltsEcosystem.reading.analysis', 'Matn tahlili')}</span>
                   </div>
                   <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed line-clamp-2">
-                    "The Architecture of Ancient Irrigation Systems in Central Asia..."
+                    {t('ieltsEcosystem.reading.sample', '"The Architecture of Ancient Irrigation Systems in Central Asia..."')}
                   </p>
                   <span className="inline-block px-2 py-0.5 rounded bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 text-[10px] font-mono font-bold">
-                    Highlighter faol
+                    {t('ieltsEcosystem.reading.highlighter', 'Highlighter faol')}
                   </span>
                 </div>
 
                 <div className="p-2.5 sm:p-3 rounded-xl bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 space-y-1.5 shadow-xs">
                   <div className="flex items-center justify-between text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-                    <span>QUESTIONS 1-13</span>
+                    <span>{t('ieltsEcosystem.reading.questions', 'QUESTIONS 1-13')}</span>
                     <span className="text-slate-500 dark:text-slate-400">True / False</span>
                   </div>
                   <div className="flex gap-1.5 pt-1">
@@ -192,14 +200,16 @@ export default function IeltsEcosystem() {
                     ))}
                     <span className="text-slate-500 text-[10px] self-center">... 40</span>
                   </div>
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block pt-0.5">Avtomatik kalitlar tahlili</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block pt-0.5">
+                    {t('ieltsEcosystem.reading.autoKeys', 'Avtomatik kalitlar tahlili')}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="pt-3 sm:pt-4 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between">
               <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                Reading testni boshlash
+                {t('ieltsEcosystem.reading.btn', 'Reading testni boshlash')}
               </span>
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:translate-x-1 shrink-0">
                 <FaArrowRight className="w-3 h-3" />
@@ -229,19 +239,21 @@ export default function IeltsEcosystem() {
                   </div>
                   <div>
                     <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white font-heading tracking-tight group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors leading-tight">
-                      AI Essay Feedback
+                      {t('ieltsEcosystem.writing.title', 'AI Essay Feedback')}
                     </h3>
-                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">Writing Task 1 & 2 Baholovchi AI</span>
+                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">
+                      {t('ieltsEcosystem.writing.subtitle', 'Writing Task 1 & 2 Baholovchi AI')}
+                    </span>
                   </div>
                 </div>
 
                 <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-red-500/30 text-red-600 dark:text-red-400 bg-red-500/10 shrink-0">
-                  4 MEZON BAHOSI
+                  {t('ieltsEcosystem.writing.badge', '4 MEZON BAHOSI')}
                 </span>
               </div>
 
               <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300/90 leading-relaxed mb-3 sm:mb-4">
-                Insho matnini joylashtiring va rasmiy Cambridge rubrikasi bo'yicha darhol 4 ta mezonli tahlilga ega bo'ling:
+                {t('ieltsEcosystem.writing.desc', "Insho matnini joylashtiring va rasmiy Cambridge rubrikasi bo'yicha darhol 4 ta mezonli tahlilga ega bo'ling:")}
               </p>
 
               {/* The 4 Assessment Criteria Visual Telemetry Bars */}
@@ -294,7 +306,7 @@ export default function IeltsEcosystem() {
 
             <div className="pt-3 sm:pt-4 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between">
               <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                Inshoni tekshirish
+                {t('ieltsEcosystem.writing.btn', 'Inshoni tekshirish')}
               </span>
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md shadow-red-600/40 group-hover:scale-110 group-hover:translate-x-1 transition-all shrink-0">
                 <FaArrowRight className="w-3 h-3" />
@@ -317,14 +329,16 @@ export default function IeltsEcosystem() {
                   </div>
                   <div>
                     <h3 className="text-base sm:text-xl font-black text-slate-900 dark:text-white font-heading tracking-tight group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors leading-tight">
-                      Placement Level Test
+                      {t('ieltsEcosystem.levelTest.title', 'Placement Level Test')}
                     </h3>
-                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">10 daqiqada CEFR va IELTS start ballingiz</span>
+                    <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium block">
+                      {t('ieltsEcosystem.levelTest.subtitle', '10 daqiqada CEFR va IELTS start ballingiz')}
+                    </span>
                   </div>
                 </div>
 
                 <span className="self-start sm:self-center px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider border border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10 shrink-0">
-                  20 SAVOL
+                  {t('ieltsEcosystem.levelTest.badge', '20 SAVOL')}
                 </span>
               </div>
 
@@ -347,7 +361,7 @@ export default function IeltsEcosystem() {
 
             <div className="pt-3 sm:pt-3.5 border-t border-slate-200 dark:border-white/[0.06] flex items-center justify-between">
               <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                Darajani aniqlash
+                {t('ieltsEcosystem.levelTest.btn', 'Darajani aniqlash')}
               </span>
               <div className="w-8 h-8 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center transition-all duration-300 group-hover:translate-x-1 shrink-0">
                 <FaArrowRight className="w-3 h-3" />

@@ -37,7 +37,7 @@ export default function Admin() {
         try {
             await login('admin@optimum.uz', cod);
             setKirish(true);
-            toast.success("Admin panelga xush kelibsiz!");
+            toast.success(t('admin.welcomeToast', "Admin panelga xush kelibsiz!"));
         } catch (err) {
             if (cod === '88888888') {
                 try {
