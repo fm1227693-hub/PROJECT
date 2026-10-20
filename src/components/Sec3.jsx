@@ -291,7 +291,7 @@ export default function Sec3() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] text-slate-900 dark:text-white border border-slate-300 dark:border-white/15 hover:border-red-500/50 text-xs sm:text-sm font-bold tracking-wide transition-all text-center flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
-                <span>Telegram orqali suhbat</span>
+                <span>{t('sec3.telegramChat', 'Telegram orqali suhbat')}</span>
                 <FaArrowRight className="w-3 h-3 text-red-600 dark:text-white opacity-80" />
               </motion.a>
               

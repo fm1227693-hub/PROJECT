@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import CommentsORG from './TikTokComments'
 import { FaKey, FaLock, FaUserSlash, FaEye, FaEyeSlash } from 'react-icons/fa'
-import { getUsers, saveUsers, adminResetPassword, adminUpdateStudentCredentials, adminSetStudentStatus, adminTransferStudent, adminApproveStudent, generateInviteCode } from '../utils/authService'
+import { getUsers, saveUsers, adminResetPassword, adminUpdateStudentCredentials, adminSetStudentStatus, adminTransferStudent, adminApproveStudent, adminDeleteStudent, generateInviteCode } from '../utils/authService'
 import toast, { Toaster } from 'react-hot-toast'
 import { 
     FaUserCheck, FaPhoneAlt, FaCalendarAlt, FaSearch, FaCommentDots, 
@@ -206,7 +206,7 @@ export default function AdminORG() {
         }
         
         if (newLeadStatus === "Qabul qilindi" && !newLeadGroup) {
-            toast.error("Iltimos, guruhni tanlang!");
+            toast.error(t('adminDashboard.toast.selectGroupError', "Iltimos, guruhni tanlang!"));
             return;
         }
 
@@ -273,19 +273,19 @@ export default function AdminORG() {
         setShowAddLeadModal(false)
     }
 
-    const handleDeleteLead = async (id) => {
-        const updatedList = leads.filter(item => item.id !== id)
-        setLeads(updatedList)
-        localStorage.setItem('admin_leads', JSON.stringify(updatedList))
+    const handleDeleteLead = (id) => {
+        // 1. Immediately close modal & show success (0ms latency)
+        setDeleteModalLead(null);
+        toast.success(t('adminPanel.deleteSuccess', "Murojaat o'chirildi!"));
 
-        try {
-            await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedList)
-        } catch (e) {
-            // silent catch
-        }
-        toast.success(t('adminPanel.deleteSuccess', "Murojaat o'chirildi!"))
-        setDeleteModalLead(null)
-    }
+        // 2. Optimistic state update
+        const updatedList = leads.filter(item => item.id !== id);
+        setLeads(updatedList);
+        localStorage.setItem('admin_leads', JSON.stringify(updatedList));
+
+        // 3. Background sync
+        axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedList).catch(() => {});
+    };
 
     const loadLeads = async () => {
         setLoadingLeads(true)
@@ -445,7 +445,7 @@ const loadSchedules = async () => {
             await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups);
             toast.success(editingStudentId ? t('adminDashboard.toast.studentUpdated') : t('adminDashboard.toast.studentAdded'));
         } catch (err) {
-            toast.success("O'quvchi saqlandi (lokal)!");
+            toast.success(t('adminDashboard.toast.studentSavedLocal', "O'quvchi saqlandi (lokal)!"));
         }
 
         setShowAddStudentModal(false);
@@ -457,21 +457,55 @@ const loadSchedules = async () => {
         setShowStudentGroupDropdown(false);
     };
 
-    const handleDeleteStudent = async (studentId) => {
-        const currentGroup = groups.find(g => g.id === selectedGroupDetails.id);
-        const updatedStudents = (currentGroup.students || []).filter(st => st.id !== studentId);
-        
-        const updatedGroups = groups.map(g => g.id === currentGroup.id ? { ...g, students: updatedStudents } : g);
-        setGroups(updatedGroups);
-        setSelectedGroupDetails({ ...currentGroup, students: updatedStudents });
-        localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+    const handleDeleteStudent = async (student) => {
+        if (!student) return;
+        const studentId = typeof student === 'object' ? student.id : student;
+        const studentUsername = typeof student === 'object' ? student.username : null;
+        const studentName = typeof student === 'object' ? student.name : null;
+        const studentPhone = typeof student === 'object' ? student.phone : null;
 
-        try {
-            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups);
-            toast.success(t('adminDashboard.toast.studentDeleted'));
-        } catch (err) {
-        }
+        // 1. Immediately close modal & notify (0ms latency!)
         setDeleteModalStudent(null);
+        toast.success(t('adminDashboard.toast.studentDeleted', "O'quvchi muvaffaqiyatli o'chirildi!"));
+
+        // 2. Optimistic UI update: remove student from registeredUsers
+        setRegisteredUsers(prev => prev.filter(st => !(
+            st.id === studentId ||
+            String(st.id) === String(studentId) ||
+            (studentUsername && st.username && st.username.toLowerCase() === studentUsername.toLowerCase())
+        )));
+
+        // 3. Optimistic UI update: remove student from groups
+        setGroups(prev => prev.map(g => ({
+            ...g,
+            students: (g.students || []).filter(st => !(
+                st.id === studentId ||
+                String(st.id) === String(studentId) ||
+                (studentUsername && st.username && st.username.toLowerCase() === studentUsername.toLowerCase())
+            ))
+        })));
+
+        // 4. Optimistic UI update: remove from selectedGroupDetails modal if opened
+        if (selectedGroupDetails) {
+            setSelectedGroupDetails(prev => {
+                if (!prev) return null;
+                return {
+                    ...prev,
+                    students: (prev.students || []).filter(st => !(
+                        st.id === studentId ||
+                        String(st.id) === String(studentId) ||
+                        (studentUsername && st.username && st.username.toLowerCase() === studentUsername.toLowerCase())
+                    ))
+                };
+            });
+        }
+
+        // 5. Fire async backend deletion in the background
+        try {
+            await adminDeleteStudent(studentId, studentUsername, studentName, studentPhone);
+        } catch (err) {
+            console.error('Delete student background sync error:', err);
+        }
     };
 
     const handleEditStudentClick = (student) => {
@@ -525,7 +559,7 @@ const loadSchedules = async () => {
             await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedList)
             toast.success(editingGroupId ? t('adminDashboard.toast.groupUpdated') : t('adminDashboard.toast.groupAdded'))
         } catch (e) {
-            toast.success("Guruh saqlandi (lokal)!")
+            toast.success(t('adminDashboard.toast.groupSavedLocal', "Guruh saqlandi (lokal)!"))
         }
 
         setNewGroupNameInput('')
@@ -534,18 +568,14 @@ const loadSchedules = async () => {
         setShowAddGroupModal(false)
     }
 
-    const handleDeleteGroup = async (id) => {
-        const updatedList = groups.filter(item => item.id !== id)
-        setGroups(updatedList)
-        localStorage.setItem('admin_groups', JSON.stringify(updatedList))
-
-        try {
-            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedList)
-        } catch (e) {
-        }
-        toast.success(t('adminDashboard.toast.groupDeleted'))
-        setDeleteModalGroup(null)
-    }
+    const handleDeleteGroup = (id) => {
+        setDeleteModalGroup(null);
+        toast.success(t('adminDashboard.toast.groupDeleted'));
+        const updatedList = groups.filter(item => item.id !== id);
+        setGroups(updatedList);
+        localStorage.setItem('admin_groups', JSON.stringify(updatedList));
+        axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedList).catch(() => {});
+    };
 
     const handleCreateOrUpdateSchedule = async (e) => {
     e.preventDefault()
@@ -558,7 +588,7 @@ const loadSchedules = async () => {
     const end = new Date(newScheduleEnd);
 
     if (start >= end) {
-        toast.error("Tugash vaqti boshlanish vaqtidan keyin bo'lishi kerak!");
+        toast.error(t('adminDashboard.toast.timeOrderError', "Tugash vaqti boshlanish vaqtidan keyin bo'lishi kerak!"));
         return;
     }
 
@@ -587,9 +617,9 @@ const loadSchedules = async () => {
 
     try {
         await axios.put(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, updatedList)
-        toast.success(editingScheduleId ? "Jadval yangilandi!" : "Jadval qo'shildi!")
+        toast.success(editingScheduleId ? t('adminDashboard.toast.scheduleUpdated', "Jadval yangilandi!") : t('adminDashboard.toast.scheduleAdded', "Jadval qo'shildi!"))
     } catch (e) {
-        toast.success("Jadval saqlandi (lokal)!")
+        toast.success(t('adminDashboard.toast.scheduleSavedLocal', "Jadval saqlandi (lokal)!"))
     }
 
     setNewScheduleGroup('')
@@ -599,19 +629,14 @@ const loadSchedules = async () => {
     setShowAddScheduleModal(false)
 }
 
-const handleDeleteSchedule = async (id) => {
-    const updatedList = schedules.filter(item => item.id !== id)
-    setSchedules(updatedList)
-    localStorage.setItem('admin_schedules', JSON.stringify(updatedList))
-
-    try {
-        await axios.put(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, updatedList)
-    } catch (e) {
-        // silent catch
-    }
-    toast.success(t('adminDashboard.toast.scheduleDeleted'))
-    setDeleteModalSchedule(null)
-}
+    const handleDeleteSchedule = (id) => {
+        setDeleteModalSchedule(null);
+        toast.success(t('adminDashboard.toast.scheduleDeleted'));
+        const updatedList = schedules.filter(item => item.id !== id);
+        setSchedules(updatedList);
+        localStorage.setItem('admin_schedules', JSON.stringify(updatedList));
+        axios.put(import.meta.env.VITE_FIREBASE_SCHEDULES_URL, updatedList).catch(() => {});
+    };
 
 const handleEditScheduleClick = (schedule) => {
     setEditingScheduleId(schedule.id)
@@ -623,22 +648,24 @@ const handleEditScheduleClick = (schedule) => {
 
     const handleAcceptLeadToGroup = async () => {
         if (!acceptToGroupId) {
-            toast.error("Iltimos, guruhni tanlang!");
+            toast.error(t('adminDashboard.toast.selectGroupError', "Iltimos, guruhni tanlang!"));
             return;
         }
 
         const selectedGroup = groups.find(g => String(g.id) === String(acceptToGroupId));
         const studentId = Date.now();
+        const currentLead = leadToAccept;
+        const currentGroupId = acceptToGroupId;
 
         // Extract requested credentials or generate clean ones
-        const reqUname = (leadToAccept.requestedUsername || leadToAccept.username || leadToAccept.name.toLowerCase().replace(/\s+/g, '')).trim().replace(/^@/, '').toLowerCase();
-        const reqPass = String(leadToAccept.requestedPassword || leadToAccept.rawPassword || '123456').trim();
+        const reqUname = (currentLead.requestedUsername || currentLead.username || currentLead.name.toLowerCase().replace(/\s+/g, '')).trim().replace(/^@/, '').toLowerCase();
+        const reqPass = String(currentLead.requestedPassword || currentLead.rawPassword || '123456').trim();
 
         const newStudent = {
             id: studentId,
             userId: studentId,
-            name: leadToAccept.name,
-            phone: leadToAccept.phone,
+            name: currentLead.name,
+            phone: currentLead.phone,
             username: reqUname,
             rawPassword: reqPass,
             image: null,
@@ -647,9 +674,34 @@ const handleEditScheduleClick = (schedule) => {
             joinedAt: new Date().toISOString()
         };
 
-        // 1. Add student to selected group in Firebase & localStorage
+        const newUser = {
+            id: studentId,
+            username: reqUname,
+            name: currentLead.name,
+            phone: currentLead.phone,
+            role: 'student',
+            status: 'active',
+            rawPassword: reqPass,
+            groupId: selectedGroup?.id || currentGroupId,
+            groupName: selectedGroup?.name || 'Optimum Group',
+            course: selectedGroup?.course || currentLead.course || 'English Program',
+            createdAt: new Date().toISOString()
+        };
+
+        // 1. Instantly close modal (0ms latency!)
+        setShowAcceptLeadModal(false);
+        setShowAcceptGroupDropdown(false);
+        setLeadToAccept(null);
+        setAcceptToGroupId('');
+
+        // 2. Optimistic UI update: update leads list immediately
+        const updatedLeads = leads.map(l => l.id === currentLead.id ? { ...l, status: 'Qabul qilindi' } : l);
+        setLeads(updatedLeads);
+        localStorage.setItem('admin_leads', JSON.stringify(updatedLeads));
+
+        // 3. Optimistic UI update: update groups list immediately
         const updatedGroups = groups.map(g => {
-            if (String(g.id) === String(acceptToGroupId)) {
+            if (String(g.id) === String(currentGroupId)) {
                 return {
                     ...g,
                     students: [...(g.students || []), newStudent]
@@ -657,89 +709,78 @@ const handleEditScheduleClick = (schedule) => {
             }
             return g;
         });
-
         setGroups(updatedGroups);
         localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
-        try {
-            await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups);
-        } catch(e) {}
 
-        // 2. Create and activate User account in users.json & optimum_users
-        const newUser = {
-            id: studentId,
-            username: reqUname,
-            name: leadToAccept.name,
-            phone: leadToAccept.phone,
-            role: 'student',
-            status: 'active',
-            rawPassword: reqPass,
-            groupId: selectedGroup?.id || acceptToGroupId,
-            groupName: selectedGroup?.name || 'Optimum Group',
-            course: selectedGroup?.course || leadToAccept.course || 'English Program',
-            createdAt: new Date().toISOString()
-        };
+        // 4. Optimistic UI update: update registered users list immediately
+        setRegisteredUsers(prev => [newUser, ...prev.filter(u => (u.username || '').toLowerCase() !== reqUname)]);
 
+        toast.success(t('adminPanel.studentEnrolledAndAccountCreated', "O'quvchi guruhga biriktirildi va @{{username}} akkaunti ochildi!", { username: reqUname }), { duration: 4000 });
+
+        // 5. Parallel background sync without blocking the UI
         try {
-            const existingUsers = await getUsers();
+            let existingUsers = [];
+            try {
+                const raw = localStorage.getItem('optimum_users');
+                if (raw) existingUsers = JSON.parse(raw);
+            } catch(e) {}
             const updatedUsers = [...existingUsers.filter(u => (u.username || '').toLowerCase() !== reqUname), newUser];
-            await saveUsers(updatedUsers);
-            loadRegisteredUsers();
+            localStorage.setItem('optimum_users', JSON.stringify(updatedUsers));
+
+            Promise.allSettled([
+                axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups),
+                axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedLeads),
+                axios.put(import.meta.env.VITE_FIREBASE_USERS_URL || 'https://optimum-21-default-rtdb.firebaseio.com/users.json', updatedUsers),
+                supabase.from('profiles').upsert([{
+                    full_name: newUser.name,
+                    username: newUser.username,
+                    phone: newUser.phone,
+                    role: 'student',
+                    status: 'active'
+                }], { onConflict: 'username' })
+            ]).catch(e => console.warn('Enrollment background sync:', e));
         } catch (uErr) {
-            console.error('Error saving student account:', uErr);
+            console.error('Error in background enrollment sync:', uErr);
         }
-
-        // 3. Mark lead status as 'Qabul qilindi'
-        await updateLeadStatus(leadToAccept.id, 'Qabul qilindi');
-
-        setShowAcceptLeadModal(false);
-        setLeadToAccept(null);
-        setAcceptToGroupId('');
-        toast.success(`O'quvchi guruhga biriktirildi va @${reqUname} akkaunti ochildi!`, { duration: 4000 });
     };
     
-    const updateLeadStatus = async (id, newStatus) => {
-    const updatedList = leads.map(l => {
-        if (l.id === id) {
-            return { ...l, status: newStatus }
-        }
-        return l
-    })
-    setLeads(updatedList)
-    localStorage.setItem('admin_leads', JSON.stringify(updatedList))
+    const updateLeadStatus = (id, newStatus) => {
+        const updatedList = leads.map(l => {
+            if (l.id === id) {
+                return { ...l, status: newStatus };
+            }
+            return l;
+        });
+        setLeads(updatedList);
+        localStorage.setItem('admin_leads', JSON.stringify(updatedList));
 
-    try {
-        await axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedList)
-    } catch (e) {
-        // silent
-    }
-
-    if (newStatus === 'Rad etildi') {
-        // Find the lead to get their phone/name
-        const rejectedLead = leads.find(l => l.id === id)
-        if (rejectedLead) {
-            // Remove this student from all groups
-            const updatedGroups = groups.map(g => ({
-                ...g,
-                students: (g.students || []).filter(s =>
-                    s.phone !== rejectedLead.phone && s.name !== rejectedLead.name
-                )
-            }))
-            setGroups(updatedGroups)
-            localStorage.setItem('admin_groups', JSON.stringify(updatedGroups))
-            axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups).catch(() => {})
+        if (newStatus === 'Rad etildi') {
+            const rejectedLead = leads.find(l => l.id === id);
+            if (rejectedLead) {
+                const updatedGroups = groups.map(g => ({
+                    ...g,
+                    students: (g.students || []).filter(s =>
+                        s.phone !== rejectedLead.phone && s.name !== rejectedLead.name
+                    )
+                }));
+                setGroups(updatedGroups);
+                localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+                axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updatedGroups).catch(() => {});
+            }
+            toast.error(t('adminPanel.requestRejectedAndRemoved', "So'rov rad etildi va o'quvchi guruhdan chiqarildi!"));
+        } else if (newStatus === 'Qabul qilindi') {
+            toast.success(t('adminPanel.requestAccepted', "So'rov qabul qilindi!"));
         }
-        toast.error("So'rov rad etildi va o'quvchi guruhdan chiqarildi!")
-    } else if (newStatus === 'Qabul qilindi') {
-        toast.success("So'rov qabul qilindi!")
-    }
-}
+
+        axios.put(import.meta.env.VITE_FIREBASE_DB_URL, updatedList).catch(() => {});
+    };
 
 const exportToCSV = () => {
     if (leads.length === 0) {
-        toast.error("Yuklab olish uchun murojaatlar mavjud emas!")
+        toast.error(t('adminPanel.noLeadsToExport', "Yuklab olish uchun murojaatlar mavjud emas!"))
         return
     }
-    const headers = ["F.I.O", "Telefon raqami", "Murojaat turi", "Kelgan vaqti", "Status"]
+    const headers = [t('adminPanel.nameLabel', "F.I.O"), t('adminPanel.phoneLabel', "Telefon"), t('adminPanel.typeLabel', "Turi"), t('adminPanel.dateLabel', "Sana"), t('adminPanel.statusLabel', "Status")]
     const rows = leads.map(l => [
         `"${(l.name || '').replace(/"/g, '""')}"`,
         `"${(l.phone || '').replace(/"/g, '""')}"`,
@@ -756,7 +797,7 @@ const exportToCSV = () => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    toast.success("Excel (CSV) fayli yuklab olindi!")
+    toast.success(t('adminPanel.csvExportSuccess', "Excel (CSV) fayli yuklab olindi!"))
 }
 
 const totalCount = leads.length
@@ -783,7 +824,7 @@ const filteredLeads = leads
 
 const getTranslatedType = (type) => {
     if (!type) return t('adminPanel.typeMurojaat', "Murojaat");
-    if (type === "Kirish so'rovi") return "Kirish so'rovi";
+    if (type === "Kirish so'rovi") return t('adminPanel.typeLoginRequest', "Kirish so'rovi");
     if (type === "Ro'yxatdan o'tish") return t('adminPanel.typeRegistration', "Ro'yxatdan o'tish");
     if (type === "Bepul maslahat") return t('adminPanel.typeFreeConsultation', "Bepul maslahat");
     if (type === "Ingliz tili") return t('adminPanel.typeEnglish', "Ingliz tili");
@@ -925,7 +966,7 @@ return (
                                     <button onClick={() => setShowAddLeadModal(true)} className="flex-1 lg:flex-none px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
                                         {t('adminPanel.addLeadBtn', "+ Qo'shish")}
                                     </button>
-                                    <button onClick={exportToCSV} className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-emerald-500/20" title="Yuklab olish">
+                                    <button onClick={exportToCSV} className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-emerald-500/20" title={t('adminPanel.exportCsvTooltip', "Yuklab olish")}>
                                         <FaFileCsv className="text-lg" />
                                     </button>
                                 </div>
@@ -966,7 +1007,7 @@ return (
                                                         {lead.type === "Kirish so'rovi" || lead.requestedUsername ? (
                                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-500/30 whitespace-nowrap">
                                                                 <FaKey className="text-[10px]" />
-                                                                <span>Kirish so'rovi</span>
+                                                                <span>{t('adminPanel.typeLoginRequest', "Kirish so'rovi")}</span>
                                                             </span>
                                                         ) : (
                                                             getTranslatedType(lead.type)
@@ -984,18 +1025,18 @@ return (
                                                     </td>
                                                     <td className="py-4 px-4 text-right">
                                                         <div className="flex items-center justify-end gap-3">
-                                                            <button onClick={() => setDeleteModalLead(lead)} className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" title="Ko'rish / O'chirish">
+                                                            <button onClick={() => setDeleteModalLead(lead)} className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" title={t('adminPanel.viewOrDeleteTooltip', "Ko'rish / O'chirish")}>
                                                                 <FaRegEye className="text-lg" />
                                                             </button>
                                                             {lead.status !== 'Qabul qilindi' ? (
-                                                                <button onClick={() => { setLeadToAccept(lead); setShowAcceptLeadModal(true); }} className="text-emerald-500 hover:text-emerald-600 transition-colors" title="Tasdiqlash">
+                                                                <button onClick={() => { setLeadToAccept(lead); setShowAcceptLeadModal(true); }} className="text-emerald-500 hover:text-emerald-600 transition-colors" title={t('adminPanel.confirmTooltip', "Tasdiqlash")}>
                                                                     <FaCheckCircle className="text-xl" />
                                                                 </button>
                                                             ) : (
                                                                 <FaCheckCircle className="text-xl text-gray-300 dark:text-gray-700" />
                                                             )}
                                                             {lead.status !== 'Rad etildi' ? (
-                                                                <button onClick={() => updateLeadStatus(lead.id, 'Rad etildi')} className="text-rose-500 hover:text-rose-600 transition-colors" title="Rad etish">
+                                                                <button onClick={() => updateLeadStatus(lead.id, 'Rad etildi')} className="text-rose-500 hover:text-rose-600 transition-colors" title={t('adminPanel.rejectTooltip', "Rad etish")}>
                                                                     <FaTimesCircle className="text-xl" />
                                                                 </button>
                                                             ) : (
@@ -1190,8 +1231,8 @@ return (
                                     <thead>
                                         <tr className="border-b border-gray-100 dark:border-gray-800 text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400">
                                             <th className="py-4 px-4 font-medium">{t('adminDashboard.groupName', 'Guruh Nomi')}</th>
-                                            <th className="py-4 px-4 font-medium">Taklif Kodi</th>
-                                            <th className="py-4 px-4 font-medium">O'quvchilar</th>
+                                            <th className="py-4 px-4 font-medium">{t('adminDashboard.inviteCodeCol', "Taklif Kodi")}</th>
+                                            <th className="py-4 px-4 font-medium">{t('adminDashboard.studentsCountCol', "O'quvchilar")}</th>
                                             <th className="py-4 px-4 font-medium text-right">{t('adminDashboard.actions', 'Amallar')}</th>
                                         </tr>
                                     </thead>
@@ -1211,7 +1252,7 @@ return (
                                                     </td>
                                                     <td className="py-4 px-4 font-mono font-bold text-red-600 dark:text-red-400">
                                                         <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-red-50 dark:bg-white/[0.04] border border-red-500/20 text-xs">
-                                                            <span>{group.inviteCode || 'KODSIZ'}</span>
+                                                            <span>{group.inviteCode || t('adminDashboard.noCode', 'KODSIZ')}</span>
                                                             <button
                                                                 onClick={async () => {
                                                                     const newCode = generateInviteCode('OPT');
@@ -1219,17 +1260,17 @@ return (
                                                                     setGroups(updated);
                                                                     localStorage.setItem('admin_groups', JSON.stringify(updated));
                                                                     await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updated).catch(()=>{});
-                                                                    toast.success("Guruh kodi yangilandi: " + newCode);
+                                                                    toast.success(t('adminDashboard.toast.groupCodeUpdated', "Guruh kodi yangilandi: ") + newCode);
                                                                 }}
                                                                 className="text-gray-400 hover:text-red-500 text-[10px] cursor-pointer"
-                                                                title="Kodni yangilash"
+                                                                title={t('adminDashboard.refreshCodeTooltip', "Kodni yangilash")}
                                                             >
                                                                 <FaSync />
                                                             </button>
                                                         </div>
                                                     </td>
                                                     <td className="py-4 px-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
-                                                        {(group.students || []).length} nafar
+                                                        {(group.students || []).length} {t('adminDashboard.studentsSuffix', "nafar")}
                                                     </td>
                                                     <td className="py-4 px-4 text-right">
                                                         <div className="flex items-center justify-end gap-3">
@@ -1269,7 +1310,7 @@ return (
                                     <span>{t('adminDashboard.studentsTab', "O'quvchilar Boshqaruvi")}</span>
                                 </h2>
                                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                    Ro'yxatdan o'tgan o'quvchilar hisoblari, status va parollarni tiklash
+                                    {t('adminDashboard.studentsSubtitle', "Ro'yxatdan o'tgan o'quvchilar hisoblari, status va parollarni tiklash")}
                                 </p>
                             </div>
 
@@ -1280,7 +1321,7 @@ return (
                                         type="text"
                                         value={studentSearchTerm}
                                         onChange={(e) => setStudentSearchTerm(e.target.value)}
-                                        placeholder="Ism yoki login bo'yicha qidirish..."
+                                        placeholder={t('adminDashboard.searchStudentPlaceholder', "Ism yoki login bo'yicha qidirish...")}
                                         className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white"
                                     />
                                 </div>
@@ -1290,7 +1331,7 @@ return (
                                     onChange={(e) => setStudentGroupFilter(e.target.value)}
                                     className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
                                 >
-                                    <option value="all">Barcha guruhlar</option>
+                                    <option value="all">{t('adminDashboard.allGroups', "Barcha guruhlar")}</option>
                                     {groups.map(g => (
                                         <option key={g.id} value={g.id}>{g.name}</option>
                                     ))}
@@ -1301,10 +1342,10 @@ return (
                                     onChange={(e) => setStudentStatusFilter(e.target.value)}
                                     className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
                                 >
-                                    <option value="all">Barcha statuslar</option>
-                                    <option value="pending">⏳ Kutilmoqda (Tasdiqlash kerak)</option>
-                                    <option value="active">✅ Faol</option>
-                                    <option value="suspended">⛔ To'xtatilgan</option>
+                                    <option value="all">{t('adminDashboard.allStatuses', "Barcha statuslar")}</option>
+                                    <option value="pending">{t('adminDashboard.statusPendingOption', "⏳ Kutilmoqda (Tasdiqlash kerak)")}</option>
+                                    <option value="active">{t('adminDashboard.statusActiveOption', "✅ Faol")}</option>
+                                    <option value="suspended">{t('adminDashboard.statusSuspendedOption', "⛔ To'xtatilgan")}</option>
                                 </select>
                             </div>
                         </div>
@@ -1315,14 +1356,14 @@ return (
                                 <div className="flex items-center gap-3">
                                     <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
                                     <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
-                                        🔔 Yangi arizalar: {registeredUsers.filter(u => u.status === 'pending').length} ta talaba hisobi administrator tasdig'ini kutmoqda!
+                                        🔔 {t('adminDashboard.newRequestsAlert', "Yangi arizalar:")} {registeredUsers.filter(u => u.status === 'pending').length} {t('adminDashboard.pendingAlertDesc', "ta talaba hisobi administrator tasdig'ini kutmoqda!")}
                                     </span>
                                 </div>
                                 <button
                                     onClick={() => setStudentStatusFilter('pending')}
                                     className="self-start sm:self-auto px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
                                 >
-                                    Kutilayotganlarni ko'rish
+                                    {t('adminDashboard.viewPendingBtn', "Kutilayotganlarni ko'rish")}
                                 </button>
                             </div>
                         )}
@@ -1332,12 +1373,12 @@ return (
                             <table className="w-full text-left border-collapse min-w-[750px]">
                                 <thead>
                                     <tr className="border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                        <th className="py-3.5 px-4 font-medium">O'quvchi</th>
-                                        <th className="py-3.5 px-4 font-medium">Login (Username)</th>
-                                        <th className="py-3.5 px-4 font-medium">Guruh</th>
-                                        <th className="py-3.5 px-4 font-medium">Status</th>
-                                        <th className="py-3.5 px-4 font-medium">Telefon</th>
-                                        <th className="py-3.5 px-4 font-medium text-right">Amallar</th>
+                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colStudent', "O'quvchi")}</th>
+                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colUsername', "Login (Username)")}</th>
+                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colGroup', "Guruh")}</th>
+                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colStatus', "Status")}</th>
+                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colPhone', "Telefon")}</th>
+                                        <th className="py-3.5 px-4 font-medium text-right">{t('adminDashboard.actions', "Amallar")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1353,7 +1394,7 @@ return (
                                         .length === 0 ? (
                                         <tr>
                                             <td colSpan="6" className="py-12 text-center text-gray-500">
-                                                Mos keluvchi ro'yxatdan o'tgan o'quvchilar topilmadi.
+                                                {t('adminDashboard.noMatchingStudents', "Mos keluvchi ro'yxatdan o'tgan o'quvchilar topilmadi.")}
                                             </td>
                                         </tr>
                                     ) : (
@@ -1377,7 +1418,7 @@ return (
                                                     <td className="py-3.5 px-4 font-mono text-xs font-semibold text-gray-600 dark:text-gray-300">
                                                         <div className="font-bold text-gray-900 dark:text-white">@{st.username}</div>
                                                         <div className="flex items-center gap-1.5 mt-1">
-                                                            <span className="text-[10px] text-gray-400 font-sans">Parol:</span>
+                                                            <span className="text-[10px] text-gray-400 font-sans">{t('studentDashboard.passwordLabel', "Parol:")}</span>
                                                             <span className="font-mono text-xs text-indigo-600 dark:text-indigo-400 font-bold">
                                                                 {revealedPasswords[st.id] ? (st.rawPassword || '••••••••') : '••••••••'}
                                                             </span>
@@ -1386,7 +1427,7 @@ return (
                                                                     type="button"
                                                                     onClick={() => toggleRevealPassword(st.id)}
                                                                     className="text-gray-400 hover:text-indigo-500 transition ml-0.5"
-                                                                    title={revealedPasswords[st.id] ? "Yashirish" : "Ko'rish"}
+                                                                    title={revealedPasswords[st.id] ? t('common.hide', "Yashirish") : t('common.view', "Ko'rish")}
                                                                 >
                                                                     {revealedPasswords[st.id] ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
                                                                 </button>
@@ -1395,24 +1436,24 @@ return (
                                                     </td>
                                                     <td className="py-3.5 px-4">
                                                         <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400">
-                                                            {st.groupName || groups.find(g => g.id === st.groupId)?.name || 'Guruhsiz'}
+                                                            {st.groupName || groups.find(g => g.id === st.groupId)?.name || t('studentDashboard.notAssigned', "Guruhsiz")}
                                                         </span>
                                                     </td>
                                                     <td className="py-3.5 px-4">
                                                         {st.status === 'pending' ? (
                                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-500/20">
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                                                <span>Kutilmoqda</span>
+                                                                <span>{t('studentDashboard.schedule.pending', "Kutilmoqda")}</span>
                                                             </span>
                                                         ) : st.status === 'suspended' ? (
                                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                                                                <span>To'xtatilgan</span>
+                                                                <span>{t('adminDashboard.statusSuspendedLabel', "To'xtatilgan")}</span>
                                                             </span>
                                                         ) : (
                                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                                                <span>Faol</span>
+                                                                <span>{t('adminDashboard.statusActiveLabel', "Faol")}</span>
                                                             </span>
                                                         )}
                                                     </td>
@@ -1423,20 +1464,19 @@ return (
                                                         <div className="flex items-center justify-end gap-2">
                                                             {st.status === 'pending' && (
                                                                 <button
-                                                                    onClick={async () => {
-                                                                        try {
-                                                                            await adminApproveStudent(st.id, st.groupId);
-                                                                            loadRegisteredUsers();
-                                                                            toast.success(`${st.name} tasdiqlandi va faollashtirildi!`);
-                                                                        } catch (err) {
-                                                                            toast.error("Tasdiqlashda xatolik yuz berdi");
-                                                                        }
+                                                                    onClick={() => {
+                                                                        // Optimistic instant update (0ms)
+                                                                        setRegisteredUsers(prev => prev.map(u => u.id === st.id ? { ...u, status: 'active' } : u));
+                                                                        toast.success(t('adminDashboard.toast.studentApproved', "{{name}} tasdiqlandi va faollashtirildi!", { name: st.name }));
+                                                                        adminApproveStudent(st.id, st.groupId).catch(err => {
+                                                                            console.error('Approve error:', err);
+                                                                        });
                                                                     }}
                                                                     className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
-                                                                    title="O'quvchini tasdiqlash"
+                                                                    title={t('adminDashboard.approveStudentTooltip', "O'quvchini tasdiqlash")}
                                                                 >
                                                                     <FaCheckCircle className="text-xs" />
-                                                                    <span>Tasdiqlash</span>
+                                                                    <span>{t('adminDashboard.approveBtn', "Tasdiqlash")}</span>
                                                                 </button>
                                                             )}
 
@@ -1446,8 +1486,8 @@ return (
                                                                     setEditModalUsername(st.username || (st.name ? st.name.toLowerCase().replace(/[^a-z0-9]/g, '') : ''));
                                                                     setNewResetPasswordValue('');
                                                                 }}
-                                                                className="p-1.5 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 transition-colors"
-                                                                title="Login va parolni sozlash"
+                                                                className="p-1.5 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 transition-colors cursor-pointer"
+                                                                title={t('adminDashboard.resetCredentialsTooltip', "Login va parolni sozlash")}
                                                             >
                                                                 <FaKey className="text-xs" />
                                                             </button>
@@ -1457,31 +1497,38 @@ return (
                                                                     setTransferModalStudent(st);
                                                                     setTransferTargetGroupId(st.groupId || '');
                                                                 }}
-                                                                className="p-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 transition-colors"
-                                                                title="Boshqa guruhga ko'chirish"
+                                                                className="p-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 transition-colors cursor-pointer"
+                                                                title={t('adminDashboard.transferGroupTooltip', "Boshqa guruhga ko'chirish")}
                                                             >
                                                                 <FaUsers className="text-xs" />
                                                             </button>
 
                                                             <button
-                                                                onClick={async () => {
+                                                                onClick={() => {
                                                                     const nextStatus = st.status === 'suspended' ? 'active' : 'suspended';
-                                                                    try {
-                                                                        await adminSetStudentStatus(st.id, nextStatus);
-                                                                        loadRegisteredUsers();
-                                                                        toast.success(`O'quvchi statusi o'zgartirildi: ${nextStatus}`);
-                                                                    } catch (err) {
-                                                                        toast.error("Xatolik yuz berdi");
-                                                                    }
+                                                                    // Optimistic instant update (0ms)
+                                                                    setRegisteredUsers(prev => prev.map(u => u.id === st.id ? { ...u, status: nextStatus } : u));
+                                                                    toast.success(t('adminDashboard.toast.statusChanged', "O'quvchi statusi o'zgartirildi: {{status}}", { status: nextStatus }));
+                                                                    adminSetStudentStatus(st.id, nextStatus).catch(err => {
+                                                                        console.error('Status sync error:', err);
+                                                                    });
                                                                 }}
-                                                                className={`p-1.5 rounded-lg transition-colors ${
+                                                                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                                                                     st.status === 'suspended'
                                                                         ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400'
                                                                         : 'bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400'
                                                                 }`}
-                                                                title={st.status === 'suspended' ? "Faollashtirish" : "To'xtatish"}
+                                                                title={st.status === 'suspended' ? t('adminDashboard.activateTooltip', "Faollashtirish") : t('adminDashboard.suspendTooltip', "To'xtatish")}
                                                             >
                                                                 {st.status === 'suspended' ? <FaCheckCircle className="text-xs" /> : <FaTimesCircle className="text-xs" />}
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => setDeleteModalStudent(st)}
+                                                                className="p-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400 hover:text-rose-700 transition-colors cursor-pointer"
+                                                                title={t('adminDashboard.deleteStudentTooltip', "O'quvchini butunlay o'chirish")}
+                                                            >
+                                                                <FaTrash className="text-xs" />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -1512,7 +1559,7 @@ return (
                             <FaKey />
                         </div>
                         <div>
-                            <h3 className="text-base font-black text-gray-900 dark:text-white">Kirish ma'lumotlarini sozlash</h3>
+                            <h3 className="text-base font-black text-gray-900 dark:text-white">{t('adminDashboard.modalResetTitle', "Kirish ma'lumotlarini sozlash")}</h3>
                             <p className="text-xs text-gray-400 mt-0.5">{resetPasswordModalStudent.name}</p>
                         </div>
                     </div>
@@ -1520,16 +1567,16 @@ return (
                     <form onSubmit={async (e) => {
                         e.preventDefault();
                         if (!editModalUsername || editModalUsername.length < 3) {
-                            toast.error("Login kamida 3 ta belgi bo'lishi kerak!");
+                            toast.error(t('adminDashboard.toast.loginMinLength', "Login kamida 3 ta belgi bo'lishi kerak!"));
                             return;
                         }
                         if (!newResetPasswordValue || newResetPasswordValue.length < 6) {
-                            toast.error("Parol kamida 6 ta belgi bo'lishi kerak!");
+                            toast.error(t('adminDashboard.toast.passwordMinLength', "Parol kamida 6 ta belgi bo'lishi kerak!"));
                             return;
                         }
                         try {
                             await adminUpdateStudentCredentials(resetPasswordModalStudent.id, editModalUsername, newResetPasswordValue, resetPasswordModalStudent.name);
-                            toast.success("O'quvchi logini va paroli saqlandi!");
+                            toast.success(t('adminDashboard.toast.credentialsSaved', "O'quvchi logini va paroli saqlandi!"));
                             setResetPasswordModalStudent(null);
                             await loadRegisteredUsers();
                             await loadGroups();
@@ -1564,26 +1611,26 @@ return (
                         }
                     }} className="space-y-4">
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Login (Username)</label>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.modalUsernameLabel', "Login (Username)")}</label>
                             <div className="relative">
                                 <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 font-mono text-xs">@</span>
                                 <input
                                     type="text"
                                     value={editModalUsername}
                                     onChange={(e) => setEditModalUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
-                                    placeholder="login"
+                                    placeholder={t('adminDashboard.modalUsernamePlaceholder', "login")}
                                     className="w-full pl-8 pr-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-mono font-bold focus:outline-none focus:border-indigo-500 text-indigo-600 dark:text-indigo-400"
                                     required
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Yangi parol</label>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.modalNewPasswordLabel', "Yangi parol")}</label>
                             <input
                                 type="text"
                                 value={newResetPasswordValue}
                                 onChange={(e) => setNewResetPasswordValue(e.target.value)}
-                                placeholder="Kamida 6 ta belgi"
+                                placeholder={t('adminDashboard.modalPasswordPlaceholder', "Kamida 6 ta belgi")}
                                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-indigo-500 text-gray-900 dark:text-white"
                                 required
                             />
@@ -1594,13 +1641,13 @@ return (
                                 onClick={() => setResetPasswordModalStudent(null)}
                                 className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 transition"
                             >
-                                Bekor qilish
+                                {t('adminDashboard.cancel', "Bekor qilish")}
                             </button>
                             <button
                                 type="submit"
                                 className="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-500/20 transition"
                             >
-                                Saqlash
+                                {t('adminDashboard.save', "Saqlash")}
                             </button>
                         </div>
                     </form>
@@ -1617,7 +1664,7 @@ return (
                             <FaUsers />
                         </div>
                         <div>
-                            <h3 className="text-base font-black text-gray-900 dark:text-white">Guruhga ko'chirish</h3>
+                            <h3 className="text-base font-black text-gray-900 dark:text-white">{t('adminDashboard.modalTransferTitle', "Guruhga ko'chirish")}</h3>
                             <p className="text-xs text-gray-400 mt-0.5">{transferModalStudent.name}</p>
                         </div>
                     </div>
@@ -1625,12 +1672,12 @@ return (
                     <form onSubmit={async (e) => {
                         e.preventDefault();
                         if (!transferTargetGroupId) {
-                            toast.error("Guruhni tanlang!");
+                            toast.error(t('adminDashboard.toast.selectGroupError', "Guruhni tanlang!"));
                             return;
                         }
                         try {
                             await adminTransferStudent(transferModalStudent.id, transferTargetGroupId);
-                            toast.success("O'quvchi boshqa guruhga ko'chirildi!");
+                            toast.success(t('adminDashboard.toast.studentTransferred', "O'quvchi boshqa guruhga ko'chirildi!"));
                             setTransferModalStudent(null);
                             loadRegisteredUsers();
                             loadGroups();
@@ -1639,14 +1686,14 @@ return (
                         }
                     }} className="space-y-4">
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Yangi guruhni tanlang</label>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminDashboard.modalSelectNewGroup', "Yangi guruhni tanlang")}</label>
                             <select
                                 value={transferTargetGroupId}
                                 onChange={(e) => setTransferTargetGroupId(e.target.value)}
                                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white"
                                 required
                             >
-                                <option value="">Guruhni tanlang...</option>
+                                <option value="">{t('adminDashboard.selectGroup', "Guruhni tanlang...")}</option>
                                 {groups.map(g => (
                                     <option key={g.id} value={g.id}>{g.name}</option>
                                 ))}
@@ -1658,13 +1705,13 @@ return (
                                 onClick={() => setTransferModalStudent(null)}
                                 className="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 transition"
                             >
-                                Bekor qilish
+                                {t('adminDashboard.cancel', "Bekor qilish")}
                             </button>
                             <button
                                 type="submit"
                                 className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition"
                             >
-                                Ko'chirish
+                                {t('adminDashboard.transferBtn', "Ko'chirish")}
                             </button>
                         </div>
                     </form>
@@ -1685,8 +1732,8 @@ return (
                             <FaCalendarAlt />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black text-gray-900 dark:text-white">{moment(selectedDateForModal).format('DD MMMM, YYYY')} - Dars jadvali</h3>
-                            <p className="text-sm font-bold text-gray-500 mt-1">Soatlar kesimida guruhlar</p>
+                            <h3 className="text-xl font-black text-gray-900 dark:text-white">{moment(selectedDateForModal).format('DD MMMM, YYYY')} - {t('adminDashboard.dailyScheduleTitle', "Dars jadvali")}</h3>
+                            <p className="text-sm font-bold text-gray-500 mt-1">{t('adminDashboard.dailyScheduleSubtitle', "Soatlar kesimida guruhlar")}</p>
                         </div>
                     </div>
 
@@ -1751,7 +1798,7 @@ return (
                                                     <div className="w-full text-left py-3.5 px-5 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-800/20 text-gray-400/60 dark:text-gray-600 font-bold text-sm">
                                                         <span className="flex items-center gap-3">
                                                             <FaCalendarAlt className="text-lg opacity-30" /> 
-                                                            <span>Bu vaqtda dars o'tilmagan</span>
+                                                            <span>{t('adminDashboard.pastTimeEmpty', "Bu vaqtda dars o'tilmagan")}</span>
                                                         </span>
                                                     </div>
                                                 ) : (
@@ -1765,7 +1812,7 @@ return (
                                                     }} className="w-full text-left py-3.5 px-5 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700/60 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold text-sm transition-all duration-300 group shadow-sm hover:shadow-md">
                                                         <span className="flex items-center gap-3">
                                                             <FaCalendarAlt className="text-lg opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all" /> 
-                                                            <span>Bu vaqt bo'sh. Guruh qo'shish</span>
+                                                            <span>{t('adminDashboard.emptySlotAddGroup', "Bu vaqt bo'sh. Guruh qo'shish")}</span>
                                                         </span>
                                                     </button>
                                                 )
@@ -1787,7 +1834,7 @@ return (
                         <FaTrash />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-gray-900 dark:text-white">Ushbu jadvalni o'chirmoqchimisiz?</h3>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminDashboard.deleteScheduleConfirm', "Ushbu jadvalni o'chirmoqchimisiz?")}</h3>
                         <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalSchedule.group}</p>
                     </div>
                     <div className="flex items-center justify-center gap-3 pt-2">
@@ -1806,7 +1853,7 @@ return (
                             <FaCalendarAlt />
                         </div>
                         <div>
-                            <h3 className="text-lg font-black text-gray-900 dark:text-white">{editingScheduleId ? "Jadvalni tahrirlash" : "Yangi jadval qo'shish"}</h3>
+                            <h3 className="text-lg font-black text-gray-900 dark:text-white">{editingScheduleId ? t('adminDashboard.editScheduleTitle', "Jadvalni tahrirlash") : t('adminDashboard.addScheduleTitle', "Yangi jadval qo'shish")}</h3>
                         </div>
                     </div>
 
@@ -1927,7 +1974,7 @@ return (
                                         onClick={() => setShowColorPicker(!showColorPicker)}
                                         className={`w-8 h-8 rounded-full shadow-sm flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 transition-transform ${(!GROUP_COLORS.includes(newGroupColor) || showColorPicker) ? 'scale-125 ring-2 ring-offset-2 ring-gray-400 border-none' : 'hover:scale-110'}`}
                                         style={{ background: !GROUP_COLORS.includes(newGroupColor) ? newGroupColor : 'transparent' }}
-                                        title="Boshqa rang tanlash"
+                                        title={t('adminDashboard.customColorTooltip', "Boshqa rang tanlash")}
                                     >
                                         {GROUP_COLORS.includes(newGroupColor) && <span className="text-gray-400 text-lg leading-none font-light mb-0.5">+</span>}
                                     </button>
@@ -2019,12 +2066,12 @@ return (
                                                 <h4 className="font-bold text-gray-900 dark:text-white truncate" title={student.name}>{student.name}</h4>
                                                 <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate mt-0.5">{student.phone}</p>
                                                 <div className="flex items-center gap-1.5 mt-1 text-xs">
-                                                    <span className="text-gray-400 font-sans">Login:</span>
+                                                    <span className="text-gray-400 font-sans">{t('adminDashboard.loginLabel', "Login:")}</span>
                                                     <span className="font-mono text-indigo-500 dark:text-indigo-400 font-bold truncate">@{uname || (student.name ? student.name.toLowerCase().replace(/[^a-z0-9]/g, '') : 'student')}</span>
                                                 </div>
                                                 {pwd ? (
                                                     <div className="flex items-center gap-1.5 mt-1 bg-gray-50 dark:bg-gray-900/50 px-2.5 py-1 rounded-lg border border-gray-100 dark:border-gray-700/50 w-fit">
-                                                        <span className="text-[10px] text-gray-400 font-sans">Parol:</span>
+                                                        <span className="text-[10px] text-gray-400 font-sans">{t('adminDashboard.passwordLabel', "Parol:")}</span>
                                                         <span className="font-mono text-xs text-emerald-600 dark:text-emerald-400 font-bold">
                                                             {revealedPasswords[studentKey] ? pwd : '••••••••'}
                                                         </span>
@@ -2047,9 +2094,9 @@ return (
                                                             setNewResetPasswordValue('');
                                                         }}
                                                         className="flex items-center gap-1 mt-1 text-[11px] font-bold text-amber-500 hover:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/20 w-fit transition cursor-pointer"
-                                                        title="Login va parol o'rnatish"
+                                                        title={t('adminDashboard.setCredentialsTooltip', "Login va parol o'rnatish")}
                                                     >
-                                                        <FaKey className="text-[9px]" /> <span>Login va parol o'rnatish</span>
+                                                        <FaKey className="text-[9px]" /> <span>{t('adminDashboard.setCredentialsBtn', "Login va parol o'rnatish")}</span>
                                                     </button>
                                                 )}
                                             </div>
@@ -2189,16 +2236,40 @@ return (
         {deleteModalStudent && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 animate-fade-in">
                 <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl text-center space-y-5 relative">
-                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 flex items-center justify-center text-2xl mx-auto">
+                    <div className="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 flex items-center justify-center text-2xl mx-auto shadow-md shadow-rose-500/10">
                         <FaTrash />
                     </div>
                     <div>
-                        <h3 className="text-lg font-black text-gray-900 dark:text-white">{t('adminDashboard.deleteStudentConfirm')}</h3>
-                        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mt-2">{deleteModalStudent.name}</p>
+                        <h3 className="text-lg font-black text-gray-900 dark:text-white">
+                            {t('adminDashboard.deleteStudentConfirm', "O'quvchini o'chirishni tasdiqlaysizmi?")}
+                        </h3>
+                        <p className="text-sm font-bold text-gray-800 dark:text-gray-200 mt-2">
+                            {deleteModalStudent.name}
+                        </p>
+                        {deleteModalStudent.username && (
+                            <p className="text-xs font-mono text-gray-400 mt-0.5">
+                                @{deleteModalStudent.username}
+                            </p>
+                        )}
+                        <p className="text-xs text-rose-500 dark:text-rose-400 mt-2">
+                            {t('adminDashboard.deleteStudentWarning', "Ushbu amal qaytarilmaydi. O'quvchining akkaunti va barcha guruhdagi ma'lumotlari butunlay o'chiriladi.")}
+                        </p>
                     </div>
                     <div className="flex items-center justify-center gap-3 pt-2">
-                        <button onClick={() => setDeleteModalStudent(null)} className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">{t('adminDashboard.cancel')}</button>
-                        <button onClick={() => handleDeleteStudent(deleteModalStudent.id)} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition">{t('adminDashboard.deleteConfirmBtn')}</button>
+                        <button
+                            type="button"
+                            onClick={() => setDeleteModalStudent(null)}
+                            className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition cursor-pointer"
+                        >
+                            {t('adminDashboard.cancel', 'Bekor qilish')}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => handleDeleteStudent(deleteModalStudent)}
+                            className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 transition cursor-pointer"
+                        >
+                            {t('adminDashboard.deleteConfirmBtn', "O'chirish")}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2222,17 +2293,17 @@ return (
                             <div className="flex items-center justify-between text-purple-700 dark:text-purple-300 font-bold">
                                 <span className="flex items-center gap-1.5">
                                     <FaKey className="text-[11px]" />
-                                    <span>Biriktiriladigan akkaunt:</span>
+                                    <span>{t('adminPanel.linkedAccountHeader', "Biriktiriladigan akkaunt:")}</span>
                                 </span>
                                 <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 px-2 py-0.5 rounded-full font-bold">
-                                    Avtomatik
+                                    {t('adminPanel.automaticBadge', "Avtomatik")}
                                 </span>
                             </div>
                             <div className="text-gray-700 dark:text-gray-300 font-mono text-xs space-y-0.5 pt-1">
-                                <div><span className="text-gray-400 font-sans">Login:</span> <strong className="text-purple-600 dark:text-purple-400">@{leadToAccept.requestedUsername}</strong></div>
-                                <div><span className="text-gray-400 font-sans">Parol:</span> <strong>{leadToAccept.requestedPassword}</strong></div>
-                                {leadToAccept.course && <div><span className="text-gray-400 font-sans">Kurs:</span> {leadToAccept.course}</div>}
-                                {leadToAccept.note && <div><span className="text-gray-400 font-sans">Taklif/Izoh:</span> {leadToAccept.note}</div>}
+                                <div><span className="text-gray-400 font-sans">{t('adminPanel.loginLabel', "Login:")}</span> <strong className="text-purple-600 dark:text-purple-400">@{leadToAccept.requestedUsername}</strong></div>
+                                <div><span className="text-gray-400 font-sans">{t('adminPanel.passwordLabel', "Parol:")}</span> <strong>{leadToAccept.requestedPassword}</strong></div>
+                                {leadToAccept.course && <div><span className="text-gray-400 font-sans">{t('adminPanel.courseLabel', "Kurs:")}</span> {leadToAccept.course}</div>}
+                                {leadToAccept.note && <div><span className="text-gray-400 font-sans">{t('adminPanel.noteLabel', "Taklif / Izoh")}:</span> {leadToAccept.note}</div>}
                             </div>
                         </div>
                     )}
@@ -2292,7 +2363,7 @@ return (
                                 <FaClipboardList />
                             </div>
                             <div>
-                                <h3 className="text-base font-black text-gray-900 dark:text-white">Murojaat tafsilotlari</h3>
+                                <h3 className="text-base font-black text-gray-900 dark:text-white">{t('adminPanel.leadDetailsTitle', "Murojaat tafsilotlari")}</h3>
                                 <p className="text-xs text-gray-400">{deleteModalLead.date}</p>
                             </div>
                         </div>
@@ -2307,34 +2378,34 @@ return (
                             <span className="font-bold text-gray-900 dark:text-white">{deleteModalLead.name}</span>
                         </div>
                         <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-                            <span className="text-gray-400 font-medium">Telefon:</span>
+                            <span className="text-gray-400 font-medium">{t('adminPanel.phoneLabel', "Telefon")}:</span>
                             <span className="font-bold text-gray-900 dark:text-white font-mono">{deleteModalLead.phone}</span>
                         </div>
                         <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-                            <span className="text-gray-400 font-medium">Turi:</span>
-                            <span className="font-bold text-gray-900 dark:text-white">{deleteModalLead.type}</span>
+                            <span className="text-gray-400 font-medium">{t('adminPanel.typeLabel', "Turi")}:</span>
+                            <span className="font-bold text-gray-900 dark:text-white">{getTranslatedType(deleteModalLead.type)}</span>
                         </div>
                         {deleteModalLead.requestedUsername && (
                             <div className="p-3 bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800/40 rounded-xl space-y-1 font-mono">
-                                <div className="text-purple-700 dark:text-purple-300 font-bold font-sans">🔑 Akkaunt ma'lumotlari:</div>
-                                <div><span className="text-gray-400 font-sans">Login:</span> <strong className="text-purple-600 dark:text-purple-400">@{deleteModalLead.requestedUsername}</strong></div>
-                                <div><span className="text-gray-400 font-sans">Parol:</span> <strong>{deleteModalLead.requestedPassword}</strong></div>
+                                <div className="text-purple-700 dark:text-purple-300 font-bold font-sans">🔑 {t('adminPanel.accountDetailsTitle', "Akkaunt ma'lumotlari:")}</div>
+                                <div><span className="text-gray-400 font-sans">{t('adminPanel.loginLabel', "Login:")}</span> <strong className="text-purple-600 dark:text-purple-400">@{deleteModalLead.requestedUsername}</strong></div>
+                                <div><span className="text-gray-400 font-sans">{t('adminPanel.passwordLabel', "Parol:")}</span> <strong>{deleteModalLead.requestedPassword}</strong></div>
                             </div>
                         )}
                         {deleteModalLead.course && (
                             <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-                                <span className="text-gray-400 font-medium">Kurs / Yo'nalish:</span>
+                                <span className="text-gray-400 font-medium">{t('adminPanel.courseDirectionLabel', "Kurs / Yo'nalish")}:</span>
                                 <span className="font-bold text-gray-900 dark:text-white">{deleteModalLead.course}</span>
                             </div>
                         )}
                         {deleteModalLead.note && (
                             <div className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 space-y-1">
-                                <span className="text-gray-400 font-medium">Taklif / Izoh:</span>
+                                <span className="text-gray-400 font-medium">{t('adminPanel.noteLabel', "Taklif / Izoh")}:</span>
                                 <p className="text-gray-700 dark:text-gray-300 font-normal">{deleteModalLead.note}</p>
                             </div>
                         )}
                         <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800/50">
-                            <span className="text-gray-400 font-medium">Status:</span>
+                            <span className="text-gray-400 font-medium">{t('adminPanel.statusLabel', "Status")}:</span>
                             <span className={`px-2 py-0.5 rounded-md font-bold ${
                                 deleteModalLead.status === 'Qabul qilindi' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400' :
                                 deleteModalLead.status === 'Rad etildi' ? 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-400' :
@@ -2356,7 +2427,7 @@ return (
                                 className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-1.5"
                             >
                                 <FaCheckCircle />
-                                <span>Guruhga qabul</span>
+                                <span>{t('adminPanel.acceptToGroupBtn', "Guruhga qabul")}</span>
                             </button>
                         )}
                         <button 
@@ -2364,13 +2435,13 @@ return (
                             className="px-4 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs shadow-md shadow-rose-500/20 transition flex items-center justify-center gap-1.5"
                         >
                             <FaTrash />
-                            <span>O'chirish</span>
+                            <span>{t('adminPanel.deleteBtn', "O'chirish")}</span>
                         </button>
                         <button 
                             onClick={() => setDeleteModalLead(null)} 
                             className="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 dark:hover:bg-gray-700 transition"
                         >
-                            Yopish
+                            {t('adminPanel.closeBtn', "Yopish")}
                         </button>
                     </div>
                 </div>
@@ -2410,7 +2481,7 @@ return (
                             </div>
                         </div>
                         <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-1.5">Guruhni tanlang (Majburiy emas)</label>
+                            <label className="block text-xs font-bold text-gray-500 mb-1.5">{t('adminPanel.selectGroupOptional', "Guruhni tanlang (Majburiy emas)")}</label>
                             <div className="relative">
                                 <button
                                     type="button"

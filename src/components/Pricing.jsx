@@ -5,70 +5,62 @@ import { FaCheckCircle, FaStar, FaTelegramPlane, FaPhoneAlt, FaShieldAlt } from 
 
 const PHONE_NUMBER = '+998 90 082 99 79'
 
-const PLANS = [
+const RAW_PLANS = [
     { 
         id: 'basic', 
         price: '500 000', 
         levelKeys: ['starter', 'beginner', 'elementary'], 
         levelsLabel: 'Starter — Elementary',
-        badge: 'Boshlang\'ich',
-        features: [
-            "Ingliz tili alifbosi va asosiy fonetika",
-            "1,000+ eng ko'p ishlatiladigan so'zlar",
-            "Boshlang'ich grammatika qoidalari",
-            "Haftasiga 3 marta jonli darslar",
-            "Shaxsiy mentor tekshiruvi"
-        ]
+        badgeKey: 'pricing.badgeStarter',
+        descKey: 'pricing.basicDesc',
+        featureKeys: ['pricing.f_basic_1', 'pricing.f_basic_2', 'pricing.f_basic_3', 'pricing.f_basic_4', 'pricing.f_basic_5']
     },
     { 
         id: 'standard', 
         price: '600 000', 
         levelKeys: ['intermediate', 'upperIntermediate'], 
         levelsLabel: 'Elementary — Intermediate',
-        badge: 'O\'rta Bosqich',
-        features: [
-            "Erkin jonli muloqot va Speaking klub",
-            "IELTS Foundation va Academic Vocabulary",
-            "Barcha grammatik konstruksiyalar",
-            "Mini-mock testlar va muntazam tahlil",
-            "CDI simulatoriga to'liq kirish"
-        ]
+        badgeKey: 'pricing.badgeStandard',
+        descKey: 'pricing.standardDesc',
+        featureKeys: ['pricing.f_std_1', 'pricing.f_std_2', 'pricing.f_std_3', 'pricing.f_std_4', 'pricing.f_std_5']
     },
     { 
         id: 'advanced', 
         price: '700 000', 
         levelKeys: ['advanced'], 
         levelsLabel: 'IELTS Intensive & Advanced',
-        badge: 'Yuqori Natija',
-        features: [
-            "IELTS 7.5+ va 8.0 maqsadli strategiya",
-            "AI asosidagi Writing va Speaking tahlili",
-            "Real CDI Mock Testlar (barcha 4 modul)",
-            "Tajribali IELTS 8.0+ instruktor bilan darslar",
-            "Kafolatlangan natija monitoringi"
-        ]
+        badgeKey: 'pricing.badgeAdvanced',
+        descKey: 'pricing.advancedDesc',
+        featureKeys: ['pricing.f_adv_1', 'pricing.f_adv_2', 'pricing.f_adv_3', 'pricing.f_adv_4', 'pricing.f_adv_5']
     },
 ]
-
-function getPlanForLevel(levelKey) {
-    return PLANS.find((p) => p.levelKeys.includes(levelKey)) || null
-}
 
 export default function Pricing() {
     const { t } = useTranslation()
     const location = useLocation()
     const navigate = useNavigate()
 
+    const plans = RAW_PLANS.map((p) => ({
+        ...p,
+        badge: t(p.badgeKey),
+        description: t(p.descKey),
+        features: p.featureKeys.map((k) => t(k))
+    }))
+
     const levelKey = location.state?.levelKey || null
     const levelLabel = location.state?.levelLabel || null
-    const matchedPlan = levelKey ? getPlanForLevel(levelKey) : null
+    const matchedPlan = levelKey ? plans.find((p) => p.levelKeys.includes(levelKey)) || null : null
 
     const [selectedFilter, setSelectedFilter] = useState('all')
-    const filteredPlans = selectedFilter === 'all' ? PLANS : PLANS.filter(p => p.id === selectedFilter)
+    const filteredPlans = selectedFilter === 'all' ? plans : plans.filter((p) => p.id === selectedFilter)
 
     const contactTelegram = (planTitle) => {
         const text = encodeURIComponent(
-            `Salom! Men ${levelLabel ? `"${levelLabel}"` : ''} darajasi bo'yicha "${planTitle}" kursiga yozilmoqchiman.`
+            t('pricing.telegramPrompt', {
+                plan: planTitle,
+                level: levelLabel || planTitle,
+                defaultValue: `Salom! Men ${levelLabel ? `"${levelLabel}"` : ''} darajasi bo'yicha "${planTitle}" kursiga yozilmoqchiman.`
+            })
         )
         window.open(`https://t.me/rukhillo?text=${text}`, '_blank')
     }
@@ -94,23 +86,23 @@ export default function Pricing() {
                     </div>
 
                     <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight font-heading leading-tight">
-                        {t('pricing.title', "O'zingizga mos kurs va")}{' '}
+                        {t('pricing.titlePrefix', "O'zingizga mos kurs va")}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
-                            tarifni tanlang
+                            {t('pricing.titleHighlight', 'tarifni tanlang')}
                         </span>
                     </h1>
 
                     <p className="text-slate-600 dark:text-slate-400 mt-4 text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed">
                         {levelLabel
-                            ? `Sizning darajangiz: ${levelLabel}. Quyidagi tarif sizga tavsiya etiladi.`
-                            : "Har bir bosqich uchun maxsus ishlab chiqilgan o‘quv rejalari va shaffof narxlar."}
+                            ? t('pricing.descriptionWithLevel', { level: levelLabel, defaultValue: `Sizning darajangiz: ${levelLabel}. Quyidagi tarif sizga tavsiya etiladi.` })
+                            : t('pricing.subtitle', "Har bir bosqich uchun maxsus ishlab chiqilgan o‘quv rejalari va shaffof narxlar.")}
                     </p>
 
                     {/* Matched Plan Alert */}
                     {matchedPlan && (
                         <div className="mt-5 inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 backdrop-blur-xl px-5 py-2.5 rounded-2xl shadow-xs">
                             <span className="text-xs sm:text-sm font-black text-red-600 dark:text-red-400">
-                                Sizning darajangiz uchun: {matchedPlan.price} so'mlik kurs tavsiya etiladi
+                                {t('pricing.matchedPlanAlert', { price: matchedPlan.price, defaultValue: `Sizning darajangiz uchun: ${matchedPlan.price} so'mlik kurs tavsiya etiladi` })}
                             </span>
                         </div>
                     )}
@@ -118,10 +110,10 @@ export default function Pricing() {
                     {/* Liquid Glass Filter buttons */}
                     <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
                         {[
-                            { id: 'all', label: 'Barcha tariflar' },
-                            { id: 'basic', label: 'Starter (500k)' },
-                            { id: 'standard', label: 'Standard (600k)' },
-                            { id: 'advanced', label: 'Advanced (700k)' }
+                            { id: 'all', label: t('pricing.filterAll', 'Barcha tariflar') },
+                            { id: 'basic', label: t('pricing.filterStarter', 'Starter (500k)') },
+                            { id: 'standard', label: t('pricing.filterStandard', 'Standard (600k)') },
+                            { id: 'advanced', label: t('pricing.filterAdvanced', 'Advanced (700k)') }
                         ].map((filter) => (
                             <button
                                 key={filter.id}
@@ -162,7 +154,7 @@ export default function Pricing() {
                                 {isMatched && (
                                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
                                         <span className="inline-block text-[10px] font-black uppercase tracking-widest bg-gradient-to-r from-red-600 to-rose-600 text-white px-3.5 py-1 rounded-full shadow-lg shadow-red-600/40 border border-white/20">
-                                            {plan.id === 'advanced' ? 'Eng Mashhur // POPULAR' : 'Tavsiya etiladi'}
+                                            {plan.id === 'advanced' ? t('pricing.popularBadge', 'Eng Mashhur // POPULAR') : t('pricing.recommendedBadge', 'Tavsiya etiladi')}
                                         </span>
                                     </div>
                                 )}
@@ -182,20 +174,18 @@ export default function Pricing() {
                                             {plan.price}
                                         </span>
                                         <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                                            so'm / oy
+                                            {t('pricing.perMonth', "so'm / oy")}
                                         </span>
                                     </div>
 
                                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300/80 leading-relaxed mb-6 font-normal">
-                                        {plan.id === 'basic' && "Ingliz tilini noldan boshlayotganlar uchun to'liq va mustahkam poydevor."}
-                                        {plan.id === 'standard' && "Erkin so'zlashuv, mustahkam akademik grammatika va IELTS ga kuchli tayyorgarlik."}
-                                        {plan.id === 'advanced' && "IELTS 7.5+ ga qaratilgan intensiv CDI testlar, AI tahlili va individual mentorlik."}
+                                        {plan.description}
                                     </p>
 
                                     {/* Features Checklist */}
                                     <div className="space-y-3 pt-5 border-t border-slate-200/60 dark:border-white/[0.06] mb-8">
                                         {plan.features.map((feat, idx) => (
-                                            <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                             <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
                                                 <FaCheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                                                 <span>{feat}</span>
                                             </div>
@@ -214,7 +204,7 @@ export default function Pricing() {
                                         }`}
                                     >
                                         <FaTelegramPlane className="w-4 h-4" />
-                                        <span>Kursga yozilish</span>
+                                        <span>{t('pricing.enrollBtn', 'Kursga yozilish')}</span>
                                     </button>
                                 </div>
                             </div>
@@ -225,7 +215,7 @@ export default function Pricing() {
                 {/* Direct Phone Call Support Box */}
                 <div className="mt-14 max-w-xl mx-auto text-center bg-white/70 dark:bg-[#070b14]/75 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border border-black/[0.08] dark:border-white/[0.08] shadow-xl">
                     <p className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                        Savollaringiz bormi? Bevosita operator bilan bog‘laning:
+                        {t('pricing.callPrompt', 'Savollaringiz bormi? Bevosita operator bilan bog‘laning:')}
                     </p>
                     <button
                         onClick={contactPhone}

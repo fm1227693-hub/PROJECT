@@ -519,7 +519,9 @@ export default function Stats() {
                                     <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500 block">
                                         KOHORTA TAQSIMOTI
                                     </span>
-                                    <h3 className="text-base sm:text-lg font-black font-heading mt-1">Bitiruvchilar IELTS ballari ulushi</h3>
+                                    <h3 className="text-base sm:text-lg font-black font-heading mt-1">
+                                        {t('stats.scoreShare', 'Bitiruvchilar IELTS ballari ulushi')}
+                                    </h3>
                                 </div>
                                 <span className="text-[11px] font-mono font-bold text-slate-400">N = {cohort.students}</span>
                             </div>
@@ -551,8 +553,10 @@ export default function Stats() {
                         <div className={`${CARD} p-5 sm:p-6`}>
                             <div className="flex items-start justify-between gap-3 mb-5">
                                 <div>
-                                    <span className={EYEBROW}>4-SKILL DIAGNOSTIKA</span>
-                                    <h3 className="text-base sm:text-lg font-black font-heading mt-1">Ko‘nikmalar balansi</h3>
+                                    <span className={EYEBROW}>{t('stats.diagnosticsBadge', '4-SKILL DIAGNOSTIKA')}</span>
+                                    <h3 className="text-base sm:text-lg font-black font-heading mt-1">
+                                        {t('stats.skillsBalance', 'Ko‘nikmalar balansi')}
+                                    </h3>
                                 </div>
                                 <span className="text-xs font-mono font-black px-2.5 py-1 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400">
                                     Band {fmtBand(stage)}

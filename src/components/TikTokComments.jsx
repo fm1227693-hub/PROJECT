@@ -77,7 +77,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
 
         setSubmitting(true)
 
-        const authorName = currentUser ? (currentUser.name || currentUser.username) : "Mehmon"
+        const authorName = currentUser ? (currentUser.name || currentUser.username) : t('common.guest', "Mehmon")
         const authorUsername = currentUser ? (currentUser.username || '') : ''
         const authorAvatar = currentUser ? (currentUser.avatar || currentUser.image || null) : null
         const authorId = currentUser ? currentUser.id : null
@@ -233,7 +233,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                     <button
                         onClick={loadCommentsORG}
                         className="p-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-all cursor-pointer active:scale-95"
-                        title="Yangilash"
+                        title={t('common.refresh', "Yangilash")}
                     >
                         <FaSync className={loading ? "animate-spin text-sm" : "text-sm"} />
                     </button>
@@ -242,7 +242,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                         <button
                             onClick={() => setIsOpen(false)}
                             className="p-2.5 rounded-2xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-all cursor-pointer active:scale-95"
-                            title="Yopish"
+                            title={t('common.close', "Yopish")}
                         >
                             <FaChevronUp className="text-sm" />
                         </button>
@@ -472,7 +472,7 @@ export default function CommentsORG({ isAdmin = false, defaultOpen = false }) {
                             type="submit"
                             disabled={submitting || !text.trim()}
                             className="absolute right-2 p-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold transition-all shadow-md shadow-red-600/30 cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-50"
-                            title="Yuborish"
+                            title={t('studentCommentsORG.submitBtn', "Yuborish")}
                         >
                             <FaPaperPlane className="text-xs" />
                         </button>

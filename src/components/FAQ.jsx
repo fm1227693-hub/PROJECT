@@ -30,9 +30,9 @@ export default function FAQ() {
                         <span>{t('faq.badge', 'KO‘P BERILADIGAN SAVOLLAR // FAQ')}</span>
                     </div>
                     <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight font-heading leading-tight">
-                        Eng muhim savollarga{' '}
+                        {t('faq.titlePrefix', 'Eng muhim savollarga')}{' '}
                         <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-400 bg-clip-text text-transparent">
-                            javoblar
+                            {t('faq.titleHighlight', 'javoblar')}
                         </span>
                     </h1>
                     <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-4 max-w-lg mx-auto font-normal leading-relaxed">
@@ -97,16 +97,16 @@ export default function FAQ() {
                         <FaComments />
                     </div>
                     <h3 className="text-xl font-black text-slate-900 dark:text-white font-heading">
-                        Boshqa savollaringiz bormi?
+                        {t('faq.ctaTitle', 'Boshqa savollaringiz bormi?')}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md font-normal leading-relaxed">
-                        Mutaxassislarimiz bilan bog‘laning va o‘zingizni qiziqtirgan har qanday savolga bepul konsultatsiya oling.
+                        {t('faq.ctaDesc', "Mutaxassislarimiz bilan bog‘laning va o‘zingizni qiziqtirgan har qanday savolga bepul konsultatsiya oling.")}
                     </p>
                     <Link
                         to="/form"
                         className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-red-600/40 hover:shadow-red-600/60 border border-white/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
-                        <span>Konsultatsiyaga yozilish</span>
+                        <span>{t('faq.ctaBtn', 'Konsultatsiyaga yozilish')}</span>
                         <FaArrowRight className="w-3.5 h-3.5" />
                     </Link>
                 </div>

@@ -119,7 +119,7 @@ export default function Admin() {
                                 onChange={(e) => setCod(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && alo()}
                                 className="w-full pl-11 pr-12 py-4 bg-[#030712]/50 border border-white/10 rounded-2xl focus:outline-none focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 transition-all text-white placeholder-gray-500 text-sm font-medium tracking-widest shadow-inner shadow-black/20"
-                                placeholder="••••••••"
+                                placeholder={t('admin.placeholder', "Parolni kiriting")}
                             />
                             <button 
                                 type="button"

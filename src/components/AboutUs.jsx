@@ -106,7 +106,7 @@ export default function AboutUs() {
                                 </p>
                             </div>
                             <div className="pt-6 mt-4 border-t border-slate-200/60 dark:border-white/[0.06] flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors">
-                                <span>Batafsil ma'lumot</span>
+                                <span>{t('aboutUs.moreDetails', "Batafsil ma'lumot")}</span>
                                 <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-white/[0.05] flex items-center justify-center group-hover:bg-red-600 group-hover:text-white group-hover:translate-x-1 transition-all">
                                     <FaArrowRight className="w-2.5 h-2.5" />
                                 </div>
@@ -136,7 +136,7 @@ export default function AboutUs() {
                                     <HiLocationMarker className="w-5 h-5" />
                                 </div>
                                 <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
-                                    {FIXED_LOCATION.addressText}
+                                    {t('aboutUs.addressText', FIXED_LOCATION.addressText)}
                                 </span>
                             </div>
 
@@ -167,7 +167,7 @@ export default function AboutUs() {
                                 rel="noopener noreferrer"
                                 className="px-7 py-3.5 rounded-full bg-white text-slate-900 hover:bg-slate-100 font-extrabold text-xs sm:text-sm shadow-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                             >
-                                <span>Xaritada ochish (Google Maps)</span>
+                                <span>{t('aboutUs.openGoogleMaps', 'Xaritada ochish (Google Maps)')}</span>
                                 <HiExternalLink className="text-base" />
                             </a>
                         </div>
@@ -188,12 +188,12 @@ export default function AboutUs() {
                     <div className="flex items-center gap-8 shrink-0">
                         <div>
                             <span className="block text-3xl sm:text-4xl font-black text-red-600 dark:text-red-500 font-heading">100%</span>
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Kafolatlangan dastur</span>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{t('aboutUs.guaranteedProgram', 'Kafolatlangan dastur')}</span>
                         </div>
                         <div className="w-px h-10 bg-slate-200 dark:bg-white/10" />
                         <div>
                             <span className="block text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-heading">7/24</span>
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Onlayn qo'llab-quvvatlash</span>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">{t('aboutUs.onlineSupport', "Onlayn qo'llab-quvvatlash")}</span>
                         </div>
                     </div>
                 </div>

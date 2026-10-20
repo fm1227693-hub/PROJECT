@@ -1005,37 +1005,57 @@ export async function adminResetPassword(userId, newPassword) {
  * Admin: Update student status (pending | active | suspended)
  */
 export async function adminSetStudentStatus(userId, newStatus) {
-    const users = await getUsers();
-    const index = users.findIndex(u => u.id === userId || String(u.id) === String(userId));
-    if (index === -1) throw new Error("O'quvchi topilmadi!");
-
-    users[index].status = newStatus;
-
+    let users = [];
     try {
-        await supabase
-            .from('profiles')
-            .update({ status: newStatus })
-            .eq('username', users[index].username);
-    } catch (e) {
-        console.warn('Supabase profile status update:', e);
-    }
+        const raw = localStorage.getItem('optimum_users');
+        if (raw) users = JSON.parse(raw);
+    } catch (e) {}
 
-    await saveUsers(users);
-    return true;
+    const index = users.findIndex(u => u.id === userId || String(u.id) === String(userId));
+    if (index === -1) {
+        users = await getUsers();
+    }
+    const idx = users.findIndex(u => u.id === userId || String(u.id) === String(userId));
+    if (idx !== -1) {
+        users[idx].status = newStatus;
+        localStorage.setItem('optimum_users', JSON.stringify(users));
+
+        // Background parallel sync - non-blocking
+        Promise.allSettled([
+            axios.put(DB_USERS_URL, users),
+            supabase.from('profiles').update({ status: newStatus }).eq('username', users[idx].username)
+        ]).catch(e => console.warn('Status sync error:', e));
+
+        return true;
+    }
+    return false;
 }
 
 /**
  * Admin: Approve student and optionally assign to group
  */
 export async function adminApproveStudent(userId, targetGroupId = null) {
-    const users = await getUsers();
-    const index = users.findIndex(u => u.id === userId || String(u.id) === String(userId));
+    let users = [];
+    try {
+        const raw = localStorage.getItem('optimum_users');
+        if (raw) users = JSON.parse(raw);
+    } catch (e) {}
+
+    let index = users.findIndex(u => u.id === userId || String(u.id) === String(userId));
+    if (index === -1) {
+        users = await getUsers();
+        index = users.findIndex(u => u.id === userId || String(u.id) === String(userId));
+    }
     if (index === -1) throw new Error("O'quvchi topilmadi!");
 
     users[index].status = 'active';
 
     if (targetGroupId) {
-        const groups = await getGroups();
+        let groups = [];
+        try {
+            const rawG = localStorage.getItem('admin_groups');
+            if (rawG) groups = JSON.parse(rawG);
+        } catch (e) {}
         const g = groups.find(grp => String(grp.id) === String(targetGroupId));
         if (g) {
             users[index].groupId = g.id;
@@ -1044,19 +1064,17 @@ export async function adminApproveStudent(userId, targetGroupId = null) {
         }
     }
 
-    try {
-        await supabase
-            .from('profiles')
-            .update({
-                status: 'active',
-                group_id: users[index].groupId && String(users[index].groupId).length > 20 ? users[index].groupId : null
-            })
-            .eq('username', users[index].username);
-    } catch (e) {
-        console.warn('Supabase approval error:', e);
-    }
+    localStorage.setItem('optimum_users', JSON.stringify(users));
 
-    await saveUsers(users);
+    // Parallel sync in background
+    Promise.allSettled([
+        axios.put(DB_USERS_URL, users),
+        supabase.from('profiles').update({
+            status: 'active',
+            group_id: users[index].groupId && String(users[index].groupId).length > 20 ? users[index].groupId : null
+        }).eq('username', users[index].username)
+    ]).catch(e => console.warn('Supabase approval error:', e));
+
     return users[index];
 }
 
@@ -1113,6 +1131,81 @@ export async function adminTransferStudent(userId, newGroupId) {
     });
 
     await saveGroups(updatedGroups);
+    return true;
+}
+
+/**
+ * Admin: Delete student completely from users and all groups
+ */
+export async function adminDeleteStudent(studentId, username = null, name = null, phone = null) {
+    const cleanU = (u) => (u || '').toString().trim().toLowerCase().replace(/^@/, '');
+    const cleanN = (n) => (n || '').toString().trim().toLowerCase();
+    const cleanP = (p) => (p || '').toString().replace(/\D/g, '');
+
+    const targetU = cleanU(username);
+    const targetN = cleanN(name);
+    const targetP = cleanP(phone);
+    const targetId = String(studentId || '');
+
+    // 1. Read existing users from localStorage first (0ms)
+    let users = [];
+    try {
+        const raw = localStorage.getItem('optimum_users');
+        if (raw) users = JSON.parse(raw);
+    } catch (e) {}
+
+    const targetUser = users.find(u => {
+        if (targetId && (u.id === studentId || String(u.id) === targetId)) return true;
+        if (targetU && cleanU(u.username) === targetU) return true;
+        if (targetP && targetP.length >= 7 && cleanP(u.phone) === targetP) return true;
+        if (targetN && cleanN(u.name) === targetN) return true;
+        return false;
+    });
+
+    const finalUname = cleanU(targetUser?.username || targetU);
+
+    const updatedUsers = users.filter(u => {
+        if (targetId && (u.id === studentId || String(u.id) === targetId)) return false;
+        if (finalUname && cleanU(u.username) === finalUname) return false;
+        if (targetP && targetP.length >= 7 && cleanP(u.phone) === targetP) return false;
+        return true;
+    });
+
+    // 2. Read existing groups from localStorage (0ms)
+    let groups = [];
+    try {
+        const rawG = localStorage.getItem('admin_groups');
+        if (rawG) groups = JSON.parse(rawG);
+    } catch (e) {}
+
+    const updatedGroups = groups.map(g => ({
+        ...g,
+        students: (g.students || []).filter(s => {
+            if (targetId && (s.id === studentId || String(s.id) === targetId || s.userId === studentId || String(s.userId) === targetId)) return false;
+            if (finalUname && cleanU(s.username) === finalUname) return false;
+            if (targetP && targetP.length >= 7 && cleanP(s.phone) === targetP) return false;
+            if (targetN && cleanN(s.name) === targetN) return false;
+            return true;
+        })
+    }));
+
+    // Save to localStorage immediately
+    localStorage.setItem('optimum_users', JSON.stringify(updatedUsers));
+    localStorage.setItem('admin_groups', JSON.stringify(updatedGroups));
+
+    // 3. Parallel sync across all remote stores in background
+    const tasks = [
+        axios.put(DB_USERS_URL, updatedUsers).catch(e => console.warn('Firebase users delete sync:', e)),
+        axios.put(DB_GROUPS_URL, updatedGroups).catch(e => console.warn('Firebase groups delete sync:', e))
+    ];
+
+    if (finalUname) {
+        tasks.push(
+            supabase.from('profiles').delete().eq('username', finalUname).catch(e => console.warn('Supabase delete error:', e))
+        );
+    }
+
+    await Promise.allSettled(tasks);
     return true;
 }
 

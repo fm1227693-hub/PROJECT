@@ -26,9 +26,9 @@ export default function Footer() {
         { label: t('footer.links.about', 'Biz haqimizda'), to: '/about' },
         { label: t('footer.links.levelTest', 'Daraja testi'), to: '/level-test' },
         { label: t('navbar.ieltsWriting', 'IELTS Writing'), to: '/ielts-writing' },
-        { label: 'Reading Tests', to: '/reading-tests' },
-        { label: 'Listening Tests', to: '/listening-tests' },
-        { label: t('pricing.badge', 'Tariflar'), to: '/pricing' },
+        { label: t('navbar.ieltsReading', 'Reading Tests'), to: '/reading-tests' },
+        { label: t('navbar.ieltsListening', 'Listening Tests'), to: '/listening-tests' },
+        { label: t('pricing.filterAll', 'Tariflar'), to: '/pricing' },
         { label: t('navbar.faq', 'FAQ'), to: '/faq' },
     ]
 
@@ -145,7 +145,7 @@ export default function Footer() {
 
                             <div className="flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-400 pt-1">
                                 <FaClock className="w-3.5 h-3.5 text-red-600 dark:text-red-400 shrink-0" />
-                                <span>Har kuni: 08:00 – 20:00</span>
+                                <span>{t('footer.everyday', 'Har kuni')}: 08:00 – 20:00</span>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@ export default function Footer() {
 
                 {/* Bottom Bar: Copyright & Legal */}
                 <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500">
-                    <p>© {new Date().getFullYear()} Optimum English Language Center. Barcha huquqlar himoyalangan.</p>
+                    <p>© {new Date().getFullYear()} Optimum English Language Center. {t('footer.allRightsReserved', 'Barcha huquqlar himoyalangan.')}</p>
                     <div className="flex items-center gap-6">
                         <Link to="/privacy-policy" className="hover:text-red-600 dark:hover:text-red-400 transition-colors">
                             {t('footer.privacy', 'Maxfiylik siyosati')}
