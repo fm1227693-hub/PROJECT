@@ -767,6 +767,7 @@
     "cta": "Начать Тест"
   },
   "adminPanel": {
+    "zoomLabel": "Масштаб:",
     "title": "Панель Управления Администратора",
     "latestRequests": "Последние обращения",
     "dateLabel": "Дата",
@@ -823,6 +824,7 @@
     "confirmTooltip": "Подтвердить",
     "rejectTooltip": "Отклонить",
     "typeLoginRequest": "Запрос на вход",
+    "typeLoginShort": "Вход",
     "acceptStudentTitle": "Принять ученика",
     "linkedAccountHeader": "Привязанный аккаунт:",
     "automaticBadge": "Автоматически",
@@ -1170,6 +1172,7 @@
     }
   },
   "adminDashboard": {
+    "studentsListTitle": "Список студентов",
     "schedulesTab": "Расписание занятий",
     "groupsTab": "Группы",
     "addGroupBtn": "+ Добавить группу",

@@ -767,6 +767,7 @@
     "cta": "Take a Test"
   },
   "adminPanel": {
+    "zoomLabel": "Zoom:",
     "title": "Admin Dashboard",
     "latestRequests": "Latest Requests",
     "dateLabel": "Date",
@@ -823,6 +824,7 @@
     "confirmTooltip": "Confirm",
     "rejectTooltip": "Reject",
     "typeLoginRequest": "Access Request",
+    "typeLoginShort": "Login",
     "acceptStudentTitle": "Accept Student",
     "linkedAccountHeader": "Linked Account:",
     "automaticBadge": "Automatic",
@@ -1170,6 +1172,7 @@
     }
   },
   "adminDashboard": {
+    "studentsListTitle": "Students List",
     "schedulesTab": "Class Schedule",
     "groupsTab": "Groups",
     "addGroupBtn": "+ Add group",

@@ -861,6 +861,7 @@
     "cta": "Testdan O'tish"
   },
   "adminPanel": {
+    "zoomLabel": "Masshtab:",
     "title": "Admin Boshqaruv Paneli",
     "latestRequests": "So'nggi murojaatlar",
     "dateLabel": "Sana",
@@ -917,6 +918,7 @@
     "confirmTooltip": "Tasdiqlash",
     "rejectTooltip": "Rad etish",
     "typeLoginRequest": "Kirish so'rovi",
+    "typeLoginShort": "Kirish",
     "acceptStudentTitle": "O'quvchini qabul qilish",
     "linkedAccountHeader": "Biriktiriladigan akkaunt:",
     "automaticBadge": "Avtomatik",
@@ -1211,6 +1213,7 @@
     }
   },
   "adminDashboard": {
+    "studentsListTitle": "O'quvchilar ro'yxati",
     "schedulesTab": "Dars jadvali",
     "groupsTab": "Guruhlar",
     "addGroupBtn": "+ Guruh qo'shish",

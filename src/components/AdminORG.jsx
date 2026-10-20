@@ -9,8 +9,39 @@ import {
     FaSignOutAlt, FaSync, FaFileCsv, FaFilter, FaChartBar, 
     FaCheckCircle, FaTimesCircle, FaUsers, FaTrash, FaHeadset, 
     FaChevronDown, FaUserShield, FaClipboardList, FaProjectDiagram, 
-    FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope, FaUserEdit, FaUserPlus, FaCamera, FaPen, FaUserCircle, FaUser, FaUserGraduate, FaRegMoon, FaRegSun, FaTimes
+    FaGlobe, FaShieldAlt, FaExclamationTriangle, FaRegEye, FaEnvelope, FaUserEdit, FaUserPlus, FaCamera, FaPen, FaUserCircle, FaUser, FaUserGraduate, FaRegMoon, FaRegSun, FaTimes, FaEllipsisV
 } from 'react-icons/fa';
+function TableZoomControls({ zoom, setZoom, t }) {
+    return (
+        <div className="inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-800/90 p-1 rounded-full border border-gray-200/60 dark:border-gray-700/60 shadow-xs">
+            <button
+                type="button"
+                onClick={() => setZoom(prev => Math.max(0.7, Number((prev - 0.1).toFixed(2))))}
+                className="w-6 h-6 rounded-full bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-black flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 active:scale-90 transition shadow-2xs cursor-pointer"
+                title="Kichiklashtirish"
+            >
+                –
+            </button>
+            <button
+                type="button"
+                onClick={() => setZoom(1)}
+                className="px-2 h-6 rounded-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono font-bold text-[10px] flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 active:scale-95 transition shadow-2xs cursor-pointer"
+                title="100% asl holat"
+            >
+                {Math.round(zoom * 100)}%
+            </button>
+            <button
+                type="button"
+                onClick={() => setZoom(prev => Math.min(1.6, Number((prev + 0.1).toFixed(2))))}
+                className="w-6 h-6 rounded-full bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-black flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 active:scale-90 transition shadow-2xs cursor-pointer"
+                title="Kattalashtirish"
+            >
+                +
+            </button>
+        </div>
+    );
+}
+
 function SidebarItem({ icon, label, isActive, onClick }) {
     return (
         <button
@@ -189,6 +220,36 @@ export default function AdminORG() {
     const [transferModalStudent, setTransferModalStudent] = useState(null)
     const [transferTargetGroupId, setTransferTargetGroupId] = useState('')
     const [revealedPasswords, setRevealedPasswords] = useState({})
+    const [tableZoom, setTableZoom] = useState(1)
+    const [mobileActionStudent, setMobileActionStudent] = useState(null)
+    const touchRef = useRef({ dist: 0, zooming: false, startZoom: 1 })
+
+    const onTableTouchStart = (e) => {
+        if (e.touches.length === 2) {
+            const dist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            touchRef.current = { dist, zooming: true, startZoom: tableZoom };
+        }
+    };
+
+    const onTableTouchMove = (e) => {
+        if (e.touches.length === 2 && touchRef.current.zooming) {
+            if (e.cancelable) e.preventDefault();
+            const dist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const factor = dist / (touchRef.current.dist || 1);
+            const newZoom = Math.min(1.6, Math.max(0.7, Number((touchRef.current.startZoom * factor).toFixed(2))));
+            setTableZoom(newZoom);
+        }
+    };
+
+    const onTableTouchEnd = () => {
+        touchRef.current.zooming = false;
+    };
 
     const toggleRevealPassword = (id) => {
         setRevealedPasswords(prev => ({
@@ -939,11 +1000,11 @@ return (
             </header>
 
             {/* Content Area */}
-            <div className="flex-1 p-4 lg:p-8">
+            <div className="flex-1 p-2 sm:p-4 lg:p-8 min-w-0">
                 {activeTab === 'leads' && (
-                    <div className="space-y-8 max-w-[1400px] mx-auto">
+                    <div className="space-y-6 sm:space-y-8 max-w-[1400px] mx-auto min-w-0">
                         {/* 4 Stats Cards */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
                             <div onClick={() => setStatusFilter('Kutilmoqda')} className={`cursor-pointer transition-all ${statusFilter === 'Kutilmoqda' ? 'ring-2 ring-amber-400 ring-offset-2 dark:ring-offset-gray-950 rounded-2xl' : 'hover:scale-[1.02]'}`}>
                                 {renderStatCard(pendingCount, t('adminPanel.pending', 'Kutilmoqda'))}
                             </div>
@@ -959,88 +1020,102 @@ return (
                         </div>
 
                         {/* Table Section */}
-                        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative">
-                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
-                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('adminPanel.latestRequests', "So'nggi murojaatlar")}</h2>
-                                <div className="flex items-center gap-3 w-full lg:w-auto">
-                                    <button onClick={() => setShowAddLeadModal(true)} className="flex-1 lg:flex-none px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-2 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative min-w-0">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3">
+                                <h2 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white">{t('adminPanel.latestRequests', "So'nggi murojaatlar")}</h2>
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                                    <TableZoomControls zoom={tableZoom} setZoom={setTableZoom} t={t} />
+                                    <button onClick={() => setShowAddLeadModal(true)} className="flex-1 sm:flex-none px-3.5 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
                                         {t('adminPanel.addLeadBtn', "+ Qo'shish")}
                                     </button>
-                                    <button onClick={exportToCSV} className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-emerald-500/20" title={t('adminPanel.exportCsvTooltip', "Yuklab olish")}>
-                                        <FaFileCsv className="text-lg" />
+                                    <button onClick={exportToCSV} className="px-3 sm:px-4 py-2 sm:py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md shadow-emerald-500/20" title={t('adminPanel.exportCsvTooltip', "Yuklab olish")}>
+                                        <FaFileCsv className="text-base sm:text-lg" />
                                     </button>
                                 </div>
                             </div>
 
                             {/* Table */}
-                            <div className="overflow-x-auto custom-scrollbar pb-2">
-                                <table className="w-full text-left border-collapse min-w-[800px]">
+                            <div 
+                                className={`w-full ${tableZoom > 1 ? 'overflow-x-auto' : 'overflow-x-hidden sm:overflow-x-auto'} custom-scrollbar pb-1`}
+                                onTouchStart={onTableTouchStart}
+                                onTouchMove={onTableTouchMove}
+                                onTouchEnd={onTableTouchEnd}
+                            >
+                                <div style={{ transform: `scale(${tableZoom})`, transformOrigin: 'top left', width: tableZoom > 1 ? `${tableZoom * 100}%` : '100%' }}>
+                                <table className="w-full text-left border-collapse table-fixed sm:table-auto">
                                     <thead>
-                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400">
-                                            <th className="py-4 px-4 font-medium">{t('adminPanel.nameLabel', "F.I.O")}</th>
-                                            <th className="py-4 px-4 font-medium">{t('adminPanel.typeLabel', "Turi")}</th>
-                                            <th className="py-4 px-4 font-medium">{t('adminPanel.phoneLabel', "Telefon")}</th>
-                                            <th className="py-4 px-4 font-medium">{t('adminPanel.dateLabel', "Sana")}</th>
-                                            <th className="py-4 px-4 font-medium">{t('adminPanel.statusLabel', "Status")}</th>
-                                            <th className="py-4 px-4 font-medium text-right">{t('adminPanel.actionsLabel', "Amallar")}</th>
+                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-[9px] sm:text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
+                                            <th className="py-2 sm:py-4 px-1 sm:px-4 w-[28%] sm:w-auto font-medium">{t('adminPanel.nameLabel', "F.I.O")}</th>
+                                            <th className="py-2 sm:py-4 px-1 sm:px-4 w-[16%] sm:w-auto font-medium">{t('adminPanel.typeLabel', "Turi")}</th>
+                                            <th className="py-2 sm:py-4 px-1 sm:px-4 w-[21%] sm:w-auto font-medium">{t('adminPanel.phoneLabel', "Telefon")}</th>
+                                            <th className="py-2 sm:py-4 px-0.5 sm:px-4 w-[11%] sm:w-auto font-medium">{t('adminPanel.dateLabel', "Sana")}</th>
+                                            <th className="py-2 sm:py-4 px-0.5 sm:px-4 w-[12%] sm:w-auto font-medium">{t('adminPanel.statusLabel', "Status")}</th>
+                                            <th className="py-2 sm:py-4 px-1 sm:px-4 w-[12%] sm:w-auto font-medium text-right">{t('adminPanel.actionsLabel', "Amallar")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {filteredLeads.length === 0 ? (
                                             <tr>
-                                                <td colSpan="6" className="py-8 text-center text-gray-500">
+                                                <td colSpan="6" className="py-8 text-center text-xs sm:text-sm text-gray-500">
                                                     {t('adminPanel.noLeadsFound', "Murojaatlar topilmadi")}
                                                 </td>
                                             </tr>
                                         ) : (
                                             filteredLeads.map(lead => (
-                                                <tr key={lead.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
-                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">
-                                                        <div>{lead.name}</div>
+                                                <tr key={lead.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-xs sm:text-sm">
+                                                    <td className="py-2 sm:py-4 px-1 sm:px-4 font-bold text-gray-900 dark:text-white">
+                                                        <div className="truncate text-[10px] sm:text-sm" title={lead.name}>{lead.name}</div>
                                                         {lead.requestedUsername && (
-                                                            <div className="text-[11px] font-mono font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                                                                <span>@{lead.requestedUsername}</span>
+                                                            <div className="text-[8px] sm:text-[11px] font-mono font-medium text-emerald-600 dark:text-emerald-400 truncate">
+                                                                @{lead.requestedUsername}
                                                             </div>
                                                         )}
                                                     </td>
-                                                    <td className="py-4 px-4 text-gray-600 dark:text-gray-300">
+                                                    <td className="py-2 sm:py-4 px-1 sm:px-4 text-gray-600 dark:text-gray-300">
                                                         {lead.type === "Kirish so'rovi" || lead.requestedUsername ? (
-                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-500/30 whitespace-nowrap">
-                                                                <FaKey className="text-[10px]" />
-                                                                <span>{t('adminPanel.typeLoginRequest', "Kirish so'rovi")}</span>
+                                                            <span className="inline-flex items-center gap-0.5 sm:gap-1.5 px-1 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-lg text-[8px] sm:text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-500/30 whitespace-nowrap">
+                                                                <FaKey className="text-[7px] sm:text-[10px] shrink-0" />
+                                                                <span className="hidden sm:inline">{t('adminPanel.typeLoginRequest', "Kirish so'rovi")}</span>
+                                                                <span className="sm:hidden">{t('adminPanel.typeLoginShort', "Kirish")}</span>
                                                             </span>
                                                         ) : (
-                                                            getTranslatedType(lead.type)
+                                                            <span className="truncate block text-[9px] sm:text-xs" title={getTranslatedType(lead.type)}>{getTranslatedType(lead.type)}</span>
                                                         )}
                                                     </td>
-                                                    <td className="py-4 px-4 text-gray-600 dark:text-gray-300">{lead.phone}</td>
-                                                    <td className="py-4 px-4 text-gray-500 whitespace-nowrap">{lead.date}</td>
-                                                    <td className="py-4 px-4">
-                                                        <span className={`inline-block px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap ${lead.status === 'Qabul qilindi' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' :
+                                                    <td className="py-2 sm:py-4 px-1 sm:px-4 text-gray-600 dark:text-gray-300 font-mono text-[9px] sm:text-sm">
+                                                        <a href={`tel:${lead.phone}`} className="truncate block hover:text-red-500 whitespace-nowrap">
+                                                            {lead.phone}
+                                                        </a>
+                                                    </td>
+                                                    <td className="py-2 sm:py-4 px-0.5 sm:px-4 text-gray-500 text-[8px] sm:text-xs whitespace-nowrap truncate">
+                                                        {lead.date}
+                                                    </td>
+                                                    <td className="py-2 sm:py-4 px-0.5 sm:px-4">
+                                                        <span className={`inline-block px-1 py-0.5 sm:px-3 sm:py-1.5 rounded sm:rounded-lg text-[8px] sm:text-xs font-bold whitespace-nowrap ${lead.status === 'Qabul qilindi' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' :
                                                                 lead.status === 'Rad etildi' ? 'bg-rose-50 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400' :
                                                                     'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400'
                                                             }`}>
                                                             {lead.status === 'Qabul qilindi' ? t('adminPanel.accepted', "Qabul qilindi") : lead.status === 'Rad etildi' ? t('adminPanel.rejected', "Rad etildi") : t('adminPanel.pending', "Kutilmoqda")}
                                                         </span>
                                                     </td>
-                                                    <td className="py-4 px-4 text-right">
-                                                        <div className="flex items-center justify-end gap-3">
-                                                            <button onClick={() => setDeleteModalLead(lead)} className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" title={t('adminPanel.viewOrDeleteTooltip', "Ko'rish / O'chirish")}>
-                                                                <FaRegEye className="text-lg" />
+                                                    <td className="py-2 sm:py-4 px-1 sm:px-4 text-right">
+                                                        <div className="flex items-center justify-end gap-1 sm:gap-3">
+                                                            <button onClick={() => setDeleteModalLead(lead)} className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-0.5 sm:p-1" title={t('adminPanel.viewOrDeleteTooltip', "Ko'rish / O'chirish")}>
+                                                                <FaRegEye className="text-xs sm:text-lg" />
                                                             </button>
                                                             {lead.status !== 'Qabul qilindi' ? (
-                                                                <button onClick={() => { setLeadToAccept(lead); setShowAcceptLeadModal(true); }} className="text-emerald-500 hover:text-emerald-600 transition-colors" title={t('adminPanel.confirmTooltip', "Tasdiqlash")}>
-                                                                    <FaCheckCircle className="text-xl" />
+                                                                <button onClick={() => { setLeadToAccept(lead); setShowAcceptLeadModal(true); }} className="text-emerald-500 hover:text-emerald-600 transition-colors p-0.5 sm:p-1" title={t('adminPanel.confirmTooltip', "Tasdiqlash")}>
+                                                                    <FaCheckCircle className="text-xs sm:text-xl" />
                                                                 </button>
                                                             ) : (
-                                                                <FaCheckCircle className="text-xl text-gray-300 dark:text-gray-700" />
+                                                                <FaCheckCircle className="text-xs sm:text-xl text-gray-300 dark:text-gray-700 p-0.5 sm:p-1" />
                                                             )}
                                                             {lead.status !== 'Rad etildi' ? (
-                                                                <button onClick={() => updateLeadStatus(lead.id, 'Rad etildi')} className="text-rose-500 hover:text-rose-600 transition-colors" title={t('adminPanel.rejectTooltip', "Rad etish")}>
-                                                                    <FaTimesCircle className="text-xl" />
+                                                                <button onClick={() => updateLeadStatus(lead.id, 'Rad etildi')} className="text-rose-500 hover:text-rose-600 transition-colors p-0.5 sm:p-1" title={t('adminPanel.rejectTooltip', "Rad etish")}>
+                                                                    <FaTimesCircle className="text-xs sm:text-xl" />
                                                                 </button>
                                                             ) : (
-                                                                <FaTimesCircle className="text-xl text-gray-300 dark:text-gray-700" />
+                                                                <FaTimesCircle className="text-xs sm:text-xl text-gray-300 dark:text-gray-700 p-0.5 sm:p-1" />
                                                             )}
                                                         </div>
                                                     </td>
@@ -1049,13 +1124,14 @@ return (
                                         )}
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
                 {activeTab === 'schedules' && (
-                    <div className="space-y-8 max-w-[1400px] mx-auto">
-                        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative">
+                    <div className="space-y-6 sm:space-y-8 max-w-[1400px] mx-auto min-w-0">
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-2.5 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative min-w-0">
                             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
                                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('adminDashboard.schedulesTab', 'Dars jadvallari')}</h2>
                                 <button onClick={() => {
@@ -1214,45 +1290,56 @@ return (
                 )}
                 
                 {activeTab === 'groups' && (
-                    <div className="space-y-8 max-w-[1400px] mx-auto">
-                        <div className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative">
-                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 gap-4">
-                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('adminDashboard.groupsTab')}</h2>
-                                <button onClick={() => {
-                                    setNewGroupNameInput('')
-                                    setShowAddGroupModal(true)
-                                }} className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
-                                    {t('adminDashboard.addGroupBtn', "+ Guruh qo'shish")}
-                                </button>
+                    <div className="space-y-6 sm:space-y-8 max-w-[1400px] mx-auto min-w-0">
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-2.5 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col relative min-w-0">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3">
+                                <h2 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white">{t('adminDashboard.groupsTab')}</h2>
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                                    <TableZoomControls zoom={tableZoom} setZoom={setTableZoom} t={t} />
+                                    <button onClick={() => {
+                                        setNewGroupNameInput('')
+                                        setShowAddGroupModal(true)
+                                    }} className="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md shadow-red-600/20 whitespace-nowrap">
+                                        {t('adminDashboard.addGroupBtn', "+ Guruh qo'shish")}
+                                    </button>
+                                </div>
                             </div>
                             
-                            <div className="overflow-x-auto custom-scrollbar pb-2">
-                                <table className="w-full text-left border-collapse min-w-[500px]">
+                            <div 
+                                className={`w-full ${tableZoom > 1 ? 'overflow-x-auto' : 'overflow-x-hidden sm:overflow-x-auto'} custom-scrollbar pb-1`}
+                                onTouchStart={onTableTouchStart}
+                                onTouchMove={onTableTouchMove}
+                                onTouchEnd={onTableTouchEnd}
+                            >
+                                <div style={{ transform: `scale(${tableZoom})`, transformOrigin: 'top left', width: tableZoom > 1 ? `${tableZoom * 100}%` : '100%' }}>
+                                <table className="w-full text-left border-collapse table-fixed sm:table-auto">
                                     <thead>
-                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400">
-                                            <th className="py-4 px-4 font-medium">{t('adminDashboard.groupName', 'Guruh Nomi')}</th>
-                                            <th className="py-4 px-4 font-medium">{t('adminDashboard.inviteCodeCol', "Taklif Kodi")}</th>
-                                            <th className="py-4 px-4 font-medium">{t('adminDashboard.studentsCountCol', "O'quvchilar")}</th>
-                                            <th className="py-4 px-4 font-medium text-right">{t('adminDashboard.actions', 'Amallar')}</th>
+                                        <tr className="border-b border-gray-100 dark:border-gray-800 text-[9px] sm:text-xs lg:text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
+                                            <th className="py-2.5 sm:py-4 px-1 sm:px-4 w-[36%] sm:w-auto font-medium">{t('adminDashboard.groupName', 'Guruh Nomi')}</th>
+                                            <th className="py-2.5 sm:py-4 px-1 sm:px-4 w-[28%] sm:w-auto font-medium">{t('adminDashboard.inviteCodeCol', "Taklif Kodi")}</th>
+                                            <th className="py-2.5 sm:py-4 px-0.5 sm:px-4 w-[16%] sm:w-auto font-medium">{t('adminDashboard.studentsCountCol', "O'quvchilar")}</th>
+                                            <th className="py-2.5 sm:py-4 px-1 sm:px-4 w-[20%] sm:w-auto font-medium text-right">{t('adminDashboard.actions', 'Amallar')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {groups.length === 0 ? (
                                             <tr>
-                                                <td colSpan="4" className="py-8 text-center text-gray-500">
+                                                <td colSpan="4" className="py-8 text-center text-xs sm:text-sm text-gray-500">
                                                     {t('adminDashboard.noGroups', 'Guruhlar topilmadi')}
                                                 </td>
                                             </tr>
                                         ) : (
                                             groups.map(group => (
-                                                <tr key={group.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
-                                                    <td className="py-4 px-4 font-bold text-gray-900 dark:text-white flex items-center gap-2.5">
-                                                        {group.color && <span className="w-3.5 h-3.5 rounded-full shadow-xs shrink-0" style={{ background: group.color }} />}
-                                                        <span>{group.name}</span>
+                                                <tr key={group.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-xs sm:text-sm">
+                                                    <td className="py-2.5 sm:py-4 px-1 sm:px-4 font-bold text-gray-900 dark:text-white">
+                                                        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                                                            {group.color && <span className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full shadow-xs shrink-0" style={{ background: group.color }} />}
+                                                            <span className="truncate text-[10px] sm:text-sm">{group.name}</span>
+                                                        </div>
                                                     </td>
-                                                    <td className="py-4 px-4 font-mono font-bold text-red-600 dark:text-red-400">
-                                                        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-red-50 dark:bg-white/[0.04] border border-red-500/20 text-xs">
-                                                            <span>{group.inviteCode || t('adminDashboard.noCode', 'KODSIZ')}</span>
+                                                    <td className="py-2.5 sm:py-4 px-1 sm:px-4 font-mono font-bold text-red-600 dark:text-red-400">
+                                                        <div className="inline-flex items-center gap-1 sm:gap-2 px-1 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-lg bg-red-50 dark:bg-white/[0.04] border border-red-500/20 text-[9px] sm:text-xs max-w-full truncate">
+                                                            <span className="truncate">{group.inviteCode || t('adminDashboard.noCode', 'KODSIZ')}</span>
                                                             <button
                                                                 onClick={async () => {
                                                                     const newCode = generateInviteCode('OPT');
@@ -1262,31 +1349,34 @@ return (
                                                                     await axios.put(import.meta.env.VITE_FIREBASE_GROUPS_URL, updated).catch(()=>{});
                                                                     toast.success(t('adminDashboard.toast.groupCodeUpdated', "Guruh kodi yangilandi: ") + newCode);
                                                                 }}
-                                                                className="text-gray-400 hover:text-red-500 text-[10px] cursor-pointer"
+                                                                className="text-gray-400 hover:text-red-500 text-[8px] sm:text-[10px] cursor-pointer shrink-0"
                                                                 title={t('adminDashboard.refreshCodeTooltip', "Kodni yangilash")}
                                                             >
                                                                 <FaSync />
                                                             </button>
                                                         </div>
                                                     </td>
-                                                    <td className="py-4 px-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
-                                                        {(group.students || []).length} {t('adminDashboard.studentsSuffix', "nafar")}
+                                                    <td className="py-2.5 sm:py-4 px-0.5 sm:px-4">
+                                                        <span className="inline-block px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800 text-[10px] sm:text-xs font-mono font-bold text-gray-700 dark:text-gray-300">
+                                                            {(group.students || []).length}
+                                                            <span className="hidden sm:inline font-sans text-gray-500 font-normal"> {t('adminDashboard.studentsSuffix', "nafar")}</span>
+                                                        </span>
                                                     </td>
-                                                    <td className="py-4 px-4 text-right">
-                                                        <div className="flex items-center justify-end gap-3">
+                                                    <td className="py-2.5 sm:py-4 px-1 sm:px-4 text-right">
+                                                        <div className="flex items-center justify-end gap-1.5 sm:gap-3">
                                                             <button onClick={() => {
                                                                 setEditingGroupId(group.id)
                                                                 setNewGroupNameInput(group.name)
                                                                 setNewGroupColor(group.color || GROUP_COLORS[0])
                                                                 setShowAddGroupModal(true)
-                                                            }} className="text-indigo-500 hover:text-indigo-600 transition-colors" title={t('adminDashboard.editTitle')}>
-                                                                <FaPen className="text-lg" />
+                                                            }} className="text-indigo-500 hover:text-indigo-600 transition-colors p-1" title={t('adminDashboard.editTitle')}>
+                                                                <FaPen className="text-[11px] sm:text-lg" />
                                                             </button>
-                                                            <button onClick={() => setSelectedGroupDetails(group)} className="text-blue-500 hover:text-blue-600 transition-colors" title={t('adminDashboard.viewStudents')}>
-                                                                <FaRegEye className="text-xl" />
+                                                            <button onClick={() => setSelectedGroupDetails(group)} className="text-blue-500 hover:text-blue-600 transition-colors p-1" title={t('adminDashboard.viewStudents')}>
+                                                                <FaRegEye className="text-[12px] sm:text-xl" />
                                                             </button>
-                                                            <button onClick={() => setDeleteModalGroup(group)} className="text-rose-500 hover:text-rose-600 transition-colors" title={t('adminDashboard.deleteTitle')}>
-                                                                <FaTimesCircle className="text-xl" />
+                                                            <button onClick={() => setDeleteModalGroup(group)} className="text-rose-500 hover:text-rose-600 transition-colors p-1" title={t('adminDashboard.deleteTitle')}>
+                                                                <FaTimesCircle className="text-[12px] sm:text-xl" />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -1295,41 +1385,42 @@ return (
                                         )}
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
                 
                 {activeTab === 'students' && (
-                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden space-y-6">
+                    <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl sm:rounded-3xl p-2.5 sm:p-8 shadow-sm relative overflow-hidden space-y-4 sm:space-y-6 min-w-0">
                         {/* Header & Controls */}
-                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4">
                             <div>
-                                <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                                <h2 className="text-base sm:text-xl font-black text-gray-900 dark:text-white flex items-center gap-2.5 sm:gap-3">
                                     <FaUserGraduate className="text-red-500" />
                                     <span>{t('adminDashboard.studentsTab', "O'quvchilar Boshqaruvi")}</span>
                                 </h2>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">
                                     {t('adminDashboard.studentsSubtitle', "Ro'yxatdan o'tgan o'quvchilar hisoblari, status va parollarni tiklash")}
                                 </p>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full lg:w-auto">
                                 <div className="relative flex-1 sm:w-64">
-                                    <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                    <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
                                     <input
                                         type="text"
                                         value={studentSearchTerm}
                                         onChange={(e) => setStudentSearchTerm(e.target.value)}
                                         placeholder={t('adminDashboard.searchStudentPlaceholder', "Ism yoki login bo'yicha qidirish...")}
-                                        className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white"
+                                        className="w-full pl-8 pr-3 py-1.5 sm:py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-medium focus:outline-none focus:border-red-500 text-gray-900 dark:text-white"
                                     />
                                 </div>
 
                                 <select
                                     value={studentGroupFilter}
                                     onChange={(e) => setStudentGroupFilter(e.target.value)}
-                                    className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
+                                    className="px-2.5 py-1.5 sm:py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
                                 >
                                     <option value="all">{t('adminDashboard.allGroups', "Barcha guruhlar")}</option>
                                     {groups.map(g => (
@@ -1340,7 +1431,7 @@ return (
                                 <select
                                     value={studentStatusFilter}
                                     onChange={(e) => setStudentStatusFilter(e.target.value)}
-                                    className="px-3 py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
+                                    className="px-2.5 py-1.5 sm:py-2 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none"
                                 >
                                     <option value="all">{t('adminDashboard.allStatuses', "Barcha statuslar")}</option>
                                     <option value="pending">{t('adminDashboard.statusPendingOption', "⏳ Kutilmoqda (Tasdiqlash kerak)")}</option>
@@ -1352,10 +1443,10 @@ return (
 
                         {/* Pending Students Alert Banner */}
                         {registeredUsers.filter(u => u.status === 'pending').length > 0 && (
-                            <div className="mb-4 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
-                                    <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
+                            <div className="mb-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                                <div className="flex items-center gap-2 sm:gap-3">
+                                    <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
+                                    <span className="text-[11px] sm:text-sm font-bold text-amber-800 dark:text-amber-300">
                                         🔔 {t('adminDashboard.newRequestsAlert', "Yangi arizalar:")} {registeredUsers.filter(u => u.status === 'pending').length} {t('adminDashboard.pendingAlertDesc', "ta talaba hisobi administrator tasdig'ini kutmoqda!")}
                                     </span>
                                 </div>
@@ -1368,17 +1459,36 @@ return (
                             </div>
                         )}
 
+                        {/* Student Accounts Table Header with Zoom Control */}
+                        <div className="flex items-center justify-between gap-2 mb-2 pt-1">
+                            <div className="flex items-center gap-2 min-w-0">
+                                <h3 className="text-xs sm:text-base font-bold text-gray-900 dark:text-white truncate">
+                                    {t('adminDashboard.studentsListTitle', "O'quvchilar ro'yxati")}
+                                </h3>
+                                <span className="text-[10px] sm:text-xs font-mono font-bold px-1.5 py-0.5 rounded-full bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400 shrink-0">
+                                    {registeredUsers.length}
+                                </span>
+                            </div>
+                            <TableZoomControls zoom={tableZoom} setZoom={setTableZoom} t={t} />
+                        </div>
+
                         {/* Student Accounts Table */}
-                        <div className="overflow-x-auto custom-scrollbar pb-2">
-                            <table className="w-full text-left border-collapse min-w-[750px]">
+                        <div 
+                            className={`w-full ${tableZoom > 1 ? 'overflow-x-auto' : 'overflow-x-hidden sm:overflow-x-auto'} custom-scrollbar pb-1`}
+                            onTouchStart={onTableTouchStart}
+                            onTouchMove={onTableTouchMove}
+                            onTouchEnd={onTableTouchEnd}
+                        >
+                            <div style={{ transform: `scale(${tableZoom})`, transformOrigin: 'top left', width: tableZoom > 1 ? `${tableZoom * 100}%` : '100%' }}>
+                            <table className="w-full text-left border-collapse table-fixed sm:table-auto">
                                 <thead>
-                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-500 dark:text-gray-400">
-                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colStudent', "O'quvchi")}</th>
-                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colUsername', "Login (Username)")}</th>
-                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colGroup', "Guruh")}</th>
-                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colStatus', "Status")}</th>
-                                        <th className="py-3.5 px-4 font-medium">{t('adminDashboard.colPhone', "Telefon")}</th>
-                                        <th className="py-3.5 px-4 font-medium text-right">{t('adminDashboard.actions', "Amallar")}</th>
+                                    <tr className="border-b border-gray-100 dark:border-gray-800 text-[9px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-tight">
+                                        <th className="py-2.5 sm:py-3.5 px-1 sm:px-4 w-[36%] sm:w-auto font-medium">{t('adminDashboard.colStudent', "O'quvchi")}</th>
+                                        <th className="py-2.5 sm:py-3.5 px-1 sm:px-4 w-[26%] sm:w-auto font-medium">{t('adminDashboard.colUsername', "Login")}</th>
+                                        <th className="py-2.5 sm:py-3.5 px-0.5 sm:px-4 w-[17%] sm:w-auto font-medium">{t('adminDashboard.colGroup', "Guruh")}</th>
+                                        <th className="py-2.5 sm:py-3.5 px-0.5 sm:px-4 w-[12%] sm:w-auto font-medium">{t('adminDashboard.colStatus', "Status")}</th>
+                                        <th className="hidden sm:table-cell py-2.5 sm:py-3.5 px-0.5 sm:px-4 sm:w-auto font-medium">{t('adminDashboard.colPhone', "Telefon")}</th>
+                                        <th className="py-2.5 sm:py-3.5 px-1 sm:px-4 w-[9%] sm:w-auto font-medium text-right">{t('adminDashboard.actions', "Amallar")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1393,7 +1503,7 @@ return (
                                         })
                                         .length === 0 ? (
                                         <tr>
-                                            <td colSpan="6" className="py-12 text-center text-gray-500">
+                                            <td colSpan="6" className="py-8 sm:py-12 text-center text-xs sm:text-sm text-gray-500">
                                                 {t('adminDashboard.noMatchingStudents', "Mos keluvchi ro'yxatdan o'tgan o'quvchilar topilmadi.")}
                                             </td>
                                         </tr>
@@ -1408,62 +1518,85 @@ return (
                                                 return matchesSearch && matchesGroup && matchesStatus;
                                             })
                                             .map(st => (
-                                                <tr key={st.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-sm">
-                                                    <td className="py-3.5 px-4 font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-xs shrink-0">
-                                                            {st.name?.charAt(0).toUpperCase() || 'S'}
+                                                <tr key={st.id} className="border-b border-gray-50 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition text-xs sm:text-sm">
+                                                    <td className="py-2 sm:py-3.5 px-1 sm:px-4 font-bold text-gray-900 dark:text-white">
+                                                        <div className="flex items-center gap-1 sm:gap-3 min-w-0">
+                                                            <div className="w-5 h-5 sm:w-8 sm:h-8 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-[9px] sm:text-xs shrink-0">
+                                                                {st.name?.charAt(0).toUpperCase() || 'S'}
+                                                            </div>
+                                                            <div className="min-w-0">
+                                                                <span className="truncate block text-[10px] sm:text-sm" title={st.name}>{st.name}</span>
+                                                                {st.phone && (
+                                                                    <div className="text-[8px] font-mono font-medium text-gray-400 dark:text-gray-500 sm:hidden truncate">
+                                                                        {st.phone}
+                                                                    </div>
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                        <span className="truncate">{st.name}</span>
                                                     </td>
-                                                    <td className="py-3.5 px-4 font-mono text-xs font-semibold text-gray-600 dark:text-gray-300">
-                                                        <div className="font-bold text-gray-900 dark:text-white">@{st.username}</div>
-                                                        <div className="flex items-center gap-1.5 mt-1">
-                                                            <span className="text-[10px] text-gray-400 font-sans">{t('studentDashboard.passwordLabel', "Parol:")}</span>
-                                                            <span className="font-mono text-xs text-indigo-600 dark:text-indigo-400 font-bold">
+                                                    <td className="py-2 sm:py-3.5 px-1 sm:px-4 font-mono text-[9px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                                        <div className="font-bold text-gray-900 dark:text-white truncate">@{st.username}</div>
+                                                        <div className="flex items-center gap-0.5 sm:gap-1.5 mt-0.5">
+                                                            <span className="text-[8px] sm:text-[10px] text-gray-400 font-sans hidden sm:inline">{t('studentDashboard.passwordLabel', "Parol:")}</span>
+                                                            <span className="font-mono text-[8px] sm:text-xs text-indigo-600 dark:text-indigo-400 font-bold truncate">
                                                                 {revealedPasswords[st.id] ? (st.rawPassword || '••••••••') : '••••••••'}
                                                             </span>
                                                             {st.rawPassword && (
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => toggleRevealPassword(st.id)}
-                                                                    className="text-gray-400 hover:text-indigo-500 transition ml-0.5"
+                                                                    className="text-gray-400 hover:text-indigo-500 transition p-0.5 shrink-0"
                                                                     title={revealedPasswords[st.id] ? t('common.hide', "Yashirish") : t('common.view', "Ko'rish")}
                                                                 >
-                                                                    {revealedPasswords[st.id] ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
+                                                                    {revealedPasswords[st.id] ? <FaEyeSlash className="text-[8px] sm:text-xs" /> : <FaEye className="text-[8px] sm:text-xs" />}
                                                                 </button>
                                                             )}
                                                         </div>
                                                     </td>
-                                                    <td className="py-3.5 px-4">
-                                                        <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400">
+                                                    <td className="py-2 sm:py-3.5 px-0.5 sm:px-4">
+                                                        <span className="inline-block px-1 py-0.5 sm:px-2.5 sm:py-1 rounded text-[8px] sm:text-[11px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400 truncate max-w-full">
                                                             {st.groupName || groups.find(g => g.id === st.groupId)?.name || t('studentDashboard.notAssigned', "Guruhsiz")}
                                                         </span>
                                                     </td>
-                                                    <td className="py-3.5 px-4">
+                                                    <td className="py-2 sm:py-3.5 px-0.5 sm:px-4">
                                                         {st.status === 'pending' ? (
-                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-500/20">
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                                                <span>{t('studentDashboard.schedule.pending', "Kutilmoqda")}</span>
+                                                            <span className="inline-flex items-center gap-0.5 sm:gap-1.5 px-1 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-500/20 whitespace-nowrap">
+                                                                <span className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                                                                <span className="truncate">{t('studentDashboard.schedule.pending', "Kutilmoqda")}</span>
                                                             </span>
                                                         ) : st.status === 'suspended' ? (
-                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400">
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                                                                <span>{t('adminDashboard.statusSuspendedLabel', "To'xtatilgan")}</span>
+                                                            <span className="inline-flex items-center gap-0.5 sm:gap-1.5 px-1 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 whitespace-nowrap">
+                                                                <span className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-rose-500 shrink-0" />
+                                                                <span className="truncate">{t('adminDashboard.statusSuspendedLabel', "To'xtatilgan")}</span>
                                                             </span>
                                                         ) : (
-                                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400">
-                                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                                                <span>{t('adminDashboard.statusActiveLabel', "Faol")}</span>
+                                                            <span className="inline-flex items-center gap-0.5 sm:gap-1.5 px-1 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold bg-emerald-100 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 whitespace-nowrap">
+                                                                <span className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                                                                <span className="truncate">{t('adminDashboard.statusActiveLabel', "Faol")}</span>
                                                             </span>
                                                         )}
                                                     </td>
-                                                    <td className="py-3.5 px-4 text-xs font-mono text-gray-500 dark:text-gray-400">
+                                                    <td className="hidden sm:table-cell py-2 sm:py-3.5 px-0.5 sm:px-4 text-[8px] sm:text-xs font-mono text-gray-500 dark:text-gray-400 whitespace-nowrap truncate">
                                                         {st.phone || '-'}
                                                     </td>
-                                                    <td className="py-3.5 px-4 text-right">
-                                                        <div className="flex items-center justify-end gap-2">
+                                                    <td className="py-2 sm:py-3.5 px-1 sm:px-4 text-right">
+                                                        {/* Mobile: single 3-dots action button */}
+                                                        <div className="flex sm:hidden justify-end">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setMobileActionStudent(st)}
+                                                                className="p-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-red-500 transition shrink-0"
+                                                                title={t('adminDashboard.actions', "Amallar")}
+                                                            >
+                                                                <FaEllipsisV className="text-[10px]" />
+                                                            </button>
+                                                        </div>
+
+                                                        {/* Desktop: full 5 action buttons */}
+                                                        <div className="hidden sm:flex items-center justify-end gap-1 sm:gap-2">
                                                             {st.status === 'pending' && (
                                                                 <button
+                                                                    type="button"
                                                                     onClick={() => {
                                                                         // Optimistic instant update (0ms)
                                                                         setRegisteredUsers(prev => prev.map(u => u.id === st.id ? { ...u, status: 'active' } : u));
@@ -1472,38 +1605,41 @@ return (
                                                                             console.error('Approve error:', err);
                                                                         });
                                                                     }}
-                                                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+                                                                    className="inline-flex items-center gap-0.5 px-2.5 py-1.5 rounded-md sm:rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer shrink-0"
                                                                     title={t('adminDashboard.approveStudentTooltip', "O'quvchini tasdiqlash")}
                                                                 >
                                                                     <FaCheckCircle className="text-xs" />
-                                                                    <span>{t('adminDashboard.approveBtn', "Tasdiqlash")}</span>
+                                                                    <span className="hidden sm:inline ml-1">{t('adminDashboard.approveBtn', "Tasdiqlash")}</span>
                                                                 </button>
                                                             )}
 
                                                             <button
+                                                                type="button"
                                                                 onClick={() => {
                                                                     setResetPasswordModalStudent(st);
                                                                     setEditModalUsername(st.username || (st.name ? st.name.toLowerCase().replace(/[^a-z0-9]/g, '') : ''));
                                                                     setNewResetPasswordValue('');
                                                                 }}
-                                                                className="p-1.5 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 transition-colors cursor-pointer"
+                                                                className="p-1 sm:p-1.5 rounded-md sm:rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 transition-colors cursor-pointer shrink-0"
                                                                 title={t('adminDashboard.resetCredentialsTooltip', "Login va parolni sozlash")}
                                                             >
-                                                                <FaKey className="text-xs" />
+                                                                <FaKey className="text-[10px] sm:text-xs" />
                                                             </button>
 
                                                             <button
+                                                                type="button"
                                                                 onClick={() => {
                                                                     setTransferModalStudent(st);
                                                                     setTransferTargetGroupId(st.groupId || '');
                                                                 }}
-                                                                className="p-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 transition-colors cursor-pointer"
+                                                                className="p-1 sm:p-1.5 rounded-md sm:rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 transition-colors cursor-pointer shrink-0"
                                                                 title={t('adminDashboard.transferGroupTooltip', "Boshqa guruhga ko'chirish")}
                                                             >
-                                                                <FaUsers className="text-xs" />
+                                                                <FaUsers className="text-[10px] sm:text-xs" />
                                                             </button>
 
                                                             <button
+                                                                type="button"
                                                                 onClick={() => {
                                                                     const nextStatus = st.status === 'suspended' ? 'active' : 'suspended';
                                                                     // Optimistic instant update (0ms)
@@ -1513,22 +1649,23 @@ return (
                                                                         console.error('Status sync error:', err);
                                                                     });
                                                                 }}
-                                                                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                                                                className={`p-1 sm:p-1.5 rounded-md sm:rounded-lg transition-colors cursor-pointer shrink-0 ${
                                                                     st.status === 'suspended'
                                                                         ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400'
                                                                         : 'bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400'
                                                                 }`}
                                                                 title={st.status === 'suspended' ? t('adminDashboard.activateTooltip', "Faollashtirish") : t('adminDashboard.suspendTooltip', "To'xtatish")}
                                                             >
-                                                                {st.status === 'suspended' ? <FaCheckCircle className="text-xs" /> : <FaTimesCircle className="text-xs" />}
+                                                                {st.status === 'suspended' ? <FaCheckCircle className="text-[10px] sm:text-xs" /> : <FaTimesCircle className="text-[10px] sm:text-xs" />}
                                                             </button>
 
                                                             <button
+                                                                type="button"
                                                                 onClick={() => setDeleteModalStudent(st)}
-                                                                className="p-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400 hover:text-rose-700 transition-colors cursor-pointer"
+                                                                className="p-1 sm:p-1.5 rounded-md sm:rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400 hover:text-rose-700 transition-colors cursor-pointer shrink-0"
                                                                 title={t('adminDashboard.deleteStudentTooltip', "O'quvchini butunlay o'chirish")}
                                                             >
-                                                                <FaTrash className="text-xs" />
+                                                                <FaTrash className="text-[10px] sm:text-xs" />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -1538,6 +1675,7 @@ return (
 
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -1549,6 +1687,135 @@ return (
                 )}
             </div>
         </main>
+
+        {/* Mobile Student Actions Bottom-Sheet Modal */}
+        {mobileActionStudent && (
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center z-[75] p-3 sm:p-4 animate-fade-in" onClick={() => setMobileActionStudent(null)}>
+                <div 
+                    className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 max-w-sm w-full shadow-2xl space-y-3 relative"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                            <div className="w-9 h-9 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-sm shrink-0">
+                                {mobileActionStudent.name?.charAt(0).toUpperCase() || 'S'}
+                            </div>
+                            <div className="min-w-0">
+                                <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">{mobileActionStudent.name}</h4>
+                                <p className="text-[11px] font-mono text-gray-400 truncate">@{mobileActionStudent.username || 'user'}</p>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setMobileActionStudent(null)}
+                            className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                        >
+                            <FaTimes className="text-sm" />
+                        </button>
+                    </div>
+
+                    <div className="space-y-1.5 pt-1">
+                        {mobileActionStudent.status === 'pending' && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const st = mobileActionStudent;
+                                    setRegisteredUsers(prev => prev.map(u => u.id === st.id ? { ...u, status: 'active' } : u));
+                                    toast.success(t('adminDashboard.toast.studentApproved', "{{name}} tasdiqlandi va faollashtirildi!", { name: st.name }));
+                                    adminApproveStudent(st.id, st.groupId).catch(console.error);
+                                    setMobileActionStudent(null);
+                                }}
+                                className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold text-xs hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition cursor-pointer"
+                            >
+                                <FaCheckCircle className="text-sm shrink-0" />
+                                <span>{t('adminDashboard.approveBtn', "Tasdiqlash va faollashtirish")}</span>
+                            </button>
+                        )}
+
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const st = mobileActionStudent;
+                                setResetPasswordModalStudent(st);
+                                setEditModalUsername(st.username || (st.name ? st.name.toLowerCase().replace(/[^a-z0-9]/g, '') : ''));
+                                setNewResetPasswordValue('');
+                                setMobileActionStudent(null);
+                            }}
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 font-bold text-xs hover:bg-amber-100 dark:hover:bg-amber-900/40 transition cursor-pointer"
+                        >
+                            <FaKey className="text-sm shrink-0" />
+                            <span>{t('adminDashboard.resetCredentialsTooltip', "Login va parolni sozlash")}</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const st = mobileActionStudent;
+                                setTransferModalStudent(st);
+                                setTransferTargetGroupId(st.groupId || '');
+                                setMobileActionStudent(null);
+                            }}
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-bold text-xs hover:bg-blue-100 dark:hover:bg-blue-900/40 transition cursor-pointer"
+                        >
+                            <FaUsers className="text-sm shrink-0" />
+                            <span>{t('adminDashboard.transferGroupTooltip', "Boshqa guruhga ko'chirish")}</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const st = mobileActionStudent;
+                                const nextStatus = st.status === 'suspended' ? 'active' : 'suspended';
+                                setRegisteredUsers(prev => prev.map(u => u.id === st.id ? { ...u, status: nextStatus } : u));
+                                toast.success(t('adminDashboard.toast.statusChanged', "O'quvchi statusi o'zgartirildi: {{status}}", { status: nextStatus }));
+                                adminSetStudentStatus(st.id, nextStatus).catch(console.error);
+                                setMobileActionStudent(null);
+                            }}
+                            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition cursor-pointer ${
+                                mobileActionStudent.status === 'suspended'
+                                    ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100'
+                                    : 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100'
+                            }`}
+                        >
+                            {mobileActionStudent.status === 'suspended' ? (
+                                <>
+                                    <FaCheckCircle className="text-sm shrink-0" />
+                                    <span>{t('adminDashboard.activateTooltip', "Faollashtirish")}</span>
+                                </>
+                            ) : (
+                                <>
+                                    <FaTimesCircle className="text-sm shrink-0" />
+                                    <span>{t('adminDashboard.suspendTooltip', "To'xtatish")}</span>
+                                </>
+                            )}
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const st = mobileActionStudent;
+                                setDeleteModalStudent(st);
+                                setMobileActionStudent(null);
+                            }}
+                            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-bold text-xs hover:bg-rose-100 transition cursor-pointer"
+                        >
+                            <FaTrash className="text-sm shrink-0" />
+                            <span>{t('adminDashboard.deleteStudentTooltip', "O'quvchini butunlay o'chirish")}</span>
+                        </button>
+                    </div>
+
+                    <div className="pt-2">
+                        <button
+                            type="button"
+                            onClick={() => setMobileActionStudent(null)}
+                            className="w-full py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-xs font-bold transition cursor-pointer"
+                        >
+                            {t('common.cancel', "Yopish")}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
 
         {/* Reset Password Modal */}
         {resetPasswordModalStudent && (
